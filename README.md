@@ -6,8 +6,8 @@ Ce stage a été effectué de Janvier 2025 à Juillet 2025 au sein de l'Institut
 
 
 ### Dossiers
-`- biblio` notes perso sur chaque article lu en profondeur - le fichier `biblio/biblio.txt` fait la liste de ces articles
+`--- biblio` notes perso sur chaque article lu en profondeur - le fichier `biblio/biblio.txt` fait la liste de ces articles
 
-`- notions` notes perso sur les sujets approfondis
+`--- notions` notes perso sur les sujets approfondis
 
-`- scripts` liste des scripts créés dans le cadre du stage
+`--- scripts` liste des scripts créés dans le cadre du stage

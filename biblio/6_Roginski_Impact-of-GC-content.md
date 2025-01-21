@@ -18,7 +18,7 @@ Etude de l’influence du %GC sur :
     * les codons liés aux résidus chargés (GAN)
 
 #### Les iORF des génomes avec un %GC moyen codent pour des microprotéines plus proches des microprotéines canoniques que les iORF des génomes avec un %GC bas/haut
-> [!TIP] Les résidus hydrophobes sont globalement encodés par des codons riches en AT et inversement pour les résidus chargés et polaires
+> [**Note**] Les résidus hydrophobes sont globalement encodés par des codons riches en AT et inversement pour les résidus chargés et polaires
 
 
 
