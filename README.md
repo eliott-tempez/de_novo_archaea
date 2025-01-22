@@ -2,7 +2,7 @@
 ## Gènes de novo et nouvelles microprotéines chez les archées et virus à partir de régions non-codantes
 **Eliott Tempez** - Université Paris Cité
 
-Ce stage a été effectué de Janvier 2025 à Juillet 2025 au sein de l'Institut de Biologit Intégrative de la Cellule (I2BC) sous l'encadrement d'**Anne Lopes**. 
+Ce stage a été effectué de Janvier 2025 à Juillet 2025 au sein de l'Institut de Biologie Intégrative de la Cellule (I2BC) sous l'encadrement d'**Anne Lopes**. 
 
 
 ### Dossiers
