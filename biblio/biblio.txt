@@ -1,6 +1,0 @@
-(1)	Van Oss, S. B.; Carvunis, A.-R. De Novo Gene Birth. PLoS Genet. 2019, 15 (5), e1008160. https://doi.org/10.1371/journal.pgen.1008160.
-(2)	Roginski, P.; Grandchamp, A.; Quignot, C.; Lopes, A. De Novo Emerged Gene Search in Eukaryotes with DENSE. Genome Biol. Evol. 2024, 16 (8), evae159. https://doi.org/10.1093/gbe/evae159.
-(3)	Watson, A. K.; Lopez, P.; Bapteste, E. Hundreds of Out-of-Frame Remodeled Gene Families in the Escherichia Coli Pangenome. Mol. Biol. Evol. 2022, 39 (1), msab329. https://doi.org/10.1093/molbev/msab329.
-(4)	Baker, B. J.; De Anda, V.; Seitz, K. W.; Dombrowski, N.; Santoro, A. E.; Lloyd, K. G. Diversity, Ecology and Evolution of Archaea. Nat. Microbiol. 2020, 5 (7), 887–900. https://doi.org/10.1038/s41564-020-0715-z.
-(5)	Papadopoulos, C.; Callebaut, I.; Gelly, J.-C.; Hatin, I.; Namy, O.; Renard, M.; Lespinet, O.; Lopes, A. Intergenic ORFs as Elementary Structural Modules of de Novo Gene Birth and Protein Evolution. Genome Res. 2021, 31 (12), 2303–2315. https://doi.org/10.1101/gr.275638.121.
-(6) Roginski, P.; Papadopoulos, C.; Lopes, A. Impact of GC content on de novo gene birth (to be published in 2025)
