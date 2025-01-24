@@ -1,0 +1,25 @@
+{
+  "configurations": [
+    {
+      "name": "Linux",
+      "defines": [
+        "NDEBUG",
+        "NDEBUG",
+        "_FORTIFY_SOURCE=2"
+      ],
+      "includePath": [
+        "${workspaceFolder}/**",
+        "${workspaceFolder}/src",
+        "/home/eliott.tempez/miniconda3/lib/R/include",
+        "/home/eliott.tempez/miniconda3/include",
+        "/home/eliott.tempez/miniconda3/include/freetype2",
+        "/home/eliott.tempez/miniconda3/pkgs"
+      ],
+      "compilerPath": "/home/eliott.tempez/miniconda3/bin/x86_64-conda-linux-gnu-c++",
+      "cStandard": "${default}",
+      "cppStandard": "gnu++17",
+      "intelliSenseMode": "linux-gcc-x64"
+    }
+  ],
+  "version": 4
+}
