@@ -6,15 +6,14 @@ ggsave <- function(..., bg = "white", width = 1000, height = 1000, units = "px",
 }
 
 # Import the file
-file <- "/home/eliott.tempez/Documents/archaea_data/Thermocomplete_table.csv"
+#file <- "/home/eliott.tempez/Documents/archaea_data/Thermocomplete_table.csv"
+file <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/data/Thermocomplete_table.csv"
 data <- read.csv(file)
 
 # Which columns are filled for at least 95% of all organisms
 full_col <- c()
 len_max <- dim(data)[1] * .95
 for (col in colnames(data)) {
-  print(col)
-  print(data[, col])
   if (length(which(data[, col] != "")) > len_max) {
     full_col <- c(full_col, col)
   }
@@ -53,10 +52,31 @@ data_long <- data_high %>%
 
 # Plot histograms with ggplot
 ggplot(data_long, aes(x = Length, fill = Type)) +
-  geom_histogram(binwidth = bin_width, position = "identity", alpha = 0.75, color = "black") +
+  geom_histogram(position = "identity", alpha = 0.75, color = "black") +
   scale_fill_manual(values = c("Average_CDS_length" = "#C3A6C3", "Average_intergenic_length" = "#C3C3A6")) +
   labs(x = "Average length (nucl)", y = "Count", title = "Average CDS and intergenic region length in the dataset") +
   theme_minimal() +
   theme(legend.title = element_blank())
 # export figure
 ggsave("/home/eliott.tempez/Documents/M2_Stage_I2BC/results/initial_data_analysis_figures/dna_legth.png")
+
+
+# Map of the geographic regions of extraction
+world <- map_data("world")
+ggplot() +
+  geom_map(
+    data = world, map = world,
+    aes(long, lat, map_id = region),
+    color = "#4e4444", fill = "#e2eef6"
+  ) +
+  geom_point(
+    data = data,
+    aes(Geographic_location_longitude, Geographic_location_latitude),
+    alpha = 1, color = "#db0000",
+    shape = 8, size = 3
+  ) +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_blank(), axis.text.y = element_blank(), axis.ticks = element_blank()) +
+  theme(axis.title.x = element_blank(), axis.title.y = element_blank())
+
+ggsave("/home/eliott.tempez/Documents/M2_Stage_I2BC/results/initial_data_analysis_figures/map.png", width = 1500, height = 1000)
