@@ -1,0 +1,13 @@
+WARNING: The following feature was skipped:
+type: misc_feature
+location: [450736:453537](+)
+qualifiers:
+    Key: note, Value: ['UNKNOWN FEATURE KEY CRISPR; CRISPR with 42 repeat units']
+
+WARNING: The following feature was skipped:
+type: misc_feature
+location: [1593998:1595571](+)
+qualifiers:
+    Key: note, Value: ['UNKNOWN FEATURE KEY CRISPR; CRISPR with 24 repeat units']
+
+Warning: 2 unsupported feature types were skipped
