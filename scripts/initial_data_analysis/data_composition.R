@@ -6,8 +6,7 @@ ggsave <- function(..., bg = "white", width = 1000, height = 1000, units = "px",
 }
 
 # Import the file
-#file <- "/home/eliott.tempez/Documents/archaea_data/Thermocomplete_table.csv"
-file <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/data/Thermocomplete_table.csv"
+file <- "/home/eliott.tempez/Documents/archaea_data/Thermocomplete_table.csv"
 data <- read.csv(file)
 
 # Which columns are filled for at least 95% of all organisms
@@ -75,8 +74,13 @@ ggplot() +
     alpha = 1, color = "#db0000",
     shape = 8, size = 3
   ) +
-  theme(legend.position = "none") +
-  theme(axis.text.x = element_blank(), axis.text.y = element_blank(), axis.ticks = element_blank()) +
-  theme(axis.title.x = element_blank(), axis.title.y = element_blank())
+  theme(
+    legend.position = "none",
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks = element_blank(),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank()
+  )
 
 ggsave("/home/eliott.tempez/Documents/M2_Stage_I2BC/results/initial_data_analysis_figures/map.png", width = 1500, height = 1000)
