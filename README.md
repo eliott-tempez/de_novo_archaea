@@ -11,3 +11,13 @@ Ce stage a été effectué de Janvier 2025 à Juillet 2025 au sein de l'Institut
 `--- scripts` liste des scripts créés dans le cadre du stage
 
 `--- logs` logs récupérés suite à l'exécution des scripts
+
+`--- results` résultats obtenus
+
+
+### Etapes du stage (sous-dossiers) :
+- Utilisation de Dense sur Saccharomyces cerevisiae pour me familiariser avec l'outil (`dense_yeast`)
+- Etude et visualisation des données d'entrée (`initial_data_analysis`)
+- Conversion des fichiers `genbank` dans les données d'entrée en fichiers `gff` (`gbk_to_gff3`)
+- Récupération des identifiants taxonomiques NCBI correspondant aux données d'entrée (`retrieve_taxids`)
+- Utilisation de GenEra sur les données d'entrée (`genera_archaea`)
