@@ -22,7 +22,6 @@ TREE=/datas/ELIOTT/archaea_data/test/small-tree.nwk
 OUT_DIR=/datas/ELIOTT/archaea_data/test/genera/
 
 # Set up environment
-echo $ARCHAEA >> $LOG_OUTPUT
 source /home/eliott.tempez/miniconda3/bin/activate phylostrat
 cd /datas/ELIOTT/
 
@@ -44,7 +43,7 @@ for file in ./archaea_data/test/genome/*.fa; do
     echo "Indexing $FASTA_FILE..." >> $LOG_OUTPUT
     samtools faidx $FASTA_FILE
     # Keep GFF sequences that are also in the FASTA file.
-    awk 'BEGIN{FS=OFS="\t"} {print "^"\$1,""} END {print "^#"}' ${FASTA_FILE}.fai | grep -f - $GFF_FILE > gff_filterA
+    awk 'BEGIN{FS=OFS="\t"} {print "^" $1,""} END {print "^#"}' ${FASTA_FILE}.fai | grep -f - $GFF_FILE > gff_filterA
     # Also remove mRNA with undefined strand and features with abnormal end
     awk -F"\t" '
             FNR==NR {max[\$1]=\$2}
