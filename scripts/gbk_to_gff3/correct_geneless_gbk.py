@@ -6,7 +6,6 @@ ORGANISMS = ["Thermococcus_celer_SH1", "Thermococcus_33N", "Thermococcus_sp_690"
 # Get the files
 files = os.listdir(INPUT_FOLD)
 files_filtered = []
-is_found = False
 for arch in ORGANISMS:
     is_found = False
     while not is_found:
