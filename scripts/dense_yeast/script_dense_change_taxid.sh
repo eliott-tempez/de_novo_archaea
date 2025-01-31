@@ -20,8 +20,8 @@ echo "Data imported" >> /home/eliott.tempez/dense_change_taxid_output.log
 # Run Dense 1
 # Run DENSE
 echo "Running Nextflow" >> /home/eliott.tempez/dense_change_taxid_output.log
-nextflow run /home/eliott.tempez/dense -profile singularity -c /home/eliott.tempez/params_change_taxid-1.config >> /home/eliott.tempez/dense_change_taxid_output.log 2>> /home/eliott.tempez/dense_change_taxid_error.log
-EXIT_CODE=$?
+nextflow run /home/eliott.tempez/dense -profile singularity -c /home/eliott.tempez/params_yeast_change_taxid-1.config >> /home/eliott.tempez/dense_change_taxid_output.log 2>> /home/eliott.tempez/dense_change_taxid_error.log
+EXIT_CODE=$
 
 # Check exit code
 if [ $EXIT_CODE -ne 0 ]; then
@@ -42,7 +42,7 @@ echo "Data imported" >> /home/eliott.tempez/dense_change_taxid_output.log
 # Run Dense 2
 # Run DENSE
 echo "Running Nextflow" >> /home/eliott.tempez/dense_change_taxid_output.log
-nextflow run /home/eliott.tempez/dense -profile singularity -c /home/eliott.tempez/params_change_taxid-2.config >> /home/eliott.tempez/dense_change_taxid_output.log 2>> /home/eliott.tempez/dense_change_taxid_error.log
+nextflow run /home/eliott.tempez/dense -profile singularity -c /home/eliott.tempez/params_yeast_change_taxid-2.config >> /home/eliott.tempez/dense_change_taxid_output.log 2>> /home/eliott.tempez/dense_change_taxid_error.log
 EXIT_CODE=$?
 
 # Check exit code
