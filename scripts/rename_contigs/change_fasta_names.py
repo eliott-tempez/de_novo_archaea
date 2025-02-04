@@ -30,7 +30,7 @@ for fgbk in files_gbk:
         records = list(Bio.SeqIO.parse(f_in, "genbank"))
     # only if we have 1 record
     if len(records) == 1:
-        contig_name = records[0].id
+        contig_name = records[0].name
     
 
         # Create new fasta file with accurate name
@@ -73,7 +73,7 @@ for name in dict_contigs:
         records = list(Bio.SeqIO.parse(f_in, "fasta"))
     new_file_content = ""
     for record in records:
-        new_file_content += f">{dict_contigs[name][record.id]}\n{record.seq}\n"
+        new_file_content += f">{dict_contigs[name][record.name]}\n{record.seq}\n"
     with open(new_fasta, "w") as f_out:
         f_out.write(new_file_content)
 

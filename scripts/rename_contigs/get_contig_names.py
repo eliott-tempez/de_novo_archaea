@@ -3,7 +3,7 @@ import Bio.SeqIO
 
 GBK_FOLDER = "/home/eliott.tempez/Documents/archaea_data/complete_122/annotation/"
 FASTA_FOLDER = "/home/eliott.tempez/Documents/archaea_data/complete_122/fasta/"
-OUT_FILE = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/rename_contigs/contigs_names2.txt"
+OUT_FILE = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/rename_contigs/contigs_names.txt"
 
 # Get the files
 def process_files(input_folder, file_type):
@@ -11,6 +11,10 @@ def process_files(input_folder, file_type):
     # Get the files
     files = os.listdir(input_folder)
     for file in files:
+        # Check we have a file
+        if not os.path.isfile(os.path.join(input_folder, file)):
+            continue
+        # Check we have the right files
         if "Thermococcus_celer_SH1" in file or "Thermococcus_sp_690" in file or "correction" in file:
             continue
         file_path = os.path.join(input_folder, file)

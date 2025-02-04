@@ -34,11 +34,11 @@ for fgbk in files_gbk:
         if len(records) > 1:
             print(name)
             for record in records:
-                print(record.id)
+                print(record.name)
                 for feature in record.features:
                     if feature.type == "CDS":
                         if "translation" in feature.qualifiers:
-                            tmp_file_content = (f">{record.id}\n{feature.qualifiers['translation'][0]}\n")
+                            tmp_file_content = (f">{record.name}\n{feature.qualifiers['translation'][0]}\n")
                             with open("tmp.fa", "w") as f_out:
                                 f_out.write(tmp_file_content)
                             # Create the blast command
