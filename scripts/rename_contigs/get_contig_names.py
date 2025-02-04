@@ -3,7 +3,7 @@ import Bio.SeqIO
 
 GBK_FOLDER = "/home/eliott.tempez/Documents/archaea_data/complete_122/annotation/"
 FASTA_FOLDER = "/home/eliott.tempez/Documents/archaea_data/complete_122/fasta/"
-OUT_FILE = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/rename_contigs/contigs_names.txt"
+OUT_FILE = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/rename_contigs/contigs_names2.txt"
 
 # Get the files
 def process_files(input_folder, file_type):
@@ -21,7 +21,7 @@ def process_files(input_folder, file_type):
             records = Bio.SeqIO.parse(f_in, file_type)
             # Add contig name to the dict
             for record in records:
-                dict[species_name].append(record.id)
+                dict[species_name].append(record.name)
     return dict
 
 
