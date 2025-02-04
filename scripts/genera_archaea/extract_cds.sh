@@ -4,7 +4,7 @@
 
 #PBS -N CDS_archaea_test
 #PBS -q bim
-#PBS -l ncpus=32 -l host=node04 -l mem=128gb -l walltime=200:00:00
+#PBS -l ncpus=4 -l host=node04 -l mem=128gb -l walltime=200:00:00
 #PBS -o /home/eliott.tempez/extract_cds_output.log
 #PBS -e /home/eliott.tempez/extract_cds_error.log
 
