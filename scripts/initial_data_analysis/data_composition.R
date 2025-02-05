@@ -84,3 +84,34 @@ ggplot() +
   )
 
 ggsave("/home/eliott.tempez/Documents/M2_Stage_I2BC/results/initial_data_analysis_figures/map.png", width = 1500, height = 1000)
+
+
+# Do we have the complete chromosome?
+ggplot(data_high, aes(x = tolower(Complete_chromosome))) +
+  geom_bar(fill = "#a7c3a6", color = "black") +
+  labs(x = "Complete chromosome", y = "Count", title = "Distribution of the presence of a complete chromosome in the dataset") +
+  theme_minimal()
+  ggsave("/home/eliott.tempez/Documents/M2_Stage_I2BC/results/initial_data_analysis_figures/complete.chr.png")
+
+
+# Protein coding density
+ggplot(data_high, aes(x = X..protein.codingDensity)) +
+  geom_histogram(fill = "#c0c3a6", color = "black") +
+  labs(x = "Protein coding density", y = "Count", title = "Distribution of the protein coding density in the dataset") +
+  theme_minimal()
+   ggsave("/home/eliott.tempez/Documents/M2_Stage_I2BC/results/initial_data_analysis_figures/protein_coding_density.png")
+
+
+# Depth
+data_low$depth <- gsub(",", "", data_low$depth)
+data_low$depth <- as.numeric(gsub("[a-zA-Z]", "", data_low$depth))
+depth_na <- sum(is.na(data_low$depth))
+
+# plot boxplot
+ggplot(data_low, aes(y = depth)) +
+  geom_boxplot(fill = "#a8a6c3", color = "black", width = 0.9) +
+  xlim(-1, 1) +
+  labs(y = "Depth (meters)", x = "",
+        title = paste0("Collection depth (unknown : ", depth_na, "/122)")) +
+  theme_minimal()
+  ggsave("/home/eliott.tempez/Documents/M2_Stage_I2BC/results/initial_data_analysis_figures/depth_boxplot.png")
