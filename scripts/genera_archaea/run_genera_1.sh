@@ -52,7 +52,7 @@ for archaea in "${archaeas[@]}"; do
 
     # Run GenEra
     echo "Running GenEra..." >> $LOG_OUTPUT
-    genEra -t $TAXID -q $FASTA_CDS -a $TAXID_FILE_FASTA -n 32 -b $NR -d $TAXDUMP -p /datas/ELIOTT/scripts/tmp_272844_18939/272844_Diamond_results.bout -o ${OUT_DIR}out/${archaea}/ >> $LOG_OUTPUT 2>> $LOG_ERROR
+    genEra -t $TAXID -q $FASTA_CDS -a $TAXID_FILE_FASTA -n 32 -b $NR -d $TAXDUMP -o ${OUT_DIR}out/${archaea}/ >> $LOG_OUTPUT 2>> $LOG_ERROR
 
     # Deactivate conda environment
     conda deactivate
