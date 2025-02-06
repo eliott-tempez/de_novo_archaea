@@ -29,7 +29,7 @@ cd /datas/ELIOTT/scripts/
 ########## Run GenEra ##########
 
 # List of archaeas to iterate over
-declare -a archaeas=("GCA_000195935@Pyrococcus_abyssi_GE5")
+declare -a archaeas=("GCA_020386975@Thermococcus_bergensis_T7324")
 
 # Run genera for each of them
 for archaea in "${archaeas[@]}"; do
