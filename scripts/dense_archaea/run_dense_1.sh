@@ -54,7 +54,6 @@ for archaea in "${archaeas[@]}"; do
         --tree $TREE \
         --taxids $TAXID_FILE \
         --genera_out $GENERA_OUTFILE \
-        --taxdump $TAXDUMP \
         --outdir $OUT_DIR >> $LOG_OUTPUT 2>> $LOG_ERROR
 
 
