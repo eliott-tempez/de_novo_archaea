@@ -4,7 +4,7 @@
 
 #PBS -N dense_archaea_1
 #PBS -q bim
-#PBS -l ncpus=8 -l host=node04 -l mem=64gb -l walltime=100:00:00
+#PBS -l ncpus=16 -l host=node04 -l mem=64gb -l walltime=100:00:00
 #PBS -o /home/eliott.tempez/genera_output.log
 #PBS -e /home/eliott.tempez/genera_error.log
 
@@ -45,7 +45,7 @@ for archaea in "${archaeas[@]}"; do
     echo "Running Dense..." >> $LOG_OUTPUT
     nextflow run /home/eliott.tempez/dense \
         -profile singularity \
-        --max_cpus 8 \
+        --max_cpus 16 \
         --max_memory 64.GB \
         --max_time 100.h \
         --num_outgroups 2 \
@@ -54,6 +54,7 @@ for archaea in "${archaeas[@]}"; do
         --tree $TREE \
         --taxids $TAXID_FILE \
         --genera_out $GENERA_OUTFILE \
+        --trg_node Thermococcaceae \
         --outdir $OUT_DIR >> $LOG_OUTPUT 2>> $LOG_ERROR
 
 
