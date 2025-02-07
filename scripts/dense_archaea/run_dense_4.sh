@@ -54,6 +54,7 @@ for archaea in "${archaeas[@]}"; do
         --tree $TREE \
         --taxids $TAXID_FILE \
         --genera_out $GENERA_OUTFILE \
+        --taxdump /datas/ELIOTT/scripts/work/taxdump \
         --trg_node Thermococcaceae \
         --outdir $OUT_DIR >> $LOG_OUTPUT 2>> $LOG_ERROR
 
