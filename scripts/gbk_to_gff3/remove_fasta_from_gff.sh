@@ -16,5 +16,5 @@ for file in $INPUT_FOLD/* ; do
     # Create the output file
     output_file="${OUTPUT_FOLD}/${base_name}.gff3"
     # Run the script
-    python3 /home/eliott.tempez/Documents/archaea_data/remove_fasta_from_gff3.py -i "$file" -o "$output_file"
+    python3 /home/eliott.tempez/Documents/archaea_data/gbk_to_gff/remove_fasta_from_gff3.py -i "$file" -o "$output_file"
 done
