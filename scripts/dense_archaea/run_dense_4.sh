@@ -5,8 +5,8 @@
 #PBS -N dense_archaea_4
 #PBS -q bim
 #PBS -l ncpus=8 -l host=node04 -l mem=64gb -l walltime=100:00:00
-#PBS -o /home/eliott.tempez/genera_output_4.log
-#PBS -e /home/eliott.tempez/genera_error_4.log
+#PBS -o /home/eliott.tempez/dense_output_4.log
+#PBS -e /home/eliott.tempez/dense_error_4.log
 
 # Log filenames
 LOG_OUTPUT=/home/eliott.tempez/dense_output_4.log

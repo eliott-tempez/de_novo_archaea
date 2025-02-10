@@ -2,21 +2,22 @@
 
 ########## Parameters ##########
 
-#PBS -N dense_archaea_3
+#PBS -N dense_archaea
 #PBS -q bim
-#PBS -l ncpus=8 -l host=node04 -l mem=64gb -l walltime=100:00:00
-#PBS -o /home/eliott.tempez/dense_output_3.log
-#PBS -e /home/eliott.tempez/dense_error_3.log
+#PBS -l ncpus=32 -l host=node04 -l mem=128gb -l walltime=300:00:00
+#PBS -o /home/eliott.tempez/dense_output.log
+#PBS -e /home/eliott.tempez/dense_error.log
 
 # Log filenames
-LOG_OUTPUT=/home/eliott.tempez/dense_output_3.log
-LOG_ERROR=/home/eliott.tempez/dense_error_3.log
+LOG_OUTPUT=/home/eliott.tempez/dense_output.log
+LOG_ERROR=/home/eliott.tempez/dense_error.log
 
 # Data files
 GENDIR=/datas/ELIOTT/archaea_data/genome/
 TREE=/datas/ELIOTT/archaea_data/whole_tree.nwk
 TAXDUMP=/datas/ELIOTT/scripts/taxdump/
 TAXID_FILE=/datas/ELIOTT/archaea_data/taxid.csv
+NR=/datas/NR/nr_2.0.13.dmnd
 
 # Set up environment
 source /home/eliott.tempez/miniconda3/bin/activate dense
@@ -27,7 +28,7 @@ cd /datas/ELIOTT/scripts/
 ########## Run Dense ##########
 
 # List of archaeas to iterate over
-declare -a archaeas=("GCA_020386975@Thermococcus_bergensis_T7324")
+declare -a archaeas=("GCA_000007305@Pyrococcus_furiosus_DSM_3638")
 # For each of them
 for archaea in "${archaeas[@]}"; do
 
@@ -45,15 +46,15 @@ for archaea in "${archaeas[@]}"; do
     echo "Running Dense..." >> $LOG_OUTPUT
     nextflow run /home/eliott.tempez/dense \
         -profile singularity \
-        --max_cpus 8 \
-        --max_memory 64.GB \
-        --max_time 100.h \
+        --max_cpus 32 \
+        --max_memory 128.GB \
+        --max_time 300.h \
         --num_outgroups 2 \
         --gendir $GENDIR \
         --focal $archaea \
         --tree $TREE \
         --taxids $TAXID_FILE \
-        --genera_out $GENERA_OUTFILE \
+        --genera_db $NR \
         --trg_node Thermococcaceae \
         --outdir $OUT_DIR >> $LOG_OUTPUT 2>> $LOG_ERROR
 
