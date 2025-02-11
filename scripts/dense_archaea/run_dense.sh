@@ -5,17 +5,10 @@
 #PBS -N dense_archaea
 #PBS -q bim
 #PBS -l ncpus=32 -l host=node04 -l mem=128gb -l walltime=300:00:00
-#PBS -o /home/eliott.tempez/dense_output.log
-#PBS -e /home/eliott.tempez/dense_error.log
-
-# Log filenames
-LOG_OUTPUT=/home/eliott.tempez/dense_output.log
-LOG_ERROR=/home/eliott.tempez/dense_error.log
 
 # Data files
 GENDIR=/datas/ELIOTT/archaea_data/genome/
 TREE=/datas/ELIOTT/archaea_data/whole_tree.nwk
-TAXDUMP=/datas/ELIOTT/scripts/taxdump/
 TAXID_FILE=/datas/ELIOTT/archaea_data/taxid.csv
 NR=/datas/NR/nr_2.0.13.dmnd
 
@@ -28,17 +21,20 @@ cd /datas/ELIOTT/scripts/
 ########## Run Dense ##########
 
 # List of archaeas to iterate over
-declare -a archaeas=("GCA_000007305@Pyrococcus_furiosus_DSM_3638")
+declare -a archaeas=("GCA_000195935@Pyrococcus_abyssi_GE5")
 # For each of them
 for archaea in "${archaeas[@]}"; do
 
     echo $archaea >> $LOG_OUTPUT
 
+    # Log filenames
+    LOG_OUTPUT=/home/eliott.tempez/dense_output_${archaea}.log
+    LOG_ERROR=/home/eliott.tempez/dense_error_${archaea}.log
+
     # Get taxid
     TAXID=$(grep $archaea $TAXID_FILE | cut -f2 -d$'\t')
     echo "Taxid: $TAXID" >> $LOG_OUTPUT
     # Get filenames
-    GENERA_OUTFILE=/datas/ELIOTT/archaea_data/genera/out/${archaea}/*_gene_ages.tsv
     OUT_DIR=/datas/ELIOTT/archaea_data/dense/${archaea}/
 
 

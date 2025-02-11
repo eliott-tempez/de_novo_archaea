@@ -15,8 +15,8 @@ LOG_ERROR=/home/eliott.tempez/dense_error.log
 # Data files
 GENDIR=/datas/ELIOTT/archaea_data/genome/
 TREE=/datas/ELIOTT/archaea_data/whole_tree.nwk
-TAXDUMP=/datas/ELIOTT/scripts/taxdump/
 TAXID_FILE=/datas/ELIOTT/archaea_data/taxid.csv
+NR=/datas/NR/nr_2.0.13.dmnd
 
 # Set up environment
 source /home/eliott.tempez/miniconda3/bin/activate dense
