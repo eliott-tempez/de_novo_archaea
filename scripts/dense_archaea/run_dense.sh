@@ -25,12 +25,11 @@ declare -a archaeas=("GCA_000195935@Pyrococcus_abyssi_GE5")
 # For each of them
 for archaea in "${archaeas[@]}"; do
 
-    echo $archaea >> $LOG_OUTPUT
-
     # Log filenames
     LOG_OUTPUT=/home/eliott.tempez/dense_output_${archaea}.log
     LOG_ERROR=/home/eliott.tempez/dense_error_${archaea}.log
 
+    echo $archaea >> $LOG_OUTPUT
     # Get taxid
     TAXID=$(grep $archaea $TAXID_FILE | cut -f2 -d$'\t')
     echo "Taxid: $TAXID" >> $LOG_OUTPUT
@@ -42,6 +41,7 @@ for archaea in "${archaeas[@]}"; do
     echo "Running Dense..." >> $LOG_OUTPUT
     nextflow run /home/eliott.tempez/dense \
         -profile singularity \
+        -resume \
         --max_cpus 32 \
         --max_memory 128.GB \
         --max_time 300.h \
