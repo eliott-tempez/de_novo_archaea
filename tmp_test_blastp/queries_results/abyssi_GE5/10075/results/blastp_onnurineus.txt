@@ -1,0 +1,457 @@
+BLASTP 2.16.0+
+
+
+Reference: Stephen F. Altschul, Thomas L. Madden, Alejandro A.
+Schaffer, Jinghui Zhang, Zheng Zhang, Webb Miller, and David J.
+Lipman (1997), "Gapped BLAST and PSI-BLAST: a new generation of
+protein database search programs", Nucleic Acids Res. 25:3389-3402.
+
+
+Reference for composition-based statistics: Alejandro A. Schaffer,
+L. Aravind, Thomas L. Madden, Sergei Shavirin, John L. Spouge, Yuri
+I. Wolf, Eugene V. Koonin, and Stephen F. Altschul (2001),
+"Improving the accuracy of PSI-BLAST protein database searches with
+composition-based statistics and other refinements", Nucleic Acids
+Res. 29:2994-3005.
+
+
+
+Database: CDS_elongated.faa
+           1,985 sequences; 687,963 total letters
+
+
+
+Query= PAB_RS10075.mRNA.0_elongated 99 nucleotides pf:0 sp:0
+
+Length=125
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+TON_RS04825.mRNA.0_elongated 99 nucleotides                           23.5    3.1  
+
+
+>TON_RS04825.mRNA.0_elongated 99 nucleotides
+Length=401
+
+ Score = 23.5 bits (49),  Expect = 3.1, Method: Composition-based stats.
+ Identities = 10/38 (26%), Positives = 21/38 (55%), Gaps = 0/38 (0%)
+
+Query  41   KKEIEEEEELLEEMEEDWIEEEDWESWEEEEWEEEDWF  78
+            + ++ + E L++ + E WI     + +EEE +  E+ F
+Sbjct  274  RGKVVDTEALVKALREGWIAGAGLDVFEEEPYYHEELF  311
+
+
+
+Lambda      K        H        a         alpha
+   0.327    0.144    0.479    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 30855888
+
+
+Query= PAB_RS10075.mRNA.0_elongated 99 nucleotides pf:0 sp:1
+
+Length=124
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+TON_RS08855.mRNA.0_elongated 99 nucleotides                           51.2    6e-10
+TON_RS04825.mRNA.0_elongated 99 nucleotides                           23.5    3.3  
+
+
+>TON_RS08855.mRNA.0_elongated 99 nucleotides
+Length=234
+
+ Score = 51.2 bits (121),  Expect = 6e-10, Method: Compositional matrix adjust.
+ Identities = 23/32 (72%), Positives = 26/32 (81%), Gaps = 0/32 (0%)
+
+Query  93   LRVRRASSWELDLILKEAEKYGELLHEFFCVV  124
+            LR RRAS+WE DLIL+EAEKYGEL H  F +V
+Sbjct  37   LRYRRASAWEYDLILREAEKYGELKHHTFAIV  68
+
+
+>TON_RS04825.mRNA.0_elongated 99 nucleotides
+Length=401
+
+ Score = 23.5 bits (49),  Expect = 3.3, Method: Composition-based stats.
+ Identities = 10/38 (26%), Positives = 21/38 (55%), Gaps = 0/38 (0%)
+
+Query  41   KKEIEEEEELLEEMEEDWIEEEDWESWEEEEWEEEDWF  78
+            + ++ + E L++ + E WI     + +EEE +  E+ F
+Sbjct  274  RGKVVDTEALVKALREGWIAGAGLDVFEEEPYYHEELF  311
+
+
+
+Lambda      K        H        a         alpha
+   0.316    0.137    0.432    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 30304890
+
+
+Query= PAB_RS10075.mRNA.0_elongated 99 nucleotides pf:0 sp:2
+
+Length=124
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+TON_RS04825.mRNA.0_elongated 99 nucleotides                           23.5    3.2  
+
+
+>TON_RS04825.mRNA.0_elongated 99 nucleotides
+Length=401
+
+ Score = 23.5 bits (49),  Expect = 3.2, Method: Composition-based stats.
+ Identities = 10/38 (26%), Positives = 21/38 (55%), Gaps = 0/38 (0%)
+
+Query  41   KKEIEEEEELLEEMEEDWIEEEDWESWEEEEWEEEDWF  78
+            + ++ + E L++ + E WI     + +EEE +  E+ F
+Sbjct  274  RGKVVDTEALVKALREGWIAGAGLDVFEEEPYYHEELF  311
+
+
+
+Lambda      K        H        a         alpha
+   0.331    0.147    0.507    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 30304890
+
+
+Query= PAB_RS10075.mRNA.0_elongated 99 nucleotides pf:1 sp:0
+
+Length=124
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+TON_RS04815.mRNA.0_elongated 99 nucleotides                           28.5    0.071
+TON_RS04825.mRNA.0_elongated 99 nucleotides                           23.5    2.9  
+
+
+>TON_RS04815.mRNA.0_elongated 99 nucleotides
+Length=593
+
+ Score = 28.5 bits (62),  Expect = 0.071, Method: Compositional matrix adjust.
+ Identities = 12/17 (71%), Positives = 13/17 (76%), Gaps = 0/17 (0%)
+
+Query  1    RKSYVQEGGLFTDFYSQ  17
+            R+SYVQE  LF DFY Q
+Sbjct  529  RRSYVQEVELFKDFYLQ  545
+
+
+>TON_RS04825.mRNA.0_elongated 99 nucleotides
+Length=401
+
+ Score = 23.5 bits (49),  Expect = 2.9, Method: Composition-based stats.
+ Identities = 10/38 (26%), Positives = 21/38 (55%), Gaps = 0/38 (0%)
+
+Query  40   KKEIEEEEELLEEMEEDWIEEEDWESWEEEEWEEEDWF  77
+            + ++ + E L++ + E WI     + +EEE +  E+ F
+Sbjct  274  RGKVVDTEALVKALREGWIAGAGLDVFEEEPYYHEELF  311
+
+
+
+Lambda      K        H        a         alpha
+   0.332    0.146    0.492    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 30304890
+
+
+Query= PAB_RS10075.mRNA.0_elongated 99 nucleotides pf:1 sp:1
+
+Length=123
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+TON_RS08855.mRNA.0_elongated 99 nucleotides                           51.2    5e-10
+TON_RS04815.mRNA.0_elongated 99 nucleotides                           27.3    0.14 
+TON_RS04825.mRNA.0_elongated 99 nucleotides                           25.0    0.79 
+TON_RS02125.mRNA.0_elongated 99 nucleotides                           21.9    9.0  
+
+
+>TON_RS08855.mRNA.0_elongated 99 nucleotides
+Length=234
+
+ Score = 51.2 bits (121),  Expect = 5e-10, Method: Compositional matrix adjust.
+ Identities = 23/32 (72%), Positives = 26/32 (81%), Gaps = 0/32 (0%)
+
+Query  92   LRVRRASSWELDLILKEAEKYGELLHEFFCVV  123
+            LR RRAS+WE DLIL+EAEKYGEL H  F +V
+Sbjct  37   LRYRRASAWEYDLILREAEKYGELKHHTFAIV  68
+
+
+>TON_RS04815.mRNA.0_elongated 99 nucleotides
+Length=593
+
+ Score = 27.3 bits (59),  Expect = 0.14, Method: Compositional matrix adjust.
+ Identities = 12/18 (67%), Positives = 13/18 (72%), Gaps = 0/18 (0%)
+
+Query  1    RKSYVQEGGLFTDFYSQK  18
+            R+SYVQE  LF DFY Q 
+Sbjct  529  RRSYVQEVELFKDFYLQN  546
+
+
+>TON_RS04825.mRNA.0_elongated 99 nucleotides
+Length=401
+
+ Score = 25.0 bits (53),  Expect = 0.79, Method: Compositional matrix adjust.
+ Identities = 10/38 (26%), Positives = 21/38 (55%), Gaps = 0/38 (0%)
+
+Query  40   KKEIEEEEELLEEMEEDWIEEEDWESWEEEEWEEEDWF  77
+            + ++ + E L++ + E WI     + +EEE +  E+ F
+Sbjct  274  RGKVVDTEALVKALREGWIAGAGLDVFEEEPYYHEELF  311
+
+
+>TON_RS02125.mRNA.0_elongated 99 nucleotides
+Length=187
+
+ Score = 21.9 bits (45),  Expect = 9.0, Method: Compositional matrix adjust.
+ Identities = 17/47 (36%), Positives = 25/47 (53%), Gaps = 3/47 (6%)
+
+Query  23  SNSLGS*GMGMQPKKKVKKE---IEEEEELLEEMEEDWIEEEDWESW  66
+           S   GS GM M  +KK+++    I E +ELLE  + + +EE   E  
+Sbjct  24  SPPQGSEGMSMIGRKKLEERYLTIAETKELLERRKAEGVEENPEEPM  70
+
+
+
+Lambda      K        H        a         alpha
+   0.320    0.138    0.444    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 29753892
+
+
+Query= PAB_RS10075.mRNA.0_elongated 99 nucleotides pf:1 sp:2
+
+Length=123
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+TON_RS04815.mRNA.0_elongated 99 nucleotides                           27.7    0.11 
+TON_RS04825.mRNA.0_elongated 99 nucleotides                           23.5    3.2  
+
+
+>TON_RS04815.mRNA.0_elongated 99 nucleotides
+Length=593
+
+ Score = 27.7 bits (60),  Expect = 0.11, Method: Compositional matrix adjust.
+ Identities = 12/17 (71%), Positives = 13/17 (76%), Gaps = 0/17 (0%)
+
+Query  1    RKSYVQEGGLFTDFYSQ  17
+            R+SYVQE  LF DFY Q
+Sbjct  529  RRSYVQEVELFKDFYLQ  545
+
+
+>TON_RS04825.mRNA.0_elongated 99 nucleotides
+Length=401
+
+ Score = 23.5 bits (49),  Expect = 3.2, Method: Composition-based stats.
+ Identities = 10/38 (26%), Positives = 21/38 (55%), Gaps = 0/38 (0%)
+
+Query  40   KKEIEEEEELLEEMEEDWIEEEDWESWEEEEWEEEDWF  77
+            + ++ + E L++ + E WI     + +EEE +  E+ F
+Sbjct  274  RGKVVDTEALVKALREGWIAGAGLDVFEEEPYYHEELF  311
+
+
+
+Lambda      K        H        a         alpha
+   0.336    0.149    0.521    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 29753892
+
+
+Query= PAB_RS10075.mRNA.0_elongated 99 nucleotides pf:2 sp:0
+
+Length=124
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+TON_RS04825.mRNA.0_elongated 99 nucleotides                           25.4    0.77 
+TON_RS09155.mRNA.0_elongated 99 nucleotides                           24.3    1.8  
+TON_RS03410.mRNA.0_elongated 99 nucleotides                           21.9    9.2  
+
+
+>TON_RS04825.mRNA.0_elongated 99 nucleotides
+Length=401
+
+ Score = 25.4 bits (54),  Expect = 0.77, Method: Compositional matrix adjust.
+ Identities = 10/39 (26%), Positives = 21/39 (54%), Gaps = 0/39 (0%)
+
+Query  40   KKEIEEEEELLEEMEEDWIEEEDWESWEEEEWEEEDWFE  78
+            + ++ + E L++ + E WI     + +EEE +  E+ F 
+Sbjct  274  RGKVVDTEALVKALREGWIAGAGLDVFEEEPYYHEELFS  312
+
+
+>TON_RS09155.mRNA.0_elongated 99 nucleotides
+Length=517
+
+ Score = 24.3 bits (51),  Expect = 1.8, Method: Compositional matrix adjust.
+ Identities = 12/39 (31%), Positives = 17/39 (44%), Gaps = 3/39 (8%)
+
+Query  30   GWEMQPKKKV---KKEIEEEEELLEEMEEDWIEEEDWES  65
+            GW    KK V   K  +    EL+ E + D +   DW +
+Sbjct  127  GWNGLLKKSVLFGKASVGLLNELIGEFKPDVVHAHDWHT  165
+
+
+>TON_RS03410.mRNA.0_elongated 99 nucleotides
+Length=227
+
+ Score = 21.9 bits (45),  Expect = 9.2, Method: Compositional matrix adjust.
+ Identities = 10/31 (32%), Positives = 17/31 (55%), Gaps = 0/31 (0%)
+
+Query  28   VEGWEMQPKKKVKKEIEEEEELLEEMEEDWI  58
+            + G E+QPK      I+ E  ++E+  E +I
+Sbjct  89   IIGKELQPKSLAIVYIQAETPIIEDFLERYI  119
+
+
+
+Lambda      K        H        a         alpha
+   0.329    0.144    0.486    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 30304890
+
+
+Query= PAB_RS10075.mRNA.0_elongated 99 nucleotides pf:2 sp:1
+
+Length=123
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+TON_RS08855.mRNA.0_elongated 99 nucleotides                           51.2    6e-10
+TON_RS04825.mRNA.0_elongated 99 nucleotides                           25.8    0.45 
+TON_RS09155.mRNA.0_elongated 99 nucleotides                           24.3    1.6  
+TON_RS03410.mRNA.0_elongated 99 nucleotides                           21.9    9.8  
+
+
+>TON_RS08855.mRNA.0_elongated 99 nucleotides
+Length=234
+
+ Score = 51.2 bits (121),  Expect = 6e-10, Method: Compositional matrix adjust.
+ Identities = 23/32 (72%), Positives = 26/32 (81%), Gaps = 0/32 (0%)
+
+Query  92   LRVRRASSWELDLILKEAEKYGELLHEFFCVV  123
+            LR RRAS+WE DLIL+EAEKYGEL H  F +V
+Sbjct  37   LRYRRASAWEYDLILREAEKYGELKHHTFAIV  68
+
+
+>TON_RS04825.mRNA.0_elongated 99 nucleotides
+Length=401
+
+ Score = 25.8 bits (55),  Expect = 0.45, Method: Compositional matrix adjust.
+ Identities = 10/39 (26%), Positives = 21/39 (54%), Gaps = 0/39 (0%)
+
+Query  40   KKEIEEEEELLEEMEEDWIEEEDWESWEEEEWEEEDWFE  78
+            + ++ + E L++ + E WI     + +EEE +  E+ F 
+Sbjct  274  RGKVVDTEALVKALREGWIAGAGLDVFEEEPYYHEELFS  312
+
+
+>TON_RS09155.mRNA.0_elongated 99 nucleotides
+Length=517
+
+ Score = 24.3 bits (51),  Expect = 1.6, Method: Compositional matrix adjust.
+ Identities = 12/40 (30%), Positives = 17/40 (43%), Gaps = 3/40 (8%)
+
+Query  29   EGWEMQPKKKV---KKEIEEEEELLEEMEEDWIEEEDWES  65
+             GW    KK V   K  +    EL+ E + D +   DW +
+Sbjct  126  PGWNGLLKKSVLFGKASVGLLNELIGEFKPDVVHAHDWHT  165
+
+
+>TON_RS03410.mRNA.0_elongated 99 nucleotides
+Length=227
+
+ Score = 21.9 bits (45),  Expect = 9.8, Method: Compositional matrix adjust.
+ Identities = 10/32 (31%), Positives = 17/32 (53%), Gaps = 0/32 (0%)
+
+Query  28   VEGWEMQPKKKVKKEIEEEEELLEEMEEDWIE  59
+            + G E+QPK      I+ E  ++E+  E +I 
+Sbjct  89   IIGKELQPKSLAIVYIQAETPIIEDFLERYIN  120
+
+
+
+Lambda      K        H        a         alpha
+   0.317    0.136    0.438    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 29753892
+
+
+Query= PAB_RS10075.mRNA.0_elongated 99 nucleotides pf:2 sp:2
+
+Length=123
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+TON_RS04825.mRNA.0_elongated 99 nucleotides                           25.8    0.51 
+TON_RS09155.mRNA.0_elongated 99 nucleotides                           24.3    1.6  
+
+
+>TON_RS04825.mRNA.0_elongated 99 nucleotides
+Length=401
+
+ Score = 25.8 bits (55),  Expect = 0.51, Method: Compositional matrix adjust.
+ Identities = 10/39 (26%), Positives = 21/39 (54%), Gaps = 0/39 (0%)
+
+Query  40   KKEIEEEEELLEEMEEDWIEEEDWESWEEEEWEEEDWFE  78
+            + ++ + E L++ + E WI     + +EEE +  E+ F 
+Sbjct  274  RGKVVDTEALVKALREGWIAGAGLDVFEEEPYYHEELFS  312
+
+
+>TON_RS09155.mRNA.0_elongated 99 nucleotides
+Length=517
+
+ Score = 24.3 bits (51),  Expect = 1.6, Method: Compositional matrix adjust.
+ Identities = 12/39 (31%), Positives = 17/39 (44%), Gaps = 3/39 (8%)
+
+Query  30   GWEMQPKKKV---KKEIEEEEELLEEMEEDWIEEEDWES  65
+            GW    KK V   K  +    EL+ E + D +   DW +
+Sbjct  127  GWNGLLKKSVLFGKASVGLLNELIGEFKPDVVHAHDWHT  165
+
+
+
+Lambda      K        H        a         alpha
+   0.333    0.147    0.514    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 29753892
+
+
+  Database: CDS_elongated.faa
+    Posted date:  Feb 11, 2025  4:21 PM
+  Number of letters in database: 687,963
+  Number of sequences in database:  1,985
+
+
+
+Matrix: BLOSUM62
+Gap Penalties: Existence: 11, Extension: 1
+Neighboring words threshold: 11
+Window for multiple hits: 40

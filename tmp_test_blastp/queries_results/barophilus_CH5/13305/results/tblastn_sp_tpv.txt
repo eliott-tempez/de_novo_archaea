@@ -1,0 +1,1058 @@
+TBLASTN 2.16.0+
+
+
+Reference: Stephen F. Altschul, Thomas L. Madden, Alejandro A.
+Schaffer, Jinghui Zhang, Zheng Zhang, Webb Miller, and David J.
+Lipman (1997), "Gapped BLAST and PSI-BLAST: a new generation of
+protein database search programs", Nucleic Acids Res. 25:3389-3402.
+
+
+
+Database: Thermococcus_sp_TPV.fa
+           1 sequences; 2,114,736 total letters
+
+
+
+Query= TBCH5v1_RS13305.mRNA.0_elongated 99 nucleotides pf:0 sp:0
+
+Length=170
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+7510                                                                  55.5    1e-10
+
+
+>7510
+Length=2114736
+
+ Score = 55.5 bits (132),  Expect = 1e-10, Method: Compositional matrix adjust.
+ Identities = 31/46 (67%), Positives = 36/46 (78%), Gaps = 3/46 (7%)
+ Frame = -1
+
+Query  1        EGP*PSRIGRRPSKPEVAGSNPAGPATTK--DKGT-LLPYLSVLSN  43
+                EGP*PSRIGRRPSKPEVAGSNPAGPA     D+ T  LP+ + ++N
+Sbjct  1320657  EGP*PSRIGRRPSKPEVAGSNPAGPANKAFFDEFTEQLPFFTGVNN  1320520
+
+
+ Score = 35.4 bits (80),  Expect = 7e-04, Method: Compositional matrix adjust.
+ Identities = 40/88 (45%), Positives = 45/88 (51%), Gaps = 13/88 (15%)
+ Frame = -1
+
+Query  19       GSNPAGPATTKDKGTLLPYLSVLSNPhsgaslhtslsshllggYAPTTPRILFYKVLTGN  78
+                GSNP     TKDKG   PYLSVLSNP SGAS H  + S   GG  P  P I F       
+Sbjct  1980711  GSNPGPRTITKDKGAPPPYLSVLSNPRSGASPHNPVFS*NSGGLTPPHPLIAF-------  1980553
+
+Query  79       EICSDEKMGELGEWYL-QELWRVMLALV  105
+                   SDE  G  GE +L +   +V  +LV
+Sbjct  1980552  ---SDENAG--GETFLVKSFIKVRDSLV  1980484
+
+
+ Score = 33.5 bits (75),  Expect = 0.003, Method: Compositional matrix adjust.
+ Identities = 15/19 (79%), Positives = 18/19 (95%), Gaps = 0/19 (0%)
+ Frame = +1
+
+Query  8       IGRRPSKPEVAGSNPAGPA  26
+               +GRRPS+P+VAGSNPA PA
+Sbjct  698080  MGRRPSEPKVAGSNPARPA  698136
+
+
+ Score = 32.0 bits (71),  Expect = 0.011, Method: Compositional matrix adjust.
+ Identities = 15/24 (63%), Positives = 18/24 (75%), Gaps = 0/24 (0%)
+ Frame = +2
+
+Query  6       SRIGRRPSKPEVAGSNPAGPATTK  29
+               +RIGRRP KP+V GS P   ATT+
+Sbjct  709541  ARIGRRPPKPQVRGSKPRRSATTR  709612
+
+
+ Score = 31.6 bits (70),  Expect = 0.017, Method: Compositional matrix adjust.
+ Identities = 14/14 (100%), Positives = 14/14 (100%), Gaps = 0/14 (0%)
+ Frame = -3
+
+Query  13       SKPEVAGSNPAGPA  26
+                SKPEVAGSNPAGPA
+Sbjct  1304425  SKPEVAGSNPAGPA  1304384
+
+
+ Score = 28.5 bits (62),  Expect = 0.17, Method: Compositional matrix adjust.
+ Identities = 13/17 (76%), Positives = 15/17 (88%), Gaps = 0/17 (0%)
+ Frame = -3
+
+Query  10       RRPSKPEVAGSNPAGPA  26
+                RRP +P+VAGSNPA PA
+Sbjct  2089063  RRPPEPKVAGSNPARPA  2089013
+
+
+ Score = 27.3 bits (59),  Expect = 0.40, Method: Compositional matrix adjust.
+ Identities = 14/20 (70%), Positives = 14/20 (70%), Gaps = 0/20 (0%)
+ Frame = +2
+
+Query  4       *PSRIGRRPSKPEVAGSNPA  23
+               *PS  GRR   P VAGSNPA
+Sbjct  887882  *PSLAGRRTCNPPVAGSNPA  887941
+
+
+ Score = 26.9 bits (58),  Expect = 0.60, Method: Compositional matrix adjust.
+ Identities = 14/27 (52%), Positives = 15/27 (56%), Gaps = 0/27 (0%)
+ Frame = -2
+
+Query  2        GP*PSRIGRRPSKPEVAGSNPAGPATT  28
+                GP    + R P K EV GSNP GP  T
+Sbjct  1464287  GPWSRWL*RHPYKVEVRGSNPRGPTIT  1464207
+
+
+ Score = 26.2 bits (56),  Expect = 0.84, Method: Compositional matrix adjust.
+ Identities = 12/19 (63%), Positives = 12/19 (63%), Gaps = 0/19 (0%)
+ Frame = +1
+
+Query  10      RRPSKPEVAGSNPAGPATT  28
+               R P K EV GSNP GP  T
+Sbjct  945142  RHPDKVEVRGSNPRGPTIT  945198
+
+
+ Score = 26.2 bits (56),  Expect = 0.95, Method: Compositional matrix adjust.
+ Identities = 11/14 (79%), Positives = 11/14 (79%), Gaps = 0/14 (0%)
+ Frame = +3
+
+Query  10     RRPSKPEVAGSNPA  23
+              RRP K E AGSNPA
+Sbjct  47397  RRPRKAEAAGSNPA  47438
+
+
+ Score = 24.6 bits (52),  Expect = 2.7, Method: Compositional matrix adjust.
+ Identities = 11/20 (55%), Positives = 13/20 (65%), Gaps = 0/20 (0%)
+ Frame = +1
+
+Query  10      RRPSKPEVAGSNPAGPATTK  29
+               RRP + EV GS P GP + K
+Sbjct  766711  RRPHEAEVRGSKPRGPTSYK  766770
+
+
+ Score = 24.3 bits (51),  Expect = 3.6, Method: Compositional matrix adjust.
+ Identities = 11/20 (55%), Positives = 13/20 (65%), Gaps = 0/20 (0%)
+ Frame = -1
+
+Query  10       RRPSKPEVAGSNPAGPATTK  29
+                RR   P+V GSNP  PA T+
+Sbjct  1657845  RRTLNPQVGGSNPPRPAKTR  1657786
+
+
+ Score = 23.5 bits (49),  Expect = 6.7, Method: Compositional matrix adjust.
+ Identities = 13/22 (59%), Positives = 14/22 (64%), Gaps = 1/22 (5%)
+ Frame = +3
+
+Query  6        SRIGRRPSKPEVAGSNPAGPAT  27
+                +R  RR   PEV GSNP  PAT
+Sbjct  1103616  ARSARRAHNPEVGGSNPP-PAT  1103678
+
+
+ Score = 23.5 bits (49),  Expect = 7.1, Method: Compositional matrix adjust.
+ Identities = 11/13 (85%), Positives = 11/13 (85%), Gaps = 0/13 (0%)
+ Frame = +3
+
+Query  6        SRIGRRPSKPEVA  18
+                SRIGRR SKPE A
+Sbjct  1320126  SRIGRRTSKPEGA  1320164
+
+
+ Score = 23.5 bits (49),  Expect = 7.4, Method: Compositional matrix adjust.
+ Identities = 13/22 (59%), Positives = 15/22 (68%), Gaps = 3/22 (14%)
+ Frame = -1
+
+Query  4       *PSRIGRRPSKP---EVAGSNP  22
+               *PS +GRRP+KP      GSNP
+Sbjct  902484  *PSLVGRRPAKPVGGAHRGSNP  902419
+
+
+
+Lambda      K        H        a         alpha
+   0.337    0.150    0.485    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 66959515
+
+
+Query= TBCH5v1_RS13305.mRNA.0_elongated 99 nucleotides pf:0 sp:1
+
+Length=169
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+7510                                                                  55.8    1e-10
+
+
+>7510
+Length=2114736
+
+ Score = 55.8 bits (133),  Expect = 1e-10, Method: Compositional matrix adjust.
+ Identities = 31/46 (67%), Positives = 36/46 (78%), Gaps = 3/46 (7%)
+ Frame = -1
+
+Query  1        EGP*PSRIGRRPSKPEVAGSNPAGPATTK--DKGT-LLPYLSVLSN  43
+                EGP*PSRIGRRPSKPEVAGSNPAGPA     D+ T  LP+ + ++N
+Sbjct  1320657  EGP*PSRIGRRPSKPEVAGSNPAGPANKAFFDEFTEQLPFFTGVNN  1320520
+
+
+ Score = 35.8 bits (81),  Expect = 6e-04, Method: Compositional matrix adjust.
+ Identities = 40/88 (45%), Positives = 45/88 (51%), Gaps = 13/88 (15%)
+ Frame = -1
+
+Query  19       GSNPAGPATTKDKGTLLPYLSVLSNPhsgaslhtslsshllggYAPTTPRILFYKVLTGN  78
+                GSNP     TKDKG   PYLSVLSNP SGAS H  + S   GG  P  P I F       
+Sbjct  1980711  GSNPGPRTITKDKGAPPPYLSVLSNPRSGASPHNPVFS*NSGGLTPPHPLIAF-------  1980553
+
+Query  79       EICSDEKMGELGEWYL-QELWRVMLALV  105
+                   SDE  G  GE +L +   +V  +LV
+Sbjct  1980552  ---SDENAG--GETFLVKSFIKVRDSLV  1980484
+
+
+ Score = 33.5 bits (75),  Expect = 0.003, Method: Compositional matrix adjust.
+ Identities = 15/19 (79%), Positives = 18/19 (95%), Gaps = 0/19 (0%)
+ Frame = +1
+
+Query  8       IGRRPSKPEVAGSNPAGPA  26
+               +GRRPS+P+VAGSNPA PA
+Sbjct  698080  MGRRPSEPKVAGSNPARPA  698136
+
+
+ Score = 32.3 bits (72),  Expect = 0.010, Method: Compositional matrix adjust.
+ Identities = 15/24 (63%), Positives = 18/24 (75%), Gaps = 0/24 (0%)
+ Frame = +2
+
+Query  6       SRIGRRPSKPEVAGSNPAGPATTK  29
+               +RIGRRP KP+V GS P   ATT+
+Sbjct  709541  ARIGRRPPKPQVRGSKPRRSATTR  709612
+
+
+ Score = 32.0 bits (71),  Expect = 0.014, Method: Compositional matrix adjust.
+ Identities = 14/14 (100%), Positives = 14/14 (100%), Gaps = 0/14 (0%)
+ Frame = -3
+
+Query  13       SKPEVAGSNPAGPA  26
+                SKPEVAGSNPAGPA
+Sbjct  1304425  SKPEVAGSNPAGPA  1304384
+
+
+ Score = 28.5 bits (62),  Expect = 0.16, Method: Compositional matrix adjust.
+ Identities = 13/17 (76%), Positives = 15/17 (88%), Gaps = 0/17 (0%)
+ Frame = -3
+
+Query  10       RRPSKPEVAGSNPAGPA  26
+                RRP +P+VAGSNPA PA
+Sbjct  2089063  RRPPEPKVAGSNPARPA  2089013
+
+
+ Score = 27.7 bits (60),  Expect = 0.33, Method: Compositional matrix adjust.
+ Identities = 14/20 (70%), Positives = 14/20 (70%), Gaps = 0/20 (0%)
+ Frame = +2
+
+Query  4       *PSRIGRRPSKPEVAGSNPA  23
+               *PS  GRR   P VAGSNPA
+Sbjct  887882  *PSLAGRRTCNPPVAGSNPA  887941
+
+
+ Score = 26.6 bits (57),  Expect = 0.65, Method: Compositional matrix adjust.
+ Identities = 14/27 (52%), Positives = 15/27 (56%), Gaps = 0/27 (0%)
+ Frame = -2
+
+Query  2        GP*PSRIGRRPSKPEVAGSNPAGPATT  28
+                GP    + R P K EV GSNP GP  T
+Sbjct  1464287  GPWSRWL*RHPYKVEVRGSNPRGPTIT  1464207
+
+
+ Score = 26.2 bits (56),  Expect = 0.84, Method: Compositional matrix adjust.
+ Identities = 12/19 (63%), Positives = 12/19 (63%), Gaps = 0/19 (0%)
+ Frame = +1
+
+Query  10      RRPSKPEVAGSNPAGPATT  28
+               R P K EV GSNP GP  T
+Sbjct  945142  RHPDKVEVRGSNPRGPTIT  945198
+
+
+ Score = 26.2 bits (56),  Expect = 0.96, Method: Compositional matrix adjust.
+ Identities = 11/14 (79%), Positives = 11/14 (79%), Gaps = 0/14 (0%)
+ Frame = +3
+
+Query  10     RRPSKPEVAGSNPA  23
+              RRP K E AGSNPA
+Sbjct  47397  RRPRKAEAAGSNPA  47438
+
+
+ Score = 24.6 bits (52),  Expect = 3.0, Method: Compositional matrix adjust.
+ Identities = 11/20 (55%), Positives = 13/20 (65%), Gaps = 0/20 (0%)
+ Frame = +1
+
+Query  10      RRPSKPEVAGSNPAGPATTK  29
+               RRP + EV GS P GP + K
+Sbjct  766711  RRPHEAEVRGSKPRGPTSYK  766770
+
+
+ Score = 24.6 bits (52),  Expect = 3.4, Method: Compositional matrix adjust.
+ Identities = 11/20 (55%), Positives = 13/20 (65%), Gaps = 0/20 (0%)
+ Frame = -1
+
+Query  10       RRPSKPEVAGSNPAGPATTK  29
+                RR   P+V GSNP  PA T+
+Sbjct  1657845  RRTLNPQVGGSNPPRPAKTR  1657786
+
+
+ Score = 23.9 bits (50),  Expect = 5.8, Method: Compositional matrix adjust.
+ Identities = 13/22 (59%), Positives = 15/22 (68%), Gaps = 3/22 (14%)
+ Frame = -1
+
+Query  4       *PSRIGRRPSKPEVA---GSNP  22
+               *PS +GRRP+KP      GSNP
+Sbjct  902484  *PSLVGRRPAKPVGGAHRGSNP  902419
+
+
+ Score = 23.5 bits (49),  Expect = 6.2, Method: Compositional matrix adjust.
+ Identities = 11/13 (85%), Positives = 11/13 (85%), Gaps = 0/13 (0%)
+ Frame = +3
+
+Query  6        SRIGRRPSKPEVA  18
+                SRIGRR SKPE A
+Sbjct  1320126  SRIGRRTSKPEGA  1320164
+
+
+ Score = 23.5 bits (49),  Expect = 6.3, Method: Compositional matrix adjust.
+ Identities = 13/22 (59%), Positives = 14/22 (64%), Gaps = 1/22 (5%)
+ Frame = +3
+
+Query  6        SRIGRRPSKPEVAGSNPAGPAT  27
+                +R  RR   PEV GSNP  PAT
+Sbjct  1103616  ARSARRAHNPEVGGSNPP-PAT  1103678
+
+
+
+Lambda      K        H        a         alpha
+   0.326    0.142    0.434    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 66254678
+
+
+Query= TBCH5v1_RS13305.mRNA.0_elongated 99 nucleotides pf:0 sp:2
+
+Length=169
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+7510                                                                  55.1    2e-10
+
+
+>7510
+Length=2114736
+
+ Score = 55.1 bits (131),  Expect = 2e-10, Method: Compositional matrix adjust.
+ Identities = 31/46 (67%), Positives = 36/46 (78%), Gaps = 3/46 (7%)
+ Frame = -1
+
+Query  1        EGP*PSRIGRRPSKPEVAGSNPAGPATTK--DKGT-LLPYLSVLSN  43
+                EGP*PSRIGRRPSKPEVAGSNPAGPA     D+ T  LP+ + ++N
+Sbjct  1320657  EGP*PSRIGRRPSKPEVAGSNPAGPANKAFFDEFTEQLPFFTGVNN  1320520
+
+
+ Score = 35.8 bits (81),  Expect = 7e-04, Method: Compositional matrix adjust.
+ Identities = 40/88 (45%), Positives = 45/88 (51%), Gaps = 13/88 (15%)
+ Frame = -1
+
+Query  19       GSNPAGPATTKDKGTLLPYLSVLSNPhsgaslhtslsshllggYAPTTPRILFYKVLTGN  78
+                GSNP     TKDKG   PYLSVLSNP SGAS H  + S   GG  P  P I F       
+Sbjct  1980711  GSNPGPRTITKDKGAPPPYLSVLSNPRSGASPHNPVFS*NSGGLTPPHPLIAF-------  1980553
+
+Query  79       EICSDEKMGELGEWYL-QELWRVMLALV  105
+                   SDE  G  GE +L +   +V  +LV
+Sbjct  1980552  ---SDENAG--GETFLVKSFIKVRDSLV  1980484
+
+
+ Score = 33.1 bits (74),  Expect = 0.004, Method: Compositional matrix adjust.
+ Identities = 15/19 (79%), Positives = 18/19 (95%), Gaps = 0/19 (0%)
+ Frame = +1
+
+Query  8       IGRRPSKPEVAGSNPAGPA  26
+               +GRRPS+P+VAGSNPA PA
+Sbjct  698080  MGRRPSEPKVAGSNPARPA  698136
+
+
+ Score = 31.6 bits (70),  Expect = 0.016, Method: Compositional matrix adjust.
+ Identities = 15/24 (63%), Positives = 18/24 (75%), Gaps = 0/24 (0%)
+ Frame = +2
+
+Query  6       SRIGRRPSKPEVAGSNPAGPATTK  29
+               +RIGRRP KP+V GS P   ATT+
+Sbjct  709541  ARIGRRPPKPQVRGSKPRRSATTR  709612
+
+
+ Score = 31.2 bits (69),  Expect = 0.019, Method: Compositional matrix adjust.
+ Identities = 14/14 (100%), Positives = 14/14 (100%), Gaps = 0/14 (0%)
+ Frame = -3
+
+Query  13       SKPEVAGSNPAGPA  26
+                SKPEVAGSNPAGPA
+Sbjct  1304425  SKPEVAGSNPAGPA  1304384
+
+
+ Score = 28.1 bits (61),  Expect = 0.24, Method: Compositional matrix adjust.
+ Identities = 13/17 (76%), Positives = 15/17 (88%), Gaps = 0/17 (0%)
+ Frame = -3
+
+Query  10       RRPSKPEVAGSNPAGPA  26
+                RRP +P+VAGSNPA PA
+Sbjct  2089063  RRPPEPKVAGSNPARPA  2089013
+
+
+ Score = 26.9 bits (58),  Expect = 0.59, Method: Compositional matrix adjust.
+ Identities = 14/20 (70%), Positives = 14/20 (70%), Gaps = 0/20 (0%)
+ Frame = +2
+
+Query  4       *PSRIGRRPSKPEVAGSNPA  23
+               *PS  GRR   P VAGSNPA
+Sbjct  887882  *PSLAGRRTCNPPVAGSNPA  887941
+
+
+ Score = 26.2 bits (56),  Expect = 0.95, Method: Compositional matrix adjust.
+ Identities = 14/27 (52%), Positives = 15/27 (56%), Gaps = 0/27 (0%)
+ Frame = -2
+
+Query  2        GP*PSRIGRRPSKPEVAGSNPAGPATT  28
+                GP    + R P K EV GSNP GP  T
+Sbjct  1464287  GPWSRWL*RHPYKVEVRGSNPRGPTIT  1464207
+
+
+ Score = 26.2 bits (56),  Expect = 0.95, Method: Compositional matrix adjust.
+ Identities = 12/19 (63%), Positives = 12/19 (63%), Gaps = 0/19 (0%)
+ Frame = +1
+
+Query  10      RRPSKPEVAGSNPAGPATT  28
+               R P K EV GSNP GP  T
+Sbjct  945142  RHPDKVEVRGSNPRGPTIT  945198
+
+
+ Score = 25.8 bits (55),  Expect = 1.3, Method: Compositional matrix adjust.
+ Identities = 11/14 (79%), Positives = 11/14 (79%), Gaps = 0/14 (0%)
+ Frame = +3
+
+Query  10     RRPSKPEVAGSNPA  23
+              RRP K E AGSNPA
+Sbjct  47397  RRPRKAEAAGSNPA  47438
+
+
+ Score = 24.3 bits (51),  Expect = 3.4, Method: Compositional matrix adjust.
+ Identities = 11/20 (55%), Positives = 13/20 (65%), Gaps = 0/20 (0%)
+ Frame = +1
+
+Query  10      RRPSKPEVAGSNPAGPATTK  29
+               RRP + EV GS P GP + K
+Sbjct  766711  RRPHEAEVRGSKPRGPTSYK  766770
+
+
+ Score = 23.9 bits (50),  Expect = 4.5, Method: Compositional matrix adjust.
+ Identities = 11/20 (55%), Positives = 13/20 (65%), Gaps = 0/20 (0%)
+ Frame = -1
+
+Query  10       RRPSKPEVAGSNPAGPATTK  29
+                RR   P+V GSNP  PA T+
+Sbjct  1657845  RRTLNPQVGGSNPPRPAKTR  1657786
+
+
+ Score = 23.5 bits (49),  Expect = 7.6, Method: Compositional matrix adjust.
+ Identities = 11/13 (85%), Positives = 11/13 (85%), Gaps = 0/13 (0%)
+ Frame = +3
+
+Query  6        SRIGRRPSKPEVA  18
+                SRIGRR SKPE A
+Sbjct  1320126  SRIGRRTSKPEGA  1320164
+
+
+ Score = 23.1 bits (48),  Expect = 8.2, Method: Compositional matrix adjust.
+ Identities = 13/22 (59%), Positives = 15/22 (68%), Gaps = 3/22 (14%)
+ Frame = -1
+
+Query  4       *PSRIGRRPSKPEVA---GSNP  22
+               *PS +GRRP+KP      GSNP
+Sbjct  902484  *PSLVGRRPAKPVGGAHRGSNP  902419
+
+
+ Score = 23.1 bits (48),  Expect = 8.3, Method: Compositional matrix adjust.
+ Identities = 10/17 (59%), Positives = 11/17 (65%), Gaps = 0/17 (0%)
+ Frame = +3
+
+Query  6        SRIGRRPSKPEVAGSNP  22
+                +R  RR   PEV GSNP
+Sbjct  1103616  ARSARRAHNPEVGGSNP  1103666
+
+
+
+Lambda      K        H        a         alpha
+   0.330    0.145    0.477    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 66254678
+
+
+Query= TBCH5v1_RS13305.mRNA.0_elongated 99 nucleotides pf:1 sp:0
+
+Length=169
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+7510                                                                  24.3    0.14 
+
+
+>7510
+Length=2114736
+
+ Score = 24.3 bits (51),  Expect(2) = 0.14, Method: Compositional matrix adjust.
+ Identities = 13/24 (54%), Positives = 16/24 (67%), Gaps = 0/24 (0%)
+ Frame = -2
+
+Query  19       VRIPPGPPQRKTRGLLPYLSVLSN  42
+                V+IP   P RKTRGL P +S+ S 
+Sbjct  1980710  VQIPAPAP*RKTRGLRPLISLYSQ  1980639
+
+
+ Score = 21.6 bits (44),  Expect(2) = 0.14, Method: Compositional matrix adjust.
+ Identities = 31/71 (44%), Positives = 36/71 (51%), Gaps = 13/71 (18%)
+ Frame = -1
+
+Query  35       PYLSVLSNPhsgaslhtslsshllggYAPTTPRILFYKVLTGNEICSDEKMGELGEWYL-  93
+                PYLSVLSNP SGAS H  + S   GG  P  P I F          SDE  G  GE +L 
+Sbjct  1980660  PYLSVLSNPRSGASPHNPVFS*NSGGLTPPHPLIAF----------SDENAG--GETFLV  1980517
+
+Query  94       QELWRVMLALV  104
+                +   +V  +LV
+Sbjct  1980516  KSFIKVRDSLV  1980484
+
+
+ Score = 23.1 bits (48),  Expect = 9.2, Method: Compositional matrix adjust.
+ Identities = 9/10 (90%), Positives = 10/10 (100%), Gaps = 0/10 (0%)
+ Frame = -2
+
+Query  19       VRIPPGPPQR  28
+                VRIPPGPP+R
+Sbjct  1657817  VRIPPGPPKR  1657788
+
+
+
+Lambda      K        H        a         alpha
+   0.340    0.153    0.497    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 66254678
+
+
+Query= TBCH5v1_RS13305.mRNA.0_elongated 99 nucleotides pf:1 sp:1
+
+Length=168
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+7510                                                                  24.3    0.13 
+
+
+>7510
+Length=2114736
+
+ Score = 24.3 bits (51),  Expect(2) = 0.13, Method: Compositional matrix adjust.
+ Identities = 13/24 (54%), Positives = 16/24 (67%), Gaps = 0/24 (0%)
+ Frame = -2
+
+Query  19       VRIPPGPPQRKTRGLLPYLSVLSN  42
+                V+IP   P RKTRGL P +S+ S 
+Sbjct  1980710  VQIPAPAP*RKTRGLRPLISLYSQ  1980639
+
+
+ Score = 21.9 bits (45),  Expect(2) = 0.13, Method: Compositional matrix adjust.
+ Identities = 31/71 (44%), Positives = 36/71 (51%), Gaps = 13/71 (18%)
+ Frame = -1
+
+Query  35       PYLSVLSNPhsgaslhtslsshllggYAPTTPRILFYKVLTGNEICSDEKMGELGEWYL-  93
+                PYLSVLSNP SGAS H  + S   GG  P  P I F          SDE  G  GE +L 
+Sbjct  1980660  PYLSVLSNPRSGASPHNPVFS*NSGGLTPPHPLIAF----------SDENAG--GETFLV  1980517
+
+Query  94       QELWRVMLALV  104
+                +   +V  +LV
+Sbjct  1980516  KSFIKVRDSLV  1980484
+
+
+ Score = 23.1 bits (48),  Expect = 7.9, Method: Compositional matrix adjust.
+ Identities = 9/10 (90%), Positives = 10/10 (100%), Gaps = 0/10 (0%)
+ Frame = -2
+
+Query  19       VRIPPGPPQR  28
+                VRIPPGPP+R
+Sbjct  1657817  VRIPPGPPKR  1657788
+
+
+
+Lambda      K        H        a         alpha
+   0.327    0.144    0.438    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 65549841
+
+
+Query= TBCH5v1_RS13305.mRNA.0_elongated 99 nucleotides pf:1 sp:2
+
+Length=168
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+7510                                                                  24.3    0.13 
+
+
+>7510
+Length=2114736
+
+ Score = 24.3 bits (51),  Expect(2) = 0.13, Method: Compositional matrix adjust.
+ Identities = 13/24 (54%), Positives = 16/24 (67%), Gaps = 0/24 (0%)
+ Frame = -2
+
+Query  19       VRIPPGPPQRKTRGLLPYLSVLSN  42
+                V+IP   P RKTRGL P +S+ S 
+Sbjct  1980710  VQIPAPAP*RKTRGLRPLISLYSQ  1980639
+
+
+ Score = 21.9 bits (45),  Expect(2) = 0.13, Method: Compositional matrix adjust.
+ Identities = 31/71 (44%), Positives = 36/71 (51%), Gaps = 13/71 (18%)
+ Frame = -1
+
+Query  35       PYLSVLSNPhsgaslhtslsshllggYAPTTPRILFYKVLTGNEICSDEKMGELGEWYL-  93
+                PYLSVLSNP SGAS H  + S   GG  P  P I F          SDE  G  GE +L 
+Sbjct  1980660  PYLSVLSNPRSGASPHNPVFS*NSGGLTPPHPLIAF----------SDENAG--GETFLV  1980517
+
+Query  94       QELWRVMLALV  104
+                +   +V  +LV
+Sbjct  1980516  KSFIKVRDSLV  1980484
+
+
+
+Lambda      K        H        a         alpha
+   0.332    0.147    0.488    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 65549841
+
+
+Query= TBCH5v1_RS13305.mRNA.0_elongated 99 nucleotides pf:2 sp:0
+
+Length=169
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+7510                                                                  50.1    1e-08
+
+
+>7510
+Length=2114736
+
+ Score = 50.1 bits (118),  Expect = 1e-08, Method: Compositional matrix adjust.
+ Identities = 25/28 (89%), Positives = 25/28 (89%), Gaps = 0/28 (0%)
+ Frame = -3
+
+Query  1        GPVA*QDRAPAF*AGGRGFESRRARHNE  28
+                GPVA*QDRAPAF*AGGRGFESRRAR   
+Sbjct  1320655  GPVA*QDRAPAF*AGGRGFESRRARQQS  1320572
+
+
+ Score = 33.9 bits (76),  Expect = 0.003, Method: Compositional matrix adjust.
+ Identities = 18/28 (64%), Positives = 18/28 (64%), Gaps = 0/28 (0%)
+ Frame = -1
+
+Query  1        GPVA*QDRAPAF*AGGRGFESRRARHNE  28
+                GPVA   RAPA  AGG GFESR   H E
+Sbjct  2114574  GPVAQPGRAPALQAGGPGFESRPVHHEE  2114491
+
+
+ Score = 32.3 bits (72),  Expect = 0.008, Method: Compositional matrix adjust.
+ Identities = 15/15 (100%), Positives = 15/15 (100%), Gaps = 0/15 (0%)
+ Frame = -2
+
+Query  12       F*AGGRGFESRRARH  26
+                F*AGGRGFESRRARH
+Sbjct  1304426  F*AGGRGFESRRARH  1304382
+
+
+ Score = 28.9 bits (63),  Expect = 0.12, Method: Compositional matrix adjust.
+ Identities = 24/58 (41%), Positives = 26/58 (45%), Gaps = 1/58 (2%)
+ Frame = -3
+
+Query  14       AGGRGFESRRARHNERQGDLLPY-LSVLSNPhsgaslhtslsshllggYAPTTPRILF  70
+                AG  GF+SR   HNERQG   P  L  L  P  G +        L G  APT P   F
+Sbjct  1980724  AGVPGFKSRPPHHNERQGGSAPLSLCTLKPPEWGFAPQPRFLLKLRGANAPTPPNSFF  1980551
+
+
+ Score = 28.1 bits (61),  Expect = 0.23, Method: Compositional matrix adjust.
+ Identities = 14/26 (54%), Positives = 14/26 (54%), Gaps = 0/26 (0%)
+ Frame = -1
+
+Query  1        GPVA*QDRAPAF*AGGRGFESRRARH  26
+                GPV *    P    GG GFES RA H
+Sbjct  1464288  GPVV*MVMTPPLQGGGPGFESPRAHH  1464211
+
+
+ Score = 27.3 bits (59),  Expect = 0.39, Method: Compositional matrix adjust.
+ Identities = 14/22 (64%), Positives = 16/22 (73%), Gaps = 0/22 (0%)
+ Frame = +3
+
+Query  7       DRAPAF*AGGRGFESRRARHNE  28
+               D A AF A GRGF+SR ARH+ 
+Sbjct  698079  DGASAFGAEGRGFKSRPARHSN  698144
+
+
+ Score = 26.6 bits (57),  Expect = 0.72, Method: Compositional matrix adjust.
+ Identities = 17/27 (63%), Positives = 18/27 (67%), Gaps = 3/27 (11%)
+ Frame = -3
+
+Query  3       VA*QDRAPAF*AGGR---GFESRRARH  26
+               VA*  RAPA *AGGR   GF+S   RH
+Sbjct  902485  VA*PGRAPAC*AGGRCPPGFKSPPRRH  902405
+
+
+ Score = 25.8 bits (55),  Expect = 1.1, Method: Compositional matrix adjust.
+ Identities = 14/20 (70%), Positives = 15/20 (75%), Gaps = 0/20 (0%)
+ Frame = -2
+
+Query  7        DRAPAF*AGGRGFESRRARH  26
+                DRA A  A GRGF+SR ARH
+Sbjct  2089070  DRASASGAEGRGFKSRPARH  2089011
+
+
+ Score = 25.8 bits (55),  Expect = 1.2, Method: Compositional matrix adjust.
+ Identities = 14/21 (67%), Positives = 14/21 (67%), Gaps = 0/21 (0%)
+ Frame = +3
+
+Query  8       RAPAF*AGGRGFESRRARHNE  28
+               RA  F*  GRGFESR ARH  
+Sbjct  602526  RARGF*PRGRGFESRPARHRN  602588
+
+
+ Score = 25.0 bits (53),  Expect = 2.0, Method: Compositional matrix adjust.
+ Identities = 13/16 (81%), Positives = 13/16 (81%), Gaps = 0/16 (0%)
+ Frame = +2
+
+Query  1        GPVA*QDRAPAF*AGG  16
+                GP  *QDRAP F*AGG
+Sbjct  1320113  GP*P*QDRAPDF*AGG  1320160
+
+
+ Score = 24.3 bits (51),  Expect = 3.6, Method: Compositional matrix adjust.
+ Identities = 13/26 (50%), Positives = 16/26 (62%), Gaps = 0/26 (0%)
+ Frame = +1
+
+Query  2       PVA*QDRAPAF*AGGRGFESRRARHN  27
+               PVA*   A   *+ GRGF+SR   H+
+Sbjct  887878  PVA*PGGAADL*SAGRGFKSRPGLHS  887955
+
+
+ Score = 23.1 bits (48),  Expect = 9.6, Method: Compositional matrix adjust.
+ Identities = 10/15 (67%), Positives = 11/15 (73%), Gaps = 0/15 (0%)
+ Frame = +2
+
+Query  8      RAPAF*AGGRGFESR  22
+              RAP    GGRGF+SR
+Sbjct  47393  RAPPSQGGGRGFKSR  47437
+
+
+
+Lambda      K        H        a         alpha
+   0.345    0.155    0.510    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 66254678
+
+
+Query= TBCH5v1_RS13305.mRNA.0_elongated 99 nucleotides pf:2 sp:1
+
+Length=168
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+7510                                                                  50.4    6e-09
+
+
+>7510
+Length=2114736
+
+ Score = 50.4 bits (119),  Expect = 6e-09, Method: Compositional matrix adjust.
+ Identities = 25/28 (89%), Positives = 25/28 (89%), Gaps = 0/28 (0%)
+ Frame = -3
+
+Query  1        GPVA*QDRAPAF*AGGRGFESRRARHNE  28
+                GPVA*QDRAPAF*AGGRGFESRRAR   
+Sbjct  1320655  GPVA*QDRAPAF*AGGRGFESRRARQQS  1320572
+
+
+ Score = 34.3 bits (77),  Expect = 0.002, Method: Compositional matrix adjust.
+ Identities = 18/28 (64%), Positives = 18/28 (64%), Gaps = 0/28 (0%)
+ Frame = -1
+
+Query  1        GPVA*QDRAPAF*AGGRGFESRRARHNE  28
+                GPVA   RAPA  AGG GFESR   H E
+Sbjct  2114574  GPVAQPGRAPALQAGGPGFESRPVHHEE  2114491
+
+
+ Score = 32.3 bits (72),  Expect = 0.008, Method: Compositional matrix adjust.
+ Identities = 15/15 (100%), Positives = 15/15 (100%), Gaps = 0/15 (0%)
+ Frame = -2
+
+Query  12       F*AGGRGFESRRARH  26
+                F*AGGRGFESRRARH
+Sbjct  1304426  F*AGGRGFESRRARH  1304382
+
+
+ Score = 29.3 bits (64),  Expect = 0.10, Method: Compositional matrix adjust.
+ Identities = 24/58 (41%), Positives = 26/58 (45%), Gaps = 1/58 (2%)
+ Frame = -3
+
+Query  14       AGGRGFESRRARHNERQGDLLP-YLSVLSNPhsgaslhtslsshllggYAPTTPRILF  70
+                AG  GF+SR   HNERQG   P  L  L  P  G +        L G  APT P   F
+Sbjct  1980724  AGVPGFKSRPPHHNERQGGSAPLSLCTLKPPEWGFAPQPRFLLKLRGANAPTPPNSFF  1980551
+
+
+ Score = 28.1 bits (61),  Expect = 0.19, Method: Compositional matrix adjust.
+ Identities = 14/26 (54%), Positives = 14/26 (54%), Gaps = 0/26 (0%)
+ Frame = -1
+
+Query  1        GPVA*QDRAPAF*AGGRGFESRRARH  26
+                GPV *    P    GG GFES RA H
+Sbjct  1464288  GPVV*MVMTPPLQGGGPGFESPRAHH  1464211
+
+
+ Score = 27.3 bits (59),  Expect = 0.35, Method: Compositional matrix adjust.
+ Identities = 14/22 (64%), Positives = 16/22 (73%), Gaps = 0/22 (0%)
+ Frame = +3
+
+Query  7       DRAPAF*AGGRGFESRRARHNE  28
+               D A AF A GRGF+SR ARH+ 
+Sbjct  698079  DGASAFGAEGRGFKSRPARHSN  698144
+
+
+ Score = 26.9 bits (58),  Expect = 0.48, Method: Compositional matrix adjust.
+ Identities = 17/27 (63%), Positives = 18/27 (67%), Gaps = 3/27 (11%)
+ Frame = -3
+
+Query  3       VA*QDRAPAF*AGGR---GFESRRARH  26
+               VA*  RAPA *AGGR   GF+S   RH
+Sbjct  902485  VA*PGRAPAC*AGGRCPPGFKSPPRRH  902405
+
+
+ Score = 25.8 bits (55),  Expect = 1.1, Method: Compositional matrix adjust.
+ Identities = 14/20 (70%), Positives = 15/20 (75%), Gaps = 0/20 (0%)
+ Frame = -2
+
+Query  7        DRAPAF*AGGRGFESRRARH  26
+                DRA A  A GRGF+SR ARH
+Sbjct  2089070  DRASASGAEGRGFKSRPARH  2089011
+
+
+ Score = 25.8 bits (55),  Expect = 1.2, Method: Compositional matrix adjust.
+ Identities = 14/19 (74%), Positives = 14/19 (74%), Gaps = 0/19 (0%)
+ Frame = +3
+
+Query  8       RAPAF*AGGRGFESRRARH  26
+               RA  F*  GRGFESR ARH
+Sbjct  602526  RARGF*PRGRGFESRPARH  602582
+
+
+ Score = 25.4 bits (54),  Expect = 1.4, Method: Compositional matrix adjust.
+ Identities = 13/16 (81%), Positives = 13/16 (81%), Gaps = 0/16 (0%)
+ Frame = +2
+
+Query  1        GPVA*QDRAPAF*AGG  16
+                GP  *QDRAP F*AGG
+Sbjct  1320113  GP*P*QDRAPDF*AGG  1320160
+
+
+ Score = 24.6 bits (52),  Expect = 2.6, Method: Compositional matrix adjust.
+ Identities = 13/26 (50%), Positives = 16/26 (62%), Gaps = 0/26 (0%)
+ Frame = +1
+
+Query  2       PVA*QDRAPAF*AGGRGFESRRARHN  27
+               PVA*   A   *+ GRGF+SR   H+
+Sbjct  887878  PVA*PGGAADL*SAGRGFKSRPGLHS  887955
+
+
+ Score = 23.5 bits (49),  Expect = 6.2, Method: Compositional matrix adjust.
+ Identities = 10/15 (67%), Positives = 11/15 (73%), Gaps = 0/15 (0%)
+ Frame = +2
+
+Query  8      RAPAF*AGGRGFESR  22
+              RAP    GGRGF+SR
+Sbjct  47393  RAPPSQGGGRGFKSR  47437
+
+
+
+Lambda      K        H        a         alpha
+   0.334    0.147    0.458    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 65549841
+
+
+Query= TBCH5v1_RS13305.mRNA.0_elongated 99 nucleotides pf:2 sp:2
+
+Length=168
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+7510                                                                  49.7    1e-08
+
+
+>7510
+Length=2114736
+
+ Score = 49.7 bits (117),  Expect = 1e-08, Method: Compositional matrix adjust.
+ Identities = 25/27 (93%), Positives = 25/27 (93%), Gaps = 0/27 (0%)
+ Frame = -3
+
+Query  1        GPVA*QDRAPAF*AGGRGFESRRARHN  27
+                GPVA*QDRAPAF*AGGRGFESRRAR  
+Sbjct  1320655  GPVA*QDRAPAF*AGGRGFESRRARQQ  1320575
+
+
+ Score = 33.5 bits (75),  Expect = 0.004, Method: Compositional matrix adjust.
+ Identities = 18/28 (64%), Positives = 18/28 (64%), Gaps = 0/28 (0%)
+ Frame = -1
+
+Query  1        GPVA*QDRAPAF*AGGRGFESRRARHNE  28
+                GPVA   RAPA  AGG GFESR   H E
+Sbjct  2114574  GPVAQPGRAPALQAGGPGFESRPVHHEE  2114491
+
+
+ Score = 32.3 bits (72),  Expect = 0.009, Method: Compositional matrix adjust.
+ Identities = 15/15 (100%), Positives = 15/15 (100%), Gaps = 0/15 (0%)
+ Frame = -2
+
+Query  12       F*AGGRGFESRRARH  26
+                F*AGGRGFESRRARH
+Sbjct  1304426  F*AGGRGFESRRARH  1304382
+
+
+ Score = 28.1 bits (61),  Expect = 0.20, Method: Compositional matrix adjust.
+ Identities = 24/58 (41%), Positives = 26/58 (45%), Gaps = 1/58 (2%)
+ Frame = -3
+
+Query  14       AGGRGFESRRARHNERQGDLLPY-LSVLSNPhsgaslhtslsshllggYAPTTPRILF  70
+                AG  GF+SR   HNERQG   P  L  L  P  G +        L G  APT P   F
+Sbjct  1980724  AGVPGFKSRPPHHNERQGGSAPLSLCTLKPPEWGFAPQPRFLLKLRGANAPTPPNSFF  1980551
+
+
+ Score = 28.1 bits (61),  Expect = 0.22, Method: Compositional matrix adjust.
+ Identities = 14/26 (54%), Positives = 14/26 (54%), Gaps = 0/26 (0%)
+ Frame = -1
+
+Query  1        GPVA*QDRAPAF*AGGRGFESRRARH  26
+                GPV *    P    GG GFES RA H
+Sbjct  1464288  GPVV*MVMTPPLQGGGPGFESPRAHH  1464211
+
+
+ Score = 27.3 bits (59),  Expect = 0.44, Method: Compositional matrix adjust.
+ Identities = 14/22 (64%), Positives = 16/22 (73%), Gaps = 0/22 (0%)
+ Frame = +3
+
+Query  7       DRAPAF*AGGRGFESRRARHNE  28
+               D A AF A GRGF+SR ARH+ 
+Sbjct  698079  DGASAFGAEGRGFKSRPARHSN  698144
+
+
+ Score = 25.8 bits (55),  Expect = 1.2, Method: Compositional matrix adjust.
+ Identities = 17/27 (63%), Positives = 18/27 (67%), Gaps = 3/27 (11%)
+ Frame = -3
+
+Query  3       VA*QDRAPAF*AGGR---GFESRRARH  26
+               VA*  RAPA *AGGR   GF+S   RH
+Sbjct  902485  VA*PGRAPAC*AGGRCPPGFKSPPRRH  902405
+
+
+ Score = 25.8 bits (55),  Expect = 1.3, Method: Compositional matrix adjust.
+ Identities = 14/20 (70%), Positives = 15/20 (75%), Gaps = 0/20 (0%)
+ Frame = -2
+
+Query  7        DRAPAF*AGGRGFESRRARH  26
+                DRA A  A GRGF+SR ARH
+Sbjct  2089070  DRASASGAEGRGFKSRPARH  2089011
+
+
+ Score = 25.4 bits (54),  Expect = 1.6, Method: Compositional matrix adjust.
+ Identities = 14/19 (74%), Positives = 14/19 (74%), Gaps = 0/19 (0%)
+ Frame = +3
+
+Query  8       RAPAF*AGGRGFESRRARH  26
+               RA  F*  GRGFESR ARH
+Sbjct  602526  RARGF*PRGRGFESRPARH  602582
+
+
+ Score = 25.0 bits (53),  Expect = 2.3, Method: Compositional matrix adjust.
+ Identities = 13/16 (81%), Positives = 13/16 (81%), Gaps = 0/16 (0%)
+ Frame = +2
+
+Query  1        GPVA*QDRAPAF*AGG  16
+                GP  *QDRAP F*AGG
+Sbjct  1320113  GP*P*QDRAPDF*AGG  1320160
+
+
+ Score = 24.6 bits (52),  Expect = 3.0, Method: Compositional matrix adjust.
+ Identities = 13/26 (50%), Positives = 16/26 (62%), Gaps = 0/26 (0%)
+ Frame = +1
+
+Query  2       PVA*QDRAPAF*AGGRGFESRRARHN  27
+               PVA*   A   *+ GRGF+SR   H+
+Sbjct  887878  PVA*PGGAADL*SAGRGFKSRPGLHS  887955
+
+
+ Score = 23.1 bits (48),  Expect = 8.9, Method: Compositional matrix adjust.
+ Identities = 16/39 (41%), Positives = 20/39 (51%), Gaps = 9/39 (23%)
+ Frame = -1
+
+Query  14       AGGRGFESRRARHNERQGD---------LLPYLSVLSNP  43
+                AGG G E RR    E +G          LLPYLS+++ P
+Sbjct  1064727  AGGTGEERRRDYDTEGKGAGEGRVGAEYLLPYLSLVAYP  1064611
+
+
+
+Lambda      K        H        a         alpha
+   0.338    0.149    0.503    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 65549841
+
+
+  Database: Thermococcus_sp_TPV.fa
+    Posted date:  Feb 13, 2025  2:12 PM
+  Number of letters in database: 2,114,736
+  Number of sequences in database:  1
+
+
+
+Matrix: BLOSUM62
+Gap Penalties: Existence: 11, Extension: 1
+Neighboring words threshold: 13
+Window for multiple hits: 40

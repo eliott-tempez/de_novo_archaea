@@ -1,0 +1,237 @@
+TBLASTN 2.16.0+
+
+
+Reference: Stephen F. Altschul, Thomas L. Madden, Alejandro A.
+Schaffer, Jinghui Zhang, Zheng Zhang, Webb Miller, and David J.
+Lipman (1997), "Gapped BLAST and PSI-BLAST: a new generation of
+protein database search programs", Nucleic Acids Res. 25:3389-3402.
+
+
+
+Database: GCA_000151105@Thermococcus_barophilus_MP.fa
+           2 sequences; 2,064,237 total letters
+
+
+
+Query= 00970
+
+Length=86
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+NC_014804                                                             171     2e-52
+
+
+>NC_014804
+Length=2010078
+
+ Score = 171 bits (432),  Expect = 2e-52, Method: Compositional matrix adjust.
+ Identities = 86/86 (100%), Positives = 86/86 (100%), Gaps = 0/86 (0%)
+ Frame = +3
+
+Query  1       MLMATKKVGSAGRFGPRYGLKIRRRVAAVEAKMKQKHTCPVCGRKAVRRISTGIWQCQKC  60
+               MLMATKKVGSAGRFGPRYGLKIRRRVAAVEAKMKQKHTCPVCGRKAVRRISTGIWQCQKC
+Sbjct  132039  MLMATKKVGSAGRFGPRYGLKIRRRVAAVEAKMKQKHTCPVCGRKAVRRISTGIWQCQKC  132218
+
+Query  61      GATFAGGAYLPVTPAGKVAKRIVSRA  86
+               GATFAGGAYLPVTPAGKVAKRIVSRA
+Sbjct  132219  GATFAGGAYLPVTPAGKVAKRIVSRA  132296
+
+
+ Score = 26.2 bits (56),  Expect = 0.20, Method: Composition-based stats.
+ Identities = 20/65 (31%), Positives = 30/65 (46%), Gaps = 8/65 (12%)
+ Frame = +1
+
+Query  6      KKVGSAGRF-GPRYGLKIRRRVAAVEAKMK----QKHTCPVCGRKAVRRISTGIW---QC  57
+              ++V +AG   G R  L+ R     +  KMK    +   CPVCG    +    G +   +C
+Sbjct  74149  REVATAGTLEGRRVILQGRFTPYLIANKMKKYLKEYVICPVCGSPDTKITKKGRFHYLKC  74328
+
+Query  58     QKCGA  62
+              + CGA
+Sbjct  74329  EACGA  74343
+
+
+ Score = 24.6 bits (52),  Expect = 0.61, Method: Composition-based stats.
+ Identities = 15/41 (37%), Positives = 19/41 (46%), Gaps = 10/41 (24%)
+ Frame = +3
+
+Query  34      KQKHTCPVCGR----------KAVRRISTGIWQCQKCGATF  64
+               K K TCP CG           +A    ST  ++C KCG T+
+Sbjct  286644  KVKITCPKCGNDEAYWWELQTRAGDEPSTIFYRCTKCGYTW  286766
+
+
+ Score = 24.6 bits (52),  Expect = 0.74, Method: Composition-based stats.
+ Identities = 10/23 (43%), Positives = 12/23 (52%), Gaps = 2/23 (9%)
+ Frame = +3
+
+Query  39       CPVCGRKAVRRISTGIWQCQKCG  61
+                CPVCG   V    +G   C+ CG
+Sbjct  1920450  CPVCGAPTV--FESGCEVCKNCG  1920512
+
+
+ Score = 24.3 bits (51),  Expect = 0.88, Method: Composition-based stats.
+ Identities = 10/23 (43%), Positives = 14/23 (61%), Gaps = 5/23 (22%)
+ Frame = -3
+
+Query  38       TCPVCGRKAVRRISTGIWQCQKC  60
+                TCPVCG +A       +++C KC
+Sbjct  1666261  TCPVCGAEA-----KLLYRCPKC  1666208
+
+
+ Score = 23.9 bits (50),  Expect = 1.1, Method: Composition-based stats.
+ Identities = 12/34 (35%), Positives = 18/34 (53%), Gaps = 2/34 (6%)
+ Frame = +2
+
+Query  14       FGPRYGLKIRRRVA--AVEAKMKQKHTCPVCGRK  45
+                + P+ G K+  R A   VE  + + + CP CG K
+Sbjct  1715351  YCPKCGKKLIVRSAYRVVEWNLTKDNRCPRCGEK  1715452
+
+
+ Score = 23.9 bits (50),  Expect = 1.3, Method: Composition-based stats.
+ Identities = 11/25 (44%), Positives = 12/25 (48%), Gaps = 2/25 (8%)
+ Frame = +2
+
+Query  37   HTCP--VCGRKAVRRISTGIWQCQK  59
+            H CP  V GR   RR+   IW   K
+Sbjct  566  HLCPLPVLGR*GSRRVDKPIWTINK  640
+
+
+ Score = 23.1 bits (48),  Expect = 2.2, Method: Composition-based stats.
+ Identities = 11/31 (35%), Positives = 17/31 (55%), Gaps = 1/31 (3%)
+ Frame = +2
+
+Query  32      KMKQKHTCPVCGR-KAVRRISTGIWQCQKCG  61
+               K++++  CPVCG  + +     G   C KCG
+Sbjct  956471  KVEKRRVCPVCGSTEFIYDPEHGEIVCSKCG  956563
+
+
+ Score = 23.1 bits (48),  Expect = 2.2, Method: Composition-based stats.
+ Identities = 13/37 (35%), Positives = 16/37 (43%), Gaps = 13/37 (35%)
+ Frame = -2
+
+Query  38      TCPVCGRKAVRRISTGIWQCQKCGATFAGGAYLPVTP  74
+               TCP CG +  R       QC+ CG         P+TP
+Sbjct  646661  TCPYCGAEEQRGD-----QCEVCGR--------PLTP  646590
+
+
+ Score = 23.1 bits (48),  Expect = 2.4, Method: Compositional matrix adjust.
+ Identities = 9/27 (33%), Positives = 16/27 (59%), Gaps = 1/27 (4%)
+ Frame = +3
+
+Query  38      TCPVCGR-KAVRRISTGIWQCQKCGAT  63
+               TCP+CG+  +  R   G+++C + G  
+Sbjct  760170  TCPLCGQCHSNARFVRGLFKCHREGVV  760250
+
+
+ Score = 22.7 bits (47),  Expect = 2.7, Method: Composition-based stats.
+ Identities = 10/31 (32%), Positives = 16/31 (52%), Gaps = 8/31 (26%)
+ Frame = +2
+
+Query  39       CPVCGRKAVRRISTGI--W------QCQKCG  61
+                CP CG+K + R +  +  W      +C +CG
+Sbjct  1715354  CPKCGKKLIVRSAYRVVEWNLTKDNRCPRCG  1715446
+
+
+ Score = 22.7 bits (47),  Expect = 3.3, Method: Composition-based stats.
+ Identities = 13/39 (33%), Positives = 18/39 (46%), Gaps = 10/39 (26%)
+ Frame = -1
+
+Query  55       WQCQKCGATFAG-----GAYLP-----VTPAGKVAKRIV  83
+                W+C KCG    G     G  L      +TP G + K+I+
+Sbjct  1932066  WKCTKCGKCVIGDIIEYGEKLGYRQFYITPGGSLVKKIL  1931950
+
+
+ Score = 22.3 bits (46),  Expect = 4.3, Method: Composition-based stats.
+ Identities = 10/18 (56%), Positives = 12/18 (67%), Gaps = 2/18 (11%)
+ Frame = -2
+
+Query  30      EAKMKQKHTCPVCGRKAV  47
+               E+  KQK  CPVCG + V
+Sbjct  442667  ESNTKQK--CPVCGSEDV  442620
+
+
+ Score = 22.3 bits (46),  Expect = 4.9, Method: Composition-based stats.
+ Identities = 7/20 (35%), Positives = 8/20 (40%), Gaps = 0/20 (0%)
+ Frame = -2
+
+Query  39      CPVCGRKAVRRISTGIWQCQ  58
+               CPVC     +      W CQ
+Sbjct  318068  CPVCNCVVEQNCEVACWDCQ  318009
+
+
+ Score = 21.9 bits (45),  Expect = 5.1, Method: Composition-based stats.
+ Identities = 9/19 (47%), Positives = 13/19 (68%), Gaps = 3/19 (16%)
+ Frame = -1
+
+Query  49      RISTG---IWQCQKCGATF  64
+               RI+ G   + +CQKCG T+
+Sbjct  209247  RINLGGEYMLKCQKCGKTY  209191
+
+
+ Score = 21.9 bits (45),  Expect = 6.1, Method: Composition-based stats.
+ Identities = 10/25 (40%), Positives = 12/25 (48%), Gaps = 3/25 (12%)
+ Frame = +3
+
+Query  37      HTCPVCGRKAVRRISTGIWQCQKCG  61
+               + CPVCG  AV        +C  CG
+Sbjct  298866  YICPVCGYTAVDEAPE---KCPVCG  298931
+
+
+ Score = 21.6 bits (44),  Expect = 7.8, Method: Composition-based stats.
+ Identities = 5/13 (38%), Positives = 8/13 (62%), Gaps = 0/13 (0%)
+ Frame = +2
+
+Query  55      WQCQKCGATFAGG  67
+               W+C++CG     G
+Sbjct  311735  WKCERCGGAIKKG  311773
+
+
+ Score = 21.6 bits (44),  Expect = 8.2, Method: Composition-based stats.
+ Identities = 7/13 (54%), Positives = 9/13 (69%), Gaps = 0/13 (0%)
+ Frame = -3
+
+Query  39      CPVCGRKAVRRIS  51
+               CP CGR   R++S
+Sbjct  404695  CPKCGRIETRKLS  404657
+
+
+ Score = 21.6 bits (44),  Expect = 8.7, Method: Composition-based stats.
+ Identities = 8/15 (53%), Positives = 9/15 (60%), Gaps = 0/15 (0%)
+ Frame = -3
+
+Query  39       CPVCGRKAVRRISTG  53
+                CP CG K V  +S G
+Sbjct  1663588  CPKCGGKIVLTVSKG  1663544
+
+
+ Score = 21.6 bits (44),  Expect = 9.2, Method: Composition-based stats.
+ Identities = 10/23 (43%), Positives = 12/23 (52%), Gaps = 0/23 (0%)
+ Frame = -1
+
+Query  54     IWQCQKCGATFAGGAYLPVTPAG  76
+              IW       TF G + L +TPAG
+Sbjct  23259  IWVSMTSKTTFPGFSNLCLTPAG  23191
+
+
+
+Lambda      K        H        a         alpha
+   0.325    0.135    0.423    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 17198925
+
+
+  Database: GCA_000151105@Thermococcus_barophilus_MP.fa
+    Posted date:  Feb 13, 2025  12:09 PM
+  Number of letters in database: 2,064,237
+  Number of sequences in database:  2
+
+
+
+Matrix: BLOSUM62
+Gap Penalties: Existence: 11, Extension: 1
+Neighboring words threshold: 13
+Window for multiple hits: 40

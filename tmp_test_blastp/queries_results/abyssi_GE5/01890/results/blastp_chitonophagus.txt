@@ -1,0 +1,1201 @@
+BLASTP 2.16.0+
+
+
+Reference: Stephen F. Altschul, Thomas L. Madden, Alejandro A.
+Schaffer, Jinghui Zhang, Zheng Zhang, Webb Miller, and David J.
+Lipman (1997), "Gapped BLAST and PSI-BLAST: a new generation of
+protein database search programs", Nucleic Acids Res. 25:3389-3402.
+
+
+Reference for composition-based statistics: Alejandro A. Schaffer,
+L. Aravind, Thomas L. Madden, Sergei Shavirin, John L. Spouge, Yuri
+I. Wolf, Eugene V. Koonin, and Stephen F. Altschul (2001),
+"Improving the accuracy of PSI-BLAST protein database searches with
+composition-based statistics and other refinements", Nucleic Acids
+Res. 29:2994-3005.
+
+
+
+Database: CDS_elongated.faa
+           2,150 sequences; 743,093 total letters
+
+
+
+Query= PAB_RS01890.mRNA.0_elongated 99 nucleotides pf:0 sp:0
+
+Length=190
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+CHITON_RS10480.mRNA.0_elongated 99 nucleotides                        139     4e-43
+CHITON_RS06005.mRNA.0_elongated 99 nucleotides                        27.7    0.24 
+CHITON_RS02660.mRNA.0_elongated 99 nucleotides                        26.6    0.81 
+CHITON_RS10320.mRNA.0_elongated 99 nucleotides                        24.6    2.3  
+CHITON_RS06570.mRNA.0_elongated 99 nucleotides                        24.6    2.6  
+CHITON_RS05190.mRNA.0_elongated 99 nucleotides                        24.3    3.6  
+CHITON_RS02475.mRNA.0_elongated 99 nucleotides                        23.9    4.8  
+
+
+>CHITON_RS10480.mRNA.0_elongated 99 nucleotides
+Length=191
+
+ Score = 139 bits (350),  Expect = 4e-43, Method: Compositional matrix adjust.
+ Identities = 82/154 (53%), Positives = 106/154 (69%), Gaps = 0/154 (0%)
+
+Query  37   IGKRYVFLIFAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKYS  96
+            +GKR+V  +F VF  GT   L +YYSP++A ALA  +  LA+L+PW I+S +SKK+ +YS
+Sbjct  38   VGKRFVSALFVVFSAGTATGLAKYYSPVVAVALATATVALALLLPWLIVSAISKKKHRYS  97
+
+Query  97   TMLAFLLASLWEFLCSYLAMIIGYPLWKLFLNAGIGGIIVTVGIGISTITKAKVVLSEVK  156
+              LAFL ASLWEF CSYLA ++ YPLW +FL AG+GG+I  V   +  +TK +   +EVK
+Sbjct  98   VPLAFLSASLWEFACSYLAKLLDYPLWNMFLFAGLGGLITVVFTMVDALTKPRRHSAEVK  157
+
+Query  157  *SPLPPLCWPKS*SQ*GLLGANVEGFLLFVYVKV  190
+            *  LP LC P+ *S+*  LGA V  FL  VYVKV
+Sbjct  158  *HSLPSLCRPEG*SK*RFLGAYVHRFLFPVYVKV  191
+
+
+>CHITON_RS06005.mRNA.0_elongated 99 nucleotides
+Length=305
+
+ Score = 27.7 bits (60),  Expect = 0.24, Method: Compositional matrix adjust.
+ Identities = 17/40 (43%), Positives = 22/40 (55%), Gaps = 0/40 (0%)
+
+Query  53   TLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKE  92
+            T LS  EY   L+A ALA GS V+ +  P + + I   KE
+Sbjct  158  TNLSGGEYQLALIARALAQGSDVMLLDEPTSHLDINHAKE  197
+
+
+>CHITON_RS02660.mRNA.0_elongated 99 nucleotides
+Length=510
+
+ Score = 26.6 bits (57),  Expect = 0.81, Method: Compositional matrix adjust.
+ Identities = 31/87 (36%), Positives = 40/87 (46%), Gaps = 7/87 (8%)
+
+Query  27   REREGE*MERIGKRYVFLIFAVFFVGTLLSLTEYYSPL--MATALAF---GSTVLAILVP  81
+            RE EG  M+RI   +  LIF   F   L      Y  L  +A +L F    S V  +  P
+Sbjct  27   REEEGRQMKRIFVLWFALIFLPLFTLRLFQDEMLYINLSKLAFSLTFRPRSSLVFLLTSP  86
+
+Query  82   WAIISIVSKKEF--KYSTMLAFLLASL  106
+             A++S V  + F  + ST LA LL  L
+Sbjct  87   LAVVSNVHARVFLLRLSTSLATLLDVL  113
+
+
+>CHITON_RS10320.mRNA.0_elongated 99 nucleotides
+Length=197
+
+ Score = 24.6 bits (52),  Expect = 2.3, Method: Compositional matrix adjust.
+ Identities = 10/27 (37%), Positives = 17/27 (63%), Gaps = 0/27 (0%)
+
+Query  35  ERIGKRYVFLIFAVFFVGTLLSLTEYY  61
+           ER+GKR V++  A   +G +L + + Y
+Sbjct  51  ERVGKREVYIKPASKLIGEVLRVMQKY  77
+
+
+>CHITON_RS06570.mRNA.0_elongated 99 nucleotides
+Length=203
+
+ Score = 24.6 bits (52),  Expect = 2.6, Method: Compositional matrix adjust.
+ Identities = 13/31 (42%), Positives = 17/31 (55%), Gaps = 1/31 (3%)
+
+Query  52   GTLLSLTEYYSPLMATALAFGSTVLAILVPW  82
+            GT+L L  YY P +   L   +TV A +V W
+Sbjct  140  GTVLRLPRYYLPRIRRKLP-TTTVHAFIVEW  169
+
+
+>CHITON_RS05190.mRNA.0_elongated 99 nucleotides
+Length=276
+
+ Score = 24.3 bits (51),  Expect = 3.6, Method: Compositional matrix adjust.
+ Identities = 21/75 (28%), Positives = 33/75 (44%), Gaps = 13/75 (17%)
+
+Query  90   KKEFKYSTMLAFLLASLWE--FLCSYLAMIIGY--------PLWKLFLN---AGIGGIIV  136
+            ++EF Y+  L   L   WE  F      +++G          + ++ L    A +GG +V
+Sbjct  115  RREFHYNAELYLYLPDEWEKIFRKPRYQLLMGRSSDIATVEEIRRVDLEEKEAVLGGTVV  174
+
+Query  137  TVGIGISTITKAKVV  151
+             V +GI  I  A VV
+Sbjct  175  PVELGIPGIVHALVV  189
+
+
+>CHITON_RS02475.mRNA.0_elongated 99 nucleotides
+Length=446
+
+ Score = 23.9 bits (50),  Expect = 4.8, Method: Compositional matrix adjust.
+ Identities = 17/59 (29%), Positives = 30/59 (51%), Gaps = 9/59 (15%)
+
+Query  91   KEFKYSTMLAFLLASLWEFLCSYLAMIIGY-----PLWKLFLNAGIGGIIVTVGIGIST  144
+            +EFK+  + AF++A +  F    L  ++G       +  LFL    GGI+    +G++T
+Sbjct  108  EEFKHVGLSAFIIAVMGVFFPLLLGYVLGLAFGFTDIQSLFL----GGILTATSVGLTT  162
+
+
+
+Lambda      K        H        a         alpha
+   0.347    0.154    0.515    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 66911945
+
+
+Query= PAB_RS01890.mRNA.0_elongated 99 nucleotides pf:0 sp:1
+
+Length=189
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+CHITON_RS10480.mRNA.0_elongated 99 nucleotides                        109     1e-31
+CHITON_RS06005.mRNA.0_elongated 99 nucleotides                        27.7    0.29 
+CHITON_RS02660.mRNA.0_elongated 99 nucleotides                        26.2    1.0  
+CHITON_RS10320.mRNA.0_elongated 99 nucleotides                        25.0    1.8  
+CHITON_RS06570.mRNA.0_elongated 99 nucleotides                        24.6    2.2  
+CHITON_RS05190.mRNA.0_elongated 99 nucleotides                        24.3    3.2  
+CHITON_RS02475.mRNA.0_elongated 99 nucleotides                        23.9    4.7  
+CHITON_RS06565.mRNA.0_elongated 99 nucleotides                        22.7    9.3  
+
+
+>CHITON_RS10480.mRNA.0_elongated 99 nucleotides
+Length=191
+
+ Score = 109 bits (273),  Expect = 1e-31, Method: Compositional matrix adjust.
+ Identities = 63/121 (52%), Positives = 85/121 (70%), Gaps = 0/121 (0%)
+
+Query  37   IGKRYVFLIFAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKYS  96
+            +GKR+V  +F VF  GT   L +YYSP++A ALA  +  LA+L+PW I+S +SKK+ +YS
+Sbjct  38   VGKRFVSALFVVFSAGTATGLAKYYSPVVAVALATATVALALLLPWLIVSAISKKKHRYS  97
+
+Query  97   TMLAFLLASLWEFLCSYLAMIIGYPLWKLFLNAGIGGIIVTVGIGISTITKAKVVLSEVK  156
+              LAFL ASLWEF CSYLA ++ YPLW +FL AG+GG+I  V   +  +TK +   +EVK
+Sbjct  98   VPLAFLSASLWEFACSYLAKLLDYPLWNMFLFAGLGGLITVVFTMVDALTKPRRHSAEVK  157
+
+Query  157  *  157
+            *
+Sbjct  158  *  158
+
+
+>CHITON_RS06005.mRNA.0_elongated 99 nucleotides
+Length=305
+
+ Score = 27.7 bits (60),  Expect = 0.29, Method: Compositional matrix adjust.
+ Identities = 17/40 (43%), Positives = 22/40 (55%), Gaps = 0/40 (0%)
+
+Query  53   TLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKE  92
+            T LS  EY   L+A ALA GS V+ +  P + + I   KE
+Sbjct  158  TNLSGGEYQLALIARALAQGSDVMLLDEPTSHLDINHAKE  197
+
+
+>CHITON_RS02660.mRNA.0_elongated 99 nucleotides
+Length=510
+
+ Score = 26.2 bits (56),  Expect = 1.0, Method: Compositional matrix adjust.
+ Identities = 31/87 (36%), Positives = 40/87 (46%), Gaps = 7/87 (8%)
+
+Query  27   REREGE*MERIGKRYVFLIFAVFFVGTLLSLTEYYSPL--MATALAF---GSTVLAILVP  81
+            RE EG  M+RI   +  LIF   F   L      Y  L  +A +L F    S V  +  P
+Sbjct  27   REEEGRQMKRIFVLWFALIFLPLFTLRLFQDEMLYINLSKLAFSLTFRPRSSLVFLLTSP  86
+
+Query  82   WAIISIVSKKEF--KYSTMLAFLLASL  106
+             A++S V  + F  + ST LA LL  L
+Sbjct  87   LAVVSNVHARVFLLRLSTSLATLLDVL  113
+
+
+>CHITON_RS10320.mRNA.0_elongated 99 nucleotides
+Length=197
+
+ Score = 25.0 bits (53),  Expect = 1.8, Method: Compositional matrix adjust.
+ Identities = 10/28 (36%), Positives = 17/28 (61%), Gaps = 0/28 (0%)
+
+Query  35  ERIGKRYVFLIFAVFFVGTLLSLTEYYS  62
+           ER+GKR V++  A   +G +L + + Y 
+Sbjct  51  ERVGKREVYIKPASKLIGEVLRVMQKYG  78
+
+
+>CHITON_RS06570.mRNA.0_elongated 99 nucleotides
+Length=203
+
+ Score = 24.6 bits (52),  Expect = 2.2, Method: Compositional matrix adjust.
+ Identities = 13/31 (42%), Positives = 17/31 (55%), Gaps = 1/31 (3%)
+
+Query  52   GTLLSLTEYYSPLMATALAFGSTVLAILVPW  82
+            GT+L L  YY P +   L   +TV A +V W
+Sbjct  140  GTVLRLPRYYLPRIRRKLP-TTTVHAFIVEW  169
+
+
+>CHITON_RS05190.mRNA.0_elongated 99 nucleotides
+Length=276
+
+ Score = 24.3 bits (51),  Expect = 3.2, Method: Compositional matrix adjust.
+ Identities = 21/75 (28%), Positives = 33/75 (44%), Gaps = 13/75 (17%)
+
+Query  90   KKEFKYSTMLAFLLASLWE--FLCSYLAMIIGY--------PLWKLFLN---AGIGGIIV  136
+            ++EF Y+  L   L   WE  F      +++G          + ++ L    A +GG +V
+Sbjct  115  RREFHYNAELYLYLPDEWEKIFRKPRYQLLMGRSSDIATVEEIRRVDLEEKEAVLGGTVV  174
+
+Query  137  TVGIGISTITKAKVV  151
+             V +GI  I  A VV
+Sbjct  175  PVELGIPGIVHALVV  189
+
+
+>CHITON_RS02475.mRNA.0_elongated 99 nucleotides
+Length=446
+
+ Score = 23.9 bits (50),  Expect = 4.7, Method: Compositional matrix adjust.
+ Identities = 17/59 (29%), Positives = 30/59 (51%), Gaps = 9/59 (15%)
+
+Query  91   KEFKYSTMLAFLLASLWEFLCSYLAMIIGY-----PLWKLFLNAGIGGIIVTVGIGIST  144
+            +EFK+  + AF++A +  F    L  ++G       +  LFL    GGI+    +G++T
+Sbjct  108  EEFKHVGLSAFIIAVMGVFFPLLLGYVLGLAFGFTDIQSLFL----GGILTATSVGLTT  162
+
+
+>CHITON_RS06565.mRNA.0_elongated 99 nucleotides
+Length=158
+
+ Score = 22.7 bits (47),  Expect = 9.3, Method: Compositional matrix adjust.
+ Identities = 13/31 (42%), Positives = 17/31 (55%), Gaps = 1/31 (3%)
+
+Query  52  GTLLSLTEYYSPLMATALAFGSTVLAILVPW  82
+           GT+L L  YY P +   L   +TV A +V W
+Sbjct  2   GTVLRLPRYYLPRIRRKLP-TTTVHAFIVEW  31
+
+
+
+Lambda      K        H        a         alpha
+   0.349    0.154    0.509    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 66330102
+
+
+Query= PAB_RS01890.mRNA.0_elongated 99 nucleotides pf:0 sp:2
+
+Length=189
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+CHITON_RS10480.mRNA.0_elongated 99 nucleotides                        111     4e-32
+CHITON_RS06005.mRNA.0_elongated 99 nucleotides                        27.7    0.27 
+CHITON_RS02660.mRNA.0_elongated 99 nucleotides                        25.8    1.1  
+CHITON_RS05190.mRNA.0_elongated 99 nucleotides                        24.6    2.3  
+CHITON_RS10320.mRNA.0_elongated 99 nucleotides                        24.6    2.4  
+CHITON_RS06570.mRNA.0_elongated 99 nucleotides                        24.6    2.6  
+CHITON_RS02475.mRNA.0_elongated 99 nucleotides                        24.3    4.2  
+
+
+>CHITON_RS10480.mRNA.0_elongated 99 nucleotides
+Length=191
+
+ Score = 111 bits (277),  Expect = 4e-32, Method: Compositional matrix adjust.
+ Identities = 66/127 (52%), Positives = 88/127 (69%), Gaps = 0/127 (0%)
+
+Query  37   IGKRYVFLIFAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKYS  96
+            +GKR+V  +F VF  GT   L +YYSP++A ALA  +  LA+L+PW I+S +SKK+ +YS
+Sbjct  38   VGKRFVSALFVVFSAGTATGLAKYYSPVVAVALATATVALALLLPWLIVSAISKKKHRYS  97
+
+Query  97   TMLAFLLASLWEFLCSYLAMIIGYPLWKLFLNAGIGGIIVTVGIGISTITKAKVVLSEVK  156
+              LAFL ASLWEF CSYLA ++ YPLW +FL AG+GG+I  V   +  +TK +   +EVK
+Sbjct  98   VPLAFLSASLWEFACSYLAKLLDYPLWNMFLFAGLGGLITVVFTMVDALTKPRRHSAEVK  157
+
+Query  157  *PSPTSL  163
+            * S  SL
+Sbjct  158  *HSLPSL  164
+
+
+>CHITON_RS06005.mRNA.0_elongated 99 nucleotides
+Length=305
+
+ Score = 27.7 bits (60),  Expect = 0.27, Method: Compositional matrix adjust.
+ Identities = 17/40 (43%), Positives = 22/40 (55%), Gaps = 0/40 (0%)
+
+Query  53   TLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKE  92
+            T LS  EY   L+A ALA GS V+ +  P + + I   KE
+Sbjct  158  TNLSGGEYQLALIARALAQGSDVMLLDEPTSHLDINHAKE  197
+
+
+>CHITON_RS02660.mRNA.0_elongated 99 nucleotides
+Length=510
+
+ Score = 25.8 bits (55),  Expect = 1.1, Method: Compositional matrix adjust.
+ Identities = 31/87 (36%), Positives = 40/87 (46%), Gaps = 7/87 (8%)
+
+Query  27   REREGE*MERIGKRYVFLIFAVFFVGTLLSLTEYYSPL--MATALAF---GSTVLAILVP  81
+            RE EG  M+RI   +  LIF   F   L      Y  L  +A +L F    S V  +  P
+Sbjct  27   REEEGRQMKRIFVLWFALIFLPLFTLRLFQDEMLYINLSKLAFSLTFRPRSSLVFLLTSP  86
+
+Query  82   WAIISIVSKKEF--KYSTMLAFLLASL  106
+             A++S V  + F  + ST LA LL  L
+Sbjct  87   LAVVSNVHARVFLLRLSTSLATLLDVL  113
+
+
+>CHITON_RS05190.mRNA.0_elongated 99 nucleotides
+Length=276
+
+ Score = 24.6 bits (52),  Expect = 2.3, Method: Compositional matrix adjust.
+ Identities = 21/75 (28%), Positives = 33/75 (44%), Gaps = 13/75 (17%)
+
+Query  90   KKEFKYSTMLAFLLASLWE--FLCSYLAMIIGY--------PLWKLFLN---AGIGGIIV  136
+            ++EF Y+  L   L   WE  F      +++G          + ++ L    A +GG +V
+Sbjct  115  RREFHYNAELYLYLPDEWEKIFRKPRYQLLMGRSSDIATVEEIRRVDLEEKEAVLGGTVV  174
+
+Query  137  TVGIGISTITKAKVV  151
+             V +GI  I  A VV
+Sbjct  175  PVELGIPGIVHALVV  189
+
+
+>CHITON_RS10320.mRNA.0_elongated 99 nucleotides
+Length=197
+
+ Score = 24.6 bits (52),  Expect = 2.4, Method: Compositional matrix adjust.
+ Identities = 10/28 (36%), Positives = 17/28 (61%), Gaps = 0/28 (0%)
+
+Query  35  ERIGKRYVFLIFAVFFVGTLLSLTEYYS  62
+           ER+GKR V++  A   +G +L + + Y 
+Sbjct  51  ERVGKREVYIKPASKLIGEVLRVMQKYG  78
+
+
+>CHITON_RS06570.mRNA.0_elongated 99 nucleotides
+Length=203
+
+ Score = 24.6 bits (52),  Expect = 2.6, Method: Compositional matrix adjust.
+ Identities = 13/31 (42%), Positives = 17/31 (55%), Gaps = 1/31 (3%)
+
+Query  52   GTLLSLTEYYSPLMATALAFGSTVLAILVPW  82
+            GT+L L  YY P +   L   +TV A +V W
+Sbjct  140  GTVLRLPRYYLPRIRRKLP-TTTVHAFIVEW  169
+
+
+>CHITON_RS02475.mRNA.0_elongated 99 nucleotides
+Length=446
+
+ Score = 24.3 bits (51),  Expect = 4.2, Method: Compositional matrix adjust.
+ Identities = 17/59 (29%), Positives = 30/59 (51%), Gaps = 9/59 (15%)
+
+Query  91   KEFKYSTMLAFLLASLWEFLCSYLAMIIGY-----PLWKLFLNAGIGGIIVTVGIGIST  144
+            +EFK+  + AF++A +  F    L  ++G       +  LFL    GGI+    +G++T
+Sbjct  108  EEFKHVGLSAFIIAVMGVFFPLLLGYVLGLAFGFTDIQSLFL----GGILTATSVGLTT  162
+
+
+
+Lambda      K        H        a         alpha
+   0.345    0.151    0.501    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 66330102
+
+
+Query= PAB_RS01890.mRNA.0_elongated 99 nucleotides pf:1 sp:0
+
+Length=189
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+CHITON_RS10480.mRNA.0_elongated 99 nucleotides                        139     3e-43
+CHITON_RS06005.mRNA.0_elongated 99 nucleotides                        27.7    0.26 
+CHITON_RS10320.mRNA.0_elongated 99 nucleotides                        26.6    0.51 
+CHITON_RS06570.mRNA.0_elongated 99 nucleotides                        24.6    2.0  
+CHITON_RS05190.mRNA.0_elongated 99 nucleotides                        24.3    3.5  
+CHITON_RS06565.mRNA.0_elongated 99 nucleotides                        23.1    6.8  
+CHITON_RS02475.mRNA.0_elongated 99 nucleotides                        23.1    8.0  
+
+
+>CHITON_RS10480.mRNA.0_elongated 99 nucleotides
+Length=191
+
+ Score = 139 bits (351),  Expect = 3e-43, Method: Compositional matrix adjust.
+ Identities = 82/154 (53%), Positives = 106/154 (69%), Gaps = 0/154 (0%)
+
+Query  36   IGKRYVFLIFAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKYS  95
+            +GKR+V  +F VF  GT   L +YYSP++A ALA  +  LA+L+PW I+S +SKK+ +YS
+Sbjct  38   VGKRFVSALFVVFSAGTATGLAKYYSPVVAVALATATVALALLLPWLIVSAISKKKHRYS  97
+
+Query  96   TMLAFLLASLWEFLCSYLAMIIGYPLWKLFLNAGIGGIIVTVGIGISTITKAKVVLSEVK  155
+              LAFL ASLWEF CSYLA ++ YPLW +FL AG+GG+I  V   +  +TK +   +EVK
+Sbjct  98   VPLAFLSASLWEFACSYLAKLLDYPLWNMFLFAGLGGLITVVFTMVDALTKPRRHSAEVK  157
+
+Query  156  *SPLPPLCWPKS*SQ*GLLGANVEGFLLFVYVKV  189
+            *  LP LC P+ *S+*  LGA V  FL  VYVKV
+Sbjct  158  *HSLPSLCRPEG*SK*RFLGAYVHRFLFPVYVKV  191
+
+
+>CHITON_RS06005.mRNA.0_elongated 99 nucleotides
+Length=305
+
+ Score = 27.7 bits (60),  Expect = 0.26, Method: Compositional matrix adjust.
+ Identities = 17/40 (43%), Positives = 22/40 (55%), Gaps = 0/40 (0%)
+
+Query  52   TLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKE  91
+            T LS  EY   L+A ALA GS V+ +  P + + I   KE
+Sbjct  158  TNLSGGEYQLALIARALAQGSDVMLLDEPTSHLDINHAKE  197
+
+
+>CHITON_RS10320.mRNA.0_elongated 99 nucleotides
+Length=197
+
+ Score = 26.6 bits (57),  Expect = 0.51, Method: Compositional matrix adjust.
+ Identities = 11/29 (38%), Positives = 18/29 (62%), Gaps = 0/29 (0%)
+
+Query  32  NMERIGKRYVFLIFAVFFVGTLLSLTEYY  60
+           N ER+GKR V++  A   +G +L + + Y
+Sbjct  49  NSERVGKREVYIKPASKLIGEVLRVMQKY  77
+
+
+>CHITON_RS06570.mRNA.0_elongated 99 nucleotides
+Length=203
+
+ Score = 24.6 bits (52),  Expect = 2.0, Method: Compositional matrix adjust.
+ Identities = 13/31 (42%), Positives = 17/31 (55%), Gaps = 1/31 (3%)
+
+Query  51   GTLLSLTEYYSPLMATALAFGSTVLAILVPW  81
+            GT+L L  YY P +   L   +TV A +V W
+Sbjct  140  GTVLRLPRYYLPRIRRKLP-TTTVHAFIVEW  169
+
+
+>CHITON_RS05190.mRNA.0_elongated 99 nucleotides
+Length=276
+
+ Score = 24.3 bits (51),  Expect = 3.5, Method: Compositional matrix adjust.
+ Identities = 21/75 (28%), Positives = 33/75 (44%), Gaps = 13/75 (17%)
+
+Query  89   KKEFKYSTMLAFLLASLWE--FLCSYLAMIIGY--------PLWKLFLN---AGIGGIIV  135
+            ++EF Y+  L   L   WE  F      +++G          + ++ L    A +GG +V
+Sbjct  115  RREFHYNAELYLYLPDEWEKIFRKPRYQLLMGRSSDIATVEEIRRVDLEEKEAVLGGTVV  174
+
+Query  136  TVGIGISTITKAKVV  150
+             V +GI  I  A VV
+Sbjct  175  PVELGIPGIVHALVV  189
+
+
+>CHITON_RS06565.mRNA.0_elongated 99 nucleotides
+Length=158
+
+ Score = 23.1 bits (48),  Expect = 6.8, Method: Compositional matrix adjust.
+ Identities = 13/31 (42%), Positives = 17/31 (55%), Gaps = 1/31 (3%)
+
+Query  51  GTLLSLTEYYSPLMATALAFGSTVLAILVPW  81
+           GT+L L  YY P +   L   +TV A +V W
+Sbjct  2   GTVLRLPRYYLPRIRRKLP-TTTVHAFIVEW  31
+
+
+>CHITON_RS02475.mRNA.0_elongated 99 nucleotides
+Length=446
+
+ Score = 23.1 bits (48),  Expect = 8.0, Method: Compositional matrix adjust.
+ Identities = 17/59 (29%), Positives = 30/59 (51%), Gaps = 9/59 (15%)
+
+Query  90   KEFKYSTMLAFLLASLWEFLCSYLAMIIGY-----PLWKLFLNAGIGGIIVTVGIGIST  143
+            +EFK+  + AF++A +  F    L  ++G       +  LFL    GGI+    +G++T
+Sbjct  108  EEFKHVGLSAFIIAVMGVFFPLLLGYVLGLAFGFTDIQSLFL----GGILTATSVGLTT  162
+
+
+
+Lambda      K        H        a         alpha
+   0.346    0.155    0.506    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 66330102
+
+
+Query= PAB_RS01890.mRNA.0_elongated 99 nucleotides pf:1 sp:1
+
+Length=188
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+CHITON_RS10480.mRNA.0_elongated 99 nucleotides                        110     7e-32
+CHITON_RS06005.mRNA.0_elongated 99 nucleotides                        27.3    0.32 
+CHITON_RS10320.mRNA.0_elongated 99 nucleotides                        26.9    0.38 
+CHITON_RS06570.mRNA.0_elongated 99 nucleotides                        25.0    1.8  
+CHITON_RS05190.mRNA.0_elongated 99 nucleotides                        24.6    2.8  
+CHITON_RS06565.mRNA.0_elongated 99 nucleotides                        23.1    5.9  
+CHITON_RS02475.mRNA.0_elongated 99 nucleotides                        23.1    8.3  
+
+
+>CHITON_RS10480.mRNA.0_elongated 99 nucleotides
+Length=191
+
+ Score = 110 bits (275),  Expect = 7e-32, Method: Compositional matrix adjust.
+ Identities = 63/121 (52%), Positives = 85/121 (70%), Gaps = 0/121 (0%)
+
+Query  36   IGKRYVFLIFAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKYS  95
+            +GKR+V  +F VF  GT   L +YYSP++A ALA  +  LA+L+PW I+S +SKK+ +YS
+Sbjct  38   VGKRFVSALFVVFSAGTATGLAKYYSPVVAVALATATVALALLLPWLIVSAISKKKHRYS  97
+
+Query  96   TMLAFLLASLWEFLCSYLAMIIGYPLWKLFLNAGIGGIIVTVGIGISTITKAKVVLSEVK  155
+              LAFL ASLWEF CSYLA ++ YPLW +FL AG+GG+I  V   +  +TK +   +EVK
+Sbjct  98   VPLAFLSASLWEFACSYLAKLLDYPLWNMFLFAGLGGLITVVFTMVDALTKPRRHSAEVK  157
+
+Query  156  *  156
+            *
+Sbjct  158  *  158
+
+
+>CHITON_RS06005.mRNA.0_elongated 99 nucleotides
+Length=305
+
+ Score = 27.3 bits (59),  Expect = 0.32, Method: Compositional matrix adjust.
+ Identities = 17/40 (43%), Positives = 22/40 (55%), Gaps = 0/40 (0%)
+
+Query  52   TLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKE  91
+            T LS  EY   L+A ALA GS V+ +  P + + I   KE
+Sbjct  158  TNLSGGEYQLALIARALAQGSDVMLLDEPTSHLDINHAKE  197
+
+
+>CHITON_RS10320.mRNA.0_elongated 99 nucleotides
+Length=197
+
+ Score = 26.9 bits (58),  Expect = 0.38, Method: Compositional matrix adjust.
+ Identities = 11/29 (38%), Positives = 18/29 (62%), Gaps = 0/29 (0%)
+
+Query  32  NMERIGKRYVFLIFAVFFVGTLLSLTEYY  60
+           N ER+GKR V++  A   +G +L + + Y
+Sbjct  49  NSERVGKREVYIKPASKLIGEVLRVMQKY  77
+
+
+>CHITON_RS06570.mRNA.0_elongated 99 nucleotides
+Length=203
+
+ Score = 25.0 bits (53),  Expect = 1.8, Method: Compositional matrix adjust.
+ Identities = 13/31 (42%), Positives = 17/31 (55%), Gaps = 1/31 (3%)
+
+Query  51   GTLLSLTEYYSPLMATALAFGSTVLAILVPW  81
+            GT+L L  YY P +   L   +TV A +V W
+Sbjct  140  GTVLRLPRYYLPRIRRKLP-TTTVHAFIVEW  169
+
+
+>CHITON_RS05190.mRNA.0_elongated 99 nucleotides
+Length=276
+
+ Score = 24.6 bits (52),  Expect = 2.8, Method: Compositional matrix adjust.
+ Identities = 21/75 (28%), Positives = 33/75 (44%), Gaps = 13/75 (17%)
+
+Query  89   KKEFKYSTMLAFLLASLWE--FLCSYLAMIIGY--------PLWKLFLN---AGIGGIIV  135
+            ++EF Y+  L   L   WE  F      +++G          + ++ L    A +GG +V
+Sbjct  115  RREFHYNAELYLYLPDEWEKIFRKPRYQLLMGRSSDIATVEEIRRVDLEEKEAVLGGTVV  174
+
+Query  136  TVGIGISTITKAKVV  150
+             V +GI  I  A VV
+Sbjct  175  PVELGIPGIVHALVV  189
+
+
+>CHITON_RS06565.mRNA.0_elongated 99 nucleotides
+Length=158
+
+ Score = 23.1 bits (48),  Expect = 5.9, Method: Compositional matrix adjust.
+ Identities = 13/31 (42%), Positives = 17/31 (55%), Gaps = 1/31 (3%)
+
+Query  51  GTLLSLTEYYSPLMATALAFGSTVLAILVPW  81
+           GT+L L  YY P +   L   +TV A +V W
+Sbjct  2   GTVLRLPRYYLPRIRRKLP-TTTVHAFIVEW  31
+
+
+>CHITON_RS02475.mRNA.0_elongated 99 nucleotides
+Length=446
+
+ Score = 23.1 bits (48),  Expect = 8.3, Method: Compositional matrix adjust.
+ Identities = 17/59 (29%), Positives = 30/59 (51%), Gaps = 9/59 (15%)
+
+Query  90   KEFKYSTMLAFLLASLWEFLCSYLAMIIGY-----PLWKLFLNAGIGGIIVTVGIGIST  143
+            +EFK+  + AF++A +  F    L  ++G       +  LFL    GGI+    +G++T
+Sbjct  108  EEFKHVGLSAFIIAVMGVFFPLLLGYVLGLAFGFTDIQSLFL----GGILTATSVGLTT  162
+
+
+
+Lambda      K        H        a         alpha
+   0.349    0.155    0.499    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 65748259
+
+
+Query= PAB_RS01890.mRNA.0_elongated 99 nucleotides pf:1 sp:2
+
+Length=188
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+CHITON_RS10480.mRNA.0_elongated 99 nucleotides                        111     3e-32
+CHITON_RS06005.mRNA.0_elongated 99 nucleotides                        27.7    0.30 
+CHITON_RS10320.mRNA.0_elongated 99 nucleotides                        26.6    0.59 
+CHITON_RS06570.mRNA.0_elongated 99 nucleotides                        24.6    2.0  
+CHITON_RS05190.mRNA.0_elongated 99 nucleotides                        25.0    2.1  
+CHITON_RS02475.mRNA.0_elongated 99 nucleotides                        23.5    7.0  
+CHITON_RS06565.mRNA.0_elongated 99 nucleotides                        22.7    8.2  
+
+
+>CHITON_RS10480.mRNA.0_elongated 99 nucleotides
+Length=191
+
+ Score = 111 bits (277),  Expect = 3e-32, Method: Compositional matrix adjust.
+ Identities = 66/127 (52%), Positives = 88/127 (69%), Gaps = 0/127 (0%)
+
+Query  36   IGKRYVFLIFAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKYS  95
+            +GKR+V  +F VF  GT   L +YYSP++A ALA  +  LA+L+PW I+S +SKK+ +YS
+Sbjct  38   VGKRFVSALFVVFSAGTATGLAKYYSPVVAVALATATVALALLLPWLIVSAISKKKHRYS  97
+
+Query  96   TMLAFLLASLWEFLCSYLAMIIGYPLWKLFLNAGIGGIIVTVGIGISTITKAKVVLSEVK  155
+              LAFL ASLWEF CSYLA ++ YPLW +FL AG+GG+I  V   +  +TK +   +EVK
+Sbjct  98   VPLAFLSASLWEFACSYLAKLLDYPLWNMFLFAGLGGLITVVFTMVDALTKPRRHSAEVK  157
+
+Query  156  *PSPTSL  162
+            * S  SL
+Sbjct  158  *HSLPSL  164
+
+
+>CHITON_RS06005.mRNA.0_elongated 99 nucleotides
+Length=305
+
+ Score = 27.7 bits (60),  Expect = 0.30, Method: Compositional matrix adjust.
+ Identities = 17/40 (43%), Positives = 22/40 (55%), Gaps = 0/40 (0%)
+
+Query  52   TLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKE  91
+            T LS  EY   L+A ALA GS V+ +  P + + I   KE
+Sbjct  158  TNLSGGEYQLALIARALAQGSDVMLLDEPTSHLDINHAKE  197
+
+
+>CHITON_RS10320.mRNA.0_elongated 99 nucleotides
+Length=197
+
+ Score = 26.6 bits (57),  Expect = 0.59, Method: Compositional matrix adjust.
+ Identities = 11/29 (38%), Positives = 18/29 (62%), Gaps = 0/29 (0%)
+
+Query  32  NMERIGKRYVFLIFAVFFVGTLLSLTEYY  60
+           N ER+GKR V++  A   +G +L + + Y
+Sbjct  49  NSERVGKREVYIKPASKLIGEVLRVMQKY  77
+
+
+>CHITON_RS06570.mRNA.0_elongated 99 nucleotides
+Length=203
+
+ Score = 24.6 bits (52),  Expect = 2.0, Method: Compositional matrix adjust.
+ Identities = 13/31 (42%), Positives = 17/31 (55%), Gaps = 1/31 (3%)
+
+Query  51   GTLLSLTEYYSPLMATALAFGSTVLAILVPW  81
+            GT+L L  YY P +   L   +TV A +V W
+Sbjct  140  GTVLRLPRYYLPRIRRKLP-TTTVHAFIVEW  169
+
+
+>CHITON_RS05190.mRNA.0_elongated 99 nucleotides
+Length=276
+
+ Score = 25.0 bits (53),  Expect = 2.1, Method: Compositional matrix adjust.
+ Identities = 21/75 (28%), Positives = 33/75 (44%), Gaps = 13/75 (17%)
+
+Query  89   KKEFKYSTMLAFLLASLWE--FLCSYLAMIIGY--------PLWKLFLN---AGIGGIIV  135
+            ++EF Y+  L   L   WE  F      +++G          + ++ L    A +GG +V
+Sbjct  115  RREFHYNAELYLYLPDEWEKIFRKPRYQLLMGRSSDIATVEEIRRVDLEEKEAVLGGTVV  174
+
+Query  136  TVGIGISTITKAKVV  150
+             V +GI  I  A VV
+Sbjct  175  PVELGIPGIVHALVV  189
+
+
+>CHITON_RS02475.mRNA.0_elongated 99 nucleotides
+Length=446
+
+ Score = 23.5 bits (49),  Expect = 7.0, Method: Compositional matrix adjust.
+ Identities = 17/59 (29%), Positives = 30/59 (51%), Gaps = 9/59 (15%)
+
+Query  90   KEFKYSTMLAFLLASLWEFLCSYLAMIIGY-----PLWKLFLNAGIGGIIVTVGIGIST  143
+            +EFK+  + AF++A +  F    L  ++G       +  LFL    GGI+    +G++T
+Sbjct  108  EEFKHVGLSAFIIAVMGVFFPLLLGYVLGLAFGFTDIQSLFL----GGILTATSVGLTT  162
+
+
+>CHITON_RS06565.mRNA.0_elongated 99 nucleotides
+Length=158
+
+ Score = 22.7 bits (47),  Expect = 8.2, Method: Compositional matrix adjust.
+ Identities = 13/31 (42%), Positives = 17/31 (55%), Gaps = 1/31 (3%)
+
+Query  51  GTLLSLTEYYSPLMATALAFGSTVLAILVPW  81
+           GT+L L  YY P +   L   +TV A +V W
+Sbjct  2   GTVLRLPRYYLPRIRRKLP-TTTVHAFIVEW  31
+
+
+
+Lambda      K        H        a         alpha
+   0.344    0.152    0.492    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 65748259
+
+
+Query= PAB_RS01890.mRNA.0_elongated 99 nucleotides pf:2 sp:0
+
+Length=189
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+CHITON_RS10480.mRNA.0_elongated 99 nucleotides                        139     3e-43
+CHITON_RS06005.mRNA.0_elongated 99 nucleotides                        29.3    0.086
+CHITON_RS06570.mRNA.0_elongated 99 nucleotides                        25.4    1.1  
+CHITON_RS07430.mRNA.0_elongated 99 nucleotides                        25.0    2.3  
+CHITON_RS10320.mRNA.0_elongated 99 nucleotides                        24.3    2.8  
+CHITON_RS05190.mRNA.0_elongated 99 nucleotides                        24.6    2.9  
+CHITON_RS04945.mRNA.0_elongated 99 nucleotides                        23.5    6.0  
+CHITON_RS06565.mRNA.0_elongated 99 nucleotides                        23.1    6.6  
+CHITON_RS02475.mRNA.0_elongated 99 nucleotides                        23.5    7.7  
+
+
+>CHITON_RS10480.mRNA.0_elongated 99 nucleotides
+Length=191
+
+ Score = 139 bits (351),  Expect = 3e-43, Method: Compositional matrix adjust.
+ Identities = 82/154 (53%), Positives = 106/154 (69%), Gaps = 0/154 (0%)
+
+Query  36   IGKRYVFLIFAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKYS  95
+            +GKR+V  +F VF  GT   L +YYSP++A ALA  +  LA+L+PW I+S +SKK+ +YS
+Sbjct  38   VGKRFVSALFVVFSAGTATGLAKYYSPVVAVALATATVALALLLPWLIVSAISKKKHRYS  97
+
+Query  96   TMLAFLLASLWEFLCSYLAMIIGYPLWKLFLNAGIGGIIVTVGIGISTITKAKVVLSEVK  155
+              LAFL ASLWEF CSYLA ++ YPLW +FL AG+GG+I  V   +  +TK +   +EVK
+Sbjct  98   VPLAFLSASLWEFACSYLAKLLDYPLWNMFLFAGLGGLITVVFTMVDALTKPRRHSAEVK  157
+
+Query  156  *SPLPPLCWPKS*SQ*GLLGANVEGFLLFVYVKV  189
+            *  LP LC P+ *S+*  LGA V  FL  VYVKV
+Sbjct  158  *HSLPSLCRPEG*SK*RFLGAYVHRFLFPVYVKV  191
+
+
+>CHITON_RS06005.mRNA.0_elongated 99 nucleotides
+Length=305
+
+ Score = 29.3 bits (64),  Expect = 0.086, Method: Compositional matrix adjust.
+ Identities = 24/68 (35%), Positives = 33/68 (49%), Gaps = 2/68 (3%)
+
+Query  24   GIKGKGGRIMERIGKRYVFLIFAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPWAI  83
+            G    GG + E +  R V L+     + T LS  EY   L+A ALA GS V+ +  P + 
+Sbjct  132  GTYASGGDVEEAL--RSVGLLEKKNELITNLSGGEYQLALIARALAQGSDVMLLDEPTSH  189
+
+Query  84   ISIVSKKE  91
+            + I   KE
+Sbjct  190  LDINHAKE  197
+
+
+>CHITON_RS06570.mRNA.0_elongated 99 nucleotides
+Length=203
+
+ Score = 25.4 bits (54),  Expect = 1.1, Method: Compositional matrix adjust.
+ Identities = 19/52 (37%), Positives = 27/52 (52%), Gaps = 2/52 (4%)
+
+Query  30   GRIMERIGKRYVFLIFAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPW  81
+            GR+  R+ KR V  +   +  GT+L L  YY P +   L   +TV A +V W
+Sbjct  120  GRVEVRVIKR-VLGMEEGYEEGTVLRLPRYYLPRIRRKLP-TTTVHAFIVEW  169
+
+
+>CHITON_RS07430.mRNA.0_elongated 99 nucleotides
+Length=502
+
+ Score = 25.0 bits (53),  Expect = 2.3, Method: Compositional matrix adjust.
+ Identities = 15/50 (30%), Positives = 29/50 (58%), Gaps = 11/50 (22%)
+
+Query  30   GRIMERIGKRYVFLIFAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILV  79
+            GRI +++G+R +FLI    F+G         S ++  ALAF +++  +++
+Sbjct  114  GRISDKVGRRKIFLISG--FIG---------SSILGIALAFMTSIKGLIL  152
+
+
+>CHITON_RS10320.mRNA.0_elongated 99 nucleotides
+Length=197
+
+ Score = 24.3 bits (51),  Expect = 2.8, Method: Compositional matrix adjust.
+ Identities = 10/27 (37%), Positives = 17/27 (63%), Gaps = 0/27 (0%)
+
+Query  34  ERIGKRYVFLIFAVFFVGTLLSLTEYY  60
+           ER+GKR V++  A   +G +L + + Y
+Sbjct  51  ERVGKREVYIKPASKLIGEVLRVMQKY  77
+
+
+>CHITON_RS05190.mRNA.0_elongated 99 nucleotides
+Length=276
+
+ Score = 24.6 bits (52),  Expect = 2.9, Method: Compositional matrix adjust.
+ Identities = 21/75 (28%), Positives = 33/75 (44%), Gaps = 13/75 (17%)
+
+Query  89   KKEFKYSTMLAFLLASLWE--FLCSYLAMIIGY--------PLWKLFLN---AGIGGIIV  135
+            ++EF Y+  L   L   WE  F      +++G          + ++ L    A +GG +V
+Sbjct  115  RREFHYNAELYLYLPDEWEKIFRKPRYQLLMGRSSDIATVEEIRRVDLEEKEAVLGGTVV  174
+
+Query  136  TVGIGISTITKAKVV  150
+             V +GI  I  A VV
+Sbjct  175  PVELGIPGIVHALVV  189
+
+
+>CHITON_RS04945.mRNA.0_elongated 99 nucleotides
+Length=436
+
+ Score = 23.5 bits (49),  Expect = 6.0, Method: Compositional matrix adjust.
+ Identities = 20/65 (31%), Positives = 33/65 (51%), Gaps = 16/65 (25%)
+
+Query  31   RIMERIGKRYVFLIFAVFFVGTLLSLTE--YYSPL-------------MATALAFGSTVL  75
+            R  + +G+R + L F  + + T +SL E  Y++ L             MA ALA G+T++
+Sbjct  271  RAKDNVGRR-LALRFWDWGIKTAISLAEVRYWTSLPIIASGGMRDGITMAKALAMGATLV  329
+
+Query  76   AILVP  80
+             I +P
+Sbjct  330  GIALP  334
+
+
+>CHITON_RS06565.mRNA.0_elongated 99 nucleotides
+Length=158
+
+ Score = 23.1 bits (48),  Expect = 6.6, Method: Compositional matrix adjust.
+ Identities = 13/31 (42%), Positives = 17/31 (55%), Gaps = 1/31 (3%)
+
+Query  51  GTLLSLTEYYSPLMATALAFGSTVLAILVPW  81
+           GT+L L  YY P +   L   +TV A +V W
+Sbjct  2   GTVLRLPRYYLPRIRRKLP-TTTVHAFIVEW  31
+
+
+>CHITON_RS02475.mRNA.0_elongated 99 nucleotides
+Length=446
+
+ Score = 23.5 bits (49),  Expect = 7.7, Method: Compositional matrix adjust.
+ Identities = 17/59 (29%), Positives = 30/59 (51%), Gaps = 9/59 (15%)
+
+Query  90   KEFKYSTMLAFLLASLWEFLCSYLAMIIGY-----PLWKLFLNAGIGGIIVTVGIGIST  143
+            +EFK+  + AF++A +  F    L  ++G       +  LFL    GGI+    +G++T
+Sbjct  108  EEFKHVGLSAFIIAVMGVFFPLLLGYVLGLAFGFTDIQSLFL----GGILTATSVGLTT  162
+
+
+
+Lambda      K        H        a         alpha
+   0.339    0.151    0.483    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 66330102
+
+
+Query= PAB_RS01890.mRNA.0_elongated 99 nucleotides pf:2 sp:1
+
+Length=188
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+CHITON_RS10480.mRNA.0_elongated 99 nucleotides                        110     7e-32
+CHITON_RS06005.mRNA.0_elongated 99 nucleotides                        28.9    0.11 
+CHITON_RS06570.mRNA.0_elongated 99 nucleotides                        25.8    0.92 
+CHITON_RS10320.mRNA.0_elongated 99 nucleotides                        24.6    2.2  
+CHITON_RS05190.mRNA.0_elongated 99 nucleotides                        24.6    2.5  
+CHITON_RS07430.mRNA.0_elongated 99 nucleotides                        24.6    2.7  
+CHITON_RS06565.mRNA.0_elongated 99 nucleotides                        23.1    5.8  
+CHITON_RS02475.mRNA.0_elongated 99 nucleotides                        23.5    7.3  
+CHITON_RS04945.mRNA.0_elongated 99 nucleotides                        23.5    7.6  
+CHITON_RS10685.mRNA.0_elongated 99 nucleotides                        22.7    9.9  
+
+
+>CHITON_RS10480.mRNA.0_elongated 99 nucleotides
+Length=191
+
+ Score = 110 bits (275),  Expect = 7e-32, Method: Compositional matrix adjust.
+ Identities = 63/121 (52%), Positives = 85/121 (70%), Gaps = 0/121 (0%)
+
+Query  36   IGKRYVFLIFAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKYS  95
+            +GKR+V  +F VF  GT   L +YYSP++A ALA  +  LA+L+PW I+S +SKK+ +YS
+Sbjct  38   VGKRFVSALFVVFSAGTATGLAKYYSPVVAVALATATVALALLLPWLIVSAISKKKHRYS  97
+
+Query  96   TMLAFLLASLWEFLCSYLAMIIGYPLWKLFLNAGIGGIIVTVGIGISTITKAKVVLSEVK  155
+              LAFL ASLWEF CSYLA ++ YPLW +FL AG+GG+I  V   +  +TK +   +EVK
+Sbjct  98   VPLAFLSASLWEFACSYLAKLLDYPLWNMFLFAGLGGLITVVFTMVDALTKPRRHSAEVK  157
+
+Query  156  *  156
+            *
+Sbjct  158  *  158
+
+
+>CHITON_RS06005.mRNA.0_elongated 99 nucleotides
+Length=305
+
+ Score = 28.9 bits (63),  Expect = 0.11, Method: Compositional matrix adjust.
+ Identities = 24/68 (35%), Positives = 33/68 (49%), Gaps = 2/68 (3%)
+
+Query  24   GIKGKGGRIMERIGKRYVFLIFAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPWAI  83
+            G    GG + E +  R V L+     + T LS  EY   L+A ALA GS V+ +  P + 
+Sbjct  132  GTYASGGDVEEAL--RSVGLLEKKNELITNLSGGEYQLALIARALAQGSDVMLLDEPTSH  189
+
+Query  84   ISIVSKKE  91
+            + I   KE
+Sbjct  190  LDINHAKE  197
+
+
+>CHITON_RS06570.mRNA.0_elongated 99 nucleotides
+Length=203
+
+ Score = 25.8 bits (55),  Expect = 0.92, Method: Compositional matrix adjust.
+ Identities = 19/52 (37%), Positives = 27/52 (52%), Gaps = 2/52 (4%)
+
+Query  30   GRIMERIGKRYVFLIFAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPW  81
+            GR+  R+ KR V  +   +  GT+L L  YY P +   L   +TV A +V W
+Sbjct  120  GRVEVRVIKR-VLGMEEGYEEGTVLRLPRYYLPRIRRKLP-TTTVHAFIVEW  169
+
+
+>CHITON_RS10320.mRNA.0_elongated 99 nucleotides
+Length=197
+
+ Score = 24.6 bits (52),  Expect = 2.2, Method: Compositional matrix adjust.
+ Identities = 10/27 (37%), Positives = 17/27 (63%), Gaps = 0/27 (0%)
+
+Query  34  ERIGKRYVFLIFAVFFVGTLLSLTEYY  60
+           ER+GKR V++  A   +G +L + + Y
+Sbjct  51  ERVGKREVYIKPASKLIGEVLRVMQKY  77
+
+
+>CHITON_RS05190.mRNA.0_elongated 99 nucleotides
+Length=276
+
+ Score = 24.6 bits (52),  Expect = 2.5, Method: Compositional matrix adjust.
+ Identities = 21/75 (28%), Positives = 33/75 (44%), Gaps = 13/75 (17%)
+
+Query  89   KKEFKYSTMLAFLLASLWE--FLCSYLAMIIGY--------PLWKLFLN---AGIGGIIV  135
+            ++EF Y+  L   L   WE  F      +++G          + ++ L    A +GG +V
+Sbjct  115  RREFHYNAELYLYLPDEWEKIFRKPRYQLLMGRSSDIATVEEIRRVDLEEKEAVLGGTVV  174
+
+Query  136  TVGIGISTITKAKVV  150
+             V +GI  I  A VV
+Sbjct  175  PVELGIPGIVHALVV  189
+
+
+>CHITON_RS07430.mRNA.0_elongated 99 nucleotides
+Length=502
+
+ Score = 24.6 bits (52),  Expect = 2.7, Method: Compositional matrix adjust.
+ Identities = 15/50 (30%), Positives = 29/50 (58%), Gaps = 11/50 (22%)
+
+Query  30   GRIMERIGKRYVFLIFAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILV  79
+            GRI +++G+R +FLI    F+G         S ++  ALAF +++  +++
+Sbjct  114  GRISDKVGRRKIFLISG--FIG---------SSILGIALAFMTSIKGLIL  152
+
+
+>CHITON_RS06565.mRNA.0_elongated 99 nucleotides
+Length=158
+
+ Score = 23.1 bits (48),  Expect = 5.8, Method: Compositional matrix adjust.
+ Identities = 13/31 (42%), Positives = 17/31 (55%), Gaps = 1/31 (3%)
+
+Query  51  GTLLSLTEYYSPLMATALAFGSTVLAILVPW  81
+           GT+L L  YY P +   L   +TV A +V W
+Sbjct  2   GTVLRLPRYYLPRIRRKLP-TTTVHAFIVEW  31
+
+
+>CHITON_RS02475.mRNA.0_elongated 99 nucleotides
+Length=446
+
+ Score = 23.5 bits (49),  Expect = 7.3, Method: Compositional matrix adjust.
+ Identities = 17/59 (29%), Positives = 30/59 (51%), Gaps = 9/59 (15%)
+
+Query  90   KEFKYSTMLAFLLASLWEFLCSYLAMIIGY-----PLWKLFLNAGIGGIIVTVGIGIST  143
+            +EFK+  + AF++A +  F    L  ++G       +  LFL    GGI+    +G++T
+Sbjct  108  EEFKHVGLSAFIIAVMGVFFPLLLGYVLGLAFGFTDIQSLFL----GGILTATSVGLTT  162
+
+
+>CHITON_RS04945.mRNA.0_elongated 99 nucleotides
+Length=436
+
+ Score = 23.5 bits (49),  Expect = 7.6, Method: Compositional matrix adjust.
+ Identities = 20/65 (31%), Positives = 33/65 (51%), Gaps = 16/65 (25%)
+
+Query  31   RIMERIGKRYVFLIFAVFFVGTLLSLTE--YYSPL-------------MATALAFGSTVL  75
+            R  + +G+R + L F  + + T +SL E  Y++ L             MA ALA G+T++
+Sbjct  271  RAKDNVGRR-LALRFWDWGIKTAISLAEVRYWTSLPIIASGGMRDGITMAKALAMGATLV  329
+
+Query  76   AILVP  80
+             I +P
+Sbjct  330  GIALP  334
+
+
+>CHITON_RS10685.mRNA.0_elongated 99 nucleotides
+Length=263
+
+ Score = 22.7 bits (47),  Expect = 9.9, Method: Compositional matrix adjust.
+ Identities = 9/15 (60%), Positives = 11/15 (73%), Gaps = 0/15 (0%)
+
+Query  111  SYLAMIIGYPLWKLF  125
+            S LA ++GYP W LF
+Sbjct  129  SALADLLGYPSWALF  143
+
+
+
+Lambda      K        H        a         alpha
+   0.341    0.151    0.477    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 65748259
+
+
+Query= PAB_RS01890.mRNA.0_elongated 99 nucleotides pf:2 sp:2
+
+Length=188
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+CHITON_RS10480.mRNA.0_elongated 99 nucleotides                        111     3e-32
+CHITON_RS06005.mRNA.0_elongated 99 nucleotides                        28.9    0.10 
+CHITON_RS06570.mRNA.0_elongated 99 nucleotides                        25.8    1.1  
+CHITON_RS05190.mRNA.0_elongated 99 nucleotides                        25.0    1.9  
+CHITON_RS07430.mRNA.0_elongated 99 nucleotides                        25.0    2.4  
+CHITON_RS10320.mRNA.0_elongated 99 nucleotides                        24.3    3.0  
+CHITON_RS04945.mRNA.0_elongated 99 nucleotides                        23.9    4.8  
+CHITON_RS02475.mRNA.0_elongated 99 nucleotides                        23.5    6.8  
+CHITON_RS06565.mRNA.0_elongated 99 nucleotides                        22.7    7.9  
+
+
+>CHITON_RS10480.mRNA.0_elongated 99 nucleotides
+Length=191
+
+ Score = 111 bits (278),  Expect = 3e-32, Method: Compositional matrix adjust.
+ Identities = 66/127 (52%), Positives = 88/127 (69%), Gaps = 0/127 (0%)
+
+Query  36   IGKRYVFLIFAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKYS  95
+            +GKR+V  +F VF  GT   L +YYSP++A ALA  +  LA+L+PW I+S +SKK+ +YS
+Sbjct  38   VGKRFVSALFVVFSAGTATGLAKYYSPVVAVALATATVALALLLPWLIVSAISKKKHRYS  97
+
+Query  96   TMLAFLLASLWEFLCSYLAMIIGYPLWKLFLNAGIGGIIVTVGIGISTITKAKVVLSEVK  155
+              LAFL ASLWEF CSYLA ++ YPLW +FL AG+GG+I  V   +  +TK +   +EVK
+Sbjct  98   VPLAFLSASLWEFACSYLAKLLDYPLWNMFLFAGLGGLITVVFTMVDALTKPRRHSAEVK  157
+
+Query  156  *PSPTSL  162
+            * S  SL
+Sbjct  158  *HSLPSL  164
+
+
+>CHITON_RS06005.mRNA.0_elongated 99 nucleotides
+Length=305
+
+ Score = 28.9 bits (63),  Expect = 0.10, Method: Compositional matrix adjust.
+ Identities = 24/68 (35%), Positives = 33/68 (49%), Gaps = 2/68 (3%)
+
+Query  24   GIKGKGGRIMERIGKRYVFLIFAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPWAI  83
+            G    GG + E +  R V L+     + T LS  EY   L+A ALA GS V+ +  P + 
+Sbjct  132  GTYASGGDVEEAL--RSVGLLEKKNELITNLSGGEYQLALIARALAQGSDVMLLDEPTSH  189
+
+Query  84   ISIVSKKE  91
+            + I   KE
+Sbjct  190  LDINHAKE  197
+
+
+>CHITON_RS06570.mRNA.0_elongated 99 nucleotides
+Length=203
+
+ Score = 25.8 bits (55),  Expect = 1.1, Method: Compositional matrix adjust.
+ Identities = 19/52 (37%), Positives = 27/52 (52%), Gaps = 2/52 (4%)
+
+Query  30   GRIMERIGKRYVFLIFAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPW  81
+            GR+  R+ KR V  +   +  GT+L L  YY P +   L   +TV A +V W
+Sbjct  120  GRVEVRVIKR-VLGMEEGYEEGTVLRLPRYYLPRIRRKLP-TTTVHAFIVEW  169
+
+
+>CHITON_RS05190.mRNA.0_elongated 99 nucleotides
+Length=276
+
+ Score = 25.0 bits (53),  Expect = 1.9, Method: Compositional matrix adjust.
+ Identities = 21/75 (28%), Positives = 33/75 (44%), Gaps = 13/75 (17%)
+
+Query  89   KKEFKYSTMLAFLLASLWE--FLCSYLAMIIGY--------PLWKLFLN---AGIGGIIV  135
+            ++EF Y+  L   L   WE  F      +++G          + ++ L    A +GG +V
+Sbjct  115  RREFHYNAELYLYLPDEWEKIFRKPRYQLLMGRSSDIATVEEIRRVDLEEKEAVLGGTVV  174
+
+Query  136  TVGIGISTITKAKVV  150
+             V +GI  I  A VV
+Sbjct  175  PVELGIPGIVHALVV  189
+
+
+>CHITON_RS07430.mRNA.0_elongated 99 nucleotides
+Length=502
+
+ Score = 25.0 bits (53),  Expect = 2.4, Method: Compositional matrix adjust.
+ Identities = 15/50 (30%), Positives = 29/50 (58%), Gaps = 11/50 (22%)
+
+Query  30   GRIMERIGKRYVFLIFAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILV  79
+            GRI +++G+R +FLI    F+G         S ++  ALAF +++  +++
+Sbjct  114  GRISDKVGRRKIFLISG--FIG---------SSILGIALAFMTSIKGLIL  152
+
+
+>CHITON_RS10320.mRNA.0_elongated 99 nucleotides
+Length=197
+
+ Score = 24.3 bits (51),  Expect = 3.0, Method: Compositional matrix adjust.
+ Identities = 10/27 (37%), Positives = 17/27 (63%), Gaps = 0/27 (0%)
+
+Query  34  ERIGKRYVFLIFAVFFVGTLLSLTEYY  60
+           ER+GKR V++  A   +G +L + + Y
+Sbjct  51  ERVGKREVYIKPASKLIGEVLRVMQKY  77
+
+
+>CHITON_RS04945.mRNA.0_elongated 99 nucleotides
+Length=436
+
+ Score = 23.9 bits (50),  Expect = 4.8, Method: Compositional matrix adjust.
+ Identities = 20/65 (31%), Positives = 33/65 (51%), Gaps = 16/65 (25%)
+
+Query  31   RIMERIGKRYVFLIFAVFFVGTLLSLTE--YYSPL-------------MATALAFGSTVL  75
+            R  + +G+R + L F  + + T +SL E  Y++ L             MA ALA G+T++
+Sbjct  271  RAKDNVGRR-LALRFWDWGIKTAISLAEVRYWTSLPIIASGGMRDGITMAKALAMGATLV  329
+
+Query  76   AILVP  80
+             I +P
+Sbjct  330  GIALP  334
+
+
+>CHITON_RS02475.mRNA.0_elongated 99 nucleotides
+Length=446
+
+ Score = 23.5 bits (49),  Expect = 6.8, Method: Compositional matrix adjust.
+ Identities = 17/59 (29%), Positives = 30/59 (51%), Gaps = 9/59 (15%)
+
+Query  90   KEFKYSTMLAFLLASLWEFLCSYLAMIIGY-----PLWKLFLNAGIGGIIVTVGIGIST  143
+            +EFK+  + AF++A +  F    L  ++G       +  LFL    GGI+    +G++T
+Sbjct  108  EEFKHVGLSAFIIAVMGVFFPLLLGYVLGLAFGFTDIQSLFL----GGILTATSVGLTT  162
+
+
+>CHITON_RS06565.mRNA.0_elongated 99 nucleotides
+Length=158
+
+ Score = 22.7 bits (47),  Expect = 7.9, Method: Compositional matrix adjust.
+ Identities = 13/31 (42%), Positives = 17/31 (55%), Gaps = 1/31 (3%)
+
+Query  51  GTLLSLTEYYSPLMATALAFGSTVLAILVPW  81
+           GT+L L  YY P +   L   +TV A +V W
+Sbjct  2   GTVLRLPRYYLPRIRRKLP-TTTVHAFIVEW  31
+
+
+
+Lambda      K        H        a         alpha
+   0.337    0.148    0.469    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 65748259
+
+
+  Database: CDS_elongated.faa
+    Posted date:  Feb 11, 2025  5:17 PM
+  Number of letters in database: 743,093
+  Number of sequences in database:  2,150
+
+
+
+Matrix: BLOSUM62
+Gap Penalties: Existence: 11, Extension: 1
+Neighboring words threshold: 11
+Window for multiple hits: 40

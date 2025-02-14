@@ -1,0 +1,1293 @@
+BLASTP 2.16.0+
+
+
+Reference: Stephen F. Altschul, Thomas L. Madden, Alejandro A.
+Schaffer, Jinghui Zhang, Zheng Zhang, Webb Miller, and David J.
+Lipman (1997), "Gapped BLAST and PSI-BLAST: a new generation of
+protein database search programs", Nucleic Acids Res. 25:3389-3402.
+
+
+Reference for composition-based statistics: Alejandro A. Schaffer,
+L. Aravind, Thomas L. Madden, Sergei Shavirin, John L. Spouge, Yuri
+I. Wolf, Eugene V. Koonin, and Stephen F. Altschul (2001),
+"Improving the accuracy of PSI-BLAST protein database searches with
+composition-based statistics and other refinements", Nucleic Acids
+Res. 29:2994-3005.
+
+
+
+Database: CDS_elongated.faa
+           2,373 sequences; 816,125 total letters
+
+
+
+Query= PAB_RS01890.mRNA.0_elongated 99 nucleotides pf:0 sp:0
+
+Length=190
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+THIRI06C_v1_0768.mRNA.0_elongated 99 nucleotides                      56.2    2e-11
+THIRI06C_v1_1968.mRNA.0_elongated 99 nucleotides                      25.8    1.5  
+THIRI06C_v1_0664.mRNA.0_elongated 99 nucleotides                      24.6    2.9  
+THIRI06C_v1_0778.mRNA.0_elongated 99 nucleotides                      24.6    3.1  
+THIRI06C_v1_0128.mRNA.0_elongated 99 nucleotides                      23.9    4.9  
+THIRI06C_v1_1672.mRNA.0_elongated 99 nucleotides                      23.5    7.4  
+THIRI06C_v1_0585.mRNA.0_elongated 99 nucleotides                      23.1    9.0  
+
+
+>THIRI06C_v1_0768.mRNA.0_elongated 99 nucleotides
+Length=178
+
+ Score = 56.2 bits (134),  Expect = 2e-11, Method: Compositional matrix adjust.
+ Identities = 31/101 (31%), Positives = 51/101 (50%), Gaps = 6/101 (6%)
+
+Query  36   RIGKRYVFLIFAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKY  95
+            R  K     +F +F +G  + LT++YS   A      + +   +VP AI+  +   +   
+Sbjct  35   RYEKHMQLFLFVLFALGGTIGLTDHYSLFRAVLGGLLAAIAMYIVPLAIVRSIGDNK---  91
+
+Query  96   STMLAFLLASLWEFLCSYLAMIIGYPLWKLFLNAGIGGIIV  136
+                  + A+LWEF C+ +   I +PLW +FL AG+GG+ V
+Sbjct  92   ---PTVVFATLWEFACAIVTKAIDFPLWSIFLMAGVGGVAV  129
+
+
+>THIRI06C_v1_1968.mRNA.0_elongated 99 nucleotides
+Length=369
+
+ Score = 25.8 bits (55),  Expect = 1.5, Method: Compositional matrix adjust.
+ Identities = 11/34 (32%), Positives = 21/34 (62%), Gaps = 4/34 (12%)
+
+Query  96   STMLAFLLA----SLWEFLCSYLAMIIGYPLWKL  125
+            + +LA++L+    S+  F+  +L M  GYP W++
+Sbjct  87   AALLAYMLSKPAYSVIAFIAIFLGMAFGYPYWRI  120
+
+
+>THIRI06C_v1_0664.mRNA.0_elongated 99 nucleotides
+Length=417
+
+ Score = 24.6 bits (52),  Expect = 2.9, Method: Compositional matrix adjust.
+ Identities = 17/61 (28%), Positives = 30/61 (49%), Gaps = 5/61 (8%)
+
+Query  56   SLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKYSTMLAFLLASLWEFLCSYLA  115
+            S  +Y +P+M TAL F     A+     I +I ++  F +  + A +  ++W  +   LA
+Sbjct  95   STLKYATPIMLTALTF-----ALGTRTGIFNIGAEGSFYFGAIAAVIFTNIWPNMWFGLA  149
+
+Query  116  M  116
+            M
+Sbjct  150  M  150
+
+
+>THIRI06C_v1_0778.mRNA.0_elongated 99 nucleotides
+Length=439
+
+ Score = 24.6 bits (52),  Expect = 3.1, Method: Compositional matrix adjust.
+ Identities = 15/61 (25%), Positives = 28/61 (46%), Gaps = 4/61 (7%)
+
+Query  46   FAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKYSTMLAFLLAS  105
+            F   F G +  +T Y  P        G   + +L PWA   ++S+++F    + AF++  
+Sbjct  183  FKEMFHGPIERITAYSGPTAEFLKKEGIDEVVLLDPWA-DEVLSERDF---DVRAFIIGG  238
+
+Query  106  L  106
+            +
+Sbjct  239  I  239
+
+
+>THIRI06C_v1_0128.mRNA.0_elongated 99 nucleotides
+Length=275
+
+ Score = 23.9 bits (50),  Expect = 4.9, Method: Compositional matrix adjust.
+ Identities = 15/46 (33%), Positives = 28/46 (61%), Gaps = 1/46 (2%)
+
+Query  75   VLAILVPWAIISIVSKKEFKYSTMLAF-LLASLWEFLCSYLAMIIG  119
+            V A++VPWA +S+ S  +F +  +L + +L  L E L + +  ++G
+Sbjct  56   VSALVVPWAEVSVTSLGDFLFLLVLPWVVLIPLHEGLHAIVVRLLG  101
+
+
+>THIRI06C_v1_1672.mRNA.0_elongated 99 nucleotides
+Length=306
+
+ Score = 23.5 bits (49),  Expect = 7.4, Method: Compositional matrix adjust.
+ Identities = 14/35 (40%), Positives = 19/35 (54%), Gaps = 0/35 (0%)
+
+Query  53   TLLSLTEYYSPLMATALAFGSTVLAILVPWAIISI  87
+            T LS  EY   L+A ALA GS  + +  P + + I
+Sbjct  157  TNLSGGEYQLALIARALAQGSEAILLDEPTSHLDI  191
+
+
+>THIRI06C_v1_0585.mRNA.0_elongated 99 nucleotides
+Length=417
+
+ Score = 23.1 bits (48),  Expect = 9.0, Method: Compositional matrix adjust.
+ Identities = 9/31 (29%), Positives = 19/31 (61%), Gaps = 0/31 (0%)
+
+Query  51  VGTLLSLTEYYSPLMATALAFGSTVLAILVP  81
+           V  ++++TE    +M T  A+G+ ++ + VP
+Sbjct  28  VKEMIAMTEKMPAIMKTKPAYGAELVEVDVP  58
+
+
+
+Lambda      K        H        a         alpha
+   0.347    0.154    0.515    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 72478578
+
+
+Query= PAB_RS01890.mRNA.0_elongated 99 nucleotides pf:0 sp:1
+
+Length=189
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+THIRI06C_v1_0768.mRNA.0_elongated 99 nucleotides                      55.8    3e-11
+THIRI06C_v1_1274.mRNA.0_elongated 99 nucleotides                      36.2    4e-04
+THIRI06C_v1_1968.mRNA.0_elongated 99 nucleotides                      25.4    1.6  
+THIRI06C_v1_0778.mRNA.0_elongated 99 nucleotides                      25.0    2.5  
+THIRI06C_v1_0128.mRNA.0_elongated 99 nucleotides                      24.3    3.5  
+THIRI06C_v1_0664.mRNA.0_elongated 99 nucleotides                      24.3    3.8  
+THIRI06C_v1_0585.mRNA.0_elongated 99 nucleotides                      23.5    7.3  
+THIRI06C_v1_1672.mRNA.0_elongated 99 nucleotides                      23.1    8.2  
+
+
+>THIRI06C_v1_0768.mRNA.0_elongated 99 nucleotides
+Length=178
+
+ Score = 55.8 bits (133),  Expect = 3e-11, Method: Compositional matrix adjust.
+ Identities = 31/101 (31%), Positives = 51/101 (50%), Gaps = 6/101 (6%)
+
+Query  36   RIGKRYVFLIFAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKY  95
+            R  K     +F +F +G  + LT++YS   A      + +   +VP AI+  +   +   
+Sbjct  35   RYEKHMQLFLFVLFALGGTIGLTDHYSLFRAVLGGLLAAIAMYIVPLAIVRSIGDNK---  91
+
+Query  96   STMLAFLLASLWEFLCSYLAMIIGYPLWKLFLNAGIGGIIV  136
+                  + A+LWEF C+ +   I +PLW +FL AG+GG+ V
+Sbjct  92   ---PTVVFATLWEFACAIVTKAIDFPLWSIFLMAGVGGVAV  129
+
+
+>THIRI06C_v1_1274.mRNA.0_elongated 99 nucleotides
+Length=287
+
+ Score = 36.2 bits (82),  Expect = 4e-04, Method: Compositional matrix adjust.
+ Identities = 18/28 (64%), Positives = 22/28 (79%), Gaps = 0/28 (0%)
+
+Query  159  LSHLFAGLKVKANKGSWVPM*RVFFSLF  186
+            LS LFAGL V  ++GS +P *R+FFSLF
+Sbjct  258  LSSLFAGLIVMTSRGSSLPR*RLFFSLF  285
+
+
+>THIRI06C_v1_1968.mRNA.0_elongated 99 nucleotides
+Length=369
+
+ Score = 25.4 bits (54),  Expect = 1.6, Method: Compositional matrix adjust.
+ Identities = 11/34 (32%), Positives = 21/34 (62%), Gaps = 4/34 (12%)
+
+Query  96   STMLAFLLA----SLWEFLCSYLAMIIGYPLWKL  125
+            + +LA++L+    S+  F+  +L M  GYP W++
+Sbjct  87   AALLAYMLSKPAYSVIAFIAIFLGMAFGYPYWRI  120
+
+
+>THIRI06C_v1_0778.mRNA.0_elongated 99 nucleotides
+Length=439
+
+ Score = 25.0 bits (53),  Expect = 2.5, Method: Compositional matrix adjust.
+ Identities = 15/61 (25%), Positives = 28/61 (46%), Gaps = 4/61 (7%)
+
+Query  46   FAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKYSTMLAFLLAS  105
+            F   F G +  +T Y  P        G   + +L PWA   ++S+++F    + AF++  
+Sbjct  183  FKEMFHGPIERITAYSGPTAEFLKKEGIDEVVLLDPWA-DEVLSERDF---DVRAFIIGG  238
+
+Query  106  L  106
+            +
+Sbjct  239  I  239
+
+
+>THIRI06C_v1_0128.mRNA.0_elongated 99 nucleotides
+Length=275
+
+ Score = 24.3 bits (51),  Expect = 3.5, Method: Compositional matrix adjust.
+ Identities = 15/46 (33%), Positives = 28/46 (61%), Gaps = 1/46 (2%)
+
+Query  75   VLAILVPWAIISIVSKKEFKYSTMLAF-LLASLWEFLCSYLAMIIG  119
+            V A++VPWA +S+ S  +F +  +L + +L  L E L + +  ++G
+Sbjct  56   VSALVVPWAEVSVTSLGDFLFLLVLPWVVLIPLHEGLHAIVVRLLG  101
+
+
+>THIRI06C_v1_0664.mRNA.0_elongated 99 nucleotides
+Length=417
+
+ Score = 24.3 bits (51),  Expect = 3.8, Method: Compositional matrix adjust.
+ Identities = 17/61 (28%), Positives = 30/61 (49%), Gaps = 5/61 (8%)
+
+Query  56   SLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKYSTMLAFLLASLWEFLCSYLA  115
+            S  +Y +P+M TAL F     A+     I +I ++  F +  + A +  ++W  +   LA
+Sbjct  95   STLKYATPIMLTALTF-----ALGTRTGIFNIGAEGSFYFGAIAAVIFTNIWPNMWFGLA  149
+
+Query  116  M  116
+            M
+Sbjct  150  M  150
+
+
+>THIRI06C_v1_0585.mRNA.0_elongated 99 nucleotides
+Length=417
+
+ Score = 23.5 bits (49),  Expect = 7.3, Method: Compositional matrix adjust.
+ Identities = 25/108 (23%), Positives = 45/108 (42%), Gaps = 12/108 (11%)
+
+Query  51   VGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKYSTMLAFLLASLW-EF  109
+            V  ++++TE    +M T  A+G+ ++ + VP      V  K    S     L    W E+
+Sbjct  28   VKEMIAMTEKMPAIMKTKPAYGAELVEVDVPKPGPGEVLIKVLATSICGTDLHIYEWNEW  87
+
+Query  110  LCSYL--AMIIGYPLWKLFLNAGIGGIIVTVGIGISTITKAKVVLSEV  155
+              S +    I+G+          + G +V VG G+ T+ +   +  E 
+Sbjct  88   AQSRIKPPQIMGH---------EVAGEVVEVGPGVDTLEEGDYISVET  126
+
+
+>THIRI06C_v1_1672.mRNA.0_elongated 99 nucleotides
+Length=306
+
+ Score = 23.1 bits (48),  Expect = 8.2, Method: Compositional matrix adjust.
+ Identities = 14/35 (40%), Positives = 19/35 (54%), Gaps = 0/35 (0%)
+
+Query  53   TLLSLTEYYSPLMATALAFGSTVLAILVPWAIISI  87
+            T LS  EY   L+A ALA GS  + +  P + + I
+Sbjct  157  TNLSGGEYQLALIARALAQGSEAILLDEPTSHLDI  191
+
+
+
+Lambda      K        H        a         alpha
+   0.349    0.154    0.509    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 71842801
+
+
+Query= PAB_RS01890.mRNA.0_elongated 99 nucleotides pf:0 sp:2
+
+Length=189
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+THIRI06C_v1_0768.mRNA.0_elongated 99 nucleotides                      57.0    1e-11
+THIRI06C_v1_1968.mRNA.0_elongated 99 nucleotides                      26.2    1.1  
+THIRI06C_v1_0778.mRNA.0_elongated 99 nucleotides                      25.0    2.3  
+THIRI06C_v1_0664.mRNA.0_elongated 99 nucleotides                      25.0    2.7  
+THIRI06C_v1_0128.mRNA.0_elongated 99 nucleotides                      24.6    3.1  
+THIRI06C_v1_0585.mRNA.0_elongated 99 nucleotides                      23.9    6.3  
+THIRI06C_v1_1672.mRNA.0_elongated 99 nucleotides                      23.1    8.6  
+
+
+>THIRI06C_v1_0768.mRNA.0_elongated 99 nucleotides
+Length=178
+
+ Score = 57.0 bits (136),  Expect = 1e-11, Method: Compositional matrix adjust.
+ Identities = 31/101 (31%), Positives = 51/101 (50%), Gaps = 6/101 (6%)
+
+Query  36   RIGKRYVFLIFAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKY  95
+            R  K     +F +F +G  + LT++YS   A      + +   +VP AI+  +   +   
+Sbjct  35   RYEKHMQLFLFVLFALGGTIGLTDHYSLFRAVLGGLLAAIAMYIVPLAIVRSIGDNK---  91
+
+Query  96   STMLAFLLASLWEFLCSYLAMIIGYPLWKLFLNAGIGGIIV  136
+                  + A+LWEF C+ +   I +PLW +FL AG+GG+ V
+Sbjct  92   ---PTVVFATLWEFACAIVTKAIDFPLWSIFLMAGVGGVAV  129
+
+
+>THIRI06C_v1_1968.mRNA.0_elongated 99 nucleotides
+Length=369
+
+ Score = 26.2 bits (56),  Expect = 1.1, Method: Compositional matrix adjust.
+ Identities = 11/34 (32%), Positives = 21/34 (62%), Gaps = 4/34 (12%)
+
+Query  96   STMLAFLLA----SLWEFLCSYLAMIIGYPLWKL  125
+            + +LA++L+    S+  F+  +L M  GYP W++
+Sbjct  87   AALLAYMLSKPAYSVIAFIAIFLGMAFGYPYWRI  120
+
+
+>THIRI06C_v1_0778.mRNA.0_elongated 99 nucleotides
+Length=439
+
+ Score = 25.0 bits (53),  Expect = 2.3, Method: Compositional matrix adjust.
+ Identities = 15/61 (25%), Positives = 28/61 (46%), Gaps = 4/61 (7%)
+
+Query  46   FAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKYSTMLAFLLAS  105
+            F   F G +  +T Y  P        G   + +L PWA   ++S+++F    + AF++  
+Sbjct  183  FKEMFHGPIERITAYSGPTAEFLKKEGIDEVVLLDPWA-DEVLSERDF---DVRAFIIGG  238
+
+Query  106  L  106
+            +
+Sbjct  239  I  239
+
+
+>THIRI06C_v1_0664.mRNA.0_elongated 99 nucleotides
+Length=417
+
+ Score = 25.0 bits (53),  Expect = 2.7, Method: Compositional matrix adjust.
+ Identities = 17/61 (28%), Positives = 30/61 (49%), Gaps = 5/61 (8%)
+
+Query  56   SLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKYSTMLAFLLASLWEFLCSYLA  115
+            S  +Y +P+M TAL F     A+     I +I ++  F +  + A +  ++W  +   LA
+Sbjct  95   STLKYATPIMLTALTF-----ALGTRTGIFNIGAEGSFYFGAIAAVIFTNIWPNMWFGLA  149
+
+Query  116  M  116
+            M
+Sbjct  150  M  150
+
+
+>THIRI06C_v1_0128.mRNA.0_elongated 99 nucleotides
+Length=275
+
+ Score = 24.6 bits (52),  Expect = 3.1, Method: Compositional matrix adjust.
+ Identities = 15/46 (33%), Positives = 28/46 (61%), Gaps = 1/46 (2%)
+
+Query  75   VLAILVPWAIISIVSKKEFKYSTMLAF-LLASLWEFLCSYLAMIIG  119
+            V A++VPWA +S+ S  +F +  +L + +L  L E L + +  ++G
+Sbjct  56   VSALVVPWAEVSVTSLGDFLFLLVLPWVVLIPLHEGLHAIVVRLLG  101
+
+
+>THIRI06C_v1_0585.mRNA.0_elongated 99 nucleotides
+Length=417
+
+ Score = 23.9 bits (50),  Expect = 6.3, Method: Compositional matrix adjust.
+ Identities = 22/113 (19%), Positives = 43/113 (38%), Gaps = 20/113 (18%)
+
+Query  51   VGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKYSTMLAFLLASLWEFL  110
+            V  ++++TE    +M T  A+G+ ++ + VP         K      ++  L  S    +
+Sbjct  28   VKEMIAMTEKMPAIMKTKPAYGAELVEVDVP---------KPGPGEVLIKVLATS----I  74
+
+Query  111  CSYLAMIIGYPLW-------KLFLNAGIGGIIVTVGIGISTITKAKVVLSEVK  156
+            C     I  +  W          +   + G +V VG G+ T+ +   +  E  
+Sbjct  75   CGTDLHIYEWNEWAQSRIKPPQIMGHEVAGEVVEVGPGVDTLEEGDYISVETH  127
+
+
+>THIRI06C_v1_1672.mRNA.0_elongated 99 nucleotides
+Length=306
+
+ Score = 23.1 bits (48),  Expect = 8.6, Method: Compositional matrix adjust.
+ Identities = 14/35 (40%), Positives = 19/35 (54%), Gaps = 0/35 (0%)
+
+Query  53   TLLSLTEYYSPLMATALAFGSTVLAILVPWAIISI  87
+            T LS  EY   L+A ALA GS  + +  P + + I
+Sbjct  157  TNLSGGEYQLALIARALAQGSEAILLDEPTSHLDI  191
+
+
+
+Lambda      K        H        a         alpha
+   0.345    0.151    0.501    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 71842801
+
+
+Query= PAB_RS01890.mRNA.0_elongated 99 nucleotides pf:1 sp:0
+
+Length=189
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+THIRI06C_v1_0768.mRNA.0_elongated 99 nucleotides                      55.1    7e-11
+THIRI06C_v1_1968.mRNA.0_elongated 99 nucleotides                      25.4    1.7  
+THIRI06C_v1_0778.mRNA.0_elongated 99 nucleotides                      24.6    3.1  
+THIRI06C_v1_0417.mRNA.0_elongated 99 nucleotides                      24.3    4.2  
+THIRI06C_v1_0664.mRNA.0_elongated 99 nucleotides                      23.9    5.5  
+THIRI06C_v1_0068.mRNA.0_elongated 99 nucleotides                      23.5    5.9  
+THIRI06C_v1_0128.mRNA.0_elongated 99 nucleotides                      23.5    6.9  
+THIRI06C_v1_0585.mRNA.0_elongated 99 nucleotides                      23.5    7.4  
+THIRI06C_v1_1672.mRNA.0_elongated 99 nucleotides                      23.5    7.7  
+THIRI06C_v1_0544.mRNA.0_elongated 99 nucleotides                      23.1    8.3  
+
+
+>THIRI06C_v1_0768.mRNA.0_elongated 99 nucleotides
+Length=178
+
+ Score = 55.1 bits (131),  Expect = 7e-11, Method: Compositional matrix adjust.
+ Identities = 31/101 (31%), Positives = 51/101 (50%), Gaps = 6/101 (6%)
+
+Query  35   RIGKRYVFLIFAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKY  94
+            R  K     +F +F +G  + LT++YS   A      + +   +VP AI+  +   +   
+Sbjct  35   RYEKHMQLFLFVLFALGGTIGLTDHYSLFRAVLGGLLAAIAMYIVPLAIVRSIGDNK---  91
+
+Query  95   STMLAFLLASLWEFLCSYLAMIIGYPLWKLFLNAGIGGIIV  135
+                  + A+LWEF C+ +   I +PLW +FL AG+GG+ V
+Sbjct  92   ---PTVVFATLWEFACAIVTKAIDFPLWSIFLMAGVGGVAV  129
+
+
+>THIRI06C_v1_1968.mRNA.0_elongated 99 nucleotides
+Length=369
+
+ Score = 25.4 bits (54),  Expect = 1.7, Method: Compositional matrix adjust.
+ Identities = 11/34 (32%), Positives = 21/34 (62%), Gaps = 4/34 (12%)
+
+Query  95   STMLAFLLA----SLWEFLCSYLAMIIGYPLWKL  124
+            + +LA++L+    S+  F+  +L M  GYP W++
+Sbjct  87   AALLAYMLSKPAYSVIAFIAIFLGMAFGYPYWRI  120
+
+
+>THIRI06C_v1_0778.mRNA.0_elongated 99 nucleotides
+Length=439
+
+ Score = 24.6 bits (52),  Expect = 3.1, Method: Compositional matrix adjust.
+ Identities = 13/48 (27%), Positives = 22/48 (46%), Gaps = 1/48 (2%)
+
+Query  45   FAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEF  92
+            F   F G +  +T Y  P        G   + +L PWA   ++S+++F
+Sbjct  183  FKEMFHGPIERITAYSGPTAEFLKKEGIDEVVLLDPWA-DEVLSERDF  229
+
+
+>THIRI06C_v1_0417.mRNA.0_elongated 99 nucleotides
+Length=810
+
+ Score = 24.3 bits (51),  Expect = 4.2, Method: Compositional matrix adjust.
+ Identities = 12/36 (33%), Positives = 18/36 (50%), Gaps = 0/36 (0%)
+
+Query  24  GNKGKGRANMERIGKRYVFLIFAVFFVGTLLSLTEY  59
+           G     RA +ER+    + LI+A+  V  L  + EY
+Sbjct  30  GGDSMKRAALERLIPGLILLIYAITRVTLLFQMNEY  65
+
+
+>THIRI06C_v1_0664.mRNA.0_elongated 99 nucleotides
+Length=417
+
+ Score = 23.9 bits (50),  Expect = 5.5, Method: Compositional matrix adjust.
+ Identities = 17/61 (28%), Positives = 30/61 (49%), Gaps = 5/61 (8%)
+
+Query  55   SLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKYSTMLAFLLASLWEFLCSYLA  114
+            S  +Y +P+M TAL F     A+     I +I ++  F +  + A +  ++W  +   LA
+Sbjct  95   STLKYATPIMLTALTF-----ALGTRTGIFNIGAEGSFYFGAIAAVIFTNIWPNMWFGLA  149
+
+Query  115  M  115
+            M
+Sbjct  150  M  150
+
+
+>THIRI06C_v1_0068.mRNA.0_elongated 99 nucleotides
+Length=197
+
+ Score = 23.5 bits (49),  Expect = 5.9, Method: Compositional matrix adjust.
+ Identities = 10/27 (37%), Positives = 17/27 (63%), Gaps = 0/27 (0%)
+
+Query  32  NMERIGKRYVFLIFAVFFVGTLLSLTE  58
+           N ER+GK+ V+L  A   +G +L + +
+Sbjct  49  NSERVGKKEVYLKPASKLMGEVLRVMQ  75
+
+
+>THIRI06C_v1_0128.mRNA.0_elongated 99 nucleotides
+Length=275
+
+ Score = 23.5 bits (49),  Expect = 6.9, Method: Compositional matrix adjust.
+ Identities = 15/46 (33%), Positives = 28/46 (61%), Gaps = 1/46 (2%)
+
+Query  74   VLAILVPWAIISIVSKKEFKYSTMLAF-LLASLWEFLCSYLAMIIG  118
+            V A++VPWA +S+ S  +F +  +L + +L  L E L + +  ++G
+Sbjct  56   VSALVVPWAEVSVTSLGDFLFLLVLPWVVLIPLHEGLHAIVVRLLG  101
+
+
+>THIRI06C_v1_0585.mRNA.0_elongated 99 nucleotides
+Length=417
+
+ Score = 23.5 bits (49),  Expect = 7.4, Method: Compositional matrix adjust.
+ Identities = 25/108 (23%), Positives = 45/108 (42%), Gaps = 12/108 (11%)
+
+Query  50   VGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKYSTMLAFLLASLW-EF  108
+            V  ++++TE    +M T  A+G+ ++ + VP      V  K    S     L    W E+
+Sbjct  28   VKEMIAMTEKMPAIMKTKPAYGAELVEVDVPKPGPGEVLIKVLATSICGTDLHIYEWNEW  87
+
+Query  109  LCSYL--AMIIGYPLWKLFLNAGIGGIIVTVGIGISTITKAKVVLSEV  154
+              S +    I+G+          + G +V VG G+ T+ +   +  E 
+Sbjct  88   AQSRIKPPQIMGH---------EVAGEVVEVGPGVDTLEEGDYISVET  126
+
+
+>THIRI06C_v1_1672.mRNA.0_elongated 99 nucleotides
+Length=306
+
+ Score = 23.5 bits (49),  Expect = 7.7, Method: Compositional matrix adjust.
+ Identities = 14/35 (40%), Positives = 19/35 (54%), Gaps = 0/35 (0%)
+
+Query  52   TLLSLTEYYSPLMATALAFGSTVLAILVPWAIISI  86
+            T LS  EY   L+A ALA GS  + +  P + + I
+Sbjct  157  TNLSGGEYQLALIARALAQGSEAILLDEPTSHLDI  191
+
+
+>THIRI06C_v1_0544.mRNA.0_elongated 99 nucleotides
+Length=336
+
+ Score = 23.1 bits (48),  Expect = 8.3, Method: Compositional matrix adjust.
+ Identities = 14/40 (35%), Positives = 21/40 (53%), Gaps = 8/40 (20%)
+
+Query  89   KKEFKYSTMLAFLLASLWEFLCSYLAMIIGYPLWKLFLNA  128
+            ++ F   T L F+ AS++  L       IGYPL + F +A
+Sbjct  108  RRRFDSDT-LYFVYASIFTLL-------IGYPLLRTFSDA  139
+
+
+
+Lambda      K        H        a         alpha
+   0.346    0.155    0.506    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 71842801
+
+
+Query= PAB_RS01890.mRNA.0_elongated 99 nucleotides pf:1 sp:1
+
+Length=188
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+THIRI06C_v1_0768.mRNA.0_elongated 99 nucleotides                      54.7    9e-11
+THIRI06C_v1_1274.mRNA.0_elongated 99 nucleotides                      36.6    4e-04
+THIRI06C_v1_1968.mRNA.0_elongated 99 nucleotides                      25.4    1.9  
+THIRI06C_v1_0778.mRNA.0_elongated 99 nucleotides                      25.0    2.4  
+THIRI06C_v1_0417.mRNA.0_elongated 99 nucleotides                      24.6    3.6  
+THIRI06C_v1_0068.mRNA.0_elongated 99 nucleotides                      23.9    4.7  
+THIRI06C_v1_0128.mRNA.0_elongated 99 nucleotides                      23.9    4.9  
+THIRI06C_v1_0585.mRNA.0_elongated 99 nucleotides                      23.9    5.7  
+THIRI06C_v1_0664.mRNA.0_elongated 99 nucleotides                      23.5    7.2  
+THIRI06C_v1_1672.mRNA.0_elongated 99 nucleotides                      23.1    8.4  
+THIRI06C_v1_0544.mRNA.0_elongated 99 nucleotides                      23.1    8.6  
+
+
+>THIRI06C_v1_0768.mRNA.0_elongated 99 nucleotides
+Length=178
+
+ Score = 54.7 bits (130),  Expect = 9e-11, Method: Compositional matrix adjust.
+ Identities = 31/101 (31%), Positives = 51/101 (50%), Gaps = 6/101 (6%)
+
+Query  35   RIGKRYVFLIFAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKY  94
+            R  K     +F +F +G  + LT++YS   A      + +   +VP AI+  +   +   
+Sbjct  35   RYEKHMQLFLFVLFALGGTIGLTDHYSLFRAVLGGLLAAIAMYIVPLAIVRSIGDNK---  91
+
+Query  95   STMLAFLLASLWEFLCSYLAMIIGYPLWKLFLNAGIGGIIV  135
+                  + A+LWEF C+ +   I +PLW +FL AG+GG+ V
+Sbjct  92   ---PTVVFATLWEFACAIVTKAIDFPLWSIFLMAGVGGVAV  129
+
+
+>THIRI06C_v1_1274.mRNA.0_elongated 99 nucleotides
+Length=287
+
+ Score = 36.6 bits (83),  Expect = 4e-04, Method: Compositional matrix adjust.
+ Identities = 19/30 (63%), Positives = 23/30 (77%), Gaps = 0/30 (0%)
+
+Query  158  LSHLFAGLKVKANKGSWVPM*RVFFSLFM*  187
+            LS LFAGL V  ++GS +P *R+FFSLF *
+Sbjct  258  LSSLFAGLIVMTSRGSSLPR*RLFFSLFR*  287
+
+
+>THIRI06C_v1_1968.mRNA.0_elongated 99 nucleotides
+Length=369
+
+ Score = 25.4 bits (54),  Expect = 1.9, Method: Compositional matrix adjust.
+ Identities = 11/34 (32%), Positives = 21/34 (62%), Gaps = 4/34 (12%)
+
+Query  95   STMLAFLLA----SLWEFLCSYLAMIIGYPLWKL  124
+            + +LA++L+    S+  F+  +L M  GYP W++
+Sbjct  87   AALLAYMLSKPAYSVIAFIAIFLGMAFGYPYWRI  120
+
+
+>THIRI06C_v1_0778.mRNA.0_elongated 99 nucleotides
+Length=439
+
+ Score = 25.0 bits (53),  Expect = 2.4, Method: Compositional matrix adjust.
+ Identities = 13/48 (27%), Positives = 22/48 (46%), Gaps = 1/48 (2%)
+
+Query  45   FAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEF  92
+            F   F G +  +T Y  P        G   + +L PWA   ++S+++F
+Sbjct  183  FKEMFHGPIERITAYSGPTAEFLKKEGIDEVVLLDPWA-DEVLSERDF  229
+
+
+>THIRI06C_v1_0417.mRNA.0_elongated 99 nucleotides
+Length=810
+
+ Score = 24.6 bits (52),  Expect = 3.6, Method: Compositional matrix adjust.
+ Identities = 12/36 (33%), Positives = 18/36 (50%), Gaps = 0/36 (0%)
+
+Query  24  GNKGKGRANMERIGKRYVFLIFAVFFVGTLLSLTEY  59
+           G     RA +ER+    + LI+A+  V  L  + EY
+Sbjct  30  GGDSMKRAALERLIPGLILLIYAITRVTLLFQMNEY  65
+
+
+>THIRI06C_v1_0068.mRNA.0_elongated 99 nucleotides
+Length=197
+
+ Score = 23.9 bits (50),  Expect = 4.7, Method: Compositional matrix adjust.
+ Identities = 10/27 (37%), Positives = 17/27 (63%), Gaps = 0/27 (0%)
+
+Query  32  NMERIGKRYVFLIFAVFFVGTLLSLTE  58
+           N ER+GK+ V+L  A   +G +L + +
+Sbjct  49  NSERVGKKEVYLKPASKLMGEVLRVMQ  75
+
+
+>THIRI06C_v1_0128.mRNA.0_elongated 99 nucleotides
+Length=275
+
+ Score = 23.9 bits (50),  Expect = 4.9, Method: Compositional matrix adjust.
+ Identities = 15/46 (33%), Positives = 28/46 (61%), Gaps = 1/46 (2%)
+
+Query  74   VLAILVPWAIISIVSKKEFKYSTMLAF-LLASLWEFLCSYLAMIIG  118
+            V A++VPWA +S+ S  +F +  +L + +L  L E L + +  ++G
+Sbjct  56   VSALVVPWAEVSVTSLGDFLFLLVLPWVVLIPLHEGLHAIVVRLLG  101
+
+
+>THIRI06C_v1_0585.mRNA.0_elongated 99 nucleotides
+Length=417
+
+ Score = 23.9 bits (50),  Expect = 5.7, Method: Compositional matrix adjust.
+ Identities = 25/108 (23%), Positives = 45/108 (42%), Gaps = 12/108 (11%)
+
+Query  50   VGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKYSTMLAFLLASLW-EF  108
+            V  ++++TE    +M T  A+G+ ++ + VP      V  K    S     L    W E+
+Sbjct  28   VKEMIAMTEKMPAIMKTKPAYGAELVEVDVPKPGPGEVLIKVLATSICGTDLHIYEWNEW  87
+
+Query  109  LCSYL--AMIIGYPLWKLFLNAGIGGIIVTVGIGISTITKAKVVLSEV  154
+              S +    I+G+          + G +V VG G+ T+ +   +  E 
+Sbjct  88   AQSRIKPPQIMGH---------EVAGEVVEVGPGVDTLEEGDYISVET  126
+
+
+>THIRI06C_v1_0664.mRNA.0_elongated 99 nucleotides
+Length=417
+
+ Score = 23.5 bits (49),  Expect = 7.2, Method: Compositional matrix adjust.
+ Identities = 17/61 (28%), Positives = 30/61 (49%), Gaps = 5/61 (8%)
+
+Query  55   SLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKYSTMLAFLLASLWEFLCSYLA  114
+            S  +Y +P+M TAL F     A+     I +I ++  F +  + A +  ++W  +   LA
+Sbjct  95   STLKYATPIMLTALTF-----ALGTRTGIFNIGAEGSFYFGAIAAVIFTNIWPNMWFGLA  149
+
+Query  115  M  115
+            M
+Sbjct  150  M  150
+
+
+>THIRI06C_v1_1672.mRNA.0_elongated 99 nucleotides
+Length=306
+
+ Score = 23.1 bits (48),  Expect = 8.4, Method: Compositional matrix adjust.
+ Identities = 14/35 (40%), Positives = 19/35 (54%), Gaps = 0/35 (0%)
+
+Query  52   TLLSLTEYYSPLMATALAFGSTVLAILVPWAIISI  86
+            T LS  EY   L+A ALA GS  + +  P + + I
+Sbjct  157  TNLSGGEYQLALIARALAQGSEAILLDEPTSHLDI  191
+
+
+>THIRI06C_v1_0544.mRNA.0_elongated 99 nucleotides
+Length=336
+
+ Score = 23.1 bits (48),  Expect = 8.6, Method: Compositional matrix adjust.
+ Identities = 14/40 (35%), Positives = 21/40 (53%), Gaps = 8/40 (20%)
+
+Query  89   KKEFKYSTMLAFLLASLWEFLCSYLAMIIGYPLWKLFLNA  128
+            ++ F   T L F+ AS++  L       IGYPL + F +A
+Sbjct  108  RRRFDSDT-LYFVYASIFTLL-------IGYPLLRTFSDA  139
+
+
+
+Lambda      K        H        a         alpha
+   0.349    0.155    0.499    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 72110950
+
+
+Query= PAB_RS01890.mRNA.0_elongated 99 nucleotides pf:1 sp:2
+
+Length=188
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+THIRI06C_v1_0768.mRNA.0_elongated 99 nucleotides                      55.8    4e-11
+THIRI06C_v1_1968.mRNA.0_elongated 99 nucleotides                      25.8    1.1  
+THIRI06C_v1_0778.mRNA.0_elongated 99 nucleotides                      25.0    2.4  
+THIRI06C_v1_0585.mRNA.0_elongated 99 nucleotides                      24.3    4.0  
+THIRI06C_v1_0128.mRNA.0_elongated 99 nucleotides                      24.3    4.1  
+THIRI06C_v1_0417.mRNA.0_elongated 99 nucleotides                      24.3    4.5  
+THIRI06C_v1_0664.mRNA.0_elongated 99 nucleotides                      23.9    5.0  
+THIRI06C_v1_0068.mRNA.0_elongated 99 nucleotides                      23.5    6.3  
+THIRI06C_v1_1672.mRNA.0_elongated 99 nucleotides                      23.1    8.4  
+THIRI06C_v1_0544.mRNA.0_elongated 99 nucleotides                      23.1    9.1  
+
+
+>THIRI06C_v1_0768.mRNA.0_elongated 99 nucleotides
+Length=178
+
+ Score = 55.8 bits (133),  Expect = 4e-11, Method: Compositional matrix adjust.
+ Identities = 31/101 (31%), Positives = 51/101 (50%), Gaps = 6/101 (6%)
+
+Query  35   RIGKRYVFLIFAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKY  94
+            R  K     +F +F +G  + LT++YS   A      + +   +VP AI+  +   +   
+Sbjct  35   RYEKHMQLFLFVLFALGGTIGLTDHYSLFRAVLGGLLAAIAMYIVPLAIVRSIGDNK---  91
+
+Query  95   STMLAFLLASLWEFLCSYLAMIIGYPLWKLFLNAGIGGIIV  135
+                  + A+LWEF C+ +   I +PLW +FL AG+GG+ V
+Sbjct  92   ---PTVVFATLWEFACAIVTKAIDFPLWSIFLMAGVGGVAV  129
+
+
+>THIRI06C_v1_1968.mRNA.0_elongated 99 nucleotides
+Length=369
+
+ Score = 25.8 bits (55),  Expect = 1.1, Method: Compositional matrix adjust.
+ Identities = 11/34 (32%), Positives = 21/34 (62%), Gaps = 4/34 (12%)
+
+Query  95   STMLAFLLA----SLWEFLCSYLAMIIGYPLWKL  124
+            + +LA++L+    S+  F+  +L M  GYP W++
+Sbjct  87   AALLAYMLSKPAYSVIAFIAIFLGMAFGYPYWRI  120
+
+
+>THIRI06C_v1_0778.mRNA.0_elongated 99 nucleotides
+Length=439
+
+ Score = 25.0 bits (53),  Expect = 2.4, Method: Compositional matrix adjust.
+ Identities = 13/48 (27%), Positives = 22/48 (46%), Gaps = 1/48 (2%)
+
+Query  45   FAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEF  92
+            F   F G +  +T Y  P        G   + +L PWA   ++S+++F
+Sbjct  183  FKEMFHGPIERITAYSGPTAEFLKKEGIDEVVLLDPWA-DEVLSERDF  229
+
+
+>THIRI06C_v1_0585.mRNA.0_elongated 99 nucleotides
+Length=417
+
+ Score = 24.3 bits (51),  Expect = 4.0, Method: Compositional matrix adjust.
+ Identities = 22/112 (20%), Positives = 43/112 (38%), Gaps = 20/112 (18%)
+
+Query  50   VGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKYSTMLAFLLASLWEFL  109
+            V  ++++TE    +M T  A+G+ ++ + VP         K      ++  L  S    +
+Sbjct  28   VKEMIAMTEKMPAIMKTKPAYGAELVEVDVP---------KPGPGEVLIKVLATS----I  74
+
+Query  110  CSYLAMIIGYPLW-------KLFLNAGIGGIIVTVGIGISTITKAKVVLSEV  154
+            C     I  +  W          +   + G +V VG G+ T+ +   +  E 
+Sbjct  75   CGTDLHIYEWNEWAQSRIKPPQIMGHEVAGEVVEVGPGVDTLEEGDYISVET  126
+
+
+>THIRI06C_v1_0128.mRNA.0_elongated 99 nucleotides
+Length=275
+
+ Score = 24.3 bits (51),  Expect = 4.1, Method: Compositional matrix adjust.
+ Identities = 15/46 (33%), Positives = 28/46 (61%), Gaps = 1/46 (2%)
+
+Query  74   VLAILVPWAIISIVSKKEFKYSTMLAF-LLASLWEFLCSYLAMIIG  118
+            V A++VPWA +S+ S  +F +  +L + +L  L E L + +  ++G
+Sbjct  56   VSALVVPWAEVSVTSLGDFLFLLVLPWVVLIPLHEGLHAIVVRLLG  101
+
+
+>THIRI06C_v1_0417.mRNA.0_elongated 99 nucleotides
+Length=810
+
+ Score = 24.3 bits (51),  Expect = 4.5, Method: Compositional matrix adjust.
+ Identities = 12/36 (33%), Positives = 18/36 (50%), Gaps = 0/36 (0%)
+
+Query  24  GNKGKGRANMERIGKRYVFLIFAVFFVGTLLSLTEY  59
+           G     RA +ER+    + LI+A+  V  L  + EY
+Sbjct  30  GGDSMKRAALERLIPGLILLIYAITRVTLLFQMNEY  65
+
+
+>THIRI06C_v1_0664.mRNA.0_elongated 99 nucleotides
+Length=417
+
+ Score = 23.9 bits (50),  Expect = 5.0, Method: Compositional matrix adjust.
+ Identities = 17/61 (28%), Positives = 30/61 (49%), Gaps = 5/61 (8%)
+
+Query  55   SLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKYSTMLAFLLASLWEFLCSYLA  114
+            S  +Y +P+M TAL F     A+     I +I ++  F +  + A +  ++W  +   LA
+Sbjct  95   STLKYATPIMLTALTF-----ALGTRTGIFNIGAEGSFYFGAIAAVIFTNIWPNMWFGLA  149
+
+Query  115  M  115
+            M
+Sbjct  150  M  150
+
+
+>THIRI06C_v1_0068.mRNA.0_elongated 99 nucleotides
+Length=197
+
+ Score = 23.5 bits (49),  Expect = 6.3, Method: Compositional matrix adjust.
+ Identities = 10/27 (37%), Positives = 17/27 (63%), Gaps = 0/27 (0%)
+
+Query  32  NMERIGKRYVFLIFAVFFVGTLLSLTE  58
+           N ER+GK+ V+L  A   +G +L + +
+Sbjct  49  NSERVGKKEVYLKPASKLMGEVLRVMQ  75
+
+
+>THIRI06C_v1_1672.mRNA.0_elongated 99 nucleotides
+Length=306
+
+ Score = 23.1 bits (48),  Expect = 8.4, Method: Compositional matrix adjust.
+ Identities = 14/35 (40%), Positives = 19/35 (54%), Gaps = 0/35 (0%)
+
+Query  52   TLLSLTEYYSPLMATALAFGSTVLAILVPWAIISI  86
+            T LS  EY   L+A ALA GS  + +  P + + I
+Sbjct  157  TNLSGGEYQLALIARALAQGSEAILLDEPTSHLDI  191
+
+
+>THIRI06C_v1_0544.mRNA.0_elongated 99 nucleotides
+Length=336
+
+ Score = 23.1 bits (48),  Expect = 9.1, Method: Compositional matrix adjust.
+ Identities = 14/40 (35%), Positives = 21/40 (53%), Gaps = 8/40 (20%)
+
+Query  89   KKEFKYSTMLAFLLASLWEFLCSYLAMIIGYPLWKLFLNA  128
+            ++ F   T L F+ AS++  L       IGYPL + F +A
+Sbjct  108  RRRFDSDT-LYFVYASIFTLL-------IGYPLLRTFSDA  139
+
+
+
+Lambda      K        H        a         alpha
+   0.344    0.152    0.492    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 72110950
+
+
+Query= PAB_RS01890.mRNA.0_elongated 99 nucleotides pf:2 sp:0
+
+Length=189
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+THIRI06C_v1_0768.mRNA.0_elongated 99 nucleotides                      55.1    6e-11
+THIRI06C_v1_1968.mRNA.0_elongated 99 nucleotides                      25.4    1.6  
+THIRI06C_v1_0778.mRNA.0_elongated 99 nucleotides                      24.6    3.1  
+THIRI06C_v1_0664.mRNA.0_elongated 99 nucleotides                      24.3    4.7  
+THIRI06C_v1_1672.mRNA.0_elongated 99 nucleotides                      23.9    5.9  
+THIRI06C_v1_0839.mRNA.0_elongated 99 nucleotides                      23.5    6.0  
+THIRI06C_v1_0128.mRNA.0_elongated 99 nucleotides                      23.5    7.1  
+THIRI06C_v1_0585.mRNA.0_elongated 99 nucleotides                      23.1    8.9  
+THIRI06C_v1_0544.mRNA.0_elongated 99 nucleotides                      23.1    9.0  
+
+
+>THIRI06C_v1_0768.mRNA.0_elongated 99 nucleotides
+Length=178
+
+ Score = 55.1 bits (131),  Expect = 6e-11, Method: Compositional matrix adjust.
+ Identities = 31/101 (31%), Positives = 51/101 (50%), Gaps = 6/101 (6%)
+
+Query  35   RIGKRYVFLIFAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKY  94
+            R  K     +F +F +G  + LT++YS   A      + +   +VP AI+  +   +   
+Sbjct  35   RYEKHMQLFLFVLFALGGTIGLTDHYSLFRAVLGGLLAAIAMYIVPLAIVRSIGDNK---  91
+
+Query  95   STMLAFLLASLWEFLCSYLAMIIGYPLWKLFLNAGIGGIIV  135
+                  + A+LWEF C+ +   I +PLW +FL AG+GG+ V
+Sbjct  92   ---PTVVFATLWEFACAIVTKAIDFPLWSIFLMAGVGGVAV  129
+
+
+>THIRI06C_v1_1968.mRNA.0_elongated 99 nucleotides
+Length=369
+
+ Score = 25.4 bits (54),  Expect = 1.6, Method: Compositional matrix adjust.
+ Identities = 11/34 (32%), Positives = 21/34 (62%), Gaps = 4/34 (12%)
+
+Query  95   STMLAFLLA----SLWEFLCSYLAMIIGYPLWKL  124
+            + +LA++L+    S+  F+  +L M  GYP W++
+Sbjct  87   AALLAYMLSKPAYSVIAFIAIFLGMAFGYPYWRI  120
+
+
+>THIRI06C_v1_0778.mRNA.0_elongated 99 nucleotides
+Length=439
+
+ Score = 24.6 bits (52),  Expect = 3.1, Method: Compositional matrix adjust.
+ Identities = 13/48 (27%), Positives = 22/48 (46%), Gaps = 1/48 (2%)
+
+Query  45   FAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEF  92
+            F   F G +  +T Y  P        G   + +L PWA   ++S+++F
+Sbjct  183  FKEMFHGPIERITAYSGPTAEFLKKEGIDEVVLLDPWA-DEVLSERDF  229
+
+
+>THIRI06C_v1_0664.mRNA.0_elongated 99 nucleotides
+Length=417
+
+ Score = 24.3 bits (51),  Expect = 4.7, Method: Compositional matrix adjust.
+ Identities = 17/61 (28%), Positives = 30/61 (49%), Gaps = 5/61 (8%)
+
+Query  55   SLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKYSTMLAFLLASLWEFLCSYLA  114
+            S  +Y +P+M TAL F     A+     I +I ++  F +  + A +  ++W  +   LA
+Sbjct  95   STLKYATPIMLTALTF-----ALGTRTGIFNIGAEGSFYFGAIAAVIFTNIWPNMWFGLA  149
+
+Query  115  M  115
+            M
+Sbjct  150  M  150
+
+
+>THIRI06C_v1_1672.mRNA.0_elongated 99 nucleotides
+Length=306
+
+ Score = 23.9 bits (50),  Expect = 5.9, Method: Compositional matrix adjust.
+ Identities = 14/35 (40%), Positives = 19/35 (54%), Gaps = 0/35 (0%)
+
+Query  52   TLLSLTEYYSPLMATALAFGSTVLAILVPWAIISI  86
+            T LS  EY   L+A ALA GS  + +  P + + I
+Sbjct  157  TNLSGGEYQLALIARALAQGSEAILLDEPTSHLDI  191
+
+
+>THIRI06C_v1_0839.mRNA.0_elongated 99 nucleotides
+Length=232
+
+ Score = 23.5 bits (49),  Expect = 6.0, Method: Compositional matrix adjust.
+ Identities = 12/40 (30%), Positives = 18/40 (45%), Gaps = 7/40 (18%)
+
+Query  21   KFKGIKGKGGRI-------MERIGKRYVFLIFAVFFVGTL  53
+               G  G+ GRI       +ER+  RY  ++ +    GTL
+Sbjct  67   DLNGTLGENGRIDEEVRHLLERLTDRYTVVVLSADTFGTL  106
+
+
+>THIRI06C_v1_0128.mRNA.0_elongated 99 nucleotides
+Length=275
+
+ Score = 23.5 bits (49),  Expect = 7.1, Method: Compositional matrix adjust.
+ Identities = 15/46 (33%), Positives = 28/46 (61%), Gaps = 1/46 (2%)
+
+Query  74   VLAILVPWAIISIVSKKEFKYSTMLAF-LLASLWEFLCSYLAMIIG  118
+            V A++VPWA +S+ S  +F +  +L + +L  L E L + +  ++G
+Sbjct  56   VSALVVPWAEVSVTSLGDFLFLLVLPWVVLIPLHEGLHAIVVRLLG  101
+
+
+>THIRI06C_v1_0585.mRNA.0_elongated 99 nucleotides
+Length=417
+
+ Score = 23.1 bits (48),  Expect = 8.9, Method: Compositional matrix adjust.
+ Identities = 25/109 (23%), Positives = 45/109 (41%), Gaps = 12/109 (11%)
+
+Query  50   VGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKYSTMLAFLLASLW-EF  108
+            V  ++++TE    +M T  A+G+ ++ + VP      V  K    S     L    W E+
+Sbjct  28   VKEMIAMTEKMPAIMKTKPAYGAELVEVDVPKPGPGEVLIKVLATSICGTDLHIYEWNEW  87
+
+Query  109  LCSYL--AMIIGYPLWKLFLNAGIGGIIVTVGIGISTITKAKVVLSEVK  155
+              S +    I+G+          + G +V VG G+ T+ +   +  E  
+Sbjct  88   AQSRIKPPQIMGH---------EVAGEVVEVGPGVDTLEEGDYISVETH  127
+
+
+>THIRI06C_v1_0544.mRNA.0_elongated 99 nucleotides
+Length=336
+
+ Score = 23.1 bits (48),  Expect = 9.0, Method: Compositional matrix adjust.
+ Identities = 14/40 (35%), Positives = 21/40 (53%), Gaps = 8/40 (20%)
+
+Query  89   KKEFKYSTMLAFLLASLWEFLCSYLAMIIGYPLWKLFLNA  128
+            ++ F   T L F+ AS++  L       IGYPL + F +A
+Sbjct  108  RRRFDSDT-LYFVYASIFTLL-------IGYPLLRTFSDA  139
+
+
+
+Lambda      K        H        a         alpha
+   0.339    0.151    0.483    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 71842801
+
+
+Query= PAB_RS01890.mRNA.0_elongated 99 nucleotides pf:2 sp:1
+
+Length=188
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+THIRI06C_v1_0768.mRNA.0_elongated 99 nucleotides                      55.1    7e-11
+THIRI06C_v1_1274.mRNA.0_elongated 99 nucleotides                      36.2    4e-04
+THIRI06C_v1_1968.mRNA.0_elongated 99 nucleotides                      25.4    1.8  
+THIRI06C_v1_0778.mRNA.0_elongated 99 nucleotides                      25.0    2.5  
+THIRI06C_v1_0128.mRNA.0_elongated 99 nucleotides                      23.9    4.9  
+THIRI06C_v1_0839.mRNA.0_elongated 99 nucleotides                      23.9    5.3  
+THIRI06C_v1_0585.mRNA.0_elongated 99 nucleotides                      23.9    5.8  
+THIRI06C_v1_0664.mRNA.0_elongated 99 nucleotides                      23.9    5.9  
+THIRI06C_v1_1672.mRNA.0_elongated 99 nucleotides                      23.5    6.5  
+THIRI06C_v1_0544.mRNA.0_elongated 99 nucleotides                      23.1    9.5  
+
+
+>THIRI06C_v1_0768.mRNA.0_elongated 99 nucleotides
+Length=178
+
+ Score = 55.1 bits (131),  Expect = 7e-11, Method: Compositional matrix adjust.
+ Identities = 31/101 (31%), Positives = 51/101 (50%), Gaps = 6/101 (6%)
+
+Query  35   RIGKRYVFLIFAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKY  94
+            R  K     +F +F +G  + LT++YS   A      + +   +VP AI+  +   +   
+Sbjct  35   RYEKHMQLFLFVLFALGGTIGLTDHYSLFRAVLGGLLAAIAMYIVPLAIVRSIGDNK---  91
+
+Query  95   STMLAFLLASLWEFLCSYLAMIIGYPLWKLFLNAGIGGIIV  135
+                  + A+LWEF C+ +   I +PLW +FL AG+GG+ V
+Sbjct  92   ---PTVVFATLWEFACAIVTKAIDFPLWSIFLMAGVGGVAV  129
+
+
+>THIRI06C_v1_1274.mRNA.0_elongated 99 nucleotides
+Length=287
+
+ Score = 36.2 bits (82),  Expect = 4e-04, Method: Compositional matrix adjust.
+ Identities = 19/30 (63%), Positives = 23/30 (77%), Gaps = 0/30 (0%)
+
+Query  158  LSHLFAGLKVKANKGSWVPM*RVFFSLFM*  187
+            LS LFAGL V  ++GS +P *R+FFSLF *
+Sbjct  258  LSSLFAGLIVMTSRGSSLPR*RLFFSLFR*  287
+
+
+>THIRI06C_v1_1968.mRNA.0_elongated 99 nucleotides
+Length=369
+
+ Score = 25.4 bits (54),  Expect = 1.8, Method: Compositional matrix adjust.
+ Identities = 11/34 (32%), Positives = 21/34 (62%), Gaps = 4/34 (12%)
+
+Query  95   STMLAFLLA----SLWEFLCSYLAMIIGYPLWKL  124
+            + +LA++L+    S+  F+  +L M  GYP W++
+Sbjct  87   AALLAYMLSKPAYSVIAFIAIFLGMAFGYPYWRI  120
+
+
+>THIRI06C_v1_0778.mRNA.0_elongated 99 nucleotides
+Length=439
+
+ Score = 25.0 bits (53),  Expect = 2.5, Method: Compositional matrix adjust.
+ Identities = 13/49 (27%), Positives = 22/49 (45%), Gaps = 1/49 (2%)
+
+Query  45   FAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFK  93
+            F   F G +  +T Y  P        G   + +L PWA   ++S+++F 
+Sbjct  183  FKEMFHGPIERITAYSGPTAEFLKKEGIDEVVLLDPWA-DEVLSERDFD  230
+
+
+>THIRI06C_v1_0128.mRNA.0_elongated 99 nucleotides
+Length=275
+
+ Score = 23.9 bits (50),  Expect = 4.9, Method: Compositional matrix adjust.
+ Identities = 15/46 (33%), Positives = 28/46 (61%), Gaps = 1/46 (2%)
+
+Query  74   VLAILVPWAIISIVSKKEFKYSTMLAF-LLASLWEFLCSYLAMIIG  118
+            V A++VPWA +S+ S  +F +  +L + +L  L E L + +  ++G
+Sbjct  56   VSALVVPWAEVSVTSLGDFLFLLVLPWVVLIPLHEGLHAIVVRLLG  101
+
+
+>THIRI06C_v1_0839.mRNA.0_elongated 99 nucleotides
+Length=232
+
+ Score = 23.9 bits (50),  Expect = 5.3, Method: Compositional matrix adjust.
+ Identities = 12/40 (30%), Positives = 18/40 (45%), Gaps = 7/40 (18%)
+
+Query  21   KFKGIKGKGGRI-------MERIGKRYVFLIFAVFFVGTL  53
+               G  G+ GRI       +ER+  RY  ++ +    GTL
+Sbjct  67   DLNGTLGENGRIDEEVRHLLERLTDRYTVVVLSADTFGTL  106
+
+
+>THIRI06C_v1_0585.mRNA.0_elongated 99 nucleotides
+Length=417
+
+ Score = 23.9 bits (50),  Expect = 5.8, Method: Compositional matrix adjust.
+ Identities = 25/108 (23%), Positives = 45/108 (42%), Gaps = 12/108 (11%)
+
+Query  50   VGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKYSTMLAFLLASLW-EF  108
+            V  ++++TE    +M T  A+G+ ++ + VP      V  K    S     L    W E+
+Sbjct  28   VKEMIAMTEKMPAIMKTKPAYGAELVEVDVPKPGPGEVLIKVLATSICGTDLHIYEWNEW  87
+
+Query  109  LCSYL--AMIIGYPLWKLFLNAGIGGIIVTVGIGISTITKAKVVLSEV  154
+              S +    I+G+          + G +V VG G+ T+ +   +  E 
+Sbjct  88   AQSRIKPPQIMGH---------EVAGEVVEVGPGVDTLEEGDYISVET  126
+
+
+>THIRI06C_v1_0664.mRNA.0_elongated 99 nucleotides
+Length=417
+
+ Score = 23.9 bits (50),  Expect = 5.9, Method: Compositional matrix adjust.
+ Identities = 17/61 (28%), Positives = 30/61 (49%), Gaps = 5/61 (8%)
+
+Query  55   SLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKYSTMLAFLLASLWEFLCSYLA  114
+            S  +Y +P+M TAL F     A+     I +I ++  F +  + A +  ++W  +   LA
+Sbjct  95   STLKYATPIMLTALTF-----ALGTRTGIFNIGAEGSFYFGAIAAVIFTNIWPNMWFGLA  149
+
+Query  115  M  115
+            M
+Sbjct  150  M  150
+
+
+>THIRI06C_v1_1672.mRNA.0_elongated 99 nucleotides
+Length=306
+
+ Score = 23.5 bits (49),  Expect = 6.5, Method: Compositional matrix adjust.
+ Identities = 14/35 (40%), Positives = 19/35 (54%), Gaps = 0/35 (0%)
+
+Query  52   TLLSLTEYYSPLMATALAFGSTVLAILVPWAIISI  86
+            T LS  EY   L+A ALA GS  + +  P + + I
+Sbjct  157  TNLSGGEYQLALIARALAQGSEAILLDEPTSHLDI  191
+
+
+>THIRI06C_v1_0544.mRNA.0_elongated 99 nucleotides
+Length=336
+
+ Score = 23.1 bits (48),  Expect = 9.5, Method: Compositional matrix adjust.
+ Identities = 14/40 (35%), Positives = 21/40 (53%), Gaps = 8/40 (20%)
+
+Query  89   KKEFKYSTMLAFLLASLWEFLCSYLAMIIGYPLWKLFLNA  128
+            ++ F   T L F+ AS++  L       IGYPL + F +A
+Sbjct  108  RRRFDSDT-LYFVYASIFTLL-------IGYPLLRTFSDA  139
+
+
+
+Lambda      K        H        a         alpha
+   0.341    0.151    0.477    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 72110950
+
+
+Query= PAB_RS01890.mRNA.0_elongated 99 nucleotides pf:2 sp:2
+
+Length=188
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+THIRI06C_v1_0768.mRNA.0_elongated 99 nucleotides                      55.8    3e-11
+THIRI06C_v1_1968.mRNA.0_elongated 99 nucleotides                      25.8    1.1  
+THIRI06C_v1_0778.mRNA.0_elongated 99 nucleotides                      25.0    2.5  
+THIRI06C_v1_0664.mRNA.0_elongated 99 nucleotides                      24.3    4.2  
+THIRI06C_v1_0128.mRNA.0_elongated 99 nucleotides                      23.9    4.4  
+THIRI06C_v1_0585.mRNA.0_elongated 99 nucleotides                      24.3    4.8  
+THIRI06C_v1_0839.mRNA.0_elongated 99 nucleotides                      23.9    5.5  
+THIRI06C_v1_1672.mRNA.0_elongated 99 nucleotides                      23.5    6.2  
+THIRI06C_v1_0544.mRNA.0_elongated 99 nucleotides                      23.1    9.4  
+
+
+>THIRI06C_v1_0768.mRNA.0_elongated 99 nucleotides
+Length=178
+
+ Score = 55.8 bits (133),  Expect = 3e-11, Method: Compositional matrix adjust.
+ Identities = 31/101 (31%), Positives = 51/101 (50%), Gaps = 6/101 (6%)
+
+Query  35   RIGKRYVFLIFAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKY  94
+            R  K     +F +F +G  + LT++YS   A      + +   +VP AI+  +   +   
+Sbjct  35   RYEKHMQLFLFVLFALGGTIGLTDHYSLFRAVLGGLLAAIAMYIVPLAIVRSIGDNK---  91
+
+Query  95   STMLAFLLASLWEFLCSYLAMIIGYPLWKLFLNAGIGGIIV  135
+                  + A+LWEF C+ +   I +PLW +FL AG+GG+ V
+Sbjct  92   ---PTVVFATLWEFACAIVTKAIDFPLWSIFLMAGVGGVAV  129
+
+
+>THIRI06C_v1_1968.mRNA.0_elongated 99 nucleotides
+Length=369
+
+ Score = 25.8 bits (55),  Expect = 1.1, Method: Compositional matrix adjust.
+ Identities = 11/34 (32%), Positives = 21/34 (62%), Gaps = 4/34 (12%)
+
+Query  95   STMLAFLLA----SLWEFLCSYLAMIIGYPLWKL  124
+            + +LA++L+    S+  F+  +L M  GYP W++
+Sbjct  87   AALLAYMLSKPAYSVIAFIAIFLGMAFGYPYWRI  120
+
+
+>THIRI06C_v1_0778.mRNA.0_elongated 99 nucleotides
+Length=439
+
+ Score = 25.0 bits (53),  Expect = 2.5, Method: Compositional matrix adjust.
+ Identities = 13/49 (27%), Positives = 22/49 (45%), Gaps = 1/49 (2%)
+
+Query  45   FAVFFVGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFK  93
+            F   F G +  +T Y  P        G   + +L PWA   ++S+++F 
+Sbjct  183  FKEMFHGPIERITAYSGPTAEFLKKEGIDEVVLLDPWA-DEVLSERDFD  230
+
+
+>THIRI06C_v1_0664.mRNA.0_elongated 99 nucleotides
+Length=417
+
+ Score = 24.3 bits (51),  Expect = 4.2, Method: Compositional matrix adjust.
+ Identities = 17/61 (28%), Positives = 30/61 (49%), Gaps = 5/61 (8%)
+
+Query  55   SLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKYSTMLAFLLASLWEFLCSYLA  114
+            S  +Y +P+M TAL F     A+     I +I ++  F +  + A +  ++W  +   LA
+Sbjct  95   STLKYATPIMLTALTF-----ALGTRTGIFNIGAEGSFYFGAIAAVIFTNIWPNMWFGLA  149
+
+Query  115  M  115
+            M
+Sbjct  150  M  150
+
+
+>THIRI06C_v1_0128.mRNA.0_elongated 99 nucleotides
+Length=275
+
+ Score = 23.9 bits (50),  Expect = 4.4, Method: Compositional matrix adjust.
+ Identities = 15/46 (33%), Positives = 28/46 (61%), Gaps = 1/46 (2%)
+
+Query  74   VLAILVPWAIISIVSKKEFKYSTMLAF-LLASLWEFLCSYLAMIIG  118
+            V A++VPWA +S+ S  +F +  +L + +L  L E L + +  ++G
+Sbjct  56   VSALVVPWAEVSVTSLGDFLFLLVLPWVVLIPLHEGLHAIVVRLLG  101
+
+
+>THIRI06C_v1_0585.mRNA.0_elongated 99 nucleotides
+Length=417
+
+ Score = 24.3 bits (51),  Expect = 4.8, Method: Compositional matrix adjust.
+ Identities = 24/109 (22%), Positives = 43/109 (39%), Gaps = 12/109 (11%)
+
+Query  50   VGTLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKYS---TMLAFLLASLW  106
+            V  ++++TE    +M T  A+G+ ++ + VP      V  K    S   T L     + W
+Sbjct  28   VKEMIAMTEKMPAIMKTKPAYGAELVEVDVPKPGPGEVLIKVLATSICGTDLHIYEWNEW  87
+
+Query  107  EFLCSYLAMIIGYPLWKLFLNAGIGGIIVTVGIGISTITKAKVVLSEVK  155
+                     I+G+          + G +V VG G+ T+ +   +  E  
+Sbjct  88   AQSRIKPPQIMGH---------EVAGEVVEVGPGVDTLEEGDYISVETH  127
+
+
+>THIRI06C_v1_0839.mRNA.0_elongated 99 nucleotides
+Length=232
+
+ Score = 23.9 bits (50),  Expect = 5.5, Method: Compositional matrix adjust.
+ Identities = 12/40 (30%), Positives = 18/40 (45%), Gaps = 7/40 (18%)
+
+Query  21   KFKGIKGKGGRI-------MERIGKRYVFLIFAVFFVGTL  53
+               G  G+ GRI       +ER+  RY  ++ +    GTL
+Sbjct  67   DLNGTLGENGRIDEEVRHLLERLTDRYTVVVLSADTFGTL  106
+
+
+>THIRI06C_v1_1672.mRNA.0_elongated 99 nucleotides
+Length=306
+
+ Score = 23.5 bits (49),  Expect = 6.2, Method: Compositional matrix adjust.
+ Identities = 18/54 (33%), Positives = 26/54 (48%), Gaps = 6/54 (11%)
+
+Query  52   TLLSLTEYYSPLMATALAFGSTVLAILVPWAIISIVSKKEFKYSTMLAFLLASL  105
+            T LS  EY   L+A ALA GS  + +  P + + I       ++ M+  LL  L
+Sbjct  157  TNLSGGEYQLALIARALAQGSEAILLDEPTSHLDI------NHALMVMELLRDL  204
+
+
+>THIRI06C_v1_0544.mRNA.0_elongated 99 nucleotides
+Length=336
+
+ Score = 23.1 bits (48),  Expect = 9.4, Method: Compositional matrix adjust.
+ Identities = 14/40 (35%), Positives = 21/40 (53%), Gaps = 8/40 (20%)
+
+Query  89   KKEFKYSTMLAFLLASLWEFLCSYLAMIIGYPLWKLFLNA  128
+            ++ F   T L F+ AS++  L       IGYPL + F +A
+Sbjct  108  RRRFDSDT-LYFVYASIFTLL-------IGYPLLRTFSDA  139
+
+
+
+Lambda      K        H        a         alpha
+   0.337    0.148    0.469    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 72110950
+
+
+  Database: CDS_elongated.faa
+    Posted date:  Feb 11, 2025  5:29 PM
+  Number of letters in database: 816,125
+  Number of sequences in database:  2,373
+
+
+
+Matrix: BLOSUM62
+Gap Penalties: Existence: 11, Extension: 1
+Neighboring words threshold: 11
+Window for multiple hits: 40

@@ -1,0 +1,539 @@
+TBLASTN 2.16.0+
+
+
+Reference: Stephen F. Altschul, Thomas L. Madden, Alejandro A.
+Schaffer, Jinghui Zhang, Zheng Zhang, Webb Miller, and David J.
+Lipman (1997), "Gapped BLAST and PSI-BLAST: a new generation of
+protein database search programs", Nucleic Acids Res. 25:3389-3402.
+
+
+
+Database: Thermococcus_barophilus_CH1.fa
+           1 sequences; 2,171,602 total letters
+
+
+
+Query= TBCH5v1_RS00965.mRNA.0_elongated 99 nucleotides pf:0 sp:0
+
+Length=201
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+4059                                                                  65.9    7e-14
+
+
+>4059
+Length=2171602
+
+ Score = 65.9 bits (159),  Expect = 7e-14, Method: Compositional matrix adjust.
+ Identities = 33/33 (100%), Positives = 33/33 (100%), Gaps = 0/33 (0%)
+ Frame = +1
+
+Query  169      QERFIN*IFVLYLGFRKSLLNKTLLYPSA*RSL  201
+                QERFIN*IFVLYLGFRKSLLNKTLLYPSA*RSL
+Sbjct  2144806  QERFIN*IFVLYLGFRKSLLNKTLLYPSA*RSL  2144904
+
+
+ Score = 24.6 bits (52),  Expect = 3.7, Method: Compositional matrix adjust.
+ Identities = 13/40 (33%), Positives = 21/40 (53%), Gaps = 0/40 (0%)
+ Frame = -1
+
+Query  112      WTIRLMGFLFPALWIAGWECAIYNQLYVWSMRLCLLVGEA  151
+                WT R++  LF  +WI G   + +N +   +  L  +VG A
+Sbjct  1755421  WTKRVILALFAGVWIGGVMVSGWNPITGTTQTLDWIVGNA  1755302
+
+
+ Score = 23.9 bits (50),  Expect = 6.3, Method: Compositional matrix adjust.
+ Identities = 8/20 (40%), Positives = 14/20 (70%), Gaps = 0/20 (0%)
+ Frame = -1
+
+Query  114     IRLMGFLFPALWIAGWECAI  133
+               ++L  +LFPALW+  W+  +
+Sbjct  168376  VKLFNWLFPALWLWSWKALV  168317
+
+
+ Score = 23.5 bits (49),  Expect = 8.3, Method: Compositional matrix adjust.
+ Identities = 12/27 (44%), Positives = 17/27 (63%), Gaps = 1/27 (4%)
+ Frame = +2
+
+Query  16       TFFAPGACISFSDYLGTFMPALLLSII  42
+                T + PG+CIS  D+  T +P LL  +I
+Sbjct  1664363  TMYPPGSCISSGDWHNT-VPFLLFLVI  1664440
+
+
+ Score = 23.5 bits (49),  Expect = 9.1, Method: Compositional matrix adjust.
+ Identities = 8/20 (40%), Positives = 11/20 (55%), Gaps = 0/20 (0%)
+ Frame = -2
+
+Query  7       IFLFWLLRLTFFAPGACISF  26
+               + + WLLRL F     CI+ 
+Sbjct  714189  VHIVWLLRLCFIHSNDCITL  714130
+
+
+ Score = 23.5 bits (49),  Expect = 9.6, Method: Compositional matrix adjust.
+ Identities = 12/36 (33%), Positives = 16/36 (44%), Gaps = 0/36 (0%)
+ Frame = -2
+
+Query  3       NSLIIFLFWLLRLTFFAPGACISFSDYLGTFMPALL  38
+                ++I   F+   LTF     C  F     TFMP+ L
+Sbjct  227499  GTIIALTFFARSLTFLPGNGCTVFGMKSPTFMPSSL  227392
+
+
+
+Lambda      K        H        a         alpha
+   0.341    0.150    0.497    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 89749960
+
+
+Query= TBCH5v1_RS00965.mRNA.0_elongated 99 nucleotides pf:0 sp:1
+
+Length=200
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+4059                                                                  63.9    3e-13
+
+
+>4059
+Length=2171602
+
+ Score = 63.9 bits (154),  Expect = 3e-13, Method: Compositional matrix adjust.
+ Identities = 32/32 (100%), Positives = 32/32 (100%), Gaps = 0/32 (0%)
+ Frame = +2
+
+Query  169      KKDL*TKFLFSIWVLGKAF*IKLCYTLQLKDH  200
+                KKDL*TKFLFSIWVLGKAF*IKLCYTLQLKDH
+Sbjct  2144807  KKDL*TKFLFSIWVLGKAF*IKLCYTLQLKDH  2144902
+
+
+ Score = 24.6 bits (52),  Expect = 4.4, Method: Compositional matrix adjust.
+ Identities = 13/40 (33%), Positives = 21/40 (53%), Gaps = 0/40 (0%)
+ Frame = -1
+
+Query  112      WTIRLMGFLFPALWIAGWECAIYNQLYVWSMRLCLLVGEA  151
+                WT R++  LF  +WI G   + +N +   +  L  +VG A
+Sbjct  1755421  WTKRVILALFAGVWIGGVMVSGWNPITGTTQTLDWIVGNA  1755302
+
+
+ Score = 23.9 bits (50),  Expect = 7.6, Method: Compositional matrix adjust.
+ Identities = 8/20 (40%), Positives = 14/20 (70%), Gaps = 0/20 (0%)
+ Frame = -1
+
+Query  114     IRLMGFLFPALWIAGWECAI  133
+               ++L  +LFPALW+  W+  +
+Sbjct  168376  VKLFNWLFPALWLWSWKALV  168317
+
+
+ Score = 23.5 bits (49),  Expect = 9.2, Method: Compositional matrix adjust.
+ Identities = 12/27 (44%), Positives = 17/27 (63%), Gaps = 1/27 (4%)
+ Frame = +2
+
+Query  16       TFFAPGACISFSDYLGTFMPALLLSII  42
+                T + PG+CIS  D+  T +P LL  +I
+Sbjct  1664363  TMYPPGSCISSGDWHNT-VPFLLFLVI  1664440
+
+
+ Score = 23.5 bits (49),  Expect = 9.8, Method: Compositional matrix adjust.
+ Identities = 12/36 (33%), Positives = 16/36 (44%), Gaps = 0/36 (0%)
+ Frame = -2
+
+Query  3       NSLIIFLFWLLRLTFFAPGACISFSDYLGTFMPALL  38
+                ++I   F+   LTF     C  F     TFMP+ L
+Sbjct  227499  GTIIALTFFARSLTFLPGNGCTVFGMKSPTFMPSSL  227392
+
+
+
+Lambda      K        H        a         alpha
+   0.341    0.150    0.509    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 89026170
+
+
+Query= TBCH5v1_RS00965.mRNA.0_elongated 99 nucleotides pf:0 sp:2
+
+Length=200
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+4059                                                                  63.9    4e-13
+
+
+>4059
+Length=2171602
+
+ Score = 63.9 bits (154),  Expect = 4e-13, Method: Compositional matrix adjust.
+ Identities = 32/32 (100%), Positives = 32/32 (100%), Gaps = 0/32 (0%)
+ Frame = +3
+
+Query  169      RKIYKLNFCSLFGF*EKPFK*NSAIPFSLKII  200
+                RKIYKLNFCSLFGF*EKPFK*NSAIPFSLKII
+Sbjct  2144808  RKIYKLNFCSLFGF*EKPFK*NSAIPFSLKII  2144903
+
+
+ Score = 24.6 bits (52),  Expect = 3.8, Method: Compositional matrix adjust.
+ Identities = 13/40 (33%), Positives = 21/40 (53%), Gaps = 0/40 (0%)
+ Frame = -1
+
+Query  112      WTIRLMGFLFPALWIAGWECAIYNQLYVWSMRLCLLVGEA  151
+                WT R++  LF  +WI G   + +N +   +  L  +VG A
+Sbjct  1755421  WTKRVILALFAGVWIGGVMVSGWNPITGTTQTLDWIVGNA  1755302
+
+
+ Score = 23.9 bits (50),  Expect = 6.3, Method: Compositional matrix adjust.
+ Identities = 8/20 (40%), Positives = 14/20 (70%), Gaps = 0/20 (0%)
+ Frame = -1
+
+Query  114     IRLMGFLFPALWIAGWECAI  133
+               ++L  +LFPALW+  W+  +
+Sbjct  168376  VKLFNWLFPALWLWSWKALV  168317
+
+
+ Score = 23.5 bits (49),  Expect = 8.8, Method: Compositional matrix adjust.
+ Identities = 8/20 (40%), Positives = 11/20 (55%), Gaps = 0/20 (0%)
+ Frame = -2
+
+Query  7       IFLFWLLRLTFFAPGACISF  26
+               + + WLLRL F     CI+ 
+Sbjct  714189  VHIVWLLRLCFIHSNDCITL  714130
+
+
+ Score = 23.5 bits (49),  Expect = 8.9, Method: Compositional matrix adjust.
+ Identities = 12/27 (44%), Positives = 17/27 (63%), Gaps = 1/27 (4%)
+ Frame = +2
+
+Query  16       TFFAPGACISFSDYLGTFMPALLLSII  42
+                T + PG+CIS  D+  T +P LL  +I
+Sbjct  1664363  TMYPPGSCISSGDWHNT-VPFLLFLVI  1664440
+
+
+
+Lambda      K        H        a         alpha
+   0.341    0.150    0.506    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 89026170
+
+
+Query= TBCH5v1_RS00965.mRNA.0_elongated 99 nucleotides pf:1 sp:0
+
+Length=200
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+4059                                                                  66.2    7e-14
+
+
+>4059
+Length=2171602
+
+ Score = 66.2 bits (160),  Expect = 7e-14, Method: Compositional matrix adjust.
+ Identities = 33/33 (100%), Positives = 33/33 (100%), Gaps = 0/33 (0%)
+ Frame = +1
+
+Query  168      QERFIN*IFVLYLGFRKSLLNKTLLYPSA*RSL  200
+                QERFIN*IFVLYLGFRKSLLNKTLLYPSA*RSL
+Sbjct  2144806  QERFIN*IFVLYLGFRKSLLNKTLLYPSA*RSL  2144904
+
+
+ Score = 25.0 bits (53),  Expect = 3.4, Method: Compositional matrix adjust.
+ Identities = 13/40 (33%), Positives = 21/40 (53%), Gaps = 0/40 (0%)
+ Frame = -1
+
+Query  111      WTIRLMGFLFPALWIAGWECAIYNQLYVWSMRLCLLVGEA  150
+                WT R++  LF  +WI G   + +N +   +  L  +VG A
+Sbjct  1755421  WTKRVILALFAGVWIGGVMVSGWNPITGTTQTLDWIVGNA  1755302
+
+
+ Score = 24.3 bits (51),  Expect = 5.5, Method: Compositional matrix adjust.
+ Identities = 8/20 (40%), Positives = 14/20 (70%), Gaps = 0/20 (0%)
+ Frame = -1
+
+Query  113     IRLMGFLFPALWIAGWECAI  132
+               ++L  +LFPALW+  W+  +
+Sbjct  168376  VKLFNWLFPALWLWSWKALV  168317
+
+
+
+Lambda      K        H        a         alpha
+   0.342    0.150    0.508    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 89026170
+
+
+Query= TBCH5v1_RS00965.mRNA.0_elongated 99 nucleotides pf:1 sp:1
+
+Length=199
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+4059                                                                  64.3    3e-13
+
+
+>4059
+Length=2171602
+
+ Score = 64.3 bits (155),  Expect = 3e-13, Method: Compositional matrix adjust.
+ Identities = 32/32 (100%), Positives = 32/32 (100%), Gaps = 0/32 (0%)
+ Frame = +2
+
+Query  168      KKDL*TKFLFSIWVLGKAF*IKLCYTLQLKDH  199
+                KKDL*TKFLFSIWVLGKAF*IKLCYTLQLKDH
+Sbjct  2144807  KKDL*TKFLFSIWVLGKAF*IKLCYTLQLKDH  2144902
+
+
+ Score = 24.6 bits (52),  Expect = 4.0, Method: Compositional matrix adjust.
+ Identities = 13/40 (33%), Positives = 21/40 (53%), Gaps = 0/40 (0%)
+ Frame = -1
+
+Query  111      WTIRLMGFLFPALWIAGWECAIYNQLYVWSMRLCLLVGEA  150
+                WT R++  LF  +WI G   + +N +   +  L  +VG A
+Sbjct  1755421  WTKRVILALFAGVWIGGVMVSGWNPITGTTQTLDWIVGNA  1755302
+
+
+ Score = 23.9 bits (50),  Expect = 6.7, Method: Compositional matrix adjust.
+ Identities = 8/20 (40%), Positives = 14/20 (70%), Gaps = 0/20 (0%)
+ Frame = -1
+
+Query  113     IRLMGFLFPALWIAGWECAI  132
+               ++L  +LFPALW+  W+  +
+Sbjct  168376  VKLFNWLFPALWLWSWKALV  168317
+
+
+
+Lambda      K        H        a         alpha
+   0.342    0.150    0.521    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 88302380
+
+
+Query= TBCH5v1_RS00965.mRNA.0_elongated 99 nucleotides pf:1 sp:2
+
+Length=199
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+4059                                                                  63.5    5e-13
+
+
+>4059
+Length=2171602
+
+ Score = 63.5 bits (153),  Expect = 5e-13, Method: Compositional matrix adjust.
+ Identities = 32/32 (100%), Positives = 32/32 (100%), Gaps = 0/32 (0%)
+ Frame = +3
+
+Query  168      RKIYKLNFCSLFGF*EKPFK*NSAIPFSLKII  199
+                RKIYKLNFCSLFGF*EKPFK*NSAIPFSLKII
+Sbjct  2144808  RKIYKLNFCSLFGF*EKPFK*NSAIPFSLKII  2144903
+
+
+ Score = 24.6 bits (52),  Expect = 3.6, Method: Compositional matrix adjust.
+ Identities = 13/40 (33%), Positives = 21/40 (53%), Gaps = 0/40 (0%)
+ Frame = -1
+
+Query  111      WTIRLMGFLFPALWIAGWECAIYNQLYVWSMRLCLLVGEA  150
+                WT R++  LF  +WI G   + +N +   +  L  +VG A
+Sbjct  1755421  WTKRVILALFAGVWIGGVMVSGWNPITGTTQTLDWIVGNA  1755302
+
+
+ Score = 24.3 bits (51),  Expect = 5.6, Method: Compositional matrix adjust.
+ Identities = 8/20 (40%), Positives = 14/20 (70%), Gaps = 0/20 (0%)
+ Frame = -1
+
+Query  113     IRLMGFLFPALWIAGWECAI  132
+               ++L  +LFPALW+  W+  +
+Sbjct  168376  VKLFNWLFPALWLWSWKALV  168317
+
+
+
+Lambda      K        H        a         alpha
+   0.342    0.151    0.517    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 88302380
+
+
+Query= TBCH5v1_RS00965.mRNA.0_elongated 99 nucleotides pf:2 sp:0
+
+Length=200
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+4059                                                                  65.9    8e-14
+
+
+>4059
+Length=2171602
+
+ Score = 65.9 bits (159),  Expect = 8e-14, Method: Compositional matrix adjust.
+ Identities = 33/33 (100%), Positives = 33/33 (100%), Gaps = 0/33 (0%)
+ Frame = +1
+
+Query  168      QERFIN*IFVLYLGFRKSLLNKTLLYPSA*RSL  200
+                QERFIN*IFVLYLGFRKSLLNKTLLYPSA*RSL
+Sbjct  2144806  QERFIN*IFVLYLGFRKSLLNKTLLYPSA*RSL  2144904
+
+
+ Score = 24.6 bits (52),  Expect = 3.5, Method: Compositional matrix adjust.
+ Identities = 13/40 (33%), Positives = 21/40 (53%), Gaps = 0/40 (0%)
+ Frame = -1
+
+Query  111      WTIRLMGFLFPALWIAGWECAIYNQLYVWSMRLCLLVGEA  150
+                WT R++  LF  +WI G   + +N +   +  L  +VG A
+Sbjct  1755421  WTKRVILALFAGVWIGGVMVSGWNPITGTTQTLDWIVGNA  1755302
+
+
+ Score = 23.9 bits (50),  Expect = 6.3, Method: Compositional matrix adjust.
+ Identities = 8/20 (40%), Positives = 14/20 (70%), Gaps = 0/20 (0%)
+ Frame = -1
+
+Query  113     IRLMGFLFPALWIAGWECAI  132
+               ++L  +LFPALW+  W+  +
+Sbjct  168376  VKLFNWLFPALWLWSWKALV  168317
+
+
+
+Lambda      K        H        a         alpha
+   0.350    0.155    0.548    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 89026170
+
+
+Query= TBCH5v1_RS00965.mRNA.0_elongated 99 nucleotides pf:2 sp:1
+
+Length=199
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+4059                                                                  63.9    3e-13
+
+
+>4059
+Length=2171602
+
+ Score = 63.9 bits (154),  Expect = 3e-13, Method: Compositional matrix adjust.
+ Identities = 32/32 (100%), Positives = 32/32 (100%), Gaps = 0/32 (0%)
+ Frame = +2
+
+Query  168      KKDL*TKFLFSIWVLGKAF*IKLCYTLQLKDH  199
+                KKDL*TKFLFSIWVLGKAF*IKLCYTLQLKDH
+Sbjct  2144807  KKDL*TKFLFSIWVLGKAF*IKLCYTLQLKDH  2144902
+
+
+ Score = 24.6 bits (52),  Expect = 4.3, Method: Compositional matrix adjust.
+ Identities = 13/40 (33%), Positives = 21/40 (53%), Gaps = 0/40 (0%)
+ Frame = -1
+
+Query  111      WTIRLMGFLFPALWIAGWECAIYNQLYVWSMRLCLLVGEA  150
+                WT R++  LF  +WI G   + +N +   +  L  +VG A
+Sbjct  1755421  WTKRVILALFAGVWIGGVMVSGWNPITGTTQTLDWIVGNA  1755302
+
+
+ Score = 23.9 bits (50),  Expect = 7.8, Method: Compositional matrix adjust.
+ Identities = 8/20 (40%), Positives = 14/20 (70%), Gaps = 0/20 (0%)
+ Frame = -1
+
+Query  113     IRLMGFLFPALWIAGWECAI  132
+               ++L  +LFPALW+  W+  +
+Sbjct  168376  VKLFNWLFPALWLWSWKALV  168317
+
+
+
+Lambda      K        H        a         alpha
+   0.349    0.155    0.561    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 88302380
+
+
+Query= TBCH5v1_RS00965.mRNA.0_elongated 99 nucleotides pf:2 sp:2
+
+Length=199
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+4059                                                                  63.5    5e-13
+
+
+>4059
+Length=2171602
+
+ Score = 63.5 bits (153),  Expect = 5e-13, Method: Compositional matrix adjust.
+ Identities = 32/32 (100%), Positives = 32/32 (100%), Gaps = 0/32 (0%)
+ Frame = +3
+
+Query  168      RKIYKLNFCSLFGF*EKPFK*NSAIPFSLKII  199
+                RKIYKLNFCSLFGF*EKPFK*NSAIPFSLKII
+Sbjct  2144808  RKIYKLNFCSLFGF*EKPFK*NSAIPFSLKII  2144903
+
+
+ Score = 24.6 bits (52),  Expect = 3.7, Method: Compositional matrix adjust.
+ Identities = 13/40 (33%), Positives = 21/40 (53%), Gaps = 0/40 (0%)
+ Frame = -1
+
+Query  111      WTIRLMGFLFPALWIAGWECAIYNQLYVWSMRLCLLVGEA  150
+                WT R++  LF  +WI G   + +N +   +  L  +VG A
+Sbjct  1755421  WTKRVILALFAGVWIGGVMVSGWNPITGTTQTLDWIVGNA  1755302
+
+
+ Score = 23.9 bits (50),  Expect = 6.4, Method: Compositional matrix adjust.
+ Identities = 8/20 (40%), Positives = 14/20 (70%), Gaps = 0/20 (0%)
+ Frame = -1
+
+Query  113     IRLMGFLFPALWIAGWECAI  132
+               ++L  +LFPALW+  W+  +
+Sbjct  168376  VKLFNWLFPALWLWSWKALV  168317
+
+
+
+Lambda      K        H        a         alpha
+   0.349    0.156    0.558    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 88302380
+
+
+  Database: Thermococcus_barophilus_CH1.fa
+    Posted date:  Feb 12, 2025  5:11 PM
+  Number of letters in database: 2,171,602
+  Number of sequences in database:  1
+
+
+
+Matrix: BLOSUM62
+Gap Penalties: Existence: 11, Extension: 1
+Neighboring words threshold: 13
+Window for multiple hits: 40

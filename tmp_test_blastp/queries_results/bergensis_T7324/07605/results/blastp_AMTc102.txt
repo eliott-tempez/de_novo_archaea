@@ -1,0 +1,1109 @@
+BLASTP 2.16.0+
+
+
+Reference: Stephen F. Altschul, Thomas L. Madden, Alejandro A.
+Schaffer, Jinghui Zhang, Zheng Zhang, Webb Miller, and David J.
+Lipman (1997), "Gapped BLAST and PSI-BLAST: a new generation of
+protein database search programs", Nucleic Acids Res. 25:3389-3402.
+
+
+Reference for composition-based statistics: Alejandro A. Schaffer,
+L. Aravind, Thomas L. Madden, Sergei Shavirin, John L. Spouge, Yuri
+I. Wolf, Eugene V. Koonin, and Stephen F. Altschul (2001),
+"Improving the accuracy of PSI-BLAST protein database searches with
+composition-based statistics and other refinements", Nucleic Acids
+Res. 29:2994-3005.
+
+
+
+Database: CDS_elongated.faa
+           2,313 sequences; 787,615 total letters
+
+
+
+Query= GQS78_RS07605.mRNA.0_elongated 99 nucleotides pf:0 sp:0
+
+Length=153
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+THAMT102_v1_1861.mRNA.0_elongated 99 nucleotides                      68.9    1e-16
+THAMT102_v1_0729.mRNA.0_elongated 99 nucleotides                      26.6    0.46 
+THAMT102_v1_0763.mRNA.0_elongated 99 nucleotides                      25.0    1.4  
+THAMT102_v1_0426.mRNA.0_elongated 99 nucleotides                      23.5    5.7  
+THAMT102_v1_1739.mRNA.0_elongated 99 nucleotides                      23.1    6.3  
+THAMT102_v1_0162.mRNA.0_elongated 99 nucleotides                      23.1    7.5  
+
+
+>THAMT102_v1_1861.mRNA.0_elongated 99 nucleotides
+Length=149
+
+ Score = 68.9 bits (167),  Expect = 1e-16, Method: Compositional matrix adjust.
+ Identities = 55/125 (44%), Positives = 65/125 (52%), Gaps = 11/125 (9%)
+
+Query  23   SDLLPAPEGG---VMTPERNPLLQELHRFVGPS-PTPVASFGLTHRPGLRPVTPTRPSGI  78
+            SDLLP  +GG    +TP      Q   RF G S PT V +FG   RPGLRPVTPT  + I
+Sbjct  28   SDLLPVLKGGGSKELTPR-----QRAVRFTGQSSPTRVTTFGFARRPGLRPVTPTGKNPI  82
+
+Query  79   GVIALEADELLPPKRAVLKGR--LTASSSLKGGHNESPLKGHL*DGLPEALLRGKSI*GF  136
+            GVI  E    +  +   +  R     + S+  G  E+PLKG    GLPEA L  K  *GF
+Sbjct  83   GVIVSETTLRVSNRLKAVFERTPYGVNPSMAEG*LETPLKGLSYSGLPEAYLNDKDT*GF  142
+
+Query  137  RHFKG  141
+            R FK 
+Sbjct  143  RLFKA  147
+
+
+>THAMT102_v1_0729.mRNA.0_elongated 99 nucleotides
+Length=463
+
+ Score = 26.6 bits (57),  Expect = 0.46, Method: Compositional matrix adjust.
+ Identities = 21/64 (33%), Positives = 27/64 (42%), Gaps = 16/64 (25%)
+
+Query  33   VMTPE-RNPLLQELHR---------------FVGPSPTPVASFGLTHRPGLRPVTPTRPS  76
+            V TPE  + L++ LHR               F   +   V S+G+T RP L  V   R  
+Sbjct  292  VYTPEVHDRLVRRLHRKIEKNRHVYEKYEEHFTDDAEILVVSWGVTARPALGAVLKAREE  351
+
+Query  77   GIGV  80
+            GI V
+Sbjct  352  GIKV  355
+
+
+>THAMT102_v1_0763.mRNA.0_elongated 99 nucleotides
+Length=472
+
+ Score = 25.0 bits (53),  Expect = 1.4, Method: Composition-based stats.
+ Identities = 12/28 (43%), Positives = 19/28 (68%), Gaps = 2/28 (7%)
+
+Query  75  PSGIGVIALEADELL--PPKRAVLKGRL  100
+           PSG+ V  + A+  +  PPKRA+LK ++
+Sbjct  3   PSGMLVFLIHAENYISVPPKRALLKRKV  30
+
+
+>THAMT102_v1_0426.mRNA.0_elongated 99 nucleotides
+Length=646
+
+ Score = 23.5 bits (49),  Expect = 5.7, Method: Compositional matrix adjust.
+ Identities = 15/40 (38%), Positives = 19/40 (48%), Gaps = 2/40 (5%)
+
+Query  19   FP*SSDLLPAPEGGVMTPERNPLLQELHRFVGPSPTPVAS  58
+            F  +S  L A +   +TPE    L+EL  F  P   PV S
+Sbjct  276  FDSASYALYAKDDRYLTPEGTKRLEELEYF--PCSCPVCS  313
+
+
+>THAMT102_v1_1739.mRNA.0_elongated 99 nucleotides
+Length=342
+
+ Score = 23.1 bits (48),  Expect = 6.3, Method: Compositional matrix adjust.
+ Identities = 9/15 (60%), Positives = 10/15 (67%), Gaps = 0/15 (0%)
+
+Query  58  SFGLTHRPGLRPVTP  72
+           SF   HR GLRP+ P
+Sbjct  14  SFSFKHRRGLRPLQP  28
+
+
+>THAMT102_v1_0162.mRNA.0_elongated 99 nucleotides
+Length=409
+
+ Score = 23.1 bits (48),  Expect = 7.5, Method: Compositional matrix adjust.
+ Identities = 20/59 (34%), Positives = 31/59 (53%), Gaps = 6/59 (10%)
+
+Query  70   VTPTRPSGIGVIALEADELLPPKRAVLKGRLTASSSL-KGGHNESPLKGHL*DGLPEAL  127
+            V P++  G G++ LEA+ L  P   V+  R++A   L + G N    +    DGL EA+
+Sbjct  281  VLPSKREGFGLVILEANSLGVP---VVGRRVSAIPELIREGKNGLTFESF--DGLVEAV  334
+
+
+
+Lambda      K        H        a         alpha
+   0.331    0.148    0.481    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 49501280
+
+
+Query= GQS78_RS07605.mRNA.0_elongated 99 nucleotides pf:0 sp:1
+
+Length=152
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+THAMT102_v1_1861.mRNA.0_elongated 99 nucleotides                      51.6    4e-10
+THAMT102_v1_0729.mRNA.0_elongated 99 nucleotides                      26.6    0.46 
+THAMT102_v1_0763.mRNA.0_elongated 99 nucleotides                      25.0    1.5  
+THAMT102_v1_1739.mRNA.0_elongated 99 nucleotides                      23.5    5.0  
+THAMT102_v1_0432.mRNA.0_elongated 99 nucleotides                      22.7    8.0  
+
+
+>THAMT102_v1_1861.mRNA.0_elongated 99 nucleotides
+Length=149
+
+ Score = 51.6 bits (122),  Expect = 4e-10, Method: Compositional matrix adjust.
+ Identities = 47/124 (38%), Positives = 60/124 (48%), Gaps = 11/124 (9%)
+
+Query  23   SDLLPAPEGG---VMTPERNPLLQELHRFVG-PSPTPVASFGLTHRPGLRPVTPTRPSGI  78
+            SDLLP  +GG    +TP      Q   RF G  SPT V +FG   RPGLRPVTPT  + I
+Sbjct  28   SDLLPVLKGGGSKELTPR-----QRAVRFTGQSSPTRVTTFGFARRPGLRPVTPTGKNPI  82
+
+Query  79   GVIALEADELLPPKRAVLKGR--LTASSSLKGGHNESPLKGHL*TASPRPY*EEKVFKAF  136
+            GVI  E    +  +   +  R     + S+  G  E+PLKG   +  P  Y  +K    F
+Sbjct  83   GVIVSETTLRVSNRLKAVFERTPYGVNPSMAEG*LETPLKGLSYSGLPEAYLNDKDT*GF  142
+
+Query  137  DISK  140
+             + K
+Sbjct  143  RLFK  146
+
+
+>THAMT102_v1_0729.mRNA.0_elongated 99 nucleotides
+Length=463
+
+ Score = 26.6 bits (57),  Expect = 0.46, Method: Compositional matrix adjust.
+ Identities = 21/64 (33%), Positives = 27/64 (42%), Gaps = 16/64 (25%)
+
+Query  33   VMTPE-RNPLLQELHR---------------FVGPSPTPVASFGLTHRPGLRPVTPTRPS  76
+            V TPE  + L++ LHR               F   +   V S+G+T RP L  V   R  
+Sbjct  292  VYTPEVHDRLVRRLHRKIEKNRHVYEKYEEHFTDDAEILVVSWGVTARPALGAVLKAREE  351
+
+Query  77   GIGV  80
+            GI V
+Sbjct  352  GIKV  355
+
+
+>THAMT102_v1_0763.mRNA.0_elongated 99 nucleotides
+Length=472
+
+ Score = 25.0 bits (53),  Expect = 1.5, Method: Composition-based stats.
+ Identities = 12/28 (43%), Positives = 19/28 (68%), Gaps = 2/28 (7%)
+
+Query  75  PSGIGVIALEADELL--PPKRAVLKGRL  100
+           PSG+ V  + A+  +  PPKRA+LK ++
+Sbjct  3   PSGMLVFLIHAENYISVPPKRALLKRKV  30
+
+
+>THAMT102_v1_1739.mRNA.0_elongated 99 nucleotides
+Length=342
+
+ Score = 23.5 bits (49),  Expect = 5.0, Method: Compositional matrix adjust.
+ Identities = 9/15 (60%), Positives = 10/15 (67%), Gaps = 0/15 (0%)
+
+Query  58  SFGLTHRPGLRPVTP  72
+           SF   HR GLRP+ P
+Sbjct  14  SFSFKHRRGLRPLQP  28
+
+
+>THAMT102_v1_0432.mRNA.0_elongated 99 nucleotides
+Length=415
+
+ Score = 22.7 bits (47),  Expect = 8.0, Method: Compositional matrix adjust.
+ Identities = 12/29 (41%), Positives = 16/29 (55%), Gaps = 0/29 (0%)
+
+Query  61  LTHRPGLRPVTPTRPSGIGVIALEADELL  89
+           +THRP L   T + P   G + + ADE L
+Sbjct  53  ITHRPNLYYFTGSAPVLGGYLLVTADEAL  81
+
+
+
+Lambda      K        H        a         alpha
+   0.331    0.146    0.469    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 48882514
+
+
+Query= GQS78_RS07605.mRNA.0_elongated 99 nucleotides pf:0 sp:2
+
+Length=152
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+THAMT102_v1_1861.mRNA.0_elongated 99 nucleotides                      49.3    3e-09
+THAMT102_v1_0729.mRNA.0_elongated 99 nucleotides                      26.6    0.55 
+THAMT102_v1_0763.mRNA.0_elongated 99 nucleotides                      25.0    1.7  
+THAMT102_v1_0426.mRNA.0_elongated 99 nucleotides                      23.5    5.2  
+THAMT102_v1_1739.mRNA.0_elongated 99 nucleotides                      23.1    6.7  
+THAMT102_v1_0432.mRNA.0_elongated 99 nucleotides                      23.1    6.8  
+
+
+>THAMT102_v1_1861.mRNA.0_elongated 99 nucleotides
+Length=149
+
+ Score = 49.3 bits (116),  Expect = 3e-09, Method: Compositional matrix adjust.
+ Identities = 42/101 (42%), Positives = 52/101 (51%), Gaps = 11/101 (11%)
+
+Query  23   SDLLPAPEGG---VMTPERNPLLQELHRFVG-PSPTPVASFGLTHRPGLRPVTPTRPSGI  78
+            SDLLP  +GG    +TP      Q   RF G  SPT V +FG   RPGLRPVTPT  + I
+Sbjct  28   SDLLPVLKGGGSKELTPR-----QRAVRFTGQSSPTRVTTFGFARRPGLRPVTPTGKNPI  82
+
+Query  79   GVIALEADELLPPKRAVLKGR--LTASSSLKGGHNESPLKG  117
+            GVI  E    +  +   +  R     + S+  G  E+PLKG
+Sbjct  83   GVIVSETTLRVSNRLKAVFERTPYGVNPSMAEG*LETPLKG  123
+
+
+>THAMT102_v1_0729.mRNA.0_elongated 99 nucleotides
+Length=463
+
+ Score = 26.6 bits (57),  Expect = 0.55, Method: Compositional matrix adjust.
+ Identities = 21/64 (33%), Positives = 27/64 (42%), Gaps = 16/64 (25%)
+
+Query  33   VMTPE-RNPLLQELHR---------------FVGPSPTPVASFGLTHRPGLRPVTPTRPS  76
+            V TPE  + L++ LHR               F   +   V S+G+T RP L  V   R  
+Sbjct  292  VYTPEVHDRLVRRLHRKIEKNRHVYEKYEEHFTDDAEILVVSWGVTARPALGAVLKAREE  351
+
+Query  77   GIGV  80
+            GI V
+Sbjct  352  GIKV  355
+
+
+>THAMT102_v1_0763.mRNA.0_elongated 99 nucleotides
+Length=472
+
+ Score = 25.0 bits (53),  Expect = 1.7, Method: Composition-based stats.
+ Identities = 12/28 (43%), Positives = 19/28 (68%), Gaps = 2/28 (7%)
+
+Query  75  PSGIGVIALEADELL--PPKRAVLKGRL  100
+           PSG+ V  + A+  +  PPKRA+LK ++
+Sbjct  3   PSGMLVFLIHAENYISVPPKRALLKRKV  30
+
+
+>THAMT102_v1_0426.mRNA.0_elongated 99 nucleotides
+Length=646
+
+ Score = 23.5 bits (49),  Expect = 5.2, Method: Compositional matrix adjust.
+ Identities = 15/40 (38%), Positives = 19/40 (48%), Gaps = 2/40 (5%)
+
+Query  19   FP*SSDLLPAPEGGVMTPERNPLLQELHRFVGPSPTPVAS  58
+            F  +S  L A +   +TPE    L+EL  F  P   PV S
+Sbjct  276  FDSASYALYAKDDRYLTPEGTKRLEELEYF--PCSCPVCS  313
+
+
+>THAMT102_v1_1739.mRNA.0_elongated 99 nucleotides
+Length=342
+
+ Score = 23.1 bits (48),  Expect = 6.7, Method: Compositional matrix adjust.
+ Identities = 9/15 (60%), Positives = 10/15 (67%), Gaps = 0/15 (0%)
+
+Query  58  SFGLTHRPGLRPVTP  72
+           SF   HR GLRP+ P
+Sbjct  14  SFSFKHRRGLRPLQP  28
+
+
+>THAMT102_v1_0432.mRNA.0_elongated 99 nucleotides
+Length=415
+
+ Score = 23.1 bits (48),  Expect = 6.8, Method: Compositional matrix adjust.
+ Identities = 12/29 (41%), Positives = 16/29 (55%), Gaps = 0/29 (0%)
+
+Query  61  LTHRPGLRPVTPTRPSGIGVIALEADELL  89
+           +THRP L   T + P   G + + ADE L
+Sbjct  53  ITHRPNLYYFTGSAPVLGGYLLVTADEAL  81
+
+
+
+Lambda      K        H        a         alpha
+   0.332    0.148    0.474    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 48882514
+
+
+Query= GQS78_RS07605.mRNA.0_elongated 99 nucleotides pf:1 sp:0
+
+Length=152
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+THAMT102_v1_1861.mRNA.0_elongated 99 nucleotides                      65.9    1e-15
+THAMT102_v1_0729.mRNA.0_elongated 99 nucleotides                      33.5    0.002
+THAMT102_v1_0763.mRNA.0_elongated 99 nucleotides                      25.0    1.4  
+THAMT102_v1_1389.mRNA.0_elongated 99 nucleotides                      23.9    4.0  
+THAMT102_v1_1025.mRNA.0_elongated 99 nucleotides                      23.5    5.6  
+THAMT102_v1_1739.mRNA.0_elongated 99 nucleotides                      23.5    5.6  
+THAMT102_v1_0681.mRNA.0_elongated 99 nucleotides                      23.1    5.7  
+THAMT102_v1_0162.mRNA.0_elongated 99 nucleotides                      23.1    6.8  
+THAMT102_v1_1661.mRNA.0_elongated 99 nucleotides                      23.1    7.4  
+THAMT102_v1_0146.mRNA.0_elongated 99 nucleotides                      22.7    8.3  
+
+
+>THAMT102_v1_1861.mRNA.0_elongated 99 nucleotides
+Length=149
+
+ Score = 65.9 bits (159),  Expect = 1e-15, Method: Compositional matrix adjust.
+ Identities = 52/117 (44%), Positives = 61/117 (52%), Gaps = 4/117 (3%)
+
+Query  27   PPLKEGMTPERNPLLQELHRFVG-PSPTPVASFGLTHRPGLRPVTPTRPSGIGVIALEAD  85
+            P LK G + E  P  Q   RF G  SPT V +FG   RPGLRPVTPT  + IGVI  E  
+Sbjct  32   PVLKGGGSKELTPR-QRAVRFTGQSSPTRVTTFGFARRPGLRPVTPTGKNPIGVIVSETT  90
+
+Query  86   ELLPPKRAVLKGR--LTASSSLKGGHNESPLKGHL*DGLPEALLRGKSI*GFRHFKG  140
+              +  +   +  R     + S+  G  E+PLKG    GLPEA L  K  *GFR FK 
+Sbjct  91   LRVSNRLKAVFERTPYGVNPSMAEG*LETPLKGLSYSGLPEAYLNDKDT*GFRLFKA  147
+
+
+>THAMT102_v1_0729.mRNA.0_elongated 99 nucleotides
+Length=463
+
+ Score = 33.5 bits (75),  Expect = 0.002, Method: Compositional matrix adjust.
+ Identities = 27/88 (31%), Positives = 38/88 (43%), Gaps = 20/88 (23%)
+
+Query  12   MPVADDGFLNHLTSSPPLKEGM----TPE-RNPLLQELHR---------------FVGPS  51
+            MP+   G+  H+T S   + G+    TPE  + L++ LHR               F   +
+Sbjct  268  MPLFGHGYFTHVTGSTHKENGLRDVYTPEVHDRLVRRLHRKIEKNRHVYEKYEEHFTDDA  327
+
+Query  52   PTPVASFGLTHRPGLRPVTPTRPSGIGV  79
+               V S+G+T RP L  V   R  GI V
+Sbjct  328  EILVVSWGVTARPALGAVLKAREEGIKV  355
+
+
+>THAMT102_v1_0763.mRNA.0_elongated 99 nucleotides
+Length=472
+
+ Score = 25.0 bits (53),  Expect = 1.4, Method: Composition-based stats.
+ Identities = 12/28 (43%), Positives = 19/28 (68%), Gaps = 2/28 (7%)
+
+Query  74  PSGIGVIALEADELL--PPKRAVLKGRL  99
+           PSG+ V  + A+  +  PPKRA+LK ++
+Sbjct  3   PSGMLVFLIHAENYISVPPKRALLKRKV  30
+
+
+>THAMT102_v1_1389.mRNA.0_elongated 99 nucleotides
+Length=597
+
+ Score = 23.9 bits (50),  Expect = 4.0, Method: Compositional matrix adjust.
+ Identities = 16/41 (39%), Positives = 19/41 (46%), Gaps = 3/41 (7%)
+
+Query  31   EGMTPERNPLLQELHRFVGP---SPTPVASFGLTHRPGLRP  68
+            EG  P  NP   E  R V         +A+FG T RP L+P
+Sbjct  75   EGGWPGSNPKDIEYFRAVSDLSLENARIAAFGSTRRPRLKP  115
+
+
+>THAMT102_v1_1025.mRNA.0_elongated 99 nucleotides
+Length=588
+
+ Score = 23.5 bits (49),  Expect = 5.6, Method: Compositional matrix adjust.
+ Identities = 10/24 (42%), Positives = 13/24 (54%), Gaps = 0/24 (0%)
+
+Query  31  EGMTPERNPLLQELHRFVGPSPTP  54
+           +G  PER PLL+    F+   P P
+Sbjct  48  KGFAPERRPLLERAFDFLTSFPKP  71
+
+
+>THAMT102_v1_1739.mRNA.0_elongated 99 nucleotides
+Length=342
+
+ Score = 23.5 bits (49),  Expect = 5.6, Method: Compositional matrix adjust.
+ Identities = 9/15 (60%), Positives = 10/15 (67%), Gaps = 0/15 (0%)
+
+Query  57  SFGLTHRPGLRPVTP  71
+           SF   HR GLRP+ P
+Sbjct  14  SFSFKHRRGLRPLQP  28
+
+
+>THAMT102_v1_0681.mRNA.0_elongated 99 nucleotides
+Length=237
+
+ Score = 23.1 bits (48),  Expect = 5.7, Method: Compositional matrix adjust.
+ Identities = 13/44 (30%), Positives = 18/44 (41%), Gaps = 4/44 (9%)
+
+Query  12  MPVA----DDGFLNHLTSSPPLKEGMTPERNPLLQELHRFVGPS  51
+           MP+     D G  +  T     K  M  E N  + EL  F+G +
+Sbjct  34  MPITTKTGDKGLTSLFTGERVAKNSMIMEANGTIDELDSFIGEA  77
+
+
+>THAMT102_v1_0162.mRNA.0_elongated 99 nucleotides
+Length=409
+
+ Score = 23.1 bits (48),  Expect = 6.8, Method: Compositional matrix adjust.
+ Identities = 20/59 (34%), Positives = 31/59 (53%), Gaps = 6/59 (10%)
+
+Query  69   VTPTRPSGIGVIALEADELLPPKRAVLKGRLTASSSL-KGGHNESPLKGHL*DGLPEAL  126
+            V P++  G G++ LEA+ L  P   V+  R++A   L + G N    +    DGL EA+
+Sbjct  281  VLPSKREGFGLVILEANSLGVP---VVGRRVSAIPELIREGKNGLTFESF--DGLVEAV  334
+
+
+>THAMT102_v1_1661.mRNA.0_elongated 99 nucleotides
+Length=449
+
+ Score = 23.1 bits (48),  Expect = 7.4, Method: Compositional matrix adjust.
+ Identities = 14/44 (32%), Positives = 23/44 (52%), Gaps = 4/44 (9%)
+
+Query  30   KEGMTPERNPLLQELHRFVGPSPTPVASFGLTHRPGLRPVTPTR  73
+            +EG+ P+R+P L+E   F    P    +F   + PGL+ V   +
+Sbjct  89   REGLKPKRSPYLKEGIYFEREGP----NFPDDYEPGLKVVRANK  128
+
+
+>THAMT102_v1_0146.mRNA.0_elongated 99 nucleotides
+Length=210
+
+ Score = 22.7 bits (47),  Expect = 8.3, Method: Compositional matrix adjust.
+ Identities = 8/21 (38%), Positives = 12/21 (57%), Gaps = 0/21 (0%)
+
+Query  28  PLKEGMTPERNPLLQELHRFV  48
+           P++    PER P   E+ R+V
+Sbjct  33  PMRRLKNPERIPYWAEIQRYV  53
+
+
+
+Lambda      K        H        a         alpha
+   0.329    0.147    0.469    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 48882514
+
+
+Query= GQS78_RS07605.mRNA.0_elongated 99 nucleotides pf:1 sp:1
+
+Length=151
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+THAMT102_v1_1861.mRNA.0_elongated 99 nucleotides                      48.9    4e-09
+THAMT102_v1_0729.mRNA.0_elongated 99 nucleotides                      34.7    0.001
+THAMT102_v1_0763.mRNA.0_elongated 99 nucleotides                      25.0    1.4  
+THAMT102_v1_1389.mRNA.0_elongated 99 nucleotides                      24.6    2.2  
+THAMT102_v1_1739.mRNA.0_elongated 99 nucleotides                      23.5    4.5  
+THAMT102_v1_0681.mRNA.0_elongated 99 nucleotides                      23.1    5.3  
+THAMT102_v1_1025.mRNA.0_elongated 99 nucleotides                      23.5    5.9  
+THAMT102_v1_1661.mRNA.0_elongated 99 nucleotides                      23.1    6.1  
+THAMT102_v1_0432.mRNA.0_elongated 99 nucleotides                      22.7    8.1  
+
+
+>THAMT102_v1_1861.mRNA.0_elongated 99 nucleotides
+Length=149
+
+ Score = 48.9 bits (115),  Expect = 4e-09, Method: Compositional matrix adjust.
+ Identities = 44/116 (38%), Positives = 56/116 (48%), Gaps = 4/116 (3%)
+
+Query  27   PPLKEGMTPERNPLLQELHRFVG-PSPTPVASFGLTHRPGLRPVTPTRPSGIGVIALEAD  85
+            P LK G + E  P  Q   RF G  SPT V +FG   RPGLRPVTPT  + IGVI  E  
+Sbjct  32   PVLKGGGSKELTPR-QRAVRFTGQSSPTRVTTFGFARRPGLRPVTPTGKNPIGVIVSETT  90
+
+Query  86   ELLPPKRAVLKGR--LTASSSLKGGHNESPLKGHL*TASPRPY*EEKVFKAFDISK  139
+              +  +   +  R     + S+  G  E+PLKG   +  P  Y  +K    F + K
+Sbjct  91   LRVSNRLKAVFERTPYGVNPSMAEG*LETPLKGLSYSGLPEAYLNDKDT*GFRLFK  146
+
+
+>THAMT102_v1_0729.mRNA.0_elongated 99 nucleotides
+Length=463
+
+ Score = 34.7 bits (78),  Expect = 0.001, Method: Compositional matrix adjust.
+ Identities = 27/88 (31%), Positives = 38/88 (43%), Gaps = 20/88 (23%)
+
+Query  12   MPVADDGFLNHLTSSPPLKEGM----TPE-RNPLLQELHR---------------FVGPS  51
+            MP+   G+  H+T S   + G+    TPE  + L++ LHR               F   +
+Sbjct  268  MPLFGHGYFTHVTGSTHKENGLRDVYTPEVHDRLVRRLHRKIEKNRHVYEKYEEHFTDDA  327
+
+Query  52   PTPVASFGLTHRPGLRPVTPTRPSGIGV  79
+               V S+G+T RP L  V   R  GI V
+Sbjct  328  EILVVSWGVTARPALGAVLKAREEGIKV  355
+
+
+>THAMT102_v1_0763.mRNA.0_elongated 99 nucleotides
+Length=472
+
+ Score = 25.0 bits (53),  Expect = 1.4, Method: Composition-based stats.
+ Identities = 12/28 (43%), Positives = 19/28 (68%), Gaps = 2/28 (7%)
+
+Query  74  PSGIGVIALEADELL--PPKRAVLKGRL  99
+           PSG+ V  + A+  +  PPKRA+LK ++
+Sbjct  3   PSGMLVFLIHAENYISVPPKRALLKRKV  30
+
+
+>THAMT102_v1_1389.mRNA.0_elongated 99 nucleotides
+Length=597
+
+ Score = 24.6 bits (52),  Expect = 2.2, Method: Composition-based stats.
+ Identities = 16/41 (39%), Positives = 19/41 (46%), Gaps = 3/41 (7%)
+
+Query  31   EGMTPERNPLLQELHRFVGP---SPTPVASFGLTHRPGLRP  68
+            EG  P  NP   E  R V         +A+FG T RP L+P
+Sbjct  75   EGGWPGSNPKDIEYFRAVSDLSLENARIAAFGSTRRPRLKP  115
+
+
+>THAMT102_v1_1739.mRNA.0_elongated 99 nucleotides
+Length=342
+
+ Score = 23.5 bits (49),  Expect = 4.5, Method: Compositional matrix adjust.
+ Identities = 9/15 (60%), Positives = 10/15 (67%), Gaps = 0/15 (0%)
+
+Query  57  SFGLTHRPGLRPVTP  71
+           SF   HR GLRP+ P
+Sbjct  14  SFSFKHRRGLRPLQP  28
+
+
+>THAMT102_v1_0681.mRNA.0_elongated 99 nucleotides
+Length=237
+
+ Score = 23.1 bits (48),  Expect = 5.3, Method: Compositional matrix adjust.
+ Identities = 13/44 (30%), Positives = 18/44 (41%), Gaps = 4/44 (9%)
+
+Query  12  MPV----ADDGFLNHLTSSPPLKEGMTPERNPLLQELHRFVGPS  51
+           MP+     D G  +  T     K  M  E N  + EL  F+G +
+Sbjct  34  MPITTKTGDKGLTSLFTGERVAKNSMIMEANGTIDELDSFIGEA  77
+
+
+>THAMT102_v1_1025.mRNA.0_elongated 99 nucleotides
+Length=588
+
+ Score = 23.5 bits (49),  Expect = 5.9, Method: Compositional matrix adjust.
+ Identities = 10/24 (42%), Positives = 13/24 (54%), Gaps = 0/24 (0%)
+
+Query  31  EGMTPERNPLLQELHRFVGPSPTP  54
+           +G  PER PLL+    F+   P P
+Sbjct  48  KGFAPERRPLLERAFDFLTSFPKP  71
+
+
+>THAMT102_v1_1661.mRNA.0_elongated 99 nucleotides
+Length=449
+
+ Score = 23.1 bits (48),  Expect = 6.1, Method: Compositional matrix adjust.
+ Identities = 14/44 (32%), Positives = 23/44 (52%), Gaps = 4/44 (9%)
+
+Query  30   KEGMTPERNPLLQELHRFVGPSPTPVASFGLTHRPGLRPVTPTR  73
+            +EG+ P+R+P L+E   F    P    +F   + PGL+ V   +
+Sbjct  89   REGLKPKRSPYLKEGIYFEREGP----NFPDDYEPGLKVVRANK  128
+
+
+>THAMT102_v1_0432.mRNA.0_elongated 99 nucleotides
+Length=415
+
+ Score = 22.7 bits (47),  Expect = 8.1, Method: Compositional matrix adjust.
+ Identities = 12/29 (41%), Positives = 16/29 (55%), Gaps = 0/29 (0%)
+
+Query  60  LTHRPGLRPVTPTRPSGIGVIALEADELL  88
+           +THRP L   T + P   G + + ADE L
+Sbjct  53  ITHRPNLYYFTGSAPVLGGYLLVTADEAL  81
+
+
+
+Lambda      K        H        a         alpha
+   0.329    0.144    0.458    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 48263748
+
+
+Query= GQS78_RS07605.mRNA.0_elongated 99 nucleotides pf:1 sp:2
+
+Length=151
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+THAMT102_v1_1861.mRNA.0_elongated 99 nucleotides                      46.6    3e-08
+THAMT102_v1_0729.mRNA.0_elongated 99 nucleotides                      34.3    0.001
+THAMT102_v1_0763.mRNA.0_elongated 99 nucleotides                      25.0    1.5  
+THAMT102_v1_0681.mRNA.0_elongated 99 nucleotides                      23.9    2.9  
+THAMT102_v1_1389.mRNA.0_elongated 99 nucleotides                      24.3    3.0  
+THAMT102_v1_1661.mRNA.0_elongated 99 nucleotides                      24.3    3.1  
+THAMT102_v1_1739.mRNA.0_elongated 99 nucleotides                      23.1    6.2  
+THAMT102_v1_0432.mRNA.0_elongated 99 nucleotides                      23.1    6.4  
+THAMT102_v1_1025.mRNA.0_elongated 99 nucleotides                      23.1    6.7  
+
+
+>THAMT102_v1_1861.mRNA.0_elongated 99 nucleotides
+Length=149
+
+ Score = 46.6 bits (109),  Expect = 3e-08, Method: Compositional matrix adjust.
+ Identities = 39/93 (42%), Positives = 48/93 (52%), Gaps = 4/93 (4%)
+
+Query  27   PPLKEGMTPERNPLLQELHRFVG-PSPTPVASFGLTHRPGLRPVTPTRPSGIGVIALEAD  85
+            P LK G + E  P  Q   RF G  SPT V +FG   RPGLRPVTPT  + IGVI  E  
+Sbjct  32   PVLKGGGSKELTPR-QRAVRFTGQSSPTRVTTFGFARRPGLRPVTPTGKNPIGVIVSETT  90
+
+Query  86   ELLPPKRAVLKGR--LTASSSLKGGHNESPLKG  116
+              +  +   +  R     + S+  G  E+PLKG
+Sbjct  91   LRVSNRLKAVFERTPYGVNPSMAEG*LETPLKG  123
+
+
+>THAMT102_v1_0729.mRNA.0_elongated 99 nucleotides
+Length=463
+
+ Score = 34.3 bits (77),  Expect = 0.001, Method: Compositional matrix adjust.
+ Identities = 27/88 (31%), Positives = 38/88 (43%), Gaps = 20/88 (23%)
+
+Query  12   MPVADDGFLNHLTSSPPLKEGM----TPE-RNPLLQELHR---------------FVGPS  51
+            MP+   G+  H+T S   + G+    TPE  + L++ LHR               F   +
+Sbjct  268  MPLFGHGYFTHVTGSTHKENGLRDVYTPEVHDRLVRRLHRKIEKNRHVYEKYEEHFTDDA  327
+
+Query  52   PTPVASFGLTHRPGLRPVTPTRPSGIGV  79
+               V S+G+T RP L  V   R  GI V
+Sbjct  328  EILVVSWGVTARPALGAVLKAREEGIKV  355
+
+
+>THAMT102_v1_0763.mRNA.0_elongated 99 nucleotides
+Length=472
+
+ Score = 25.0 bits (53),  Expect = 1.5, Method: Composition-based stats.
+ Identities = 12/28 (43%), Positives = 19/28 (68%), Gaps = 2/28 (7%)
+
+Query  74  PSGIGVIALEADELL--PPKRAVLKGRL  99
+           PSG+ V  + A+  +  PPKRA+LK ++
+Sbjct  3   PSGMLVFLIHAENYISVPPKRALLKRKV  30
+
+
+>THAMT102_v1_0681.mRNA.0_elongated 99 nucleotides
+Length=237
+
+ Score = 23.9 bits (50),  Expect = 2.9, Method: Compositional matrix adjust.
+ Identities = 11/36 (31%), Positives = 15/36 (42%), Gaps = 0/36 (0%)
+
+Query  16  DDGFLNHLTSSPPLKEGMTPERNPLLQELHRFVGPS  51
+           D G  +  T     K  M  E N  + EL  F+G +
+Sbjct  42  DKGLTSLFTGERVAKNSMIMEANGTIDELDSFIGEA  77
+
+
+>THAMT102_v1_1389.mRNA.0_elongated 99 nucleotides
+Length=597
+
+ Score = 24.3 bits (51),  Expect = 3.0, Method: Composition-based stats.
+ Identities = 16/41 (39%), Positives = 19/41 (46%), Gaps = 3/41 (7%)
+
+Query  31   EGMTPERNPLLQELHRFVGP---SPTPVASFGLTHRPGLRP  68
+            EG  P  NP   E  R V         +A+FG T RP L+P
+Sbjct  75   EGGWPGSNPKDIEYFRAVSDLSLENARIAAFGSTRRPRLKP  115
+
+
+>THAMT102_v1_1661.mRNA.0_elongated 99 nucleotides
+Length=449
+
+ Score = 24.3 bits (51),  Expect = 3.1, Method: Compositional matrix adjust.
+ Identities = 28/97 (29%), Positives = 44/97 (45%), Gaps = 18/97 (19%)
+
+Query  30   KEGMTPERNPLLQELHRFVGPSPTPVASFGLTHRPGLRPVTPTRPSGIGVIALEADELLP  89
+            +EG+ P+R+P L+E   F    P    +F   + PGL+ V   + +   V   +   L  
+Sbjct  89   REGLKPKRSPYLKEGIYFEREGP----NFPDDYEPGLKVVRANKFASESV--YQGANLYA  142
+
+Query  90   PKRAVLKGRLTASSSLKGGHNESPLKGHL*RPPRGLI  126
+            P      G L A  S+K G +E  +     R P+GL+
+Sbjct  143  P------GVLQADRSIKPG-DEVEI-----RDPKGLL  167
+
+
+>THAMT102_v1_1739.mRNA.0_elongated 99 nucleotides
+Length=342
+
+ Score = 23.1 bits (48),  Expect = 6.2, Method: Compositional matrix adjust.
+ Identities = 9/15 (60%), Positives = 10/15 (67%), Gaps = 0/15 (0%)
+
+Query  57  SFGLTHRPGLRPVTP  71
+           SF   HR GLRP+ P
+Sbjct  14  SFSFKHRRGLRPLQP  28
+
+
+>THAMT102_v1_0432.mRNA.0_elongated 99 nucleotides
+Length=415
+
+ Score = 23.1 bits (48),  Expect = 6.4, Method: Compositional matrix adjust.
+ Identities = 12/29 (41%), Positives = 16/29 (55%), Gaps = 0/29 (0%)
+
+Query  60  LTHRPGLRPVTPTRPSGIGVIALEADELL  88
+           +THRP L   T + P   G + + ADE L
+Sbjct  53  ITHRPNLYYFTGSAPVLGGYLLVTADEAL  81
+
+
+>THAMT102_v1_1025.mRNA.0_elongated 99 nucleotides
+Length=588
+
+ Score = 23.1 bits (48),  Expect = 6.7, Method: Compositional matrix adjust.
+ Identities = 10/24 (42%), Positives = 13/24 (54%), Gaps = 0/24 (0%)
+
+Query  31  EGMTPERNPLLQELHRFVGPSPTP  54
+           +G  PER PLL+    F+   P P
+Sbjct  48  KGFAPERRPLLERAFDFLTSFPKP  71
+
+
+
+Lambda      K        H        a         alpha
+   0.330    0.146    0.463    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 48263748
+
+
+Query= GQS78_RS07605.mRNA.0_elongated 99 nucleotides pf:2 sp:0
+
+Length=152
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+THAMT102_v1_1861.mRNA.0_elongated 99 nucleotides                      63.9    9e-15
+THAMT102_v1_0729.mRNA.0_elongated 99 nucleotides                      26.2    0.62 
+THAMT102_v1_0763.mRNA.0_elongated 99 nucleotides                      25.0    1.5  
+THAMT102_v1_1025.mRNA.0_elongated 99 nucleotides                      23.5    4.7  
+THAMT102_v1_1739.mRNA.0_elongated 99 nucleotides                      23.1    6.1  
+THAMT102_v1_0432.mRNA.0_elongated 99 nucleotides                      23.1    6.7  
+THAMT102_v1_0162.mRNA.0_elongated 99 nucleotides                      22.7    8.1  
+THAMT102_v1_1661.mRNA.0_elongated 99 nucleotides                      22.7    9.8  
+THAMT102_v1_0146.mRNA.0_elongated 99 nucleotides                      22.3    9.9  
+
+
+>THAMT102_v1_1861.mRNA.0_elongated 99 nucleotides
+Length=149
+
+ Score = 63.9 bits (154),  Expect = 9e-15, Method: Compositional matrix adjust.
+ Identities = 46/102 (45%), Positives = 54/102 (53%), Gaps = 3/102 (3%)
+
+Query  42   QELHRFVG-PSPTPVASFGLTHRPGLRPVTPTRPSGIGVIALEADELLPPKRAVLKGR--  98
+            Q   RF G  SPT V +FG   RPGLRPVTPT  + IGVI  E    +  +   +  R  
+Sbjct  46   QRAVRFTGQSSPTRVTTFGFARRPGLRPVTPTGKNPIGVIVSETTLRVSNRLKAVFERTP  105
+
+Query  99   LTASSSLKGGHNESPLKGHL*DGLPEALLRGKSI*GFRHFKG  140
+               + S+  G  E+PLKG    GLPEA L  K  *GFR FK 
+Sbjct  106  YGVNPSMAEG*LETPLKGLSYSGLPEAYLNDKDT*GFRLFKA  147
+
+
+>THAMT102_v1_0729.mRNA.0_elongated 99 nucleotides
+Length=463
+
+ Score = 26.2 bits (56),  Expect = 0.62, Method: Compositional matrix adjust.
+ Identities = 16/46 (35%), Positives = 22/46 (48%), Gaps = 2/46 (4%)
+
+Query  36   ERNPLLQELHR--FVGPSPTPVASFGLTHRPGLRPVTPTRPSGIGV  79
+            E+N  + E +   F   +   V S+G+T RP L  V   R  GI V
+Sbjct  310  EKNRHVYEKYEEHFTDDAEILVVSWGVTARPALGAVLKAREEGIKV  355
+
+
+>THAMT102_v1_0763.mRNA.0_elongated 99 nucleotides
+Length=472
+
+ Score = 25.0 bits (53),  Expect = 1.5, Method: Composition-based stats.
+ Identities = 12/28 (43%), Positives = 19/28 (68%), Gaps = 2/28 (7%)
+
+Query  74  PSGIGVIALEADELL--PPKRAVLKGRL  99
+           PSG+ V  + A+  +  PPKRA+LK ++
+Sbjct  3   PSGMLVFLIHAENYISVPPKRALLKRKV  30
+
+
+>THAMT102_v1_1025.mRNA.0_elongated 99 nucleotides
+Length=588
+
+ Score = 23.5 bits (49),  Expect = 4.7, Method: Compositional matrix adjust.
+ Identities = 10/24 (42%), Positives = 13/24 (54%), Gaps = 0/24 (0%)
+
+Query  31  RGMTPERNPLLQELHRFVGPSPTP  54
+           +G  PER PLL+    F+   P P
+Sbjct  48  KGFAPERRPLLERAFDFLTSFPKP  71
+
+
+>THAMT102_v1_1739.mRNA.0_elongated 99 nucleotides
+Length=342
+
+ Score = 23.1 bits (48),  Expect = 6.1, Method: Compositional matrix adjust.
+ Identities = 9/15 (60%), Positives = 10/15 (67%), Gaps = 0/15 (0%)
+
+Query  57  SFGLTHRPGLRPVTP  71
+           SF   HR GLRP+ P
+Sbjct  14  SFSFKHRRGLRPLQP  28
+
+
+>THAMT102_v1_0432.mRNA.0_elongated 99 nucleotides
+Length=415
+
+ Score = 23.1 bits (48),  Expect = 6.7, Method: Compositional matrix adjust.
+ Identities = 12/29 (41%), Positives = 16/29 (55%), Gaps = 0/29 (0%)
+
+Query  60  LTHRPGLRPVTPTRPSGIGVIALEADELL  88
+           +THRP L   T + P   G + + ADE L
+Sbjct  53  ITHRPNLYYFTGSAPVLGGYLLVTADEAL  81
+
+
+>THAMT102_v1_0162.mRNA.0_elongated 99 nucleotides
+Length=409
+
+ Score = 22.7 bits (47),  Expect = 8.1, Method: Compositional matrix adjust.
+ Identities = 20/59 (34%), Positives = 31/59 (53%), Gaps = 6/59 (10%)
+
+Query  69   VTPTRPSGIGVIALEADELLPPKRAVLKGRLTASSSL-KGGHNESPLKGHL*DGLPEAL  126
+            V P++  G G++ LEA+ L  P   V+  R++A   L + G N    +    DGL EA+
+Sbjct  281  VLPSKREGFGLVILEANSLGVP---VVGRRVSAIPELIREGKNGLTFESF--DGLVEAV  334
+
+
+>THAMT102_v1_1661.mRNA.0_elongated 99 nucleotides
+Length=449
+
+ Score = 22.7 bits (47),  Expect = 9.8, Method: Compositional matrix adjust.
+ Identities = 14/44 (32%), Positives = 22/44 (50%), Gaps = 4/44 (9%)
+
+Query  30   RRGMTPERNPLLQELHRFVGPSPTPVASFGLTHRPGLRPVTPTR  73
+            R G+ P+R+P L+E   F    P    +F   + PGL+ V   +
+Sbjct  89   REGLKPKRSPYLKEGIYFEREGP----NFPDDYEPGLKVVRANK  128
+
+
+>THAMT102_v1_0146.mRNA.0_elongated 99 nucleotides
+Length=210
+
+ Score = 22.3 bits (46),  Expect = 9.9, Method: Compositional matrix adjust.
+ Identities = 10/21 (48%), Positives = 12/21 (57%), Gaps = 0/21 (0%)
+
+Query  28  P*RRGMTPERNPLLQELHRFV  48
+           P RR   PER P   E+ R+V
+Sbjct  33  PMRRLKNPERIPYWAEIQRYV  53
+
+
+
+Lambda      K        H        a         alpha
+   0.336    0.151    0.503    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 48882514
+
+
+Query= GQS78_RS07605.mRNA.0_elongated 99 nucleotides pf:2 sp:1
+
+Length=151
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+THAMT102_v1_1861.mRNA.0_elongated 99 nucleotides                      46.2    3e-08
+THAMT102_v1_0729.mRNA.0_elongated 99 nucleotides                      25.8    0.94 
+THAMT102_v1_0763.mRNA.0_elongated 99 nucleotides                      25.0    1.6  
+THAMT102_v1_1739.mRNA.0_elongated 99 nucleotides                      23.5    4.8  
+THAMT102_v1_0432.mRNA.0_elongated 99 nucleotides                      23.5    5.1  
+THAMT102_v1_1025.mRNA.0_elongated 99 nucleotides                      23.5    5.3  
+THAMT102_v1_1389.mRNA.0_elongated 99 nucleotides                      22.7    8.2  
+THAMT102_v1_1661.mRNA.0_elongated 99 nucleotides                      22.7    9.2  
+
+
+>THAMT102_v1_1861.mRNA.0_elongated 99 nucleotides
+Length=149
+
+ Score = 46.2 bits (108),  Expect = 3e-08, Method: Compositional matrix adjust.
+ Identities = 38/101 (38%), Positives = 49/101 (49%), Gaps = 3/101 (3%)
+
+Query  42   QELHRFVG-PSPTPVASFGLTHRPGLRPVTPTRPSGIGVIALEADELLPPKRAVLKGR--  98
+            Q   RF G  SPT V +FG   RPGLRPVTPT  + IGVI  E    +  +   +  R  
+Sbjct  46   QRAVRFTGQSSPTRVTTFGFARRPGLRPVTPTGKNPIGVIVSETTLRVSNRLKAVFERTP  105
+
+Query  99   LTASSSLKGGHNESPLKGHL*TASPRPY*EEKVFKAFDISK  139
+               + S+  G  E+PLKG   +  P  Y  +K    F + K
+Sbjct  106  YGVNPSMAEG*LETPLKGLSYSGLPEAYLNDKDT*GFRLFK  146
+
+
+>THAMT102_v1_0729.mRNA.0_elongated 99 nucleotides
+Length=463
+
+ Score = 25.8 bits (55),  Expect = 0.94, Method: Compositional matrix adjust.
+ Identities = 16/46 (35%), Positives = 22/46 (48%), Gaps = 2/46 (4%)
+
+Query  36   ERNPLLQELHR--FVGPSPTPVASFGLTHRPGLRPVTPTRPSGIGV  79
+            E+N  + E +   F   +   V S+G+T RP L  V   R  GI V
+Sbjct  310  EKNRHVYEKYEEHFTDDAEILVVSWGVTARPALGAVLKAREEGIKV  355
+
+
+>THAMT102_v1_0763.mRNA.0_elongated 99 nucleotides
+Length=472
+
+ Score = 25.0 bits (53),  Expect = 1.6, Method: Composition-based stats.
+ Identities = 12/28 (43%), Positives = 19/28 (68%), Gaps = 2/28 (7%)
+
+Query  74  PSGIGVIALEADELL--PPKRAVLKGRL  99
+           PSG+ V  + A+  +  PPKRA+LK ++
+Sbjct  3   PSGMLVFLIHAENYISVPPKRALLKRKV  30
+
+
+>THAMT102_v1_1739.mRNA.0_elongated 99 nucleotides
+Length=342
+
+ Score = 23.5 bits (49),  Expect = 4.8, Method: Compositional matrix adjust.
+ Identities = 9/15 (60%), Positives = 10/15 (67%), Gaps = 0/15 (0%)
+
+Query  57  SFGLTHRPGLRPVTP  71
+           SF   HR GLRP+ P
+Sbjct  14  SFSFKHRRGLRPLQP  28
+
+
+>THAMT102_v1_0432.mRNA.0_elongated 99 nucleotides
+Length=415
+
+ Score = 23.5 bits (49),  Expect = 5.1, Method: Compositional matrix adjust.
+ Identities = 12/29 (41%), Positives = 16/29 (55%), Gaps = 0/29 (0%)
+
+Query  60  LTHRPGLRPVTPTRPSGIGVIALEADELL  88
+           +THRP L   T + P   G + + ADE L
+Sbjct  53  ITHRPNLYYFTGSAPVLGGYLLVTADEAL  81
+
+
+>THAMT102_v1_1025.mRNA.0_elongated 99 nucleotides
+Length=588
+
+ Score = 23.5 bits (49),  Expect = 5.3, Method: Compositional matrix adjust.
+ Identities = 10/24 (42%), Positives = 13/24 (54%), Gaps = 0/24 (0%)
+
+Query  31  RGMTPERNPLLQELHRFVGPSPTP  54
+           +G  PER PLL+    F+   P P
+Sbjct  48  KGFAPERRPLLERAFDFLTSFPKP  71
+
+
+>THAMT102_v1_1389.mRNA.0_elongated 99 nucleotides
+Length=597
+
+ Score = 22.7 bits (47),  Expect = 8.2, Method: Composition-based stats.
+ Identities = 8/14 (57%), Positives = 11/14 (79%), Gaps = 0/14 (0%)
+
+Query  55   VASFGLTHRPGLRP  68
+            +A+FG T RP L+P
+Sbjct  102  IAAFGSTRRPRLKP  115
+
+
+>THAMT102_v1_1661.mRNA.0_elongated 99 nucleotides
+Length=449
+
+ Score = 22.7 bits (47),  Expect = 9.2, Method: Compositional matrix adjust.
+ Identities = 14/44 (32%), Positives = 22/44 (50%), Gaps = 4/44 (9%)
+
+Query  30   RRGMTPERNPLLQELHRFVGPSPTPVASFGLTHRPGLRPVTPTR  73
+            R G+ P+R+P L+E   F    P    +F   + PGL+ V   +
+Sbjct  89   REGLKPKRSPYLKEGIYFEREGP----NFPDDYEPGLKVVRANK  128
+
+
+
+Lambda      K        H        a         alpha
+   0.337    0.149    0.492    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 48263748
+
+
+Query= GQS78_RS07605.mRNA.0_elongated 99 nucleotides pf:2 sp:2
+
+Length=151
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+THAMT102_v1_1861.mRNA.0_elongated 99 nucleotides                      43.5    4e-07
+THAMT102_v1_0729.mRNA.0_elongated 99 nucleotides                      26.2    0.64 
+THAMT102_v1_0763.mRNA.0_elongated 99 nucleotides                      25.0    1.7  
+THAMT102_v1_1661.mRNA.0_elongated 99 nucleotides                      23.9    3.6  
+THAMT102_v1_0432.mRNA.0_elongated 99 nucleotides                      23.5    4.4  
+THAMT102_v1_1025.mRNA.0_elongated 99 nucleotides                      23.5    5.6  
+THAMT102_v1_1739.mRNA.0_elongated 99 nucleotides                      23.1    6.6  
+
+
+>THAMT102_v1_1861.mRNA.0_elongated 99 nucleotides
+Length=149
+
+ Score = 43.5 bits (101),  Expect = 4e-07, Method: Compositional matrix adjust.
+ Identities = 33/78 (42%), Positives = 41/78 (53%), Gaps = 3/78 (4%)
+
+Query  42   QELHRFVG-PSPTPVASFGLTHRPGLRPVTPTRPSGIGVIALEADELLPPKRAVLKGR--  98
+            Q   RF G  SPT V +FG   RPGLRPVTPT  + IGVI  E    +  +   +  R  
+Sbjct  46   QRAVRFTGQSSPTRVTTFGFARRPGLRPVTPTGKNPIGVIVSETTLRVSNRLKAVFERTP  105
+
+Query  99   LTASSSLKGGHNESPLKG  116
+               + S+  G  E+PLKG
+Sbjct  106  YGVNPSMAEG*LETPLKG  123
+
+
+>THAMT102_v1_0729.mRNA.0_elongated 99 nucleotides
+Length=463
+
+ Score = 26.2 bits (56),  Expect = 0.64, Method: Compositional matrix adjust.
+ Identities = 16/46 (35%), Positives = 22/46 (48%), Gaps = 2/46 (4%)
+
+Query  36   ERNPLLQELHR--FVGPSPTPVASFGLTHRPGLRPVTPTRPSGIGV  79
+            E+N  + E +   F   +   V S+G+T RP L  V   R  GI V
+Sbjct  310  EKNRHVYEKYEEHFTDDAEILVVSWGVTARPALGAVLKAREEGIKV  355
+
+
+>THAMT102_v1_0763.mRNA.0_elongated 99 nucleotides
+Length=472
+
+ Score = 25.0 bits (53),  Expect = 1.7, Method: Composition-based stats.
+ Identities = 12/28 (43%), Positives = 19/28 (68%), Gaps = 2/28 (7%)
+
+Query  74  PSGIGVIALEADELL--PPKRAVLKGRL  99
+           PSG+ V  + A+  +  PPKRA+LK ++
+Sbjct  3   PSGMLVFLIHAENYISVPPKRALLKRKV  30
+
+
+>THAMT102_v1_1661.mRNA.0_elongated 99 nucleotides
+Length=449
+
+ Score = 23.9 bits (50),  Expect = 3.6, Method: Compositional matrix adjust.
+ Identities = 28/97 (29%), Positives = 43/97 (44%), Gaps = 18/97 (19%)
+
+Query  30   RRGMTPERNPLLQELHRFVGPSPTPVASFGLTHRPGLRPVTPTRPSGIGVIALEADELLP  89
+            R G+ P+R+P L+E   F    P    +F   + PGL+ V   + +   V   +   L  
+Sbjct  89   REGLKPKRSPYLKEGIYFEREGP----NFPDDYEPGLKVVRANKFASESV--YQGANLYA  142
+
+Query  90   PKRAVLKGRLTASSSLKGGHNESPLKGHL*RPPRGLI  126
+            P      G L A  S+K G +E  +     R P+GL+
+Sbjct  143  P------GVLQADRSIKPG-DEVEI-----RDPKGLL  167
+
+
+>THAMT102_v1_0432.mRNA.0_elongated 99 nucleotides
+Length=415
+
+ Score = 23.5 bits (49),  Expect = 4.4, Method: Compositional matrix adjust.
+ Identities = 12/29 (41%), Positives = 16/29 (55%), Gaps = 0/29 (0%)
+
+Query  60  LTHRPGLRPVTPTRPSGIGVIALEADELL  88
+           +THRP L   T + P   G + + ADE L
+Sbjct  53  ITHRPNLYYFTGSAPVLGGYLLVTADEAL  81
+
+
+>THAMT102_v1_1025.mRNA.0_elongated 99 nucleotides
+Length=588
+
+ Score = 23.5 bits (49),  Expect = 5.6, Method: Compositional matrix adjust.
+ Identities = 10/24 (42%), Positives = 13/24 (54%), Gaps = 0/24 (0%)
+
+Query  31  RGMTPERNPLLQELHRFVGPSPTP  54
+           +G  PER PLL+    F+   P P
+Sbjct  48  KGFAPERRPLLERAFDFLTSFPKP  71
+
+
+>THAMT102_v1_1739.mRNA.0_elongated 99 nucleotides
+Length=342
+
+ Score = 23.1 bits (48),  Expect = 6.6, Method: Compositional matrix adjust.
+ Identities = 9/15 (60%), Positives = 10/15 (67%), Gaps = 0/15 (0%)
+
+Query  57  SFGLTHRPGLRPVTP  71
+           SF   HR GLRP+ P
+Sbjct  14  SFSFKHRRGLRPLQP  28
+
+
+
+Lambda      K        H        a         alpha
+   0.338    0.151    0.497    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 48263748
+
+
+  Database: CDS_elongated.faa
+    Posted date:  Feb 12, 2025  2:51 PM
+  Number of letters in database: 787,615
+  Number of sequences in database:  2,313
+
+
+
+Matrix: BLOSUM62
+Gap Penalties: Existence: 11, Extension: 1
+Neighboring words threshold: 11
+Window for multiple hits: 40

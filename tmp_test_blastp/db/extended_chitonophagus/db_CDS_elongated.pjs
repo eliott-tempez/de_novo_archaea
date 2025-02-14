@@ -1,0 +1,22 @@
+{
+  "version": "1.2",
+  "dbname": "db_CDS_elongated",
+  "dbtype": "Protein",
+  "db-version": 5,
+  "description": "CDS_elongated.faa",
+  "number-of-letters": 743093,
+  "number-of-sequences": 2150,
+  "last-updated": "2025-02-11T17:17:00",
+  "number-of-volumes": 1,
+  "bytes-total": 1070204,
+  "bytes-to-cache": 762556,
+  "files": [
+    "db_CDS_elongated.pdb",
+    "db_CDS_elongated.phr",
+    "db_CDS_elongated.pin",
+    "db_CDS_elongated.pot",
+    "db_CDS_elongated.psq",
+    "db_CDS_elongated.ptf",
+    "db_CDS_elongated.pto"
+  ]
+}
