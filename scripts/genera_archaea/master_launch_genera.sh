@@ -5,10 +5,29 @@ declare -a archaeas=("GCA_000007305@Pyrococcus_furiosus_DSM_3638" "GCA_000009965
 
 # Submit the first job without dependency
 first_species=${archaeas[0]}
-job_id=$(qsub run_genera.sh -v SPECIES=$first_species,NB_SPECIES=0)
+job_id=$(
+    qsub \
+    -v SPECIES=$first_species \
+    -N genera_archaea_0 \
+    -o /home/eliott.tempez/genera_output_$first_species.log \
+    -e /home/eliott.tempez/genera_error_$first_species.log \
+    -q bim \
+    -l ncpus=32 -l host=node04 -l mem=128gb -l walltime=300:00:00 \
+    run_genera.sh
+    )
 
 # Submit the rest of the jobs with dependency on the previous job
 for ((i = 1; i < ${#archaeas[@]}; i++)); do
     species=${archaeas[$i]}
-    job_id=$(qsub -W depend=afterok:$job_id run_genera.sh -v SPECIES=$species,NB_SPECIES=$i)
+    job_id=$(
+        qsub \
+        -W depend=afterok:$job_id \
+        -v SPECIES=$species \
+        -N genera_archaea_$i \
+        -o /home/eliott.tempez/genera_output_$species.log \
+        -e /home/eliott.tempez/genera_error_$species.log \
+        -q bim \
+        -l ncpus=32 -l host=node04 -l mem=128gb -l walltime=300:00:00 \
+        run_genera.sh
+        )
 done

@@ -1,21 +1,15 @@
 #!/bin/sh
 
 # Get the species from the argument
-archaea=$SPECIES
-i=$NB_SPECIES
+
 
 ########## Parameters ##########
 
-# PBS parameters
-#PBS -N genera_archaea_$i
-#PBS -q bim
-#PBS -l ncpus=32 -l host=node04 -l mem=128gb -l walltime=300:00:00
-#PBS -o /home/eliott.tempez/genera_output_$archaea.log
-#PBS -e /home/eliott.tempez/genera_error_$archaea.log
+archaea=$SPECIES
 
 # Data files
 NR=/datas/NR/nr_2.0.13
-TAXDUMP=/datas/ELIOTT/scripts/taxdump/
+TAXDUMP=/datas/ELIOTT/scripts/work/taxdump/
 TAXID_FILE=/datas/ELIOTT/archaea_data/taxid.csv
 # Output dir
 OUT_DIR=/datas/ELIOTT/archaea_data/genera/
