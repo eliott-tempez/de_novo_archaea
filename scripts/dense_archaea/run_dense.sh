@@ -21,13 +21,15 @@ cd /datas/ELIOTT/scripts/
 ########## Run Dense ##########
 
 # List of archaeas to iterate over
-declare -a archaeas=("GCA_000195935@Pyrococcus_abyssi_GE5")
+declare -a archaeas=("GCA_001433455@Thermococcus_barophilus_CH5")
 # For each of them
 for archaea in "${archaeas[@]}"; do
 
     # Log filenames
     LOG_OUTPUT=/home/eliott.tempez/dense_output_${archaea}.log
     LOG_ERROR=/home/eliott.tempez/dense_error_${archaea}.log
+    #PBS -o $LOG_OUTPUT
+    #PBS -e $LOG_ERROR
 
     echo $archaea >> $LOG_OUTPUT
     # Get taxid
@@ -41,7 +43,6 @@ for archaea in "${archaeas[@]}"; do
     echo "Running Dense..." >> $LOG_OUTPUT
     nextflow run /home/eliott.tempez/dense \
         -profile singularity \
-        -resume \
         --max_cpus 32 \
         --max_memory 128.GB \
         --max_time 300.h \
