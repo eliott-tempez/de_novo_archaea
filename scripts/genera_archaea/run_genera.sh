@@ -1,10 +1,8 @@
 #!/bin/sh
 
-# Get the species from the argument
-
-
 ########## Parameters ##########
 
+# Get the species from the argument
 archaea=$SPECIES
 
 # Data files
