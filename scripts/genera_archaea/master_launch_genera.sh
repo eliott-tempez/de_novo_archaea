@@ -5,7 +5,7 @@ declare -a archaeas=("GCA_000007305@Pyrococcus_furiosus_DSM_3638" "GCA_000009965
 
 # Submit the first job without dependency
 first_species=${archaeas[0]}
-job_id=$(qsub run_genera_1.sh -v SPECIES=$first_species,NB_SPECIES=0)
+job_id=$(qsub run_genera.sh -v SPECIES=$first_species,NB_SPECIES=0)
 
 # Submit the rest of the jobs with dependency on the previous job
 for ((i = 1; i < ${#archaeas[@]}; i++)); do

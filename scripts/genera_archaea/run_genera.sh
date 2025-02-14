@@ -1,17 +1,10 @@
 #!/bin/sh
 
-########## Parameters ##########
-
-# Data files
-NR=/datas/NR/nr_2.0.13
-TAXDUMP=/datas/ELIOTT/scripts/taxdump/
-TAXID_FILE=/datas/ELIOTT/archaea_data/taxid.csv
-# Output dir
-OUT_DIR=/datas/ELIOTT/archaea_data/genera/
-
 # Get the species from the argument
 archaea=$SPECIES
 i=$NB_SPECIES
+
+########## Parameters ##########
 
 # PBS parameters
 #PBS -N genera_archaea_$i
@@ -20,15 +13,19 @@ i=$NB_SPECIES
 #PBS -o /home/eliott.tempez/genera_output_$archaea.log
 #PBS -e /home/eliott.tempez/genera_error_$archaea.log
 
+# Data files
+NR=/datas/NR/nr_2.0.13
+TAXDUMP=/datas/ELIOTT/scripts/taxdump/
+TAXID_FILE=/datas/ELIOTT/archaea_data/taxid.csv
+# Output dir
+OUT_DIR=/datas/ELIOTT/archaea_data/genera/
 # Log filenames
 LOG_OUTPUT=/home/eliott.tempez/genera_output_$archaea.log
 LOG_ERROR=/home/eliott.tempez/genera_error_$archaea.log
 
-
 # Set up environment
 source /home/eliott.tempez/miniconda3/bin/activate phylostrat
 cd /datas/ELIOTT/scripts/
-
 
 
 ########## Run GenEra ##########
