@@ -11,7 +11,7 @@ do
     # Extract the basename without the extension
     BASENAME=$(basename $FILE .fa)
     # File name to look for
-    TARGET_FILE="TRG_multielongated_blastp_$(BASENAME)_CDS_elongated.out"
+    TARGET_FILE="TRG_multielongated_blastp_${BASENAME}_CDS_elongated.out"
     # Run ls and get folder name for first match
     TARGET_FILEPATH=$(ls */*/$TARGET_FILE | head -n 1)
     TARGET_FOLDER=$(dirname $TARGET_FILEPATH)
