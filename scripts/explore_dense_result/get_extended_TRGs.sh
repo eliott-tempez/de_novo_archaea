@@ -16,5 +16,5 @@ do
     TARGET_FILEPATH=$(ls */*/$TARGET_FILE | head -n 1)
     TARGET_FOLDER=$(dirname $TARGET_FILEPATH)
     # Copy the TRH file to the extended_CDS_list folder
-    cp -L $TARGET_FOLDER"/TRG_multielongated.faa extended_CDS_list/TRG_multielongated_"$BASENAME_ORG".faa"
+    cp -L $TARGET_FOLDER/TRG_multielongated.faa "extended_CDS_list/TRG_multielongated_"$BASENAME_ORG".faa"
 done
