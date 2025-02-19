@@ -23,3 +23,4 @@ Ce stage a été effectué de Janvier 2025 à Juillet 2025 au sein de l'Institut
 - Récupération des noms de contigs discordant entre les fichiers genbank et fasta (`retrieve_contigs`)
 - Utilisation de GenEra sur les données d'entrée (`genera_archaea`)
 - Utilisation de Dense sur les données générées par GenEra (`dense_archaea`)
+- Exploration "à la main" des résultats de Dense (`explore_dense_results`)
