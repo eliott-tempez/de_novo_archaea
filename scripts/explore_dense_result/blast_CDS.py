@@ -10,7 +10,7 @@ TMP_DIR = os.path.join(os.getcwd(), "tmp/")
 def get_query_from_user():
     """Get the CDS and the database from the user"""
     print("\n#### BLAST CDS ####")
-    cds_str = input("<Name of CDS> <0:unextended 1:extended>: ")
+    cds_str = input("<Name of genome> <0:unextended 1:extended>: ")
     cds = extract_cds(cds_str)
     db_str = input("\n<DB name> <0:CDS 1:whole genome>: ")
     db, blast_type = extract_db(db_str)
@@ -46,9 +46,9 @@ def extract_cds_from_genome(cds_file):
     # Set working directory
     os.chdir(TMP_DIR)
     # Get the genome name
-    genome_name = input("Enter the genome name: ")
+    cds_name = input("Enter the cds name: ")
     # Create temp file with the wanted CDS
-    os.system(f"grep -A 1 {genome_name} {cds_file} > {TMP_DIR}cds.faa")
+    os.system(f"grep -A 1 {cds_name} {cds_file} > {TMP_DIR}cds.faa")
     return f"{TMP_DIR}cds.faa"
 
 
