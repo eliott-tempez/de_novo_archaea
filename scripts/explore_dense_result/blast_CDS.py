@@ -1,9 +1,9 @@
 import os
 
-FASTA_FOLDER = "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/data/complete_122/fasta_renamed/"
-GFF_folder = "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/data/complete_122/gff3/"
-CDS_folder = "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/data/dense/archive_tree_v1/GCA_000195935@Pyrococcus_abyssi_GE5/CDS/"
-EXTENDED_TRG_folder = "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/data/complete_122/extended_trg/"
+FASTA_FOLDER = "/home/eliott.tempez/Documents/archaea_data/complete_122/fasta_renamed/"
+GFF_folder = "/home/eliott.tempez/Documents/archaea_data/complete_122/gff3/"
+CDS_folder = "/home/eliott.tempez/Documents/archaea_data/dense/GCA_000195935@Pyrococcus_abyssi_GE5/CDS/"
+EXTENDED_TRG_folder = "/home/eliott.tempez/Documents/archaea_data/complete_122/multielongated_TRGS/"
 TMP_DIR = os.path.join(os.getcwd(), "tmp/")
 
 
