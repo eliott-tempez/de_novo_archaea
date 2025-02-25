@@ -25,34 +25,40 @@ tree <- read.tree(tree_file)
 # Plot the tree
 p <- ggtree(tree, layout = "circular", branch.length = "none") +
   geom_tippoint(aes(subset = (label == focal_species)), shape = 23,
-                color = "black", fill = "yellow",
+                color = "black", fill = "red",
                 size = 3, stroke = 1, alpha = 1)
 
 # Add the heatmaps
 ## TRGs ##
+p <- p + new_scale_fill()
 p <- gheatmap(p, conservation_db_p[, "n_trg", drop = FALSE],
               width = .05, colnames = FALSE) +
-  scale_fill_gradient(low = "white", high = "red", name = "TRGs")
+  scale_fill_gradient(low = "white", high = "#0004ff", name = "TRGs",
+                      guide = guide_colorbar(order = 1))
 ## CDSs ##
 p <- p + new_scale_fill()
 p <- gheatmap(p, conservation_db_p[, "n_cds", drop = FALSE], offset = 1,
               width = .05, colnames = FALSE) +
-  scale_fill_gradient(low = "white", high = "darkorange", name = "CDS")
+  scale_fill_gradient(low = "white", high = "#be5c00", name = "CDS",
+                      guide = guide_colorbar(order = 2))
 ## Noncoding ##
 p <- p + new_scale_fill()
 p <- gheatmap(p, conservation_db_p[, "n_noncoding", drop = FALSE], offset = 2,
               width = .05, colnames = FALSE) +
-  scale_fill_gradient(low = "white", high = "#7f17c0", name = "Noncoding")
+  scale_fill_gradient(low = "white", high = "#4d00a5", name = "Noncoding",
+                      guide = guide_colorbar(order = 3))
 ## Frame 1 ##
 p <- p + new_scale_fill()
 p <- gheatmap(p, conservation_db_p[, "n_f1", drop = FALSE], offset = 3,
               width = .05, colnames = FALSE) +
-  scale_fill_gradient(low = "white", high = "blue", name = "+1")
+  scale_fill_gradient(low = "white", high = "#bdba17", name = "+1",
+                      guide = guide_colorbar(order = 4))
 ## Frame 2 ##
 p <- p + new_scale_fill()
 p <- gheatmap(p, conservation_db_p[, "n_f2", drop = FALSE], offset = 4,
               width = .05, colnames = FALSE) +
-  scale_fill_gradient(low = "white", high = "#12a712", name = "+2")
+  scale_fill_gradient(low = "white", high = "#12a712", name = "+2",
+                      guide = guide_colorbar(order = 5))
 
 # Add the title
 p <- p + ggtitle(paste0("Conservation rate for\n", focal_species)) +
