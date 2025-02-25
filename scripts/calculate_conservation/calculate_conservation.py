@@ -19,20 +19,10 @@ TRG_RANK = 7.0
 
 
 ############################## FUNCTIONS ##############################
-def initialise_conservation_df(genomes, genera_dir):
+def initialise_conservation_df(genomes):
     """Initialise the dataframe with empty rows and columns"""
-    #col = ["n_trg", "n_cds", "n_noncoding", "n_f1", "n_f2"]
-    col = ["n_cds", "n_trg", "n_noncoding"]
-    ncol = len(col)
+    col = ["n_trg", "n_cds", "n_noncoding", "n_f1", "n_f2"]
     conservation_df = pd.DataFrame(columns=col, index=genomes)
-    genera_species = os.listdir(genera_dir)
-    for g in genomes:
-        # Initialise with 0 for the species for which we have the data
-        if g in genera_species:
-            conservation_df.loc[g] = [0]*ncol
-        # Initialise with None for the species for which we don't have the data
-        else:
-            conservation_df.loc[g] = [None]*ncol
     return conservation_df
 
 
@@ -49,7 +39,7 @@ def run_blast(query_sequences, db_faa_file, blast_type):
         output_file_path = output_file.name
 
     # Run the BLAST
-    result = subprocess.run([blast_type, "-query", query_file_path, "-subject", db_faa_file, "-out", output_file_path, "-outfmt", "6 qseqid sseqid qlen evalue qcovs"], capture_output=True)
+    result = subprocess.run([blast_type, "-query", query_file_path, "-subject", db_faa_file, "-out", output_file_path, "-outfmt", "6 qseqid sseqid qlen evalue qcovs", "-num_threads", "12"], capture_output=True)
     if result.returncode != 0:
         raise RuntimeError(f"BLAST command failed with return code {result.returncode}: {result.stderr.decode()}")
     # Read the output file
@@ -62,7 +52,7 @@ def run_blast(query_sequences, db_faa_file, blast_type):
     # Remove the temporary files
     os.remove(query_file_path)
     os.remove(output_file_path)
-
+    # Return number of matches
     return len(result)
 
 
@@ -100,9 +90,6 @@ def calculate_TRG_conservation(focal_sp, conservation_df, focal_TRGs, data_dir):
 
     # For each species
     for species in conservation_df.index:
-        # Skip species for which we don't have the data
-        if conservation_df.loc[species, "n_trg"] is None:
-            continue
         # For the focal species, add the number of TRGs
         if species == focal_sp:
             conservation_df.loc[species, "n_trg"] = len(focal_TRGs)
@@ -138,14 +125,10 @@ def calculate_CDS_conservation(focal_sp, conservation_df, focal_CDSs, data_dir):
     """Calculate the conservation of the CDSs for all the species"""
     # For each species
     for species in conservation_df.index:
-        # Skip species for which we don't have the data
-        if conservation_df.loc[species, "n_cds"] is None:
-            continue
         # For the focal species, add the number of CDSs
         if species == focal_sp:
             conservation_df.loc[species, "n_cds"] = len(focal_CDSs)
             continue
-
         # For all the other species, run BLAST for all the CDSs
         db_fa_file = os.path.join(data_dir, "fasta_renamed/" + species + ".fa")
         nb_matches = run_blast(focal_CDSs, db_fa_file, "tblastn")
@@ -221,14 +204,10 @@ def extract_focal_noncoding(focal_sp, conservation_df, data_dir):
 def calculate_noncoding_conservation(focal_sp, conservation_df, focal_noncoding, data_dir):
     # For each species
     for species in conservation_df.index:
-        # Skip species for which we don't have the data
-        if conservation_df.loc[species, "n_noncoding"] is None:
-            continue
         # For the focal species, add the number of CDSs
         if species == focal_sp:
             conservation_df.loc[species, "n_noncoding"] = len(focal_noncoding)
             continue
-
         # For all the other species, run BLAST for all the non-coding sequences
         db_fa_file = os.path.join(data_dir, "fasta_renamed/" + species + ".fa")
         nb_matches = run_blast(focal_noncoding, db_fa_file, "tblastn")
@@ -238,24 +217,41 @@ def calculate_noncoding_conservation(focal_sp, conservation_df, focal_noncoding,
             
 
 
+def extract_focal_altframes(focal_sp, conservation_df, data_dir):
+    # Extract CDS sequences in nucleotides form
+    CDS_fasta_file = os.path.join(data_dir, "CDS/" + focal_sp + "_CDS.fna")
+    CDS_fasta = SeqIO.parse(CDS_fasta_file, "fasta")
+    focal_CDSs = {}
+    for record in CDS_fasta:
+        focal_CDSs[record.name] = record.seq
+    # Keep 1000 at most
+    focal_CDSs_names = list(focal_CDSs.keys())
+    if len(focal_CDSs) > 1000:
+        focal_CDSs_names = random.sample(focal_CDSs_names, 1000)
+    focal_CDSs = {k: focal_CDSs[k] for k in focal_CDSs_names}
+    # Extract the proteic sequences for the +1 and +2 frames
+    focal_f1 = {k: focal_CDSs[k][1:].translate() for k in focal_CDSs}
+    focal_f2 = {k: focal_CDSs[k][2:].translate() for k in focal_CDSs}
+    return focal_f1, focal_f2
 
 
 
-
-
-
-        
-
-
-
-
-
-
-
-
-
-
-
+def calculate_altframes_conservation(focal_sp, conservation_df, focal_f1, focal_f2, data_dir):
+    # For each species
+    for species in conservation_df.index:
+        # For the focal species, add the number of CDSs
+        if species == focal_sp:
+            conservation_df.loc[species, "n_f1"] = len(focal_f1)
+            conservation_df.loc[species, "n_f2"] = len(focal_f2)
+            continue
+        # For all the other species, run BLAST for all the +1 and +2 frames
+        db_fa_file = os.path.join(data_dir, "fasta_renamed/" + species + ".fa")
+        nb_matches_f1 = run_blast(focal_f1, db_fa_file, "tblastn")
+        nb_matches_f2 = run_blast(focal_f2, db_fa_file, "tblastn")
+        print(f"Species {species}: {nb_matches_f1} matches for +1 frame and {nb_matches_f2} matches for +2 frame")
+        conservation_df.loc[species, "n_f1"] = nb_matches_f1
+        conservation_df.loc[species, "n_f2"] = nb_matches_f2
+    return conservation_df
 
 
 
@@ -267,7 +263,7 @@ if __name__ == "__main__":
         genomes = f.readline().split()
     genomes = [re.sub('"', '', g) for g in genomes]
     # Initiate the dataframe
-    conservation_df = initialise_conservation_df(genomes, GENERA_DIR)
+    conservation_df = initialise_conservation_df(genomes)
     print("\n")
 
 
@@ -275,7 +271,7 @@ if __name__ == "__main__":
     ################# TRGs #################
     ########################################
     print("Calculating TRG conservation...")
-    # Extract the name of 1000 TRGs of the focal species
+    # Extract the name of 1000 (at most) TRGs of the focal species
     focal_TRGs = extract_focal_TRGs(FOCAL_SPECIES, TRG_RANK, GENERA_DIR)
     print(f"Extracted {len(focal_TRGs)} TRGs for the focal species {FOCAL_SPECIES}\n")
     # Calculate the TRG conservation and add to dataframe
@@ -310,13 +306,18 @@ if __name__ == "__main__":
 
 
 
-
-
-
-
+    ########################################
+    ########### +1 and +2 frames ###########
+    ########################################
+    print("Calculating conservation for +1 and +2 frames...")
+    # Extract 1000 sequences for +1 and +2 frames
+    focal_f1, focal_f2 = extract_focal_altframes(FOCAL_SPECIES, conservation_df, DATA_DIR)
+    print(f"Extracted {len(focal_f1)} sequences for the +1 frame and +2 frames for the focal species {FOCAL_SPECIES}\n")
+    # Calculate the conservation for +1 and +2 frames and add to dataframe
+    conservation_df = calculate_altframes_conservation(FOCAL_SPECIES, conservation_df, focal_f1, focal_f2, DATA_DIR)
 
 
 
     # Write result to file
-    #conservation_df.to_csv(os.path.join(OUTPUT_DIR, f"conservation_df_{FOCAL_SPECIES}.tsv"), sep="\t")
+    conservation_df.to_csv(os.path.join(OUTPUT_DIR, f"conservation_df_{FOCAL_SPECIES}.tsv"), sep="\t")
 
