@@ -21,7 +21,7 @@ TRG_RANK = 7.0
 def initialise_conservation_df(genomes, genera_dir):
     """Initialise the dataframe with empty rows and columns"""
     #col = ["n_trg", "n_cds", "n_noncoding", "n_f1", "n_f2"]
-    col = ["n_trg"]
+    col = ["n_cds", "n_trg", "n_noncoding"]
     ncol = len(col)
     conservation_df = pd.DataFrame(columns=col, index=genomes)
     genera_species = os.listdir(genera_dir)
@@ -33,25 +33,6 @@ def initialise_conservation_df(genomes, genera_dir):
         else:
             conservation_df.loc[g] = [None]*ncol
     return conservation_df
-
-
-
-def extract_focal_TRGs(focal_species, trg_threshold, genera_dir):
-    """Extract 1000 TRGs of the focal species"""
-    # Make sure the file exists and read it
-    trg_pattern = os.path.join(genera_dir, focal_species, "*gene_ages.tsv")
-    trg_files = glob.glob(trg_pattern)
-    if trg_files:
-        trg_file = trg_files[0]
-        trg_df = pd.read_csv(trg_file, sep="\t", header=0)
-    else:
-        raise FileNotFoundError(f"No file matching pattern {trg_pattern}")
-    # Extract the TRGs
-    focal_TRGs = trg_df[trg_df["rank"] >= trg_threshold]["#gene"].tolist()
-    # Keep 1000 at most
-    if len(focal_TRGs) > 1000:
-        focal_TRGs = random.sample(focal_TRGs, 1000)
-    return focal_TRGs
 
 
 
@@ -82,6 +63,25 @@ def run_blast(query_sequences, db_faa_file, blast_type):
     os.remove(output_file_path)
 
     return len(result)
+
+
+
+def extract_focal_TRGs(focal_species, trg_threshold, genera_dir):
+    """Extract 1000 TRGs of the focal species"""
+    # Make sure the file exists and read it
+    trg_pattern = os.path.join(genera_dir, focal_species, "*gene_ages.tsv")
+    trg_files = glob.glob(trg_pattern)
+    if trg_files:
+        trg_file = trg_files[0]
+        trg_df = pd.read_csv(trg_file, sep="\t", header=0)
+    else:
+        raise FileNotFoundError(f"No file matching pattern {trg_pattern}")
+    # Extract the TRGs
+    focal_TRGs = trg_df[trg_df["rank"] >= trg_threshold]["#gene"].tolist()
+    # Keep 1000 at most
+    if len(focal_TRGs) > 1000:
+        focal_TRGs = random.sample(focal_TRGs, 1000)
+    return focal_TRGs
 
 
 
@@ -116,8 +116,82 @@ def calculate_TRG_conservation(focal_sp, conservation_df, focal_TRGs, data_dir):
 
 
 
+def extract_focal_CDSs(focal_species, data_dir):
+    """Extract 1000 CDSs of the focal species"""
+    # Extract all CDSs of the focal species
+    CDS_fasta_file = os.path.join(data_dir, "CDS/" + focal_species + "_CDS.faa")
+    CDS_fasta = SeqIO.parse(CDS_fasta_file, "fasta")
+    focal_CDSs = {}
+    for record in CDS_fasta:
+        focal_CDSs[record.id] = record.seq
+    # Keep 1000 at most
+    focal_CDSs_names = list(focal_CDSs.keys())
+    if len(focal_CDSs) > 1000:
+        focal_CDSs_names = random.sample(focal_CDSs_names, 1000)
+    focal_CDSs = {k: focal_CDSs[k] for k in focal_CDSs_names}
+    return focal_CDSs
 
 
+
+def calculate_CDS_conservation(focal_sp, conservation_df, focal_CDSs, data_dir):
+    """Calculate the conservation of the CDSs for all the species"""
+    # For each species
+    for species in conservation_df.index:
+        # Skip species for which we don't have the data
+        if conservation_df.loc[species, "n_cds"] is None:
+            continue
+        # For the focal species, add the number of CDSs
+        if species == focal_sp:
+            conservation_df.loc[species, "n_cds"] = len(focal_CDSs)
+            continue
+
+        # For all the other species, run BLAST for all the CDSs
+        db_fa_file = os.path.join(data_dir, "fasta_renamed/" + species + ".fa")
+        nb_matches = run_blast(focal_CDSs, db_fa_file, "tblastn")
+        print(f"Species {species}: {nb_matches} matches")
+        conservation_df.loc[species, "n_cds"] = nb_matches
+    return conservation_df
+
+
+
+def extract_focal_noncoding(focal_sp, conservation_df, data_dir):
+        # Make sure the file exists and read it
+        gbk_pattern = os.path.join(data_dir, "annotation/" + focal_sp + ".gb*")
+        gbk_files = glob.glob(gbk_pattern)
+        if gbk_files:
+            gbk_file = gbk_files[0]
+            gbk_content = list(SeqIO.parse(gbk_file, "genbank"))
+        else:
+            raise FileNotFoundError(f"No file matching pattern {gbk_pattern}")
+        # Get all coding loci from the genbank file (cds ranges)
+        coding_loci = []
+        for record in gbk_content:
+            for feature in record.features:
+                if feature.type == "CDS":
+                    coding_loci.append((feature.location.start, feature.location.end))
+        print(f"loci extracted! Last locus: {coding_loci[-1]}")
+        # Get the starting positions for all codons
+        start_point_codons = []
+        for cds_range in coding_loci:
+            start_point_codons += list(range(cds_range[0], cds_range[1], 3))
+        print(f"start points extracted! Last start point: {start_point_codons[-1]}")
+        # order and delete duplicates
+        start_point_codons.sort()
+        full_set = set(range(start_point_codons[0], start_point_codons[-1] + 1))
+        start_point_codons = set(start_point_codons)
+        print(f"Number of unique start points: {len(start_point_codons)}")
+        # Get all the integers that are not in the list of first codons
+        noncoding_positions = list(full_set - start_point_codons)
+        noncoding_positions.sort()
+        print(f"Number of non-coding positions possible: {len(noncoding_positions)}")
+        # Keep only 300-nucl-long segments that are not in frame with a cds
+        noncoding_segments = []
+        for i in noncoding_positions[:-300]:
+            considered_segment_codons = [c for c in range(i, i + 300, 3)]
+            if not any([c in start_point_codons for c in considered_segment_codons]):
+                noncoding_segments.append((i, i + 300))
+                print((i, i + 300))
+            
 
 
 
@@ -155,13 +229,40 @@ if __name__ == "__main__":
     ########################################
     ################# TRGs #################
     ########################################
-    print("Calculating TRG conservation...")
+    """print("Calculating TRG conservation...")
     # Extract the name of 1000 TRGs of the focal species
     focal_TRGs = extract_focal_TRGs(FOCAL_SPECIES, TRG_RANK, GENERA_DIR)
     print(f"Extracted {len(focal_TRGs)} TRGs for the focal species {FOCAL_SPECIES}\n")
     # Calculate the TRG conservation and add to dataframe
     conservation_df = calculate_TRG_conservation(FOCAL_SPECIES, conservation_df, focal_TRGs, DATA_DIR)
-    print("\n")
+    print("\n\n")
+
+
+
+    ########################################
+    ################# CDSs #################
+    ########################################
+    print("Calculating CDS conservation...")
+    # Extract 1000 CDss of the focal species
+    focal_CDSs = extract_focal_CDSs(FOCAL_SPECIES, DATA_DIR)
+    print(f"Extracted {len(focal_CDSs)} CDSs for the focal species {FOCAL_SPECIES}\n")
+    # Calculate the CDS conservation and add to dataframe
+    conservation_df = calculate_CDS_conservation(FOCAL_SPECIES, conservation_df, focal_CDSs, DATA_DIR)
+    print("\n\n")"""
+
+
+
+    ########################################
+    ############## Non-coding ##############
+    ########################################
+    print("Calculating non-coding conservation...")
+    # Extract 1000 non-coding sequences of the focal species
+    focal_noncoding = extract_focal_noncoding(FOCAL_SPECIES, conservation_df, DATA_DIR)
+    print(f"Extracted {len(focal_noncoding)} non-coding sequences for the focal species {FOCAL_SPECIES}\n")
+
+
+
+
 
 
 
@@ -169,5 +270,5 @@ if __name__ == "__main__":
 
 
     # Write result to file
-    conservation_df.to_csv(os.path.join(OUTPUT_DIR, f"conservation_df_{FOCAL_SPECIES}.tsv"), sep="\t")
+    #conservation_df.to_csv(os.path.join(OUTPUT_DIR, f"conservation_df_{FOCAL_SPECIES}.tsv"), sep="\t")
 
