@@ -6,6 +6,7 @@ import subprocess
 import tempfile
 import pandas as pd
 import Bio.SeqIO as SeqIO
+from Bio.Seq import Seq
 
 
 OUTPUT_DIR = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/calculate_conservation/"
@@ -92,8 +93,8 @@ def calculate_TRG_conservation(focal_sp, conservation_df, focal_TRGs, data_dir):
     CDS_fasta_file = os.path.join(data_dir, "CDS/" + focal_sp + "_CDS.faa")
     CDS_fasta = SeqIO.parse(CDS_fasta_file, "fasta")
     for record in CDS_fasta:
-        if record.id in focal_TRGs:
-            TRG_sequences[record.id] = record.seq
+        if record.name in focal_TRGs:
+            TRG_sequences[record.name] = record.seq
     if len(TRG_sequences) != len(focal_TRGs):
         print("Some TRGs are missing in the faa file")
 
@@ -123,7 +124,7 @@ def extract_focal_CDSs(focal_species, data_dir):
     CDS_fasta = SeqIO.parse(CDS_fasta_file, "fasta")
     focal_CDSs = {}
     for record in CDS_fasta:
-        focal_CDSs[record.id] = record.seq
+        focal_CDSs[record.name] = record.seq
     # Keep 1000 at most
     focal_CDSs_names = list(focal_CDSs.keys())
     if len(focal_CDSs) > 1000:
@@ -155,6 +156,7 @@ def calculate_CDS_conservation(focal_sp, conservation_df, focal_CDSs, data_dir):
 
 
 def extract_focal_noncoding(focal_sp, conservation_df, data_dir):
+        """Extract 1000 non-coding sequences of the focal species"""
         # Make sure the file exists and read it
         gbk_pattern = os.path.join(data_dir, "annotation/" + focal_sp + ".gb*")
         gbk_files = glob.glob(gbk_pattern)
@@ -163,34 +165,76 @@ def extract_focal_noncoding(focal_sp, conservation_df, data_dir):
             gbk_content = list(SeqIO.parse(gbk_file, "genbank"))
         else:
             raise FileNotFoundError(f"No file matching pattern {gbk_pattern}")
-        # Get all coding loci from the genbank file (cds ranges)
-        coding_loci = []
+
+        # Extract data for each contig
+        noncoding_segments = []
         for record in gbk_content:
+            # Get all coding loci from the genbank file (cds ranges)
+            coding_loci = []
             for feature in record.features:
                 if feature.type == "CDS":
                     coding_loci.append((feature.location.start, feature.location.end))
-        print(f"loci extracted! Last locus: {coding_loci[-1]}")
-        # Get the starting positions for all codons
-        start_point_codons = []
-        for cds_range in coding_loci:
-            start_point_codons += list(range(cds_range[0], cds_range[1], 3))
-        print(f"start points extracted! Last start point: {start_point_codons[-1]}")
-        # order and delete duplicates
-        start_point_codons.sort()
-        full_set = set(range(start_point_codons[0], start_point_codons[-1] + 1))
-        start_point_codons = set(start_point_codons)
-        print(f"Number of unique start points: {len(start_point_codons)}")
-        # Get all the integers that are not in the list of first codons
-        noncoding_positions = list(full_set - start_point_codons)
-        noncoding_positions.sort()
-        print(f"Number of non-coding positions possible: {len(noncoding_positions)}")
-        # Keep only 300-nucl-long segments that are not in frame with a cds
-        noncoding_segments = []
-        for i in noncoding_positions[:-300]:
-            considered_segment_codons = [c for c in range(i, i + 300, 3)]
-            if not any([c in start_point_codons for c in considered_segment_codons]):
-                noncoding_segments.append((i, i + 300))
-                print((i, i + 300))
+            # Get the starting positions for all codons
+            start_point_codons = []
+            for cds_range in coding_loci:
+                start_point_codons += list(range(cds_range[0], cds_range[1], 3))
+            # order and delete duplicates
+            start_point_codons.sort()
+            full_set = set(range(start_point_codons[0], start_point_codons[-1] + 1))
+            start_point_codons = set(start_point_codons)
+            # Get all the integers that are not in the list of first codons
+            noncoding_positions = list(full_set - start_point_codons)
+            noncoding_positions.sort()
+            # Keep only 300-nucl-long segments that are not in frame with a cds
+            for i in noncoding_positions[:-300]:
+                considered_segment_codons = [c for c in range(i, i + 300, 3)]
+                if not any([c in start_point_codons for c in considered_segment_codons]):
+                    noncoding_segments.append((record.name, i, i + 300))
+        # Extract 1000 noncoding segments at most
+        if len(noncoding_segments) > 1000:
+            noncoding_segments = random.sample(noncoding_segments, 1000)
+
+        # Extract the corresponding sequences from fasta file
+        # convert list to dict
+        noncoding_dict_loc = {}
+        for i in range(len(noncoding_segments)):
+            contig, start, end = noncoding_segments[i]
+            if contig not in noncoding_dict_loc:
+                noncoding_dict_loc[contig] = {}
+            noncoding_dict_loc[contig][f"segment_{i}"] = (start, end)
+        # Extract the sequences
+        noncoding_dict_seq = {}
+        fa_file = os.path.join(data_dir, "fasta_renamed/" + focal_sp + ".fa")
+        fa_content = list(SeqIO.parse(fa_file, "fasta"))
+        for contig in fa_content:
+            if contig.name in noncoding_dict_loc:
+                for segment in noncoding_dict_loc[contig.name]:
+                    start, end = noncoding_dict_loc[contig.name][segment]
+                    # translate the sequence
+                    nucl_seq = contig.seq[start:end]
+                    prot_seq = nucl_seq.translate()
+                    noncoding_dict_seq[segment] = prot_seq
+        return noncoding_dict_seq
+
+
+
+def calculate_noncoding_conservation(focal_sp, conservation_df, focal_noncoding, data_dir):
+    # For each species
+    for species in conservation_df.index:
+        # Skip species for which we don't have the data
+        if conservation_df.loc[species, "n_noncoding"] is None:
+            continue
+        # For the focal species, add the number of CDSs
+        if species == focal_sp:
+            conservation_df.loc[species, "n_noncoding"] = len(focal_noncoding)
+            continue
+
+        # For all the other species, run BLAST for all the non-coding sequences
+        db_fa_file = os.path.join(data_dir, "fasta_renamed/" + species + ".fa")
+        nb_matches = run_blast(focal_noncoding, db_fa_file, "tblastn")
+        print(f"Species {species}: {nb_matches} matches")
+        conservation_df.loc[species, "n_noncoding"] = nb_matches
+    return conservation_df
             
 
 
@@ -224,12 +268,13 @@ if __name__ == "__main__":
     genomes = [re.sub('"', '', g) for g in genomes]
     # Initiate the dataframe
     conservation_df = initialise_conservation_df(genomes, GENERA_DIR)
+    print("\n")
 
 
     ########################################
     ################# TRGs #################
     ########################################
-    """print("Calculating TRG conservation...")
+    print("Calculating TRG conservation...")
     # Extract the name of 1000 TRGs of the focal species
     focal_TRGs = extract_focal_TRGs(FOCAL_SPECIES, TRG_RANK, GENERA_DIR)
     print(f"Extracted {len(focal_TRGs)} TRGs for the focal species {FOCAL_SPECIES}\n")
@@ -248,7 +293,7 @@ if __name__ == "__main__":
     print(f"Extracted {len(focal_CDSs)} CDSs for the focal species {FOCAL_SPECIES}\n")
     # Calculate the CDS conservation and add to dataframe
     conservation_df = calculate_CDS_conservation(FOCAL_SPECIES, conservation_df, focal_CDSs, DATA_DIR)
-    print("\n\n")"""
+    print("\n\n")
 
 
 
@@ -259,6 +304,9 @@ if __name__ == "__main__":
     # Extract 1000 non-coding sequences of the focal species
     focal_noncoding = extract_focal_noncoding(FOCAL_SPECIES, conservation_df, DATA_DIR)
     print(f"Extracted {len(focal_noncoding)} non-coding sequences for the focal species {FOCAL_SPECIES}\n")
+    # Calculate the non-coding conservation and add to dataframe
+    conservation_df = calculate_noncoding_conservation(FOCAL_SPECIES, conservation_df, focal_noncoding, DATA_DIR)
+    print("\n\n")
 
 
 
