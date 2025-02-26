@@ -38,31 +38,31 @@ p <- p + new_scale_fill()
 p <- gheatmap(p, conservation_db_p[, "n_trg", drop = FALSE],
         width = .05, colnames = FALSE) +
   scale_fill_gradient(low = "white", high = "red", name = "TRGs",
-            guide = guide_colorbar(order = 1))
+            guide = guide_colorbar(order = 1), limits = c(0, 100))
 ## Noncoding ##
 p <- p + new_scale_fill()
 p <- gheatmap(p, conservation_db_p[, "n_noncoding", drop = FALSE], offset = 1,
               width = .05, colnames = FALSE) +
   scale_fill_gradient(low = "white", high = "#6b00b2", name = "Noncoding",
-                      guide = guide_colorbar(order = 2))
+                      guide = guide_colorbar(order = 2), limits = c(0, 100))
 ## Frame 1 ##
 p <- p + new_scale_fill()
 p <- gheatmap(p, conservation_db_p[, "n_f1", drop = FALSE], offset = 2,
               width = .05, colnames = FALSE) +
   scale_fill_gradient(low = "white", high = "#009E73", name = "+1",
-                      guide = guide_colorbar(order = 3))
+                      guide = guide_colorbar(order = 3), limits = c(0, 100))
 ## Frame 2 ##
 p <- p + new_scale_fill()
 p <- gheatmap(p, conservation_db_p[, "n_f2", drop = FALSE], offset = 3,
               width = .05, colnames = FALSE) +
   scale_fill_gradient(low = "white", high = "#0072B2", name = "+2",
-                      guide = guide_colorbar(order = 4))
+                      guide = guide_colorbar(order = 4), limits = c(0, 100))
 ## CDSs ##
 p <- p + new_scale_fill()
 p <- gheatmap(p, conservation_db_p[, "n_cds", drop = FALSE], offset = 4,
               width = .05, colnames = FALSE) +
   scale_fill_gradient(low = "white", high = "#e67b00", name = "CDS",
-                      guide = guide_colorbar(order = 5))
+                      guide = guide_colorbar(order = 5), limits = c(0, 100))
 
 
 # Add the title
