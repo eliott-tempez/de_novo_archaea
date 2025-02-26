@@ -1,117 +1,117 @@
-	n_cds	n_trg	n_noncoding
-GCA_000007305@Pyrococcus_furiosus_DSM_3638	715	10	0
-GCA_000009965@Thermococcus_kodakarensis_KOD1	776	36	0
-GCA_000011105@Pyrococcus_horikoshii_OT3	704	17	0
-GCA_000018365@Thermococcus_onnurineus_NA1	725	17	0
-GCA_000022365@Thermococcus_gammatolerans_EJ3	757	26	0
-GCA_000022545@Thermococcus_sibiricus_MM_739	742	12	0
-GCA_000151105@Thermococcus_barophilus_MP	870	73	0
-GCA_000151205@Thermococcus_sp_AM4	758	34	0
-GCA_000195935@Pyrococcus_abyssi_GE5	723	13	0
-GCA_000211475@Pyrococcus_sp_NA2	741	20	0
-GCA_000215995@Pyrococcus_yayanosii_CH1	716	20	0
-GCA_000221185@Thermococcus_sp_4557	745	17	0
-GCA_000246985@Thermococcus_litoralis_DSM_5473	797	35	0
-GCA_000258515@Thermococcus_zilligii_AN1	693	18	0
-GCA_000263735@Pyrococcus_sp_ST04	696	8	0
-GCA_000265525@Thermococcus_cleftensis_CL1	750	32	0
-GCA_000275605@Pyrococcus_furiosus_COM1	713	10	0
-GCA_000517445@Thermococcus_paralvinellae_ES1	803	42	0
-GCA_000585495@Thermococcus_nautili_30_1	759	27	0
-GCA_000725425@Palaeococcus_pacificus_DY20341	752	24	0
-GCA_000769655@Thermococcus_eurythermalis_A501	758	30	0
-GCA_000816105@Thermococcus_guaymasensis_DSM_11113	752	36	0
-GCA_001433455@Thermococcus_barophilus_CH5	1000	185	0
-GCA_001484685@Thermococcus_sp_2319x1	731	20	0
-GCA_001577775@Pyrococcus_kukulkanii_NCB100	744	19	0
-GCA_001592435@Thermococcus_peptonophilus_OG_1	746	23	0
-GCA_001647085@Thermococcus_piezophilus_CDGS	750	22	0
-GCA_002197185@Thermococcus_sp_5_4	747	20	0
-GCA_002214365@Thermococcus_celer_Vu_13	736	19	0
-GCA_002214385@Thermococcus_gorgonarius_W_12	716	18	0
-GCA_002214465@Thermococcus_barossii_SHCK_94	763	30	0
-GCA_002214485@Thermococcus_pacificus_P4	710	16	0
-GCA_002214505@Thermococcus_siculi_RG_20	757	30	0
-GCA_002214525@Thermococcus_sp_P6	656	7	0
-GCA_002214545@Thermococcus_thioreducens_OGL_20P	794	45	0
-GCA_002214565@Thermococcus_radiotolerans_EJ2	756	19	0
-GCA_002214585@Thermococcus_profundus_DT_5432	751	20	0
-GCA_002214605@Thermococcus_chitonophagus	753	15	0
-GCA_006274605@Thermococcus_indicus_IOH1	788	28	0
-GCA_008152015@Thermococcus_aciditolerans_SY113	789	32	0
-GCA_008245085@Pyrococcus_furiosus_DSM_3638_Reg	715	10	0
-GCA_020386975@Thermococcus_bergensis_T7324	714	11	0
-GCA_023746595@Thermococcus_argininiproducens_IOH2	766	20	0
-GCA_024022995@Thermococcus_aggregans_TY	743	15	0
-GCA_024707485@Thermococcus_sp_813A4	789	34	0
-GCA_028471785@Thermococcus_kodakarensis_TS900	774	36	0
-GCA_028471865@Thermococcus_kodakarensis_TS901	774	36	0
-GCA_035621495@Thermococcus_sp_SY098	877	94	0
-GCA_900012635@Thermococcus_chitonophagus_isolate_1	753	15	0
-GCA_900198835@Thermococcus_henrietii_EXT12c	768	31	0
-GCA_902813195@Thermococcus_sp_2319x1_Essen	740	20	0
-GCA_904067545@Thermococcus_camini_IRI35c	740	18	0
-Palaeococcus_helgesoni_DSM_15127	750	18	0
-Pyrococcus_31_3	753	13	0
-Pyrococcus_32_1	753	13	0
-Pyrococcus_abyssi_GE2	732	19	0
-Pyrococcus_endeavori_ES4	695	9	0
-Pyrococcus_EXT16	755	12	0
-Pyrococcus_sp_32_3	753	13	0
-Pyrococcus_sp_32_4	753	13	0
-Pyrococcus_sp_EXT_15c	730	23	0
-Pyrococcus_sp_GE_23	738	19	0
-Pyrococcus_sp_IRI_42C	711	10	0
-Thermococcus_15_2	743	30	0
-Thermococcus_23_2	747	20	0
-Thermococcus_29_3	750	23	0
-Thermococcus_31_3	765	26	0
-Thermococcus_aegaeus_DSM_12767	750	17	0
-Thermococcus_aggregans_DSM_12819	744	15	0
-Thermococcus_alcaliphilus_DSM_10322	761	22	0
-Thermococcus_AMTc11	834	44	0
-Thermococcus_AMTc30	748	24	0
-Thermococcus_AMTc51	759	27	0
-Thermococcus_AMTc85	750	30	0
-Thermococcus_atlanticus_DSM_15226	820	53	0
-Thermococcus_barophilus_423_3_23	847	61	0
-Thermococcus_barophilus_CH1	889	95	0
-Thermococcus_barophilus_DT4	842	71	0
-Thermococcus_coalescens_TS1	787	30	0
-Thermococcus_E15P35	756	30	0
-Thermococcus_EXT11c	741	24	0
-Thermococcus_fumicolans_ST557			
-Thermococcus_IRI_06c			
-Thermococcus_IRI15c			
-Thermococcus_marinus_DSM_15227			
-Thermococcus_prieuri_Col3			
-Thermococcus_profundus_DSM_9503			
-Thermococcus_sp_23_4			
-Thermococcus_sp_26_2			
-Thermococcus_sp_33_3			
-Thermococcus_sp_9_3			
-Thermococcus_sp_AMTc09			
-Thermococcus_sp_AMTc102			
-Thermococcus_sp_AMTc71			
-Thermococcus_sp_AMTc72			
-Thermococcus_sp_AMTc79			
-Thermococcus_sp_AMTc94			
-Thermococcus_sp_CIR_03a			
-Thermococcus_sp_CIR_10a			
-Thermococcus_sp_DS1			
-Thermococcus_sp_E10P11			
-Thermococcus_sp_E10P8			
-Thermococcus_sp_E15p33			
-Thermococcus_sp_EXT09c			
-Thermococcus_sp_IRI_05c			
-Thermococcus_sp_IRI10c			
-Thermococcus_sp_IRI14c			
-Thermococcus_sp_IRI24c			
-Thermococcus_sp_IRI25c			
-Thermococcus_sp_IRI27c2			
-Thermococcus_sp_IRI29c			
-Thermococcus_sp_IRI_33c			
-Thermococcus_sp_TPV			
-Thermococcus_sp_unknown			
-Thermococcus_stetteri_DSM_5262			
-Thermococcus_waiotapuensis_WT1			
+	n_trg	n_cds	n_noncoding	n_f1	n_f2
+GCA_000007305@Pyrococcus_furiosus_DSM_3638	10	710	258	309	410
+GCA_000009965@Thermococcus_kodakarensis_KOD1	36	786	239	230	404
+GCA_000011105@Pyrococcus_horikoshii_OT3	17	714	233	252	356
+GCA_000018365@Thermococcus_onnurineus_NA1	17	731	282	292	455
+GCA_000022365@Thermococcus_gammatolerans_EJ3	26	743	226	196	386
+GCA_000022545@Thermococcus_sibiricus_MM_739	12	740	321	387	478
+GCA_000151105@Thermococcus_barophilus_MP	73	870	747	775	788
+GCA_000151205@Thermococcus_sp_AM4	34	746	235	177	374
+GCA_000195935@Pyrococcus_abyssi_GE5	13	734	248	243	376
+GCA_000211475@Pyrococcus_sp_NA2	20	746	260	285	406
+GCA_000215995@Pyrococcus_yayanosii_CH1	20	717	272	241	414
+GCA_000221185@Thermococcus_sp_4557	17	751	244	180	389
+GCA_000246985@Thermococcus_litoralis_DSM_5473	35	810	401	457	556
+GCA_000258515@Thermococcus_zilligii_AN1	18	694	216	215	365
+GCA_000263735@Pyrococcus_sp_ST04	8	697	257	277	394
+GCA_000265525@Thermococcus_cleftensis_CL1	32	757	240	185	384
+GCA_000275605@Pyrococcus_furiosus_COM1	10	709	258	308	409
+GCA_000517445@Thermococcus_paralvinellae_ES1	42	813	625	679	695
+GCA_000585495@Thermococcus_nautili_30_1	27	756	228	167	367
+GCA_000725425@Palaeococcus_pacificus_DY20341	24	758	365	419	526
+GCA_000769655@Thermococcus_eurythermalis_A501	30	742	253	183	379
+GCA_000816105@Thermococcus_guaymasensis_DSM_11113	36	719	253	207	398
+GCA_001433455@Thermococcus_barophilus_CH5	185	1000	1000	1000	1000
+GCA_001484685@Thermococcus_sp_2319x1	20	749	359	419	498
+GCA_001577775@Pyrococcus_kukulkanii_NCB100	19	756	260	281	408
+GCA_001592435@Thermococcus_peptonophilus_OG_1	23	742	257	240	397
+GCA_001647085@Thermococcus_piezophilus_CDGS	22	752	287	295	452
+GCA_002197185@Thermococcus_sp_5_4	20	744	236	209	420
+GCA_002214365@Thermococcus_celer_Vu_13	19	740	217	142	374
+GCA_002214385@Thermococcus_gorgonarius_W_12	18	691	230	218	366
+GCA_002214465@Thermococcus_barossii_SHCK_94	30	762	246	230	417
+GCA_002214485@Thermococcus_pacificus_P4	16	702	250	194	386
+GCA_002214505@Thermococcus_siculi_RG_20	30	755	230	184	407
+GCA_002214525@Thermococcus_sp_P6	7	647	214	191	340
+GCA_002214545@Thermococcus_thioreducens_OGL_20P	45	800	280	276	460
+GCA_002214565@Thermococcus_radiotolerans_EJ2	19	753	237	204	404
+GCA_002214585@Thermococcus_profundus_DT_5432	20	724	246	196	379
+GCA_002214605@Thermococcus_chitonophagus	15	759	262	276	402
+GCA_006274605@Thermococcus_indicus_IOH1	28	792	253	202	412
+GCA_008152015@Thermococcus_aciditolerans_SY113	32	797	265	214	424
+GCA_008245085@Pyrococcus_furiosus_DSM_3638_Reg	10	708	255	306	409
+GCA_020386975@Thermococcus_bergensis_T7324	11	738	355	403	514
+GCA_023746595@Thermococcus_argininiproducens_IOH2	20	763	332	420	513
+GCA_024022995@Thermococcus_aggregans_TY	15	750	358	430	513
+GCA_024707485@Thermococcus_sp_813A4	34	798	285	283	456
+GCA_028471785@Thermococcus_kodakarensis_TS900	36	785	237	229	403
+GCA_028471865@Thermococcus_kodakarensis_TS901	36	785	237	229	403
+GCA_035621495@Thermococcus_sp_SY098	94	884	729	767	775
+GCA_900012635@Thermococcus_chitonophagus_isolate_1	15	759	262	276	402
+GCA_900198835@Thermococcus_henrietii_EXT12c	31	761	237	176	377
+GCA_902813195@Thermococcus_sp_2319x1_Essen	20	754	380	423	511
+GCA_904067545@Thermococcus_camini_IRI35c	18	749	242	220	400
+Palaeococcus_helgesoni_DSM_15127	18	753	350	375	509
+Pyrococcus_31_3	13	771	258	277	406
+Pyrococcus_32_1	13	771	258	277	406
+Pyrococcus_abyssi_GE2	19	755	243	239	373
+Pyrococcus_endeavori_ES4	9	698	246	281	397
+Pyrococcus_EXT16	12	764	261	283	406
+Pyrococcus_sp_32_3	13	771	258	277	406
+Pyrococcus_sp_32_4	13	771	258	277	406
+Pyrococcus_sp_EXT_15c	23	742	248	275	387
+Pyrococcus_sp_GE_23	19	742	245	263	393
+Pyrococcus_sp_IRI_42C	10	733	262	291	401
+Thermococcus_15_2	30	746	222	195	393
+Thermococcus_23_2	20	744	236	209	420
+Thermococcus_29_3	23	753	238	177	381
+Thermococcus_31_3	26	783	249	235	429
+Thermococcus_aegaeus_DSM_12767	17	751	371	435	529
+Thermococcus_aggregans_DSM_12819	15	750	358	429	513
+Thermococcus_alcaliphilus_DSM_10322	22	762	366	439	548
+Thermococcus_AMTc11	44	826	271	250	447
+Thermococcus_AMTc30	24	745	234	182	381
+Thermococcus_AMTc51	27	757	235	171	374
+Thermococcus_AMTc85	30	753	222	167	380
+Thermococcus_atlanticus_DSM_15226	53	836	409	402	536
+Thermococcus_barophilus_423_3_23	61	851	723	749	761
+Thermococcus_barophilus_CH1	95	905	776	800	807
+Thermococcus_barophilus_DT4	71	846	640	698	720
+Thermococcus_coalescens_TS1	30	786	262	231	443
+Thermococcus_E15P35	30	760	234	184	374
+Thermococcus_EXT11c	24	746	229	171	368
+Thermococcus_fumicolans_ST557	35	754	222	152	378
+Thermococcus_IRI_06c	33	771	259	205	406
+Thermococcus_IRI15c	24	757	233	218	402
+Thermococcus_marinus_DSM_15227	31	761	247	185	383
+Thermococcus_prieuri_Col3	32	762	221	203	383
+Thermococcus_profundus_DSM_9503	20	721	246	197	379
+Thermococcus_sp_23_4	20	744	236	209	420
+Thermococcus_sp_26_2	24	763	229	171	358
+Thermococcus_sp_33_3	30	759	235	166	374
+Thermococcus_sp_9_3	28	764	232	163	375
+Thermococcus_sp_AMTc09	23	754	225	165	364
+Thermococcus_sp_AMTc102	19	751	229	171	366
+Thermococcus_sp_AMTc71	23	749	219	178	382
+Thermococcus_sp_AMTc72	23	749	219	178	382
+Thermococcus_sp_AMTc79	24	763	230	177	384
+Thermococcus_sp_AMTc94	21	757	231	172	376
+Thermococcus_sp_CIR_03a	41	805	254	234	449
+Thermococcus_sp_CIR_10a	87	880	761	771	777
+Thermococcus_sp_DS1	42	802	309	274	460
+Thermococcus_sp_E10P11	27	750	230	171	376
+Thermococcus_sp_E10P8	27	750	230	171	376
+Thermococcus_sp_E15p33	29	760	234	185	374
+Thermococcus_sp_EXT09c	29	755	223	174	365
+Thermococcus_sp_IRI_05c	36	794	304	284	469
+Thermococcus_sp_IRI10c	24	760	237	221	402
+Thermococcus_sp_IRI14c	24	758	232	218	402
+Thermococcus_sp_IRI24c	25	758	245	216	408
+Thermococcus_sp_IRI25c	25	760	237	219	402
+Thermococcus_sp_IRI27c2	25	758	245	216	408
+Thermococcus_sp_IRI29c	25	758	245	216	408
+Thermococcus_sp_IRI_33c	43	800	312	274	459
+Thermococcus_sp_TPV	30	764	243	179	370
+Thermococcus_sp_unknown	25	766	219	175	374
+Thermococcus_stetteri_DSM_5262	27	765	254	233	421
+Thermococcus_waiotapuensis_WT1	23	705	227	213	358
