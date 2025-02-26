@@ -2,8 +2,14 @@ library(ggplot2)
 library(ggtree)
 library(ape)
 library(ggnewscale)
-ggsave <- function(..., bg = "white", width = 1000, height = 1000, units = "px", dpi = 100) {
-  ggplot2::ggsave(..., bg = bg, width = width, height = height, units = units, dpi = dpi)
+ggsave <- function(..., bg = "white",
+                   width = 1000, height = 1000,
+                   units = "px", dpi = 100) {
+  ggplot2::ggsave(..., bg = bg,
+                  width = width,
+                  height = height,
+                  units = units,
+                  dpi = dpi)
 }
 
 # Filenames
@@ -13,8 +19,12 @@ focal_species <- "GCA_001433455@Thermococcus_barophilus_CH5"
 output_dir <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/calculate_conservation/"
 
 # Get the conservation db
-conservation_db_file <- paste0(conservation_db_dir, "conservation_df_", focal_species, ".tsv")
-conservation_db <- read.table(conservation_db_file, header = TRUE, sep = "\t", row.names = 1)
+conservation_db_file <- paste0(conservation_db_dir,
+                               "conservation_df_",
+                               focal_species, ".tsv")
+conservation_db <- read.table(conservation_db_file,
+                              header = TRUE, sep = "\t",
+                              row.names = 1)
 conservation_db[is.na(conservation_db)] <- 0
 # Change to percents
 default_val <- as.numeric(conservation_db[focal_species, ])
@@ -36,9 +46,9 @@ p <- ggtree(tree, layout = "circular", branch.length = "none") +
 ## TRGs ##
 p <- p + new_scale_fill()
 p <- gheatmap(p, conservation_db_p[, "n_trg", drop = FALSE],
-        width = .05, colnames = FALSE) +
+              width = .05, colnames = FALSE) +
   scale_fill_gradient(low = "white", high = "red", name = "TRGs",
-            guide = guide_colorbar(order = 1), limits = c(0, 100))
+                      guide = guide_colorbar(order = 1), limits = c(0, 100))
 ## Noncoding ##
 p <- p + new_scale_fill()
 p <- gheatmap(p, conservation_db_p[, "n_noncoding", drop = FALSE], offset = 1,
