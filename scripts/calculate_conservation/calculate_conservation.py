@@ -7,8 +7,6 @@ import tempfile
 import pandas as pd
 import Bio.SeqIO as SeqIO
 from Bio.Seq import Seq
-from multiprocessing import Pool
-from functools import partial
 
 
 OUTPUT_DIR = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/calculate_conservation/"
@@ -29,7 +27,6 @@ def initialise_conservation_df(genomes):
     return conservation_df
 
 
-
 def get_seqs_from_gene_names(focal_sp, gene_names, extension_type):
     """Get the sequences of the genes from the gene names"""
     fasta_file = os.path.join(DATA_DIR, "CDS/" + focal_sp + "_CDS." + extension_type)
@@ -40,6 +37,58 @@ def get_seqs_from_gene_names(focal_sp, gene_names, extension_type):
             seqs[record.name] = record.seq
     return seqs
 
+
+def extract_focal_TRGs(focal_species, trg_threshold):
+    """Extract at most 1000 TRGs of the focal species"""
+    # Make sure the file exists and read it
+    trg_pattern = os.path.join(GENERA_DIR, focal_species, "*gene_ages.tsv")
+    trg_files = glob.glob(trg_pattern)
+    if trg_files:
+        trg_file = trg_files[0]
+        trg_df = pd.read_csv(trg_file, sep="\t", header=0)
+    else:
+        raise FileNotFoundError(f"No file matching pattern {trg_pattern}")
+    # Extract the TRGs
+    focal_TRGs = trg_df[trg_df["rank"] >= trg_threshold]["#gene"].tolist()
+    # Keep 1000 at most
+    if len(focal_TRGs) > 1000:
+        focal_TRGs = random.sample(focal_TRGs, 1000)
+    return focal_TRGs
+
+
+def extract_focal_CDSs(focal_species):
+    """Extract at most 1000 CDSs of the focal species"""
+    # Extract all CDSs >=302 nt of the focal species
+    CDS_fasta_file = os.path.join(DATA_DIR, "CDS/" + focal_species + "_CDS.fna")
+    CDS_fasta = SeqIO.parse(CDS_fasta_file, "fasta")
+    focal_CDSs = {}
+    for record in CDS_fasta:
+        if len(record.seq) >= 302:
+            focal_CDSs[record.name] = record.seq
+    # Keep 1000 at most
+    focal_CDSs_names = list(focal_CDSs.keys())
+    if len(focal_CDSs) > 1000:
+        focal_CDSs_names = random.sample(focal_CDSs_names, 1000)
+    focal_CDSs = {k: focal_CDSs[k] for k in focal_CDSs_names}
+    return focal_CDSs
+
+
+def cut_chunks(focal_CDSs):
+    """Cut the CDSs in 302-long chunks"""
+    for k, v in focal_CDSs.items():
+        len_over_302 = len(v) - 302
+        # Chose chunk randomly in-frame
+        possible_starts = list(range(0, len_over_302, 3))
+        start = random.choice(possible_starts)
+        focal_CDSs[k] = v[start:start + 302]
+    return focal_CDSs
+
+
+def get_db(species, colname):
+    """Get the database fasta file for the species depending on the type of sequences"""
+    if colname == "n_trg":
+        db_fasta_file = os.path.join(OUTPUT_DIR, "CDS/" + species + "_CDS.faa")
+    return db_fasta_file
 
 
 def run_blast(query_sequences, db_faa_file, blast_type):
@@ -71,113 +120,57 @@ def run_blast(query_sequences, db_faa_file, blast_type):
     return len(result)
 
 
-
-def extract_focal_TRGs(focal_species, trg_threshold):
-    """Extract at most 1000 TRGs of the focal species"""
-    # Make sure the file exists and read it
-    trg_pattern = os.path.join(GENERA_DIR, focal_species, "*gene_ages.tsv")
-    trg_files = glob.glob(trg_pattern)
-    if trg_files:
-        trg_file = trg_files[0]
-        trg_df = pd.read_csv(trg_file, sep="\t", header=0)
-    else:
-        raise FileNotFoundError(f"No file matching pattern {trg_pattern}")
-    # Extract the TRGs
-    focal_TRGs = trg_df[trg_df["rank"] >= trg_threshold]["#gene"].tolist()
-    # Keep 1000 at most
-    if len(focal_TRGs) > 1000:
-        focal_TRGs = random.sample(focal_TRGs, 1000)
-    return focal_TRGs
-
-
-
-def calculate_conservation_parallel(species, focal_sp, conservation_df, sequences, blast_type):
-    if species == focal_sp:
-        conservation_df.loc[species, blast_type] = len(sequences)
-        return conservation_df.loc[species]
-    
-    db_fa_file = os.path.join(DATA_DIR, "fasta_renamed/" + species + ".fa")
-    nb_matches = run_blast(sequences, db_fa_file, "tblastn")
-    print(f"Species {species}: {nb_matches} matches for {blast_type}")
-    conservation_df.loc[species, blast_type] = nb_matches
-    return conservation_df.loc[species]
-
-
-
-def process_conservation(focal_sp, conservation_df, sequences, blast_type):
-    with Pool(processes=NCPUS) as pool:
-        func = partial(calculate_conservation_parallel, focal_sp=focal_sp, 
-                       conservation_df=conservation_df, sequences=sequences, blast_type=blast_type)
-        results = pool.map(func, conservation_df.index)
-    for res in results:
-        conservation_df.loc[res.name] = res
-    return conservation_df
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-def calculate_TRG_conservation(focal_sp, conservation_df, focal_TRGs):
-    """Calculate the conservation of the TRGs for all the species"""
-    # Get the protein sequences for the TRGs
-    TRG_sequences = {}
-    CDS_fasta_file = os.path.join(DATA_DIR, "CDS/" + focal_sp + "_CDS.faa")
-    CDS_fasta = SeqIO.parse(CDS_fasta_file, "fasta")
-    for record in CDS_fasta:
-        if record.name in focal_TRGs:
-            TRG_sequences[record.name] = record.seq
-    if len(TRG_sequences) != len(focal_TRGs):
-        print("Some TRGs are missing in the faa file")
-
-    # For each species
+def process_conservation(focal_sp, conservation_df, colname, query_sequences):
+    """Process the conservation for the focal species and add to the dataframe"""
     for species in conservation_df.index:
-        # For the focal species, add the number of TRGs
+        # For the focal species, add the number of sequences sampled
         if species == focal_sp:
-            conservation_df.loc[species, "n_trg"] = len(focal_TRGs)
+            conservation_df.loc[species, colname] = len(query_sequences)
             continue
-
-        # For all the other species, run BLAST for all the TRGs
-        db_fa_file = os.path.join(DATA_DIR, "fasta_renamed/" + species + ".fa")
-        nb_matches = run_blast(TRG_sequences, db_fa_file, "tblastn")
+        # For all the other species, run BLAST for all the sequences
+        db_fasta_file = get_db(species, colname)
+        nb_matches = run_blast(query_sequences, db_fasta_file, "blastp")
         print(f"Species {species}: {nb_matches} matches")
-        conservation_df.loc[species, "n_trg"] = nb_matches
+        conservation_df.loc[species, colname] = nb_matches
     return conservation_df
 
 
 
-def extract_focal_CDSs(focal_species):
-    """Extract 1000 CDSs of the focal species"""
-    # Extract all CDSs of the focal species
-    CDS_fasta_file = os.path.join(DATA_DIR, "CDS/" + focal_species + "_CDS.faa")
-    CDS_fasta = SeqIO.parse(CDS_fasta_file, "fasta")
-    focal_CDSs = {}
-    for record in CDS_fasta:
-        focal_CDSs[record.name] = record.seq
-    # Keep 1000 at most
-    focal_CDSs_names = list(focal_CDSs.keys())
-    if len(focal_CDSs) > 1000:
-        focal_CDSs_names = random.sample(focal_CDSs_names, 1000)
-    focal_CDSs = {k: focal_CDSs[k] for k in focal_CDSs_names}
-    return focal_CDSs
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -335,9 +328,9 @@ if __name__ == "__main__":
     focal_TRG_genes = extract_focal_TRGs(FOCAL_SPECIES, TRG_RANK)
     # Get the protein sequences for each TRG
     focal_TRGs = get_seqs_from_gene_names(FOCAL_SPECIES, focal_TRG_genes, "faa")
-    print(f"Extracted {len(focal_TRGs)} TRGs for the focal species {FOCAL_SPECIES}\n")
+    print(f"Extracted {len(focal_TRGs)} TRGs for the focal species {FOCAL_SPECIES}\n")    
     # Calculate the TRG conservation and add to dataframe
-    conservation_df = process_conservation(FOCAL_SPECIES, conservation_df, focal_TRGs, "blastp")
+    conservation_df = process_conservation(FOCAL_SPECIES, conservation_df, "n_trg", focal_TRGs)
     print("\n\n")
 
 
@@ -347,14 +340,31 @@ if __name__ == "__main__":
     ########################################
     print("Calculating CDS conservation...")
     # Extract 1000 CDss of the focal species
-    focal_CDSs = extract_focal_CDSs(FOCAL_SPECIES)
-
-
-
-    print(f"Extracted {len(focal_CDSs)} CDSs for the focal species {FOCAL_SPECIES}\n")
+    focal_CDSs_nt = extract_focal_CDSs(FOCAL_SPECIES)
+    print(f"Extracted {len(focal_CDSs_nt)} CDSs for the focal species {FOCAL_SPECIES}\n")
+    # Cut 302-long chunks randomly
+    focal_CDSs_nt = cut_chunks(focal_CDSs_nt)
+    # Translate to get 100 aa-long protein sequences
+    focal_CDSs = {k: v[:301].translate() for k, v in focal_CDSs_nt}
     # Calculate the CDS conservation and add to dataframe
-    conservation_df = calculate_CDS_conservation(FOCAL_SPECIES, conservation_df, focal_CDSs)
+    conservation_df = calculate_CDS_conservation(FOCAL_SPECIES, conservation_df, "n_cds", focal_CDSs)
     print("\n\n")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
