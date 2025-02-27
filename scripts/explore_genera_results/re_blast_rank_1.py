@@ -43,13 +43,12 @@ def run_diamond(query_sequences):
         for trg_id, trg_seq in query_sequences.items():
             query_file.write(f">{trg_id}\n{trg_seq}\n")
         query_file_path = query_file.name
-    # Create a temporary file for the BLAST output
-    with tempfile.NamedTemporaryFile(mode='w', delete=False) as output_file:
-        output_file_path = output_file.name
+    # Create a file for the BLAST output
+    output_file_path = "diamond_output_re_rank_1.tsv"
 
     # Run the BLAST (diamond)
     print("(Running diamond...)")
-    output_format = "6 qseqid sseqid staxids evalue qcovs"
+    output_format = "6 qseqid sseqid staxids evalue qcovhsp"
     diamond_command = f"diamond blastp -d {NR} -p 8 -q {query_file_path} -o {output_file_path} -f {output_format} --very-sensitive"
     diamond_std = subprocess.run(diamond_command, shell=True)
     if diamond_std.returncode != 0:
@@ -58,7 +57,6 @@ def run_diamond(query_sequences):
     parse_diamond_output(output_file_path)
     # Remove temporary files
     os.remove(query_file_path)
-    os.remove(output_file_path)
 
 
 
