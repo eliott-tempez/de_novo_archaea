@@ -15,7 +15,7 @@ GENERA_DIR = "/home/eliott.tempez/Documents/archaea_data/genera/out/"
 DATA_DIR = "/home/eliott.tempez/Documents/archaea_data/complete_122/"
 FOCAL_SPECIES = "GCA_001433455@Thermococcus_barophilus_CH5"
 TRG_RANK = 7.0
-NCPUS = 12
+NCPUS = 8
 
 
 
@@ -51,8 +51,8 @@ def extract_focal_TRGs(focal_species, trg_threshold):
     # Extract the TRGs
     focal_TRGs = trg_df[trg_df["rank"] >= trg_threshold]["#gene"].tolist()
     # Keep 1000 at most
-    if len(focal_TRGs) > 1000:
-        focal_TRGs = random.sample(focal_TRGs, 1000)
+    if len(focal_TRGs) > 100:
+        focal_TRGs = random.sample(focal_TRGs, 100)
     return focal_TRGs
 
 
@@ -67,8 +67,8 @@ def extract_focal_CDSs(focal_species):
             focal_CDSs[record.name] = record.seq
     # Keep 1000 at most
     focal_CDSs_names = list(focal_CDSs.keys())
-    if len(focal_CDSs) > 1000:
-        focal_CDSs_names = random.sample(focal_CDSs_names, 1000)
+    if len(focal_CDSs) > 100:
+        focal_CDSs_names = random.sample(focal_CDSs_names, 100)
     focal_CDSs = {k: focal_CDSs[k] for k in focal_CDSs_names}
     return focal_CDSs
 
@@ -84,14 +84,37 @@ def cut_chunks(focal_CDSs):
     return focal_CDSs
 
 
-def get_db(species, colname):
+def get_db(species, colname, db):
     """Get the database fasta file for the species depending on the type of sequences"""
-    if colname == "n_trg":
-        db_fasta_file = os.path.join(OUTPUT_DIR, "CDS/" + species + "_CDS.faa")
+    if colname == "n_trg" or colname == "n_cds":
+        db_fasta_file = os.path.join(DATA_DIR, "CDS/" + species + "_CDS.faa")
+    elif colname == "n_f1":
+        # Get the dna sequences for the matching genes
+        gene_names = list(db.values())
+        gene_dict = get_seqs_from_gene_names(species, gene_names, "fna")
+        # Keep +1 frame only and translate to protein
+        gene_dict = {k: v[1:-2].translate(table=11) for k, v in gene_dict.items()}
+        # Write the sequences to a temporary file
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as db_file:
+            for gene, seq in gene_dict.items():
+                db_file.write(f">{gene}\n{seq}\n")
+            db_fasta_file = db_file.name
+    elif colname == "n_f2":
+        # Get the dna sequences for the matching genes
+        gene_names = list(db.values())
+        gene_dict = get_seqs_from_gene_names(species, gene_names, "fna")
+        # Keep +2 frame only and translate to protein
+        gene_dict = {k: v[2:-1].translate(table=11) for k, v in gene_dict.items()}
+        # Write the sequences to a temporary file
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as db_file:
+            for gene, seq in gene_dict.items():
+                db_file.write(f">{gene}\n{seq}\n")
+            db_fasta_file = db_file.name
+    
     return db_fasta_file
 
 
-def run_blast(query_sequences, db_faa_file, blast_type):
+def run_blast(query_sequences, db_faa_file, blast_type, keep_homologs, db):
     """Run BLAST for the query sequences against the database and return the number of matches"""
     # Create a temporary file for the query sequences
     with tempfile.NamedTemporaryFile(mode='w', delete=False) as query_file:
@@ -103,36 +126,63 @@ def run_blast(query_sequences, db_faa_file, blast_type):
         output_file_path = output_file.name
 
     # Run the BLAST
-    result = subprocess.run([blast_type, "-query", query_file_path, "-subject", db_faa_file, "-out", output_file_path, "-outfmt", "6 qseqid sseqid qlen evalue qcovs", "-num_threads", NCPUS], capture_output=True)
-    if result.returncode != 0:
-        raise RuntimeError(f"BLAST command failed with return code {result.returncode}: {result.stderr.decode()}")
+    try:
+        output = subprocess.run([blast_type, "-query", query_file_path, "-subject", db_faa_file, "-out", output_file_path, "-outfmt", "6 qseqid sseqid qlen evalue qcovs", "-num_threads", str(NCPUS)], capture_output=True, check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"BLAST command failed with return code {e.returncode}: {e.stderr.decode()}")
+        raise
     # Read the output file
     result = pd.read_csv(output_file_path, sep="\t", header=None)
     result.columns = ["qseqid", "sseqid", "qlen", "evalue", "qcov"]
     # Keep only rows for which qcov > 50 % and evalue < 1e-3
     result = result[(result["qcov"] > 50) & (result["evalue"] < 1e-3)]
+    # If we have a match couple already known
+    if db:
+        # Keep only the matches in the right CDS
+        result = result[result.apply(lambda row: db.get(row ["qseqid"]) == row ["sseqid"], axis=1)]
     # Keep only the best hit for each query
     result = result.sort_values("evalue").drop_duplicates("qseqid")
     # Remove the temporary files
     os.remove(query_file_path)
     os.remove(output_file_path)
+    # Keep homolog sequences
+    if keep_homologs:
+        homologs = {row["qseqid"]: row["sseqid"] for i, row in result.iterrows()}
+        return len(result), homologs
     # Return number of matches
-    return len(result)
+    return len(result), None
 
 
-def process_conservation(focal_sp, conservation_df, colname, query_sequences):
+def process_conservation(focal_sp, conservation_df, colname, query_sequences, db=None):
     """Process the conservation for the focal species and add to the dataframe"""
+    # Keep homolog sequences for the CDSs
+    homologs, keep_homologs = None, False
+    if colname == "n_cds":
+        keep_homologs = True
+        homologs = {}
+
+    # For each species
     for species in conservation_df.index:
         # For the focal species, add the number of sequences sampled
         if species == focal_sp:
             conservation_df.loc[species, colname] = len(query_sequences)
             continue
+
         # For all the other species, run BLAST for all the sequences
-        db_fasta_file = get_db(species, colname)
-        nb_matches = run_blast(query_sequences, db_fasta_file, "blastp")
+        # Get pre-established db if exists
+        db_sp = db[species] if db else None
+        db_fasta_file = get_db(species, colname, db_sp)
+        nb_matches, hom = run_blast(query_sequences, db_fasta_file, "blastp", keep_homologs, db_sp)
         print(f"Species {species}: {nb_matches} matches")
         conservation_df.loc[species, colname] = nb_matches
-    return conservation_df
+        if keep_homologs:
+            homologs[species] = hom
+        
+        # Delete db file if it was created
+        if colname in ["n_f1", "n_f2", "n_intergenic"]:
+            os.remove(db_fasta_file)
+
+    return conservation_df, homologs 
 
 
 
@@ -174,20 +224,8 @@ def process_conservation(focal_sp, conservation_df, colname, query_sequences):
 
 
 
-def calculate_CDS_conservation(focal_sp, conservation_df, focal_CDSs):
-    """Calculate the conservation of the CDSs for all the species"""
-    # For each species
-    for species in conservation_df.index:
-        # For the focal species, add the number of CDSs
-        if species == focal_sp:
-            conservation_df.loc[species, "n_cds"] = len(focal_CDSs)
-            continue
-        # For all the other species, run BLAST for all the CDSs
-        db_fa_file = os.path.join(DATA_DIR, "fasta_renamed/" + species + ".fa")
-        nb_matches = run_blast(focal_CDSs, db_fa_file, "tblastn")
-        print(f"Species {species}: {nb_matches} matches")
-        conservation_df.loc[species, "n_cds"] = nb_matches
-    return conservation_df
+
+
 
 
 
@@ -248,7 +286,7 @@ def extract_focal_noncoding(focal_sp):
                     start, end = noncoding_dict_loc[contig.name][segment]
                     # translate the sequence
                     nucl_seq = contig.seq[start:end]
-                    prot_seq = nucl_seq.translate()
+                    prot_seq = nucl_seq.translate(table=11)
                     noncoding_dict_seq[segment] = prot_seq
         return noncoding_dict_seq
 
@@ -270,41 +308,8 @@ def calculate_noncoding_conservation(focal_sp, conservation_df, focal_noncoding)
             
 
 
-def extract_focal_altframes(focal_sp):
-    # Extract CDS sequences in nucleotides form
-    CDS_fasta_file = os.path.join(DATA_DIR, "CDS/" + focal_sp + "_CDS.fna")
-    CDS_fasta = SeqIO.parse(CDS_fasta_file, "fasta")
-    focal_CDSs = {}
-    for record in CDS_fasta:
-        focal_CDSs[record.name] = record.seq
-    # Keep 1000 at most
-    focal_CDSs_names = list(focal_CDSs.keys())
-    if len(focal_CDSs) > 1000:
-        focal_CDSs_names = random.sample(focal_CDSs_names, 1000)
-    focal_CDSs = {k: focal_CDSs[k] for k in focal_CDSs_names}
-    # Extract the proteic sequences for the +1 and +2 frames
-    focal_f1 = {k: focal_CDSs[k][1:].translate() for k in focal_CDSs}
-    focal_f2 = {k: focal_CDSs[k][2:].translate() for k in focal_CDSs}
-    return focal_f1, focal_f2
 
 
-
-def calculate_altframes_conservation(focal_sp, conservation_df, focal_f1, focal_f2):
-    # For each species
-    for species in conservation_df.index:
-        # For the focal species, add the number of CDSs
-        if species == focal_sp:
-            conservation_df.loc[species, "n_f1"] = len(focal_f1)
-            conservation_df.loc[species, "n_f2"] = len(focal_f2)
-            continue
-        # For all the other species, run BLAST for all the +1 and +2 frames
-        db_fa_file = os.path.join(DATA_DIR, "fasta_renamed/" + species + ".fa")
-        nb_matches_f1 = run_blast(focal_f1, db_fa_file, "tblastn")
-        nb_matches_f2 = run_blast(focal_f2, db_fa_file, "tblastn")
-        print(f"Species {species}: {nb_matches_f1} matches for +1 frame and {nb_matches_f2} matches for +2 frame")
-        conservation_df.loc[species, "n_f1"] = nb_matches_f1
-        conservation_df.loc[species, "n_f2"] = nb_matches_f2
-    return conservation_df
 
 
 
@@ -320,7 +325,7 @@ if __name__ == "__main__":
     print("\n")
 
 
-    ########################################
+    """########################################
     ################# TRGs #################
     ########################################
     print("Calculating TRG conservation...")
@@ -328,10 +333,10 @@ if __name__ == "__main__":
     focal_TRG_genes = extract_focal_TRGs(FOCAL_SPECIES, TRG_RANK)
     # Get the protein sequences for each TRG
     focal_TRGs = get_seqs_from_gene_names(FOCAL_SPECIES, focal_TRG_genes, "faa")
-    print(f"Extracted {len(focal_TRGs)} TRGs for the focal species {FOCAL_SPECIES}\n")    
+    print(f"Extracted {len(focal_TRGs)} TRGs for the focal species {FOCAL_SPECIES}\n")
     # Calculate the TRG conservation and add to dataframe
-    conservation_df = process_conservation(FOCAL_SPECIES, conservation_df, "n_trg", focal_TRGs)
-    print("\n\n")
+    conservation_df, _ = process_conservation(FOCAL_SPECIES, conservation_df, "n_trg", focal_TRGs)
+    print("\n\n")"""
 
 
 
@@ -345,9 +350,23 @@ if __name__ == "__main__":
     # Cut 302-long chunks randomly
     focal_CDSs_nt = cut_chunks(focal_CDSs_nt)
     # Translate to get 100 aa-long protein sequences
-    focal_CDSs = {k: v[:301].translate() for k, v in focal_CDSs_nt}
-    # Calculate the CDS conservation and add to dataframe
-    conservation_df = calculate_CDS_conservation(FOCAL_SPECIES, conservation_df, "n_cds", focal_CDSs)
+    focal_CDSs = {k: v[:300].translate(table=11) for k, v in focal_CDSs_nt.items()}
+    # Calculate the CDS conservation and add to dataframe + keep homolog sequences
+    conservation_df, homologs = process_conservation(FOCAL_SPECIES, conservation_df, "n_cds", focal_CDSs)
+    print("\n\n")
+
+
+    # Frames 1 and 2
+    # Translate alt frames to get 100 aa-long protein sequences
+    focal_CDS_frame_1 = {k: v[1:301].translate(table=11) for k, v in focal_CDSs_nt.items()}
+    focal_CDS_frame_2 = {k: v[2:302].translate(table=11) for k, v in focal_CDSs_nt.items()}
+    print("Calculating conservation for +1 frame...")
+    # Calculate the conservation for +1 frame and add to dataframe
+    conservation_df, _ = process_conservation(FOCAL_SPECIES, conservation_df, "n_f1", focal_CDS_frame_1, homologs)
+    print("\n\n")
+    print("Calculating conservation for +2 frame...")
+    # Calculate the conservation for +2 frame and add to dataframe
+    conservation_df, _ = process_conservation(FOCAL_SPECIES, conservation_df, "n_f2", focal_CDS_frame_2, homologs)
     print("\n\n")
 
 
@@ -367,8 +386,7 @@ if __name__ == "__main__":
 
 
 
-
-    ########################################
+    """########################################
     ############## Non-coding ##############
     ########################################
     print("Calculating non-coding conservation...")
@@ -377,19 +395,7 @@ if __name__ == "__main__":
     print(f"Extracted {len(focal_noncoding)} non-coding sequences for the focal species {FOCAL_SPECIES}\n")
     # Calculate the non-coding conservation and add to dataframe
     conservation_df = calculate_noncoding_conservation(FOCAL_SPECIES, conservation_df, focal_noncoding)
-    print("\n\n")
-
-
-
-    ########################################
-    ########### +1 and +2 frames ###########
-    ########################################
-    print("Calculating conservation for +1 and +2 frames...")
-    # Extract 1000 sequences for +1 and +2 frames
-    focal_f1, focal_f2 = extract_focal_altframes(FOCAL_SPECIES)
-    print(f"Extracted {len(focal_f1)} sequences for the +1 frame and +2 frames for the focal species {FOCAL_SPECIES}\n")
-    # Calculate the conservation for +1 and +2 frames and add to dataframe
-    conservation_df = calculate_altframes_conservation(FOCAL_SPECIES, conservation_df, focal_f1, focal_f2)
+    print("\n\n")"""
 
 
 
