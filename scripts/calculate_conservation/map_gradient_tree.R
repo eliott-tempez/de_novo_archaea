@@ -51,9 +51,9 @@ p <- gheatmap(p, conservation_db_p[, "n_trg", drop = FALSE],
                       guide = guide_colorbar(order = 1), limits = c(0, 100))
 ## Noncoding ##
 p <- p + new_scale_fill()
-p <- gheatmap(p, conservation_db_p[, "n_noncoding", drop = FALSE], offset = 1,
+p <- gheatmap(p, conservation_db_p[, "n_intergenic", drop = FALSE], offset = 1,
               width = .05, colnames = FALSE) +
-  scale_fill_gradient(low = "white", high = "#6b00b2", name = "Noncoding",
+  scale_fill_gradient(low = "white", high = "#6b00b2", name = "Intergenic",
                       guide = guide_colorbar(order = 2), limits = c(0, 100))
 ## Frame 1 ##
 p <- p + new_scale_fill()

@@ -22,7 +22,7 @@ NCPUS = 8
 ############################## FUNCTIONS ##############################
 def initialise_conservation_df(genomes):
     """Initialise the dataframe with empty rows and columns"""
-    col = ["n_trg", "n_cds", "n_noncoding", "n_f1", "n_f2"]
+    col = ["n_trg", "n_cds", "n_intergenic", "n_f1", "n_f2"]
     conservation_df = pd.DataFrame(columns=col, index=genomes)
     return conservation_df
 
@@ -51,8 +51,8 @@ def extract_focal_TRGs(focal_species, trg_threshold):
     # Extract the TRGs
     focal_TRGs = trg_df[trg_df["rank"] >= trg_threshold]["#gene"].tolist()
     # Keep 1000 at most
-    if len(focal_TRGs) > 100:
-        focal_TRGs = random.sample(focal_TRGs, 100)
+    if len(focal_TRGs) > 1000:
+        focal_TRGs = random.sample(focal_TRGs, 1000)
     return focal_TRGs
 
 
@@ -67,21 +67,72 @@ def extract_focal_CDSs(focal_species):
             focal_CDSs[record.name] = record.seq
     # Keep 1000 at most
     focal_CDSs_names = list(focal_CDSs.keys())
-    if len(focal_CDSs) > 100:
-        focal_CDSs_names = random.sample(focal_CDSs_names, 100)
+    if len(focal_CDSs) > 1000:
+        focal_CDSs_names = random.sample(focal_CDSs_names, 1000)
     focal_CDSs = {k: focal_CDSs[k] for k in focal_CDSs_names}
     return focal_CDSs
 
 
-def cut_chunks(focal_CDSs):
-    """Cut the CDSs in 302-long chunks"""
-    for k, v in focal_CDSs.items():
-        len_over_302 = len(v) - 302
+def extract_intergenic(species):
+        """Extract all intergenic sequences"""
+        # Make sure the file exists and read it
+        gbk_pattern = os.path.join(DATA_DIR, "annotation", species + ".gb*")
+        gbk_files = [f for f in glob.glob(gbk_pattern) if not f.endswith(".fai")]
+        if gbk_files:
+            gbk_file = gbk_files[0]
+            gbk_content = list(SeqIO.parse(gbk_file, "genbank"))
+        else:
+            raise FileNotFoundError(f"No file matching pattern {gbk_pattern}")
+
+        # Extract data for each contig
+        intergenic_segments = {}
+        for record in gbk_content:
+            contig_length = len(record.seq)
+            intergenic_segments[record.name] = []
+            # Get all nucl positions in CDSs from the genbank file
+            coding_loci = []
+            for feature in record.features:
+                if feature.type == "gene":
+                    # Make sure we don't include the bugged CDS that is as long as the genome
+                    if feature.location.end - feature.location.start < contig_length:
+                        coding_loci += list(range(feature.location.start, feature.location.end))
+            # Get all the integers that are not in the list of coding loci
+            full_set = set(range(min(coding_loci), max(coding_loci) + 1))
+            noncoding_positions = list(full_set - set(coding_loci))
+            # Convert to consecutive ranges
+            noncoding_positions.sort()
+            start = noncoding_positions[0]
+            for i in range(1, len(noncoding_positions)):
+                if noncoding_positions[i] != noncoding_positions[i - 1] + 1:
+                    intergenic_segments[record.name].append((start, noncoding_positions[i - 1] + 1))
+                    start = noncoding_positions[i]
+            intergenic_segments[record.name].append((start, noncoding_positions[-1] + 1))
+
+        # Extract the corresponding sequences from fasta file
+        fa_file = os.path.join(DATA_DIR, "fasta_renamed/" + species + ".fa")
+        fa_content = list(SeqIO.parse(fa_file, "fasta"))
+        intergenic_dict = {}
+        i = 0
+        for contig in fa_content:
+            if contig.name in intergenic_segments:
+                for j in range(len(intergenic_segments[contig.name])):
+                    i += 1
+                    start, end = intergenic_segments[contig.name][j]
+                    intergenic_dict[f"{contig.name}_{i}"] = contig.seq[start:end]
+        return intergenic_dict
+
+
+def cut_chunks(seqs, length):
+    """Cut the CDSs in lengths-long chunks randomly"""
+    for k, v in seqs.items():
+        len_over = len(v) - length
+        if len_over == 0:
+            len_over = 1
         # Chose chunk randomly in-frame
-        possible_starts = list(range(0, len_over_302, 3))
+        possible_starts = list(range(0, len_over, 3))
         start = random.choice(possible_starts)
-        focal_CDSs[k] = v[start:start + 302]
-    return focal_CDSs
+        seqs[k] = v[start:(start + length)]
+    return seqs
 
 
 def get_db(species, colname, db):
@@ -110,7 +161,14 @@ def get_db(species, colname, db):
             for gene, seq in gene_dict.items():
                 db_file.write(f">{gene}\n{seq}\n")
             db_fasta_file = db_file.name
-    
+    elif colname == "n_intergenic":
+        # Extract intergenic sequences
+        intergenic_dict = extract_intergenic(species)
+        # Write the sequences to a temporary file
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as db_file:
+            for gene, seq in intergenic_dict.items():
+                db_file.write(f">{gene}\n{seq}\n")
+            db_fasta_file = db_file.name
     return db_fasta_file
 
 
@@ -131,6 +189,15 @@ def run_blast(query_sequences, db_faa_file, blast_type, keep_homologs, db):
     except subprocess.CalledProcessError as e:
         print(f"BLAST command failed with return code {e.returncode}: {e.stderr.decode()}")
         raise
+
+    # Check the file isn't blank
+    with open(output_file_path, "r") as f:
+        content = f.read().strip()
+    if content == "":
+        os.remove(query_file_path)
+        os.remove(output_file_path)
+        return 0, None
+
     # Read the output file
     result = pd.read_csv(output_file_path, sep="\t", header=None)
     result.columns = ["qseqid", "sseqid", "qlen", "evalue", "qcov"]
@@ -142,13 +209,13 @@ def run_blast(query_sequences, db_faa_file, blast_type, keep_homologs, db):
         result = result[result.apply(lambda row: db.get(row ["qseqid"]) == row ["sseqid"], axis=1)]
     # Keep only the best hit for each query
     result = result.sort_values("evalue").drop_duplicates("qseqid")
-    # Remove the temporary files
-    os.remove(query_file_path)
-    os.remove(output_file_path)
     # Keep homolog sequences
     if keep_homologs:
         homologs = {row["qseqid"]: row["sseqid"] for i, row in result.iterrows()}
         return len(result), homologs
+    # Remove the temporary files
+    os.remove(query_file_path)
+    os.remove(output_file_path)
     # Return number of matches
     return len(result), None
 
@@ -167,12 +234,13 @@ def process_conservation(focal_sp, conservation_df, colname, query_sequences, db
         if species == focal_sp:
             conservation_df.loc[species, colname] = len(query_sequences)
             continue
-
         # For all the other species, run BLAST for all the sequences
         # Get pre-established db if exists
         db_sp = db[species] if db else None
         db_fasta_file = get_db(species, colname, db_sp)
-        nb_matches, hom = run_blast(query_sequences, db_fasta_file, "blastp", keep_homologs, db_sp)
+        blast_type = "blastn" if colname == "n_intergenic" else "blastp"
+        # run blast
+        nb_matches, hom = run_blast(query_sequences, db_fasta_file, blast_type, keep_homologs, db_sp)
         print(f"Species {species}: {nb_matches} matches")
         conservation_df.loc[species, colname] = nb_matches
         if keep_homologs:
@@ -183,129 +251,6 @@ def process_conservation(focal_sp, conservation_df, colname, query_sequences, db
             os.remove(db_fasta_file)
 
     return conservation_df, homologs 
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-def extract_focal_noncoding(focal_sp):
-        """Extract 1000 non-coding sequences of the focal species"""
-        # Make sure the file exists and read it
-        gbk_pattern = os.path.join(DATA_DIR, "annotation/" + focal_sp + ".gb*")
-        gbk_files = glob.glob(gbk_pattern)
-        if gbk_files:
-            gbk_file = gbk_files[0]
-            gbk_content = list(SeqIO.parse(gbk_file, "genbank"))
-        else:
-            raise FileNotFoundError(f"No file matching pattern {gbk_pattern}")
-
-        # Extract data for each contig
-        noncoding_segments = []
-        for record in gbk_content:
-            # Get all coding loci from the genbank file (cds ranges)
-            coding_loci = []
-            for feature in record.features:
-                if feature.type == "CDS":
-                    coding_loci.append((feature.location.start, feature.location.end))
-            # Get the starting positions for all codons
-            start_point_codons = []
-            for cds_range in coding_loci:
-                start_point_codons += list(range(cds_range[0], cds_range[1], 3))
-            # order and delete duplicates
-            start_point_codons.sort()
-            full_set = set(range(start_point_codons[0], start_point_codons[-1] + 1))
-            start_point_codons = set(start_point_codons)
-            # Get all the integers that are not in the list of first codons
-            noncoding_positions = list(full_set - start_point_codons)
-            noncoding_positions.sort()
-            # Keep only 300-nucl-long segments that are not in frame with a cds
-            for i in noncoding_positions[:-300]:
-                considered_segment_codons = [c for c in range(i, i + 300, 3)]
-                if not any([c in start_point_codons for c in considered_segment_codons]):
-                    noncoding_segments.append((record.name, i, i + 300))
-        # Extract 1000 noncoding segments at most
-        if len(noncoding_segments) > 1000:
-            noncoding_segments = random.sample(noncoding_segments, 1000)
-
-        # Extract the corresponding sequences from fasta file
-        # convert list to dict
-        noncoding_dict_loc = {}
-        for i in range(len(noncoding_segments)):
-            contig, start, end = noncoding_segments[i]
-            if contig not in noncoding_dict_loc:
-                noncoding_dict_loc[contig] = {}
-            noncoding_dict_loc[contig][f"segment_{i}"] = (start, end)
-        # Extract the sequences
-        noncoding_dict_seq = {}
-        fa_file = os.path.join(DATA_DIR, "fasta_renamed/" + focal_sp + ".fa")
-        fa_content = list(SeqIO.parse(fa_file, "fasta"))
-        for contig in fa_content:
-            if contig.name in noncoding_dict_loc:
-                for segment in noncoding_dict_loc[contig.name]:
-                    start, end = noncoding_dict_loc[contig.name][segment]
-                    # translate the sequence
-                    nucl_seq = contig.seq[start:end]
-                    prot_seq = nucl_seq.translate(table=11)
-                    noncoding_dict_seq[segment] = prot_seq
-        return noncoding_dict_seq
-
-
-
-def calculate_noncoding_conservation(focal_sp, conservation_df, focal_noncoding):
-    # For each species
-    for species in conservation_df.index:
-        # For the focal species, add the number of CDSs
-        if species == focal_sp:
-            conservation_df.loc[species, "n_noncoding"] = len(focal_noncoding)
-            continue
-        # For all the other species, run BLAST for all the non-coding sequences
-        db_fa_file = os.path.join(DATA_DIR, "fasta_renamed/" + species + ".fa")
-        nb_matches = run_blast(focal_noncoding, db_fa_file, "tblastn")
-        print(f"Species {species}: {nb_matches} matches")
-        conservation_df.loc[species, "n_noncoding"] = nb_matches
-    return conservation_df
-            
 
 
 
@@ -325,7 +270,7 @@ if __name__ == "__main__":
     print("\n")
 
 
-    """########################################
+    ########################################
     ################# TRGs #################
     ########################################
     print("Calculating TRG conservation...")
@@ -336,7 +281,7 @@ if __name__ == "__main__":
     print(f"Extracted {len(focal_TRGs)} TRGs for the focal species {FOCAL_SPECIES}\n")
     # Calculate the TRG conservation and add to dataframe
     conservation_df, _ = process_conservation(FOCAL_SPECIES, conservation_df, "n_trg", focal_TRGs)
-    print("\n\n")"""
+    print("\n\n")
 
 
 
@@ -348,7 +293,7 @@ if __name__ == "__main__":
     focal_CDSs_nt = extract_focal_CDSs(FOCAL_SPECIES)
     print(f"Extracted {len(focal_CDSs_nt)} CDSs for the focal species {FOCAL_SPECIES}\n")
     # Cut 302-long chunks randomly
-    focal_CDSs_nt = cut_chunks(focal_CDSs_nt)
+    focal_CDSs_nt = cut_chunks(focal_CDSs_nt, 302)
     # Translate to get 100 aa-long protein sequences
     focal_CDSs = {k: v[:300].translate(table=11) for k, v in focal_CDSs_nt.items()}
     # Calculate the CDS conservation and add to dataframe + keep homolog sequences
@@ -371,31 +316,24 @@ if __name__ == "__main__":
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    """########################################
-    ############## Non-coding ##############
     ########################################
-    print("Calculating non-coding conservation...")
-    # Extract 1000 non-coding sequences of the focal species
-    focal_noncoding = extract_focal_noncoding(FOCAL_SPECIES)
-    print(f"Extracted {len(focal_noncoding)} non-coding sequences for the focal species {FOCAL_SPECIES}\n")
-    # Calculate the non-coding conservation and add to dataframe
-    conservation_df = calculate_noncoding_conservation(FOCAL_SPECIES, conservation_df, focal_noncoding)
-    print("\n\n")"""
+    ############## Intergenic ##############
+    ########################################
+    print("Calculating intergenic conservation...")
+    # Extract 1000 intergenic 100 sequences of the focal species
+    focal_intergenic_nt = extract_intergenic(FOCAL_SPECIES)
+    # Keep only the intergenic sequences of at least 100 nt and cut chunks
+    focal_intergenic = {k: v for k, v in focal_intergenic_nt.items() if len(v) >= 100}
+    focal_intergenic = cut_chunks(focal_intergenic, 100)
+    # Keep 1000 at most
+    focal_intergenic_names = list(focal_intergenic.keys())
+    if len(focal_intergenic) > 1000:
+        focal_intergenic_names = random.sample(focal_intergenic_names, 1000)
+    focal_intergenic = {k: focal_intergenic[k] for k in focal_intergenic_names}
+    print(f"Extracted {len(focal_intergenic)} intergenic sequences for the focal species {FOCAL_SPECIES}\n")
+    # Calculate the intergenic conservation and add to dataframe
+    conservation_df, _ = process_conservation(FOCAL_SPECIES, conservation_df, "n_intergenic", focal_intergenic)
+    print("\n\n")
 
 
 
