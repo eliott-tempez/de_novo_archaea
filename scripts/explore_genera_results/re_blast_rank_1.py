@@ -12,31 +12,6 @@ FOCAL_TAXID = 55802
 NR = "/datas/NR/nr_2.0.13.dmnd"
 
 
-def parse_diamond_output(output_file):
-    result = pd.read_csv(output_file, sep="\t", header=None)
-    result.columns = ["qseqid", "sseqid", "taxids", "evalue", "qcov"]
-    # Keep only rows for which qcov > 50 % and evalue < 1e-3
-    result = result[(result["qcov"] > 50) & (result["evalue"] < 1e-3)]
-    unique_genes = result["qseqid"].nunique()
-    print(f"Out of these, {unique_genes} genes have found 1+ match")
-    # for each query gene, get the highest node in the taxonomy
-    lca_dict = {}
-    for gene, group in result.groupby("qseqid"):
-        taxids = group["taxids"].tolist()
-        # Get the highest node in the taxonomy
-        taxid_str = " ".join(set([str(FOCAL_TAXID)] + taxids))
-        get_lca_cmd = f"echo {taxid_str} | taxonkit lca"
-        lca_std = subprocess.run(get_lca_cmd, shell=True, capture_output=True)
-        if lca_std.returncode != 0:
-            raise RuntimeError(f"taxonkit lca command failed with return code {lca_std.returncode}")
-        lca = int(lca_std.stdout.decode("utf-8").strip().split("\t")[1])
-        lca_dict[gene] = lca
-    # Print result to stdout
-    lcas = pd.Series(lca_dict)
-    print("Number of genes per LCA:")
-    print(lcas.value_counts())
-
-
 def run_diamond(query_sequences):
     # Create a temporary file for the query sequences
     with tempfile.NamedTemporaryFile(mode='w', delete=False) as query_file:
@@ -49,15 +24,12 @@ def run_diamond(query_sequences):
     # Run the BLAST (diamond)
     print("(Running diamond...)")
     output_format = "6 qseqid sseqid staxids evalue qcovhsp"
-    diamond_command = f"diamond blastp -d {NR} -p 8 -q {query_file_path} -o {output_file_path} -f {output_format} --very-sensitive"
+    diamond_command = f"diamond blastp -d {NR} -p 8 -q {query_file_path} -o {output_file_path} -f {output_format} --very-sensitive --evalue 1e-3 --max-target-seqs 0 --quiet" 
     diamond_std = subprocess.run(diamond_command, shell=True)
     if diamond_std.returncode != 0:
         raise RuntimeError(f"diamond command failed with return code {diamond_std.returncode}")
-    # Parse output
-    parse_diamond_output(output_file_path)
-    # Remove temporary files
     os.remove(query_file_path)
-
+    print(f"Output written to {output_file_path}")
 
 
 
