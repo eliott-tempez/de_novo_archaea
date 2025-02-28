@@ -15,7 +15,7 @@ ggsave <- function(..., bg = "white",
 # Filenames
 tree_file <- "/home/eliott.tempez/Documents/archaea_data/whole_tree.nwk"
 conservation_db_dir <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/calculate_conservation/"
-focal_species <- "GCA_001433455@Thermococcus_barophilus_CH5"
+focal_species <- "GCA_028471785@Thermococcus_kodakarensis_TS900"
 output_dir <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/calculate_conservation/"
 
 # Get the conservation db
@@ -28,8 +28,6 @@ conservation_db <- read.table(conservation_db_file,
 conservation_db[is.na(conservation_db)] <- 0
 # Change to percents
 default_val <- as.numeric(conservation_db[focal_species, ])
-# To remove : avoiding division by 0
-default_val[default_val == 0] <- 1
 conservation_db_p <- sweep(conservation_db, 2, default_val, FUN = "/") * 100
 
 
