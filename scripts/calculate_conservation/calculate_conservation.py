@@ -289,7 +289,7 @@ if __name__ == "__main__":
     ########################################
     ################# TRGs #################
     ########################################
-    """print("Calculating TRG conservation...")
+    print("Calculating TRG conservation...")
     # Extract the name of 1000 (at most) TRGs of the focal species
     focal_TRG_genes = extract_focal_TRGs(FOCAL_SPECIES, TRG_RANK)
     # Get the protein sequences for each TRG
@@ -297,7 +297,7 @@ if __name__ == "__main__":
     print(f"Extracted {len(focal_TRGs)} TRGs for the focal species {FOCAL_SPECIES}\n")
     # Calculate the TRG conservation and add to dataframe
     conservation_df, _ = process_conservation_parallel(FOCAL_SPECIES, conservation_df, "n_trg", focal_TRGs)
-    print("\n\n")"""
+    print("\n\n")
 
 
 
@@ -335,7 +335,7 @@ if __name__ == "__main__":
     ########################################
     ############## Intergenic ##############
     ########################################
-    """print("Calculating intergenic conservation...")
+    print("Calculating intergenic conservation...")
     # Extract 1000 intergenic 100 sequences of the focal species
     focal_intergenic_nt = extract_intergenic(FOCAL_SPECIES)
     # Keep only the intergenic sequences of at least 100 nt and cut chunks
@@ -349,7 +349,7 @@ if __name__ == "__main__":
     print(f"Extracted {len(focal_intergenic)} intergenic sequences for the focal species {FOCAL_SPECIES}\n")
     # Calculate the intergenic conservation and add to dataframe
     conservation_df, _ = process_conservation_parallel(FOCAL_SPECIES, conservation_df, "n_intergenic", focal_intergenic)
-    print("\n\n")"""
+    print("\n\n")
 
 
 
