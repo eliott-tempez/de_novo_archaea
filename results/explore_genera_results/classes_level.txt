@@ -1,0 +1,3908 @@
+TBCH5v1_RS00005.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS00020.mRNA.0
+Thermococci	43
+
+TBCH5v1_RS00030.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS00035.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS00050.mRNA.0
+Thermococci	2
+Thermoprotei	23
+	2
+
+TBCH5v1_RS00070.mRNA.0
+Thermococci	10
+	2
+Archaeoglobi	20
+
+TBCH5v1_RS00090.mRNA.0
+Thermococci	2
+Archaeoglobi	13
+	6
+Thermoprotei	2
+Candidatus Jordarchaeia	1
+Candidatus Methanomethylicia	1
+Candidatus Bathyarchaeia	1
+Candidatus Desulfofervidia	1
+
+TBCH5v1_RS00095.mRNA.0
+Thermococci	2
+Archaeoglobi	5
+	7
+Candidatus Jordarchaeia	1
+Thermoprotei	1
+Candidatus Bathyarchaeia	1
+Methanomicrobia	7
+Gammaproteobacteria	1
+
+TBCH5v1_RS00115.mRNA.0
+Thermococci	26
+	1
+
+TBCH5v1_RS00145.mRNA.0
+Thermococci	32
+	1
+Methanococci	3
+
+TBCH5v1_RS00260.mRNA.0
+Thermococci	12
+Thermoplasmata	3
+Thermoprotei	7
+	3
+Candidatus Korarchaeia	2
+
+TBCH5v1_RS00265.mRNA.0
+Thermococci	17
+Archaeoglobi	2
+	3
+Thermoplasmata	3
+Clostridia	3
+Atribacteria	1
+
+TBCH5v1_RS00270.mRNA.0
+Thermococci	12
+Archaeoglobi	2
+	5
+Tissierellia	2
+Bacteroidia	1
+Thermoplasmata	3
+Synergistia	1
+Clostridia	5
+
+TBCH5v1_RS00310.mRNA.0
+Thermococci	21
+	3
+Caldisericia	1
+Thermoplasmata	1
+Thermoprotei	1
+
+TBCH5v1_RS00320.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS00340.mRNA.0
+Thermococci	13
+Thermoprotei	12
+	3
+Thermoplasmata	2
+
+TBCH5v1_RS00385.mRNA.0
+Thermococci	29
+Thermoprotei	3
+
+TBCH5v1_RS00390.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS00395.mRNA.0
+Thermococci	5
+Thermoprotei	11
+Halobacteria	4
+Archaeoglobi	6
+
+TBCH5v1_RS00415.mRNA.0
+Thermococci	22
+	4
+Bacilli	1
+
+TBCH5v1_RS00420.mRNA.0
+Thermococci	26
+
+TBCH5v1_RS00450.mRNA.0
+Thermococci	40
+	2
+
+TBCH5v1_RS00475.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS00480.mRNA.0
+Thermococci	44
+
+TBCH5v1_RS00485.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS00495.mRNA.0
+Thermococci	39
+	1
+
+TBCH5v1_RS00500.mRNA.0
+Thermococci	35
+	1
+
+TBCH5v1_RS00505.mRNA.0
+Thermococci	39
+	1
+
+TBCH5v1_RS00520.mRNA.0
+Thermococci	30
+	1
+
+TBCH5v1_RS00525.mRNA.0
+Thermococci	40
+	1
+
+TBCH5v1_RS00535.mRNA.0
+Thermococci	49
+
+TBCH5v1_RS00540.mRNA.0
+Thermococci	50
+
+TBCH5v1_RS00550.mRNA.0
+Thermococci	49
+
+TBCH5v1_RS00560.mRNA.0
+Thermococci	53
+
+TBCH5v1_RS00565.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS00570.mRNA.0
+Thermococci	48
+Methanococci	1
+
+TBCH5v1_RS00575.mRNA.0
+Thermococci	52
+
+TBCH5v1_RS00580.mRNA.0
+Thermococci	49
+Methanococci	1
+
+TBCH5v1_RS00590.mRNA.0
+Thermococci	37
+Methanococci	1
+
+TBCH5v1_RS00600.mRNA.0
+Thermococci	47
+
+TBCH5v1_RS00610.mRNA.0
+Thermococci	40
+
+TBCH5v1_RS00630.mRNA.0
+Thermococci	44
+Methanococci	1
+
+TBCH5v1_RS00650.mRNA.0
+Thermococci	40
+Archaeoglobi	1
+
+TBCH5v1_RS00655.mRNA.0
+Thermococci	45
+Methanococci	1
+
+TBCH5v1_RS00665.mRNA.0
+Thermococci	47
+	1
+Archaeoglobi	1
+Methanococci	1
+
+TBCH5v1_RS00680.mRNA.0
+Thermococci	22
+Archaeoglobi	8
+Thermoprotei	1
+	1
+
+TBCH5v1_RS13155.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS00700.mRNA.0
+Thermococci	38
+
+TBCH5v1_RS00710.mRNA.0
+Thermococci	59
+	1
+Methanococci	1
+
+TBCH5v1_RS00730.mRNA.0
+Thermococci	34
+Archaeoglobi	1
+Thermoprotei	1
+
+TBCH5v1_RS00740.mRNA.0
+Thermococci	55
+Archaeoglobi	1
+
+TBCH5v1_RS00765.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS00785.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS00790.mRNA.0
+Thermococci	26
+	4
+
+TBCH5v1_RS00800.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS00835.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS00865.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS00870.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS00885.mRNA.0
+Thermococci	36
+
+TBCH5v1_RS00900.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS00905.mRNA.0
+Thermococci	31
+Gammaproteobacteria	1
+
+TBCH5v1_RS00940.mRNA.0
+Thermococci	42
+
+TBCH5v1_RS00950.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS00990.mRNA.0
+Thermococci	45
+
+TBCH5v1_RS01010.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS01025.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS01035.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS01050.mRNA.0
+Thermococci	6
+	9
+Methanomicrobia	10
+Aquificia	1
+Archaeoglobi	1
+Candidatus Nanoarchaeia	1
+Thermodesulfovibrionia	1
+Rhodothermia	2
+Thermoflexia	1
+
+TBCH5v1_RS01055.mRNA.0
+Thermococci	38
+
+TBCH5v1_RS01060.mRNA.0
+Thermococci	28
+Archaeoglobi	3
+
+TBCH5v1_RS01080.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS01085.mRNA.0
+Thermococci	38
+
+TBCH5v1_RS01095.mRNA.0
+Thermococci	48
+
+TBCH5v1_RS01100.mRNA.0
+Thermococci	45
+
+TBCH5v1_RS01105.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS01115.mRNA.0
+Thermococci	45
+
+TBCH5v1_RS01125.mRNA.0
+Thermococci	40
+
+TBCH5v1_RS01135.mRNA.0
+Thermococci	49
+	1
+
+TBCH5v1_RS01190.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS13540.mRNA.0
+Thermococci	29
+
+TBCH5v1_RS01215.mRNA.0
+Thermococci	9
+Thermoprotei	11
+	7
+Clostridia	1
+
+TBCH5v1_RS01225.mRNA.0
+Thermococci	36
+
+TBCH5v1_RS01230.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS01235.mRNA.0
+Thermococci	27
+	1
+
+TBCH5v1_RS01240.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS01255.mRNA.0
+Thermococci	31
+Archaeoglobi	1
+
+TBCH5v1_RS01260.mRNA.0
+Thermococci	31
+Archaeoglobi	1
+
+TBCH5v1_RS01270.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS01275.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS01300.mRNA.0
+Thermococci	36
+
+TBCH5v1_RS01305.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS01330.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS01335.mRNA.0
+Thermococci	26
+	1
+
+TBCH5v1_RS01375.mRNA.0
+Thermococci	48
+
+TBCH5v1_RS01380.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS01385.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS01395.mRNA.0
+Thermococci	52
+Methanococci	1
+
+TBCH5v1_RS01400.mRNA.0
+Thermococci	54
+
+TBCH5v1_RS01405.mRNA.0
+Thermococci	69
+Gammaproteobacteria	1
+
+TBCH5v1_RS01415.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS01440.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS01460.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS01485.mRNA.0
+Thermococci	38
+
+TBCH5v1_RS01495.mRNA.0
+Thermococci	36
+Archaeoglobi	1
+
+TBCH5v1_RS01500.mRNA.0
+Thermococci	40
+
+TBCH5v1_RS01505.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS01565.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS01575.mRNA.0
+Thermococci	28
+	1
+
+TBCH5v1_RS01585.mRNA.0
+Thermococci	29
+	1
+
+TBCH5v1_RS01595.mRNA.0
+Thermococci	32
+	1
+Thermoprotei	3
+
+TBCH5v1_RS01610.mRNA.0
+Thermococci	29
+
+TBCH5v1_RS01645.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS01650.mRNA.0
+Thermococci	38
+
+TBCH5v1_RS01655.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS01665.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS01675.mRNA.0
+Thermococci	36
+
+TBCH5v1_RS01685.mRNA.0
+Thermococci	62
+
+TBCH5v1_RS01700.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS01710.mRNA.0
+Thermococci	26
+
+TBCH5v1_RS01730.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS01740.mRNA.0
+Thermococci	27
+Archaeoglobi	7
+
+TBCH5v1_RS01755.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS01760.mRNA.0
+Thermococci	32
+Archaeoglobi	1
+
+TBCH5v1_RS01765.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS01780.mRNA.0
+Thermococci	37
+
+TBCH5v1_RS01785.mRNA.0
+Thermococci	36
+
+TBCH5v1_RS01790.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS01810.mRNA.0
+Thermococci	30
+Thermoprotei	1
+
+TBCH5v1_RS01815.mRNA.0
+Thermococci	37
+
+TBCH5v1_RS13545.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS13550.mRNA.0
+Thermococci	29
+	1
+
+TBCH5v1_RS01830.mRNA.0
+Thermococci	29
+	1
+
+TBCH5v1_RS01840.mRNA.0
+Thermococci	32
+Gammaproteobacteria	1
+
+TBCH5v1_RS01845.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS01855.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS01870.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS01875.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS01880.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS01885.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS01895.mRNA.0
+Thermococci	41
+Candidatus Desulfofervidia	1
+
+TBCH5v1_RS01900.mRNA.0
+Thermococci	37
+
+TBCH5v1_RS01920.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS01930.mRNA.0
+Thermococci	41
+
+TBCH5v1_RS01945.mRNA.0
+Thermococci	36
+Aquificia	1
+
+TBCH5v1_RS01965.mRNA.0
+Thermococci	27
+
+TBCH5v1_RS01975.mRNA.0
+Thermococci	38
+
+TBCH5v1_RS01980.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS01985.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS01990.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS02015.mRNA.0
+Thermococci	39
+
+TBCH5v1_RS02025.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS02050.mRNA.0
+Thermococci	29
+
+TBCH5v1_RS02060.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS02070.mRNA.0
+Thermococci	55
+Methanococci	1
+
+TBCH5v1_RS02080.mRNA.0
+Thermococci	37
+
+TBCH5v1_RS02090.mRNA.0
+Thermococci	41
+	1
+Archaeoglobi	1
+
+TBCH5v1_RS02100.mRNA.0
+Thermococci	34
+	1
+
+TBCH5v1_RS02115.mRNA.0
+Thermococci	26
+Methanococci	3
+
+TBCH5v1_RS02135.mRNA.0
+Thermococci	29
+	1
+
+TBCH5v1_RS02155.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS02160.mRNA.0
+Thermococci	44
+
+TBCH5v1_RS02170.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS02185.mRNA.0
+Thermococci	29
+	1
+
+TBCH5v1_RS02195.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS02200.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS02215.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS02240.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS02245.mRNA.0
+Thermococci	36
+
+TBCH5v1_RS02255.mRNA.0
+Thermococci	37
+Archaeoglobi	1
+
+TBCH5v1_RS02260.mRNA.0
+Thermococci	42
+Archaeoglobi	1
+
+TBCH5v1_RS02265.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS02275.mRNA.0
+Thermococci	39
+
+TBCH5v1_RS02280.mRNA.0
+Thermococci	40
+
+TBCH5v1_RS02290.mRNA.0
+Thermococci	44
+
+TBCH5v1_RS02295.mRNA.0
+Thermococci	41
+Thermoplasmata	2
+	1
+
+TBCH5v1_RS02305.mRNA.0
+Thermococci	37
+
+TBCH5v1_RS02310.mRNA.0
+Thermococci	38
+Thermoplasmata	1
+
+TBCH5v1_RS02315.mRNA.0
+Thermococci	40
+	1
+
+TBCH5v1_RS02320.mRNA.0
+Thermococci	32
+Thermoplasmata	1
+
+TBCH5v1_RS02325.mRNA.0
+Thermococci	41
+	1
+
+TBCH5v1_RS02330.mRNA.0
+Thermococci	35
+Thermoplasmata	2
+Thermoprotei	2
+
+TBCH5v1_RS02335.mRNA.0
+Thermococci	18
+Thermoprotei	5
+	2
+Epsilonproteobacteria	9
+
+TBCH5v1_RS02340.mRNA.0
+Thermococci	40
+
+TBCH5v1_RS02345.mRNA.0
+Thermococci	26
+Thermoprotei	2
+Archaeoglobi	1
+
+TBCH5v1_RS02355.mRNA.0
+Thermococci	26
+
+TBCH5v1_RS02360.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS02365.mRNA.0
+Thermococci	37
+
+TBCH5v1_RS02405.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS02415.mRNA.0
+Thermococci	5
+Thermoprotei	11
+	9
+Nitrososphaeria	1
+
+TBCH5v1_RS02420.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS02445.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS02450.mRNA.0
+Thermococci	39
+
+TBCH5v1_RS02475.mRNA.0
+Thermococci	8
+Aquificia	1
+Thermoprotei	1
+	11
+Candidatus Bipolaricaulia	2
+Anaerolineae	2
+Desulfobacteria	1
+Spirochaetia	2
+
+TBCH5v1_RS02510.mRNA.0
+Thermococci	12
+Nitrososphaeria	2
+	5
+Methanobacteria	6
+Candidatus Njordarchaeia	1
+
+TBCH5v1_RS02530.mRNA.0
+Thermococci	11
+	6
+Thermoprotei	10
+Candidatus Culexarchaeia	2
+
+TBCH5v1_RS02535.mRNA.0
+Thermococci	17
+Thermoprotei	5
+Thermotogae	1
+	4
+
+TBCH5v1_RS02585.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS02590.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS02595.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS02620.mRNA.0
+Thermococci	27
+
+TBCH5v1_RS02625.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS02630.mRNA.0
+Thermococci	3
+	8
+Methanomicrobia	15
+Candidatus Altiarchaeia	1
+
+TBCH5v1_RS02635.mRNA.0
+Thermococci	4
+Desulfuromonadia	1
+Methanomicrobia	14
+	7
+
+TBCH5v1_RS02660.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS02670.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS02685.mRNA.0
+Thermococci	27
+
+TBCH5v1_RS02710.mRNA.0
+Thermococci	35
+	1
+
+TBCH5v1_RS02715.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS02720.mRNA.0
+Thermococci	29
+
+TBCH5v1_RS02725.mRNA.0
+Thermococci	36
+
+TBCH5v1_RS02730.mRNA.0
+Thermococci	36
+
+TBCH5v1_RS02735.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS02740.mRNA.0
+Thermococci	29
+	2
+
+TBCH5v1_RS02750.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS02760.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS02765.mRNA.0
+Thermococci	67
+
+TBCH5v1_RS02805.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS02840.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS02850.mRNA.0
+Thermococci	36
+
+TBCH5v1_RS13590.mRNA.0
+Thermococci	36
+	1
+
+TBCH5v1_RS02870.mRNA.0
+Thermococci	33
+Atribacteria	1
+
+TBCH5v1_RS02880.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS02885.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS02895.mRNA.0
+Thermococci	9
+Thermoplasmata	2
+Methanococci	2
+Methanomicrobia	6
+	4
+Thermoprotei	2
+Candidatus Korarchaeia	2
+
+TBCH5v1_RS02905.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS02910.mRNA.0
+Thermococci	38
+
+TBCH5v1_RS02915.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS02975.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS02995.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS03010.mRNA.0
+Thermococci	39
+
+TBCH5v1_RS03070.mRNA.0
+Thermococci	37
+
+TBCH5v1_RS03085.mRNA.0
+	3
+Thermococci	26
+
+TBCH5v1_RS03090.mRNA.0
+Thermococci	43
+	1
+
+TBCH5v1_RS03105.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS03110.mRNA.0
+Thermococci	31
+Thermoprotei	1
+Thermoplasmata	2
+	4
+
+TBCH5v1_RS03115.mRNA.0
+Thermococci	34
+Thermoprotei	1
+	1
+
+TBCH5v1_RS03120.mRNA.0
+Thermococci	30
+Gammaproteobacteria	1
+
+TBCH5v1_RS03125.mRNA.0
+Thermococci	43
+Gammaproteobacteria	1
+
+TBCH5v1_RS03155.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS03165.mRNA.0
+Thermococci	26
+Synergistia	1
+Gammaproteobacteria	1
+
+TBCH5v1_RS03185.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS03190.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS03210.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS03225.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS03235.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS03250.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS03270.mRNA.0
+Thermococci	29
+
+TBCH5v1_RS03275.mRNA.0
+Thermococci	31
+	1
+
+TBCH5v1_RS03280.mRNA.0
+Thermococci	22
+Methanomicrobia	1
+Thermoprotei	1
+Candidatus Korarchaeia	1
+Theionarchaea	1
+
+TBCH5v1_RS03285.mRNA.0
+Thermococci	5
+Tissierellia	12
+Clostridia	8
+	2
+
+TBCH5v1_RS03305.mRNA.0
+Thermococci	1
+Thermoprotei	22
+	2
+Nitrososphaeria	2
+
+TBCH5v1_RS03310.mRNA.0
+Thermococci	2
+Thermoprotei	25
+	1
+
+TBCH5v1_RS03315.mRNA.0
+Thermococci	1
+	6
+Thermoprotei	4
+Clostridia	11
+Methanomicrobia	1
+Actinomycetes	7
+Bacilli	1
+
+TBCH5v1_RS03320.mRNA.0
+Thermococci	1
+Thermoprotei	16
+Candidatus Korarchaeia	5
+	3
+Candidatus Culexarchaeia	4
+
+TBCH5v1_RS03325.mRNA.0
+Thermococci	38
+
+TBCH5v1_RS03340.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS03355.mRNA.0
+Thermococci	32
+	1
+
+TBCH5v1_RS03360.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS03390.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS03400.mRNA.0
+Thermococci	36
+
+TBCH5v1_RS03405.mRNA.0
+Thermococci	41
+
+TBCH5v1_RS03415.mRNA.0
+Thermococci	32
+	1
+
+TBCH5v1_RS03420.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS03425.mRNA.0
+Thermococci	39
+	1
+
+TBCH5v1_RS03460.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS03465.mRNA.0
+Thermococci	36
+
+TBCH5v1_RS03480.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS03485.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS03500.mRNA.0
+Thermococci	32
+	1
+
+TBCH5v1_RS03510.mRNA.0
+Thermococci	36
+Methanococci	4
+
+TBCH5v1_RS03525.mRNA.0
+Thermococci	28
+Archaeoglobi	2
+
+TBCH5v1_RS03530.mRNA.0
+Thermococci	4
+Methanococci	7
+Myxococcia	1
+Archaeoglobi	9
+Thermoplasmata	1
+	1
+Thermodesulfobacteria	1
+Methanomicrobia	3
+Methanobacteria	3
+
+TBCH5v1_RS03535.mRNA.0
+Thermococci	3
+	4
+Dehalococcoidia	1
+Epsilonproteobacteria	2
+Gammaproteobacteria	2
+Cyanophyceae	3
+Clostridia	1
+Desulfobulbia	2
+Candidatus Brocadiia	1
+
+TBCH5v1_RS03540.mRNA.0
+Thermococci	3
+Methanococci	5
+Thermodesulfobacteria	2
+	3
+Thermoplasmata	2
+Archaeoglobi	6
+Myxococcia	1
+Methanomicrobia	5
+Methanobacteria	1
+
+TBCH5v1_RS03555.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS03575.mRNA.0
+Thermococci	26
+
+TBCH5v1_RS03640.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS03675.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS03695.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS03710.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS03720.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS03725.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS03740.mRNA.0
+Thermococci	8
+	11
+Dethiobacteria	1
+Archaeoglobi	3
+Thermoplasmata	1
+Dehalococcoidia	1
+Desulfobacteria	1
+Methanomicrobia	1
+
+TBCH5v1_RS03755.mRNA.0
+Thermococci	27
+
+TBCH5v1_RS03790.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS03805.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS03820.mRNA.0
+Thermococci	34
+	1
+
+TBCH5v1_RS03835.mRNA.0
+Thermococci	26
+
+TBCH5v1_RS03845.mRNA.0
+Thermococci	37
+Archaeoglobi	1
+
+TBCH5v1_RS03850.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS03865.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS03870.mRNA.0
+Thermococci	34
+	1
+
+TBCH5v1_RS03885.mRNA.0
+Thermococci	36
+
+TBCH5v1_RS03910.mRNA.0
+Thermococci	8
+Candidatus Fermentithermobacillia	1
+Methanomicrobia	14
+Clostridia	1
+
+TBCH5v1_RS03920.mRNA.0
+Thermococci	36
+	1
+
+TBCH5v1_RS03945.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS03960.mRNA.0
+Thermococci	33
+Archaeoglobi	1
+
+TBCH5v1_RS03970.mRNA.0
+Thermococci	12
+	8
+Thermoplasmata	6
+Theionarchaea	2
+Candidatus Asgardarchaeia (ex Tamarit et al. 2024)	1
+
+TBCH5v1_RS03990.mRNA.0
+Thermococci	27
+	1
+
+TBCH5v1_RS03995.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS04000.mRNA.0
+Thermococci	32
+	1
+
+TBCH5v1_RS04005.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS04015.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS04020.mRNA.0
+Thermococci	43
+
+TBCH5v1_RS04035.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS04050.mRNA.0
+Thermococci	41
+
+TBCH5v1_RS04070.mRNA.0
+Thermococci	27
+Archaeoglobi	1
+
+TBCH5v1_RS04075.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS04085.mRNA.0
+Thermococci	27
+
+TBCH5v1_RS04115.mRNA.0
+Thermococci	26
+
+TBCH5v1_RS04120.mRNA.0
+Thermococci	37
+
+TBCH5v1_RS04125.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS04140.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS04155.mRNA.0
+Thermococci	37
+
+TBCH5v1_RS04160.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS04180.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS04185.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS04210.mRNA.0
+Thermococci	30
+Thermoplasmata	1
+
+TBCH5v1_RS04225.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS04235.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS04260.mRNA.0
+Thermococci	29
+
+TBCH5v1_RS04265.mRNA.0
+Thermococci	29
+
+TBCH5v1_RS04285.mRNA.0
+Thermococci	27
+	2
+
+TBCH5v1_RS04295.mRNA.0
+Thermococci	14
+	2
+Gammaproteobacteria	1
+Methanococci	8
+
+TBCH5v1_RS04300.mRNA.0
+Thermococci	33
+	1
+
+TBCH5v1_RS04305.mRNA.0
+Thermococci	31
+	2
+
+TBCH5v1_RS04310.mRNA.0
+Thermococci	33
+	1
+
+TBCH5v1_RS13610.mRNA.0
+Thermococci	19
+	1
+Archaeoglobi	6
+Methanococci	2
+Caudoviricetes	1
+Thermoplasmata	1
+Methanomicrobia	5
+Bacteroidia	1
+
+TBCH5v1_RS04380.mRNA.0
+Thermococci	11
+Thermoplasmata	2
+Archaeoglobi	6
+Flavobacteriia	1
+Methanomicrobia	4
+Sphingobacteriia	1
+Candidatus Methanoliparia	1
+Bacilli	5
+	2
+Cytophagia	1
+
+TBCH5v1_RS04385.mRNA.0
+Thermococci	28
+Thermoplasmata	1
+	1
+
+TBCH5v1_RS04415.mRNA.0
+Thermococci	3
+	14
+Thermoplasmata	2
+Methanomicrobia	1
+Archaeoglobi	2
+Desulfobacteria	1
+Candidatus Desulfofervidia	1
+Alphaproteobacteria	1
+
+TBCH5v1_RS04465.mRNA.0
+Thermococci	16
+	3
+Thermoprotei	7
+Archaeoglobi	1
+
+TBCH5v1_RS04480.mRNA.0
+Thermococci	38
+
+TBCH5v1_RS04485.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS04490.mRNA.0
+Thermococci	41
+
+TBCH5v1_RS04495.mRNA.0
+Thermococci	26
+
+TBCH5v1_RS04500.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS04505.mRNA.0
+Thermococci	39
+Thermoprotei	1
+
+TBCH5v1_RS04525.mRNA.0
+Thermococci	40
+
+TBCH5v1_RS04545.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS04560.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS04580.mRNA.0
+Thermococci	28
+Archaeoglobi	1
+
+TBCH5v1_RS04585.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS04595.mRNA.0
+Thermococci	37
+
+TBCH5v1_RS04600.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS04610.mRNA.0
+Thermococci	20
+Nitrososphaeria	1
+	8
+Thermoplasmata	1
+Thermoprotei	2
+
+TBCH5v1_RS04625.mRNA.0
+Thermococci	31
+Thermodesulfobacteria	1
+Thermoprotei	1
+
+TBCH5v1_RS04635.mRNA.0
+Thermococci	29
+
+TBCH5v1_RS04645.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS04665.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS04695.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS04705.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS04720.mRNA.0
+Thermococci	27
+
+TBCH5v1_RS04730.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS04740.mRNA.0
+Thermococci	30
+Archaeoglobi	1
+
+TBCH5v1_RS04775.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS04795.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS04800.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS04805.mRNA.0
+Thermococci	21
+Thermoprotei	1
+Thermotogae	9
+Synergistia	2
+
+TBCH5v1_RS04825.mRNA.0
+Thermococci	36
+
+TBCH5v1_RS04830.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS04835.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS04840.mRNA.0
+Thermococci	59
+
+TBCH5v1_RS04855.mRNA.0
+Thermococci	37
+
+TBCH5v1_RS04865.mRNA.0
+Thermococci	27
+
+TBCH5v1_RS04890.mRNA.0
+Thermococci	36
+
+TBCH5v1_RS04895.mRNA.0
+Thermococci	38
+	1
+
+TBCH5v1_RS04905.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS04920.mRNA.0
+Thermococci	32
+Gammaproteobacteria	1
+
+TBCH5v1_RS04925.mRNA.0
+Thermococci	15
+	8
+Thermoplasmata	6
+
+TBCH5v1_RS04930.mRNA.0
+Thermococci	15
+Methanobacteria	11
+Thermodesulfovibrionia	1
+	3
+Dehalococcoidia	3
+Candidatus Methanofastidiosia	1
+
+TBCH5v1_RS04935.mRNA.0
+Thermococci	15
+	13
+Nitrososphaeria	1
+Thermoplasmata	1
+
+TBCH5v1_RS04940.mRNA.0
+Thermococci	38
+
+TBCH5v1_RS04950.mRNA.0
+Thermococci	28
+Aquificia	4
+	1
+
+TBCH5v1_RS04960.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS04970.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS04980.mRNA.0
+Thermococci	34
+	1
+
+TBCH5v1_RS04985.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS04995.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS05015.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS05020.mRNA.0
+Thermococci	27
+
+TBCH5v1_RS05035.mRNA.0
+Thermococci	34
+	2
+
+TBCH5v1_RS05045.mRNA.0
+Thermococci	38
+	2
+
+TBCH5v1_RS05065.mRNA.0
+Thermococci	44
+
+TBCH5v1_RS05085.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS05105.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS05115.mRNA.0
+Thermococci	33
+	1
+
+TBCH5v1_RS05120.mRNA.0
+Thermococci	36
+
+TBCH5v1_RS05140.mRNA.0
+Thermococci	17
+	1
+
+TBCH5v1_RS05165.mRNA.0
+Thermococci	29
+
+TBCH5v1_RS05170.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS05190.mRNA.0
+Thermococci	50
+
+TBCH5v1_RS05200.mRNA.0
+Thermococci	42
+
+TBCH5v1_RS05205.mRNA.0
+Thermococci	48
+
+TBCH5v1_RS05210.mRNA.0
+Thermococci	30
+	1
+
+TBCH5v1_RS05215.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS05225.mRNA.0
+Thermococci	35
+	1
+
+TBCH5v1_RS05230.mRNA.0
+Thermococci	34
+	1
+
+TBCH5v1_RS05235.mRNA.0
+Thermococci	36
+
+TBCH5v1_RS05240.mRNA.0
+Thermococci	36
+	1
+
+TBCH5v1_RS05250.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS05265.mRNA.0
+Thermococci	37
+	1
+
+TBCH5v1_RS05270.mRNA.0
+Thermococci	31
+	1
+
+TBCH5v1_RS05290.mRNA.0
+Thermococci	26
+Methanococci	3
+	1
+
+TBCH5v1_RS05295.mRNA.0
+Thermococci	30
+Methanococci	3
+	1
+
+TBCH5v1_RS05300.mRNA.0
+Thermococci	30
+Methanococci	3
+
+TBCH5v1_RS05310.mRNA.0
+Thermococci	36
+
+TBCH5v1_RS05315.mRNA.0
+Thermococci	29
+
+TBCH5v1_RS05320.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS05355.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS05365.mRNA.0
+Thermococci	36
+
+TBCH5v1_RS05370.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS05380.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS05385.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS05415.mRNA.0
+Thermococci	29
+Thermoprotei	1
+
+TBCH5v1_RS05420.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS05435.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS05440.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS05445.mRNA.0
+Thermococci	27
+
+TBCH5v1_RS05450.mRNA.0
+Thermococci	37
+Archaeoglobi	1
+
+TBCH5v1_RS05470.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS05480.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS05485.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS05490.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS05495.mRNA.0
+Thermococci	32
+Archaeoglobi	1
+
+TBCH5v1_RS05520.mRNA.0
+Thermococci	40
+
+TBCH5v1_RS05555.mRNA.0
+Thermococci	22
+Archaeoglobi	4
+
+TBCH5v1_RS05560.mRNA.0
+Thermococci	27
+	2
+
+TBCH5v1_RS05580.mRNA.0
+Thermococci	35
+	1
+Archaeoglobi	1
+
+TBCH5v1_RS05585.mRNA.0
+Thermococci	24
+	3
+
+TBCH5v1_RS05595.mRNA.0
+Thermococci	33
+	1
+
+TBCH5v1_RS05605.mRNA.0
+Thermococci	37
+
+TBCH5v1_RS05610.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS05615.mRNA.0
+Thermococci	37
+
+TBCH5v1_RS05625.mRNA.0
+Thermococci	26
+	3
+Candidatus Culexarchaeia	2
+
+TBCH5v1_RS05630.mRNA.0
+Thermococci	26
+Thermoprotei	1
+	3
+Tissierellia	3
+Clostridia	1
+
+TBCH5v1_RS05645.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS05665.mRNA.0
+Thermococci	31
+	1
+
+TBCH5v1_RS05670.mRNA.0
+Thermococci	38
+	1
+
+TBCH5v1_RS05680.mRNA.0
+Thermococci	29
+	1
+
+TBCH5v1_RS05690.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS05695.mRNA.0
+Thermococci	26
+
+TBCH5v1_RS05705.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS05715.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS05725.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS05735.mRNA.0
+Thermococci	71
+Archaeoglobi	1
+
+TBCH5v1_RS05740.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS05745.mRNA.0
+Thermococci	25
+Thermoprotei	6
+
+TBCH5v1_RS05765.mRNA.0
+Thermococci	29
+
+TBCH5v1_RS05800.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS13630.mRNA.0
+Thermococci	22
+	6
+Candidatus Electryoneia	1
+Bacteroidia	1
+
+TBCH5v1_RS05820.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS05845.mRNA.0
+Thermococci	41
+
+TBCH5v1_RS05850.mRNA.0
+Thermococci	38
+
+TBCH5v1_RS05870.mRNA.0
+Thermococci	30
+	1
+
+TBCH5v1_RS05890.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS05915.mRNA.0
+Thermococci	26
+
+TBCH5v1_RS05940.mRNA.0
+Thermococci	22
+Archaeoglobi	2
+Methanomicrobia	1
+	14
+
+TBCH5v1_RS05955.mRNA.0
+Thermococci	35
+Gammaproteobacteria	1
+
+TBCH5v1_RS05980.mRNA.0
+Thermococci	25
+	1
+Thermoprotei	2
+
+TBCH5v1_RS06000.mRNA.0
+Thermococci	40
+
+TBCH5v1_RS06010.mRNA.0
+Thermococci	6
+Myxococcia	5
+	8
+Desulfovibrionia	1
+Thermotogae	4
+Desulfobacteria	2
+Methanomicrobia	1
+Thermoprotei	1
+
+TBCH5v1_RS06015.mRNA.0
+Thermococci	29
+
+TBCH5v1_RS06030.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS06035.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS06040.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS06050.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS06065.mRNA.0
+Thermococci	29
+
+TBCH5v1_RS06085.mRNA.0
+Thermococci	31
+	1
+
+TBCH5v1_RS06090.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS06105.mRNA.0
+Thermococci	36
+
+TBCH5v1_RS06130.mRNA.0
+Thermococci	30
+Archaeoglobi	1
+
+TBCH5v1_RS06140.mRNA.0
+Thermococci	17
+Dehalococcoidia	4
+Archaeoglobi	2
+	5
+Thermoprotei	1
+Gammaproteobacteria	1
+
+TBCH5v1_RS06160.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS06185.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS06205.mRNA.0
+Thermococci	36
+
+TBCH5v1_RS06230.mRNA.0
+Thermococci	45
+	1
+
+TBCH5v1_RS06235.mRNA.0
+Thermococci	51
+	1
+Archaeoglobi	1
+
+TBCH5v1_RS06245.mRNA.0
+Thermococci	39
+	1
+
+TBCH5v1_RS06250.mRNA.0
+Thermococci	37
+
+TBCH5v1_RS06265.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS06295.mRNA.0
+Thermococci	44
+
+TBCH5v1_RS06300.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS06320.mRNA.0
+Thermococci	23
+Archaeoglobi	5
+Methanococci	6
+
+TBCH5v1_RS06350.mRNA.0
+Thermococci	68
+	1
+
+TBCH5v1_RS06355.mRNA.0
+Thermococci	59
+	1
+
+TBCH5v1_RS06380.mRNA.0
+Thermococci	25
+	1
+Methanomicrobia	3
+
+TBCH5v1_RS06385.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS06430.mRNA.0
+Thermococci	24
+Archaeoglobi	6
+Thermoprotei	1
+
+TBCH5v1_RS06435.mRNA.0
+Thermococci	28
+Archaeoglobi	7
+
+TBCH5v1_RS06440.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS06455.mRNA.0
+Thermococci	28
+Methanococci	2
+
+TBCH5v1_RS06460.mRNA.0
+Thermococci	35
+Thermoprotei	1
+Methanococci	1
+Archaeoglobi	1
+
+TBCH5v1_RS06470.mRNA.0
+Thermococci	29
+Methanococci	1
+
+TBCH5v1_RS06475.mRNA.0
+Thermococci	28
+Methanococci	6
+
+TBCH5v1_RS06485.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS06490.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS06495.mRNA.0
+Thermococci	35
+	1
+
+TBCH5v1_RS06500.mRNA.0
+Thermococci	41
+	1
+
+TBCH5v1_RS06520.mRNA.0
+Thermococci	39
+
+TBCH5v1_RS06550.mRNA.0
+Thermococci	31
+	2
+
+TBCH5v1_RS06585.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS06590.mRNA.0
+Thermococci	29
+	1
+
+TBCH5v1_RS06600.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS06605.mRNA.0
+Thermococci	35
+	1
+
+TBCH5v1_RS06625.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS06675.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS06680.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS06685.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS06720.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS06735.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS06740.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS06790.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS06815.mRNA.0
+Thermococci	38
+
+TBCH5v1_RS06830.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS06840.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS06845.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS06850.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS06855.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS06865.mRNA.0
+Thermococci	34
+	2
+
+TBCH5v1_RS06870.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS06895.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS13795.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS06905.mRNA.0
+Thermococci	29
+
+TBCH5v1_RS06910.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS06925.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS06940.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS06945.mRNA.0
+Thermococci	27
+
+TBCH5v1_RS06965.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS06970.mRNA.0
+Thermococci	29
+	1
+
+TBCH5v1_RS07010.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS07015.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS07020.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS07030.mRNA.0
+Thermococci	13
+Thermoprotei	5
+	7
+Candidatus Culexarchaeia	2
+Methanopyri	2
+
+TBCH5v1_RS07035.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS07040.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS07045.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS07055.mRNA.0
+Thermococci	22
+Thermoprotei	2
+	2
+
+TBCH5v1_RS07065.mRNA.0
+Thermococci	20
+Thermoprotei	2
+Elusimicrobia	1
+	2
+Bacilli	1
+Vulcanimicrobiia	1
+
+TBCH5v1_RS07070.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS07090.mRNA.0
+Thermococci	28
+	1
+
+TBCH5v1_RS07105.mRNA.0
+Thermococci	12
+	6
+Clostridia	5
+Dehalococcoidia	4
+Spirochaetia	1
+Bacteroidia	1
+
+TBCH5v1_RS07120.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS07135.mRNA.0
+Thermococci	30
+Archaeoglobi	1
+
+TBCH5v1_RS07145.mRNA.0
+Thermococci	28
+Archaeoglobi	1
+Thermoplasmata	1
+
+TBCH5v1_RS07150.mRNA.0
+Thermococci	1
+	10
+Caldilineae	1
+Archaeoglobi	3
+Thermotogae	4
+Dehalococcoidia	4
+Methanomicrobia	1
+Desulfobacteria	1
+Candidatus Bathyarchaeia	1
+Candidatus Borrarchaeia	1
+
+TBCH5v1_RS07155.mRNA.0
+Thermococci	2
+Methanococci	6
+	1
+Thermodesulfobacteria	2
+Desulfovibrionia	1
+Gammaproteobacteria	7
+Epsilonproteobacteria	2
+Betaproteobacteria	7
+
+TBCH5v1_RS07160.mRNA.0
+Thermococci	40
+
+TBCH5v1_RS07175.mRNA.0
+Thermococci	28
+Archaeoglobi	2
+
+TBCH5v1_RS07180.mRNA.0
+Thermococci	30
+	1
+
+TBCH5v1_RS07195.mRNA.0
+Thermococci	30
+Archaeoglobi	1
+
+TBCH5v1_RS07205.mRNA.0
+Thermococci	32
+Archaeoglobi	1
+
+TBCH5v1_RS07220.mRNA.0
+Thermococci	40
+
+TBCH5v1_RS07230.mRNA.0
+Thermococci	4
+	16
+Methanomicrobia	1
+Candidatus Altiarchaeia	3
+Archaeoglobi	1
+Clostridia	1
+
+TBCH5v1_RS07245.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS07255.mRNA.0
+Thermococci	26
+Methanococci	4
+Bacteroidia	1
+
+TBCH5v1_RS07290.mRNA.0
+Thermococci	31
+	1
+
+TBCH5v1_RS07300.mRNA.0
+Thermococci	31
+Thermoplasmata	1
+
+TBCH5v1_RS07315.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS07325.mRNA.0
+Thermococci	31
+	1
+
+TBCH5v1_RS07335.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS07340.mRNA.0
+Thermococci	32
+	1
+
+TBCH5v1_RS07350.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS07360.mRNA.0
+Thermococci	32
+	1
+
+TBCH5v1_RS07375.mRNA.0
+Thermococci	13
+Archaeoglobi	3
+	6
+Candidatus Altiarchaeia	3
+Thermoplasmata	3
+Myxococcia	1
+
+TBCH5v1_RS07380.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS07390.mRNA.0
+Thermococci	39
+
+TBCH5v1_RS07400.mRNA.0
+Thermococci	39
+
+TBCH5v1_RS07410.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS07420.mRNA.0
+Thermococci	37
+Thermoplasmata	1
+	1
+
+TBCH5v1_RS07440.mRNA.0
+Thermococci	8
+	9
+Thermoprotei	9
+
+TBCH5v1_RS07455.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS07465.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS07470.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS07495.mRNA.0
+Thermococci	7
+Archaeoglobi	1
+	8
+Fibrobacteria	3
+Clostridia	1
+Planctomycetia	2
+Candidatus Nanoarchaeia	1
+Myxococcia	1
+Syntrophia	1
+
+TBCH5v1_RS07505.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS07540.mRNA.0
+Thermococci	25
+
+TBCH5v1_RS07595.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS07600.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS07605.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS07615.mRNA.0
+Thermococci	28
+	1
+
+TBCH5v1_RS07635.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS07640.mRNA.0
+Thermococci	30
+Archaeoglobi	1
+
+TBCH5v1_RS07655.mRNA.0
+Thermococci	37
+Archaeoglobi	1
+
+TBCH5v1_RS07675.mRNA.0
+Thermococci	37
+Thermoplasmata	1
+	1
+
+TBCH5v1_RS07680.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS07685.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS07690.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS07705.mRNA.0
+Thermococci	37
+Archaeoglobi	1
+
+TBCH5v1_RS07710.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS07720.mRNA.0
+Thermococci	28
+Synergistia	1
+
+TBCH5v1_RS07730.mRNA.0
+Thermococci	41
+
+TBCH5v1_RS07735.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS07740.mRNA.0
+Thermococci	28
+	1
+
+TBCH5v1_RS07745.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS13655.mRNA.0
+	1
+Thermococci	23
+Thermoplasmata	1
+Archaeoglobi	1
+
+TBCH5v1_RS07820.mRNA.0
+Thermococci	29
+Archaeoglobi	1
+
+TBCH5v1_RS07850.mRNA.0
+Thermococci	7
+Thermodesulfobacteria	1
+Thermoprotei	3
+	9
+Nitrososphaeria	3
+Aquificia	2
+Gammaproteobacteria	1
+Cyanophyceae	1
+Ktedonobacteria	1
+
+TBCH5v1_RS07895.mRNA.0
+Thermococci	29
+Thermoplasmata	1
+
+TBCH5v1_RS13405.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS07960.mRNA.0
+Thermococci	25
+Thermoplasmata	1
+
+TBCH5v1_RS07970.mRNA.0
+Thermococci	36
+Thermoplasmata	1
+Archaeoglobi	1
+
+TBCH5v1_RS07980.mRNA.0
+Thermococci	18
+Archaeoglobi	1
+Thermoprotei	6
+	1
+
+TBCH5v1_RS07990.mRNA.0
+Thermococci	40
+
+TBCH5v1_RS08040.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS08045.mRNA.0
+Thermococci	20
+	3
+Bacilli	1
+Thermotogae	1
+
+TBCH5v1_RS08050.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS08055.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS08060.mRNA.0
+Thermococci	29
+
+TBCH5v1_RS08075.mRNA.0
+Thermococci	38
+
+TBCH5v1_RS08080.mRNA.0
+Thermococci	37
+
+TBCH5v1_RS08090.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS08110.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS08115.mRNA.0
+Thermococci	32
+	1
+
+TBCH5v1_RS08135.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS08145.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS08150.mRNA.0
+Thermococci	43
+
+TBCH5v1_RS08190.mRNA.0
+Thermococci	25
+
+TBCH5v1_RS08195.mRNA.0
+Thermococci	21
+	3
+Alphaproteobacteria	1
+Flavobacteriia	1
+Saprospiria	1
+Spirochaetia	2
+Clostridia	1
+
+TBCH5v1_RS08205.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS08235.mRNA.0
+Thermococci	35
+Archaeoglobi	1
+
+TBCH5v1_RS08250.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS08260.mRNA.0
+Thermococci	29
+
+TBCH5v1_RS08265.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS08295.mRNA.0
+Thermococci	29
+
+TBCH5v1_RS08315.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS08325.mRNA.0
+Thermococci	42
+
+TBCH5v1_RS08330.mRNA.0
+Thermococci	42
+
+TBCH5v1_RS08335.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS08345.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS08350.mRNA.0
+Thermococci	38
+
+TBCH5v1_RS08355.mRNA.0
+Thermococci	29
+
+TBCH5v1_RS08360.mRNA.0
+Thermococci	30
+Myxococcia	1
+
+TBCH5v1_RS08365.mRNA.0
+Thermococci	28
+Myxococcia	1
+
+TBCH5v1_RS08380.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS08390.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS08415.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS08435.mRNA.0
+Thermococci	31
+Gammaproteobacteria	1
+
+TBCH5v1_RS08440.mRNA.0
+Thermococci	45
+Gammaproteobacteria	1
+
+TBCH5v1_RS08455.mRNA.0
+Thermococci	22
+Thermoprotei	5
+	3
+Candidatus Culexarchaeia	1
+Thermoplasmata	2
+
+TBCH5v1_RS08470.mRNA.0
+Thermococci	36
+
+TBCH5v1_RS08475.mRNA.0
+Thermococci	26
+Thermoprotei	3
+Thermoplasmata	1
+	2
+
+TBCH5v1_RS08485.mRNA.0
+Thermococci	27
+Thermoprotei	3
+
+TBCH5v1_RS08490.mRNA.0
+Thermococci	26
+Thermoprotei	4
+
+TBCH5v1_RS08500.mRNA.0
+Thermococci	38
+
+TBCH5v1_RS08515.mRNA.0
+Thermococci	20
+Methanococci	15
+
+TBCH5v1_RS08520.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS08525.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS08535.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS08540.mRNA.0
+Thermococci	45
+	1
+
+TBCH5v1_RS08570.mRNA.0
+Thermococci	37
+
+TBCH5v1_RS08575.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS08590.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS08600.mRNA.0
+Thermococci	32
+Methanococci	2
+	1
+
+TBCH5v1_RS08605.mRNA.0
+Thermococci	32
+Methanococci	2
+
+TBCH5v1_RS08610.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS08615.mRNA.0
+Thermococci	38
+
+TBCH5v1_RS08620.mRNA.0
+Thermococci	38
+
+TBCH5v1_RS08645.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS08650.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS08655.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS08670.mRNA.0
+Thermococci	13
+	15
+Thermoplasmata	1
+
+TBCH5v1_RS08690.mRNA.0
+Thermococci	38
+Archaeoglobi	1
+
+TBCH5v1_RS08700.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS08715.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS08720.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS08725.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS08735.mRNA.0
+Thermococci	36
+
+TBCH5v1_RS08740.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS08750.mRNA.0
+Thermococci	39
+
+TBCH5v1_RS08755.mRNA.0
+Thermococci	19
+Candidatus Nanohaloarchaea	2
+Clostridia	2
+	2
+Erysipelotrichia	5
+
+TBCH5v1_RS08760.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS08765.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS08795.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS08825.mRNA.0
+Thermococci	36
+
+TBCH5v1_RS08845.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS08855.mRNA.0
+Thermococci	29
+Archaeoglobi	2
+
+TBCH5v1_RS08860.mRNA.0
+Thermococci	40
+
+TBCH5v1_RS08865.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS08885.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS08890.mRNA.0
+Thermococci	29
+	1
+
+TBCH5v1_RS08895.mRNA.0
+Thermococci	35
+	1
+Archaeoglobi	1
+
+TBCH5v1_RS08910.mRNA.0
+Thermococci	36
+
+TBCH5v1_RS08940.mRNA.0
+Thermococci	39
+	1
+
+TBCH5v1_RS08955.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS08965.mRNA.0
+Thermococci	36
+	1
+
+TBCH5v1_RS08975.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS08980.mRNA.0
+Thermococci	40
+
+TBCH5v1_RS08995.mRNA.0
+Thermococci	40
+	1
+
+TBCH5v1_RS09005.mRNA.0
+Thermococci	43
+
+TBCH5v1_RS09015.mRNA.0
+Thermococci	34
+Thermoprotei	1
+
+TBCH5v1_RS13670.mRNA.0
+Thermococci	30
+Thermoprotei	1
+
+TBCH5v1_RS09030.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS09035.mRNA.0
+Thermococci	25
+	1
+
+TBCH5v1_RS09045.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS09050.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS09055.mRNA.0
+Thermococci	28
+Candidatus Altiarchaeia	1
+Thermoplasmata	1
+Archaeoglobi	1
+
+TBCH5v1_RS09060.mRNA.0
+Thermococci	38
+Archaeoglobi	1
+
+TBCH5v1_RS09085.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS09100.mRNA.0
+Thermococci	34
+Methanococci	1
+
+TBCH5v1_RS09120.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS09140.mRNA.0
+Thermococci	28
+	2
+
+TBCH5v1_RS09160.mRNA.0
+Thermococci	39
+
+TBCH5v1_RS09190.mRNA.0
+Thermococci	42
+
+TBCH5v1_RS09195.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS09200.mRNA.0
+Thermococci	37
+
+TBCH5v1_RS09220.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS09225.mRNA.0
+Thermococci	41
+
+TBCH5v1_RS09230.mRNA.0
+Thermococci	26
+	1
+
+TBCH5v1_RS09255.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS09275.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS09295.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS09315.mRNA.0
+Thermococci	36
+
+TBCH5v1_RS09320.mRNA.0
+Thermococci	36
+	1
+
+TBCH5v1_RS09335.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS09350.mRNA.0
+Thermococci	29
+
+TBCH5v1_RS09375.mRNA.0
+Thermococci	29
+
+TBCH5v1_RS09385.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS09390.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS09395.mRNA.0
+Thermococci	32
+Gammaproteobacteria	1
+
+TBCH5v1_RS09400.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS09405.mRNA.0
+Thermococci	29
+
+TBCH5v1_RS09415.mRNA.0
+Thermococci	34
+	1
+
+TBCH5v1_RS09420.mRNA.0
+Thermococci	41
+
+TBCH5v1_RS09430.mRNA.0
+Thermococci	27
+
+TBCH5v1_RS09440.mRNA.0
+Thermococci	46
+
+TBCH5v1_RS09450.mRNA.0
+Thermococci	37
+
+TBCH5v1_RS09465.mRNA.0
+Thermococci	27
+
+TBCH5v1_RS09470.mRNA.0
+Thermococci	36
+
+TBCH5v1_RS09475.mRNA.0
+Thermococci	22
+	7
+Candidatus Culexarchaeia	1
+Thermoplasmata	1
+
+TBCH5v1_RS09485.mRNA.0
+Thermococci	26
+Thermoprotei	7
+
+TBCH5v1_RS09490.mRNA.0
+Thermococci	5
+	7
+Myxococcia	1
+Synergistia	1
+Bacteroidia	1
+Gammaproteobacteria	7
+Thermoanaerobaculia	2
+Gemmatimonadia	1
+
+TBCH5v1_RS09505.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS09515.mRNA.0
+Thermococci	11
+Dehalococcoidia	1
+	14
+Thermoplasmata	1
+Myxococcia	1
+
+TBCH5v1_RS09525.mRNA.0
+Thermococci	33
+Thermoplasmata	1
+
+TBCH5v1_RS09545.mRNA.0
+Thermococci	36
+	1
+
+TBCH5v1_RS09555.mRNA.0
+Thermococci	29
+
+TBCH5v1_RS09575.mRNA.0
+Thermococci	29
+
+TBCH5v1_RS09580.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS09585.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS09590.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS09595.mRNA.0
+Thermococci	21
+Myxococcia	1
+Thermoprotei	5
+	1
+
+TBCH5v1_RS09605.mRNA.0
+Thermococci	15
+	6
+Methanomicrobia	3
+Archaeoglobi	3
+
+TBCH5v1_RS09615.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS09620.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS09630.mRNA.0
+Thermococci	29
+
+TBCH5v1_RS09650.mRNA.0
+Thermococci	33
+	1
+
+TBCH5v1_RS09655.mRNA.0
+Thermococci	38
+
+TBCH5v1_RS09660.mRNA.0
+Thermococci	32
+	1
+
+TBCH5v1_RS09670.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS09675.mRNA.0
+Thermococci	32
+	1
+Archaeoglobi	1
+
+TBCH5v1_RS09690.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS09695.mRNA.0
+Thermococci	31
+	1
+
+TBCH5v1_RS09700.mRNA.0
+Thermococci	42
+	1
+
+TBCH5v1_RS09725.mRNA.0
+Thermococci	38
+
+TBCH5v1_RS09740.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS09755.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS09780.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS09805.mRNA.0
+Thermococci	34
+Thermoprotei	1
+
+TBCH5v1_RS09815.mRNA.0
+Thermococci	30
+	1
+
+TBCH5v1_RS09820.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS09835.mRNA.0
+Thermococci	36
+
+TBCH5v1_RS09860.mRNA.0
+Thermococci	30
+	1
+
+TBCH5v1_RS09890.mRNA.0
+Thermococci	22
+Archaeoglobi	1
+	2
+
+TBCH5v1_RS09915.mRNA.0
+Thermococci	29
+
+TBCH5v1_RS09930.mRNA.0
+Thermococci	62
+
+TBCH5v1_RS09935.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS09975.mRNA.0
+Thermococci	38
+
+TBCH5v1_RS09980.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS09985.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS09990.mRNA.0
+Thermococci	27
+
+TBCH5v1_RS10010.mRNA.0
+Thermococci	28
+	1
+
+TBCH5v1_RS10015.mRNA.0
+Thermococci	27
+	1
+
+TBCH5v1_RS10020.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS10040.mRNA.0
+Thermococci	33
+	1
+
+TBCH5v1_RS10045.mRNA.0
+Thermococci	31
+	1
+
+TBCH5v1_RS10065.mRNA.0
+Thermococci	30
+Thermoprotei	1
+
+TBCH5v1_RS10070.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS13310.mRNA.0
+Thermococci	6
+	20
+
+TBCH5v1_RS10080.mRNA.0
+Thermococci	36
+Archaeoglobi	1
+
+TBCH5v1_RS10105.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS10110.mRNA.0
+Thermococci	36
+	2
+Candidatus Bathyarchaeia	1
+Archaeoglobi	1
+
+TBCH5v1_RS10115.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS10140.mRNA.0
+Thermococci	40
+
+TBCH5v1_RS10160.mRNA.0
+Thermococci	34
+	1
+
+TBCH5v1_RS10190.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS10205.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS10230.mRNA.0
+Thermococci	15
+Clostridia	10
+	3
+Coprothermobacteria	5
+Bacilli	2
+
+TBCH5v1_RS10235.mRNA.0
+Thermococci	8
+Clostridia	14
+Atribacteria	1
+Dehalococcoidia	1
+Synergistia	2
+Erysipelotrichia	5
+Negativicutes	1
+
+TBCH5v1_RS10240.mRNA.0
+Thermococci	7
+Clostridia	1
+Atribacteria	1
+Dehalococcoidia	1
+Ardenticatenia	6
+Anaerolineae	8
+Cyanophyceae	3
+	4
+
+TBCH5v1_RS10245.mRNA.0
+Thermococci	6
+Clostridia	8
+Atribacteria	1
+	10
+Caldisericia	1
+Anaerolineae	4
+
+TBCH5v1_RS13410.mRNA.0
+Thermococci	5
+Clostridia	1
+
+TBCH5v1_RS10250.mRNA.0
+Thermococci	8
+Thermoplasmata	1
+Synergistia	1
+Thermoprotei	4
+	6
+Ardenticatenia	1
+Anaerolineae	7
+
+TBCH5v1_RS10255.mRNA.0
+Thermococci	20
+Thermoplasmata	1
+Synergistia	1
+	3
+Thermotogae	3
+Thermoprotei	1
+
+TBCH5v1_RS10260.mRNA.0
+Thermococci	20
+	5
+Synergistia	1
+Thermoplasmata	1
+Thermoprotei	2
+
+TBCH5v1_RS10275.mRNA.0
+Thermococci	29
+Thermoplasmata	1
+
+TBCH5v1_RS10280.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS10290.mRNA.0
+Thermococci	38
+Thermoplasmata	1
+
+TBCH5v1_RS10295.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS10305.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS10310.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS10320.mRNA.0
+Thermococci	33
+	1
+
+TBCH5v1_RS10325.mRNA.0
+Thermococci	27
+	1
+
+TBCH5v1_RS10370.mRNA.0
+Thermococci	3
+	9
+Thermodesulfobacteria	1
+Clostridia	2
+Aquificia	1
+Alphaproteobacteria	4
+Thermoprotei	1
+Synergistia	2
+Coprothermobacteria	1
+Deinococci	1
+
+TBCH5v1_RS10385.mRNA.0
+Thermococci	8
+	6
+Thermoprotei	1
+Archaeoglobi	2
+Thermotogae	1
+Bacilli	1
+Gammaproteobacteria	2
+Clostridia	3
+Chloroflexia	1
+Methanomicrobia	1
+
+TBCH5v1_RS10395.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS10425.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS10430.mRNA.0
+Thermococci	6
+Thermoplasmata	2
+Methanomicrobia	7
+	11
+Candidatus Hadarchaeia	1
+Anaerolineae	3
+
+TBCH5v1_RS10440.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS10450.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS10470.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS10475.mRNA.0
+Thermococci	29
+
+TBCH5v1_RS10490.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS10495.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS10500.mRNA.0
+Thermococci	33
+Thermoplasmata	1
+
+TBCH5v1_RS10530.mRNA.0
+Thermococci	30
+	1
+
+TBCH5v1_RS10535.mRNA.0
+Thermococci	39
+
+TBCH5v1_RS10595.mRNA.0
+Thermococci	28
+Thermoplasmata	5
+	1
+
+TBCH5v1_RS10605.mRNA.0
+Thermococci	1
+Clostridia	3
+Thermodesulfobacteria	3
+Aquificia	2
+Methanococci	9
+Epsilonproteobacteria	5
+Atribacteria	2
+	4
+
+TBCH5v1_RS10615.mRNA.0
+Thermococci	35
+Methanococci	1
+
+TBCH5v1_RS10620.mRNA.0
+Thermococci	27
+Thermoplasmata	1
+
+TBCH5v1_RS10635.mRNA.0
+Thermococci	25
+Thermoplasmata	2
+
+TBCH5v1_RS10665.mRNA.0
+Thermococci	35
+Thermoplasmata	1
+
+TBCH5v1_RS10670.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS10675.mRNA.0
+Thermococci	31
+Thermoplasmata	1
+
+TBCH5v1_RS10730.mRNA.0
+Thermococci	11
+	6
+Methanomicrobia	4
+Archaeoglobi	1
+Thermoprotei	3
+
+TBCH5v1_RS10755.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS10765.mRNA.0
+Thermococci	29
+
+TBCH5v1_RS10780.mRNA.0
+Thermococci	31
+	1
+
+TBCH5v1_RS10825.mRNA.0
+Thermococci	26
+Archaeoglobi	3
+
+TBCH5v1_RS10830.mRNA.0
+Thermococci	26
+Thermoplasmata	1
+	1
+
+TBCH5v1_RS10840.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS10845.mRNA.0
+Thermococci	1
+Oligoflexia	2
+Myxococcia	1
+	15
+Tissierellia	1
+Desulfobacteria	1
+Thermoplasmata	1
+Syntrophorhabdia	2
+Alphaproteobacteria	2
+Bacteriovoracia	2
+Betaproteobacteria	1
+
+TBCH5v1_RS10860.mRNA.0
+Thermococci	26
+Archaeoglobi	1
+Methanococci	2
+
+TBCH5v1_RS10875.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS10890.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS10895.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS10900.mRNA.0
+Thermococci	27
+Archaeoglobi	1
+
+TBCH5v1_RS10905.mRNA.0
+Thermococci	33
+	1
+
+TBCH5v1_RS10910.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS10920.mRNA.0
+Thermococci	27
+
+TBCH5v1_RS10925.mRNA.0
+Thermococci	3
+Methanococci	6
+Thermoprotei	12
+	2
+Archaeoglobi	2
+
+TBCH5v1_RS10935.mRNA.0
+Thermococci	4
+Methanococci	5
+Archaeoglobi	2
+Candidatus Hadarchaeia	1
+Aquificia	4
+Thermoplasmata	2
+Chlorobiia	2
+	4
+Ignavibacteria	1
+Myxococcia	1
+Bacteroidia	2
+
+TBCH5v1_RS10940.mRNA.0
+Thermococci	34
+Archaeoglobi	1
+
+TBCH5v1_RS10950.mRNA.0
+Thermococci	37
+
+TBCH5v1_RS10975.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS10990.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS11000.mRNA.0
+Thermococci	8
+Methanomicrobia	10
+	10
+
+TBCH5v1_RS11005.mRNA.0
+Thermococci	9
+Clostridia	1
+	7
+Methanomicrobia	8
+Phycisphaerae	1
+
+TBCH5v1_RS11010.mRNA.0
+Thermococci	29
+
+TBCH5v1_RS11025.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS11035.mRNA.0
+Thermococci	42
+	1
+
+TBCH5v1_RS11060.mRNA.0
+Thermococci	38
+
+TBCH5v1_RS11065.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS11070.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS11080.mRNA.0
+Thermococci	36
+
+TBCH5v1_RS11085.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS11095.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS11110.mRNA.0
+Thermococci	24
+	1
+
+TBCH5v1_RS11120.mRNA.0
+Thermococci	20
+	1
+
+TBCH5v1_RS11145.mRNA.0
+Thermococci	28
+	1
+
+TBCH5v1_RS11170.mRNA.0
+Thermococci	34
+	1
+
+TBCH5v1_RS11205.mRNA.0
+Thermococci	29
+	1
+
+TBCH5v1_RS11230.mRNA.0
+Thermococci	29
+	1
+Thermoplasmata	1
+
+TBCH5v1_RS11310.mRNA.0
+Thermococci	33
+	1
+
+TBCH5v1_RS11335.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS11340.mRNA.0
+Thermococci	30
+Archaeoglobi	2
+
+TBCH5v1_RS11360.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS11385.mRNA.0
+Thermococci	26
+
+TBCH5v1_RS11395.mRNA.0
+Thermococci	28
+Methanomicrobia	3
+	1
+
+TBCH5v1_RS11400.mRNA.0
+Thermococci	22
+Methanomicrobia	2
+Archaeoglobi	3
+
+TBCH5v1_RS11405.mRNA.0
+Thermococci	23
+Methanomicrobia	2
+
+TBCH5v1_RS11415.mRNA.0
+Thermococci	14
+Clostridia	4
+	6
+Myxococcia	2
+Candidatus Jordarchaeia	1
+
+TBCH5v1_RS11420.mRNA.0
+Thermococci	19
+Archaeoglobi	8
+Methanomicrobia	2
+
+TBCH5v1_RS11435.mRNA.0
+Thermococci	20
+Thermoprotei	1
+Methanococci	6
+Candidatus Jordarchaeia	1
+Candidatus Freyrarchaeia	1
+
+TBCH5v1_RS11510.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS11540.mRNA.0
+Thermococci	51
+Archaeoglobi	1
+	1
+
+TBCH5v1_RS11580.mRNA.0
+Thermococci	38
+
+TBCH5v1_RS11585.mRNA.0
+Thermococci	39
+
+TBCH5v1_RS11590.mRNA.0
+Thermococci	49
+
+TBCH5v1_RS11595.mRNA.0
+Thermococci	36
+
+TBCH5v1_RS11600.mRNA.0
+Thermococci	45
+Methanococci	1
+
+TBCH5v1_RS11605.mRNA.0
+Thermococci	53
+Methanococci	1
+
+TBCH5v1_RS11620.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS11655.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS11660.mRNA.0
+Thermococci	32
+	2
+
+TBCH5v1_RS11670.mRNA.0
+Thermococci	37
+	1
+
+TBCH5v1_RS11680.mRNA.0
+Thermococci	22
+Methanomicrobia	2
+Thermoprotei	2
+
+TBCH5v1_RS11690.mRNA.0
+Thermococci	27
+
+TBCH5v1_RS11705.mRNA.0
+Thermococci	30
+	3
+
+TBCH5v1_RS11710.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS11735.mRNA.0
+Thermococci	37
+
+TBCH5v1_RS11745.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS11750.mRNA.0
+Thermococci	11
+Thermoprotei	4
+Thermotogae	25
+	1
+Clostridia	2
+
+TBCH5v1_RS11755.mRNA.0
+Thermococci	41
+
+TBCH5v1_RS11765.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS11775.mRNA.0
+Thermococci	30
+	1
+
+TBCH5v1_RS11780.mRNA.0
+Thermococci	51
+
+TBCH5v1_RS11790.mRNA.0
+Thermococci	20
+	1
+Methanococci	10
+
+TBCH5v1_RS11795.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS11800.mRNA.0
+Thermococci	19
+Epsilonproteobacteria	1
+Archaeoglobi	8
+Candidatus Jordarchaeia	2
+	1
+
+TBCH5v1_RS11805.mRNA.0
+Thermococci	11
+Thermoprotei	8
+Archaeoglobi	6
+	1
+Epsilonproteobacteria	1
+
+TBCH5v1_RS11810.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS11815.mRNA.0
+Thermococci	25
+Methanococci	1
+	1
+
+TBCH5v1_RS11820.mRNA.0
+Thermococci	26
+Methanomicrobia	3
+Archaeoglobi	2
+
+TBCH5v1_RS11850.mRNA.0
+Thermococci	28
+Methanococci	5
+
+TBCH5v1_RS11860.mRNA.0
+Thermococci	25
+Methanomicrobia	6
+
+TBCH5v1_RS13705.mRNA.0
+Thermococci	20
+Archaeoglobi	3
+	2
+Methanomicrobia	4
+
+TBCH5v1_RS13710.mRNA.0
+Thermococci	23
+Archaeoglobi	3
+Methanomicrobia	1
+	1
+
+TBCH5v1_RS13730.mRNA.0
+Thermococci	13
+Thermoprotei	4
+Candidatus Culexarchaeia	1
+	4
+Archaeoglobi	5
+
+TBCH5v1_RS11900.mRNA.0
+Thermococci	11
+Archaeoglobi	3
+Gemmatimonadia	1
+Tissierellia	1
+	3
+Caudoviricetes	2
+
+TBCH5v1_RS11905.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS11925.mRNA.0
+Thermococci	15
+	6
+Thermodesulfobacteria	1
+Methanococci	1
+Atribacteria	3
+Archaeoglobi	1
+
+TBCH5v1_RS11935.mRNA.0
+Thermococci	21
+Archaeoglobi	6
+Thermoprotei	2
+
+TBCH5v1_RS11945.mRNA.0
+Thermococci	23
+Thermoplasmata	1
+Archaeoglobi	1
+	1
+
+TBCH5v1_RS11965.mRNA.0
+Thermococci	24
+	1
+Methanococci	4
+
+TBCH5v1_RS11980.mRNA.0
+Thermococci	16
+Methanococci	5
+	2
+Candidatus Korarchaeia	2
+Archaeoglobi	1
+
+TBCH5v1_RS11985.mRNA.0
+Thermococci	28
+	1
+
+TBCH5v1_RS12005.mRNA.0
+Thermococci	5
+Methanomicrobia	16
+Methanococci	1
+Methanobacteria	1
+	6
+Myxococcia	1
+
+TBCH5v1_RS12015.mRNA.0
+Thermococci	26
+	2
+
+TBCH5v1_RS12020.mRNA.0
+Thermococci	25
+	1
+
+TBCH5v1_RS12030.mRNA.0
+Thermococci	26
+Archaeoglobi	1
+Methanococci	2
+
+TBCH5v1_RS12050.mRNA.0
+Thermococci	24
+Archaeoglobi	2
+	1
+
+TBCH5v1_RS13260.mRNA.0
+Thermococci	14
+Methanobacteria	3
+Clostridia	1
+	2
+Methanomicrobia	11
+
+TBCH5v1_RS12075.mRNA.0
+Thermococci	1
+Blastocatellia	15
+Terriglobia	1
+	8
+Thermodesulfovibrionia	1
+Cyanophyceae	2
+
+TBCH5v1_RS12080.mRNA.0
+Thermococci	17
+Clostridia	1
+	2
+Methanobacteria	7
+Archaeoglobi	1
+
+TBCH5v1_RS12100.mRNA.0
+Thermococci	27
+
+TBCH5v1_RS12105.mRNA.0
+Thermococci	27
+
+TBCH5v1_RS12115.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS12140.mRNA.0
+Thermococci	40
+Archaeoglobi	1
+
+TBCH5v1_RS12155.mRNA.0
+Thermococci	36
+
+TBCH5v1_RS12160.mRNA.0
+Thermococci	26
+
+TBCH5v1_RS12170.mRNA.0
+Thermococci	37
+
+TBCH5v1_RS12180.mRNA.0
+Thermococci	37
+
+TBCH5v1_RS12190.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS12195.mRNA.0
+Thermococci	28
+Gammaproteobacteria	1
+
+TBCH5v1_RS12235.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS12270.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS12290.mRNA.0
+Thermococci	2
+Thermotogae	1
+Candidatus Vecturitrichia	1
+	8
+Synergistia	20
+Alphaproteobacteria	2
+
+TBCH5v1_RS12295.mRNA.0
+Thermococci	2
+Thermotogae	12
+Thermoprotei	1
+Synergistia	16
+	1
+
+TBCH5v1_RS12300.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS12325.mRNA.0
+Thermococci	33
+Archaeoglobi	1
+
+TBCH5v1_RS12330.mRNA.0
+Thermococci	25
+	1
+
+TBCH5v1_RS12335.mRNA.0
+Thermococci	30
+Archaeoglobi	1
+	1
+
+TBCH5v1_RS12350.mRNA.0
+Thermococci	35
+	1
+
+TBCH5v1_RS12355.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS12375.mRNA.0
+Thermococci	26
+
+TBCH5v1_RS12395.mRNA.0
+Thermococci	19
+	1
+
+TBCH5v1_RS12430.mRNA.0
+Thermococci	22
+Myxococcia	1
+	2
+Archaeoglobi	1
+
+TBCH5v1_RS12460.mRNA.0
+Thermococci	25
+	1
+
+TBCH5v1_RS12530.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS12535.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS12560.mRNA.0
+Thermococci	27
+Myxococcia	1
+
+TBCH5v1_RS12570.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS12575.mRNA.0
+Thermococci	38
+	1
+
+TBCH5v1_RS12590.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS12605.mRNA.0
+Thermococci	28
+
+TBCH5v1_RS12615.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS12630.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS12655.mRNA.0
+Thermococci	25
+Thermoprotei	4
+Nitrospiria	2
+
+TBCH5v1_RS12660.mRNA.0
+Thermococci	32
+Nitrospiria	2
+
+TBCH5v1_RS12700.mRNA.0
+Thermococci	36
+Thermoprotei	1
+
+TBCH5v1_RS12730.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS12760.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS12775.mRNA.0
+Thermococci	3
+Thermoprotei	13
+	4
+Halobacteria	5
+
+TBCH5v1_RS12780.mRNA.0
+Thermococci	4
+Thermoprotei	17
+	5
+
+TBCH5v1_RS12800.mRNA.0
+Thermococci	10
+Archaeoglobi	7
+Thermoplasmata	1
+Methanomicrobia	5
+Clostridia	4
+	1
+
+TBCH5v1_RS12805.mRNA.0
+Thermococci	8
+Myxococcia	1
+Thermoprotei	3
+Nitrososphaeria	9
+	4
+Desulfobacteria	1
+
+TBCH5v1_RS12815.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS12825.mRNA.0
+Thermococci	7
+Archaeoglobi	1
+	9
+Thermotogae	22
+Anaerolineae	3
+
+TBCH5v1_RS12830.mRNA.0
+Thermococci	6
+	9
+Caldilineae	1
+Anaerolineae	9
+Thermoflexia	1
+Thermoplasmata	1
+Thermoanaerobaculia	1
+
+TBCH5v1_RS12835.mRNA.0
+Thermococci	7
+	12
+Myxococcia	3
+Clostridia	2
+Syntrophia	2
+
+TBCH5v1_RS12840.mRNA.0
+Thermococci	5
+Clostridia	9
+Candidatus Jordarchaeia	1
+	8
+Thermoprotei	2
+Candidatus Freyrarchaeia	1
+Epsilonproteobacteria	1
+Myxococcia	1
+Desulfobacteria	1
+
+TBCH5v1_RS12850.mRNA.0
+Thermococci	17
+	10
+Thermoplasmata	2
+Planctomycetia	1
+
+TBCH5v1_RS12855.mRNA.0
+Thermococci	14
+Thermoplasmata	1
+	3
+Halobacteria	12
+
+TBCH5v1_RS12865.mRNA.0
+Thermococci	29
+Archaeoglobi	1
+
+TBCH5v1_RS12880.mRNA.0
+Thermococci	29
+
+TBCH5v1_RS12905.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS12915.mRNA.0
+Thermococci	34
+
+TBCH5v1_RS12930.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS12945.mRNA.0
+Thermococci	38
+
+TBCH5v1_RS12950.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS12960.mRNA.0
+Thermococci	30
+
+TBCH5v1_RS12985.mRNA.0
+Thermococci	41
+
+TBCH5v1_RS12990.mRNA.0
+Thermococci	29
+
+TBCH5v1_RS12995.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS13010.mRNA.0
+Thermococci	31
+	1
+
+TBCH5v1_RS13015.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS13025.mRNA.0
+Thermococci	28
+Methanomicrobia	1
+
+TBCH5v1_RS13035.mRNA.0
+Thermococci	35
+
+TBCH5v1_RS13055.mRNA.0
+Thermococci	31
+
+TBCH5v1_RS13065.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS13070.mRNA.0
+Thermococci	31
+	2
+Candidatus Korarchaeia	1
+
+TBCH5v1_RS13085.mRNA.0
+Thermococci	37
+	1
+
+TBCH5v1_RS13110.mRNA.0
+Thermococci	33
+Thermodesulfobacteria	1
+
+TBCH5v1_RS13115.mRNA.0
+Thermococci	33
+
+TBCH5v1_RS13120.mRNA.0
+Thermococci	32
+
+TBCH5v1_RS13130.mRNA.0
+Thermococci	39
+
+TBCH5v1_RS13140.mRNA.0
+Thermococci	26
+
+TBCH5v1_RS13145.mRNA.0
+Thermococci	41
+
