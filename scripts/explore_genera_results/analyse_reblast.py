@@ -43,9 +43,12 @@ for query, taxids in taxids_count.items():
 # Write the result to a file
 with open(OUTPUT, "w") as f:
     for query, classes in class_count.items():
+        print(query)
         f.write(f"{query}\n")
         for c, count in classes.items():
+            print(f"{c}\t{count}")
             f.write(f"{c}\t{count}\n")
+        print()
         f.write("\n")
 
 
