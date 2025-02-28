@@ -14,9 +14,9 @@ OUTPUT_DIR = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/calculate_cons
 GENOMES_LIST = "/home/eliott.tempez/Documents/M2_Stage_I2BC/scripts/genera_archaea/genomes_list.txt"
 GENERA_DIR = "/home/eliott.tempez/Documents/archaea_data/genera/out/"
 DATA_DIR = "/home/eliott.tempez/Documents/archaea_data/complete_122/"
-FOCAL_SPECIES = "GCA_001433455@Thermococcus_barophilus_CH5"
+FOCAL_SPECIES = "GCA_020386975@Thermococcus_bergensis_T7324"
 TRG_RANK = 7.0
-NCPUS = 8
+NCPUS = 12
 
 
 
@@ -227,7 +227,6 @@ def process_conservation_for_species(species, focal_sp, conservation_df, colname
     homologs, keep_homologs = None, False
     if colname == "n_cds":
         keep_homologs = True
-        homologs = {}
 
     if species == focal_sp:
         conservation_df.loc[species, colname] = len(query_sequences)
@@ -239,11 +238,9 @@ def process_conservation_for_species(species, focal_sp, conservation_df, colname
     db_fasta_file = get_db(species, colname, db_sp)
     blast_type = "blastn" if colname == "n_intergenic" else "blastp"
     # run blast
-    nb_matches, hom = run_blast(query_sequences, db_fasta_file, blast_type, keep_homologs, db_sp)
+    nb_matches, homologs = run_blast(query_sequences, db_fasta_file, blast_type, keep_homologs, db_sp)
     print(f"Species {species}: {nb_matches} matches")
     conservation_df.loc[species, colname] = nb_matches
-    if keep_homologs:
-        homologs[species] = hom
     
     # Delete db file if it was created
     if colname in ["n_f1", "n_f2", "n_intergenic"]:
@@ -292,7 +289,7 @@ if __name__ == "__main__":
     ########################################
     ################# TRGs #################
     ########################################
-    print("Calculating TRG conservation...")
+    """print("Calculating TRG conservation...")
     # Extract the name of 1000 (at most) TRGs of the focal species
     focal_TRG_genes = extract_focal_TRGs(FOCAL_SPECIES, TRG_RANK)
     # Get the protein sequences for each TRG
@@ -300,7 +297,7 @@ if __name__ == "__main__":
     print(f"Extracted {len(focal_TRGs)} TRGs for the focal species {FOCAL_SPECIES}\n")
     # Calculate the TRG conservation and add to dataframe
     conservation_df, _ = process_conservation_parallel(FOCAL_SPECIES, conservation_df, "n_trg", focal_TRGs)
-    print("\n\n")
+    print("\n\n")"""
 
 
 
@@ -338,7 +335,7 @@ if __name__ == "__main__":
     ########################################
     ############## Intergenic ##############
     ########################################
-    print("Calculating intergenic conservation...")
+    """print("Calculating intergenic conservation...")
     # Extract 1000 intergenic 100 sequences of the focal species
     focal_intergenic_nt = extract_intergenic(FOCAL_SPECIES)
     # Keep only the intergenic sequences of at least 100 nt and cut chunks
@@ -352,7 +349,7 @@ if __name__ == "__main__":
     print(f"Extracted {len(focal_intergenic)} intergenic sequences for the focal species {FOCAL_SPECIES}\n")
     # Calculate the intergenic conservation and add to dataframe
     conservation_df, _ = process_conservation_parallel(FOCAL_SPECIES, conservation_df, "n_intergenic", focal_intergenic)
-    print("\n\n")
+    print("\n\n")"""
 
 
 
