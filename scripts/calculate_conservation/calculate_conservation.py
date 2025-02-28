@@ -7,6 +7,7 @@ import tempfile
 import pandas as pd
 import Bio.SeqIO as SeqIO
 from Bio.Seq import Seq
+import concurrent.futures
 
 
 OUTPUT_DIR = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/calculate_conservation/"
@@ -220,7 +221,7 @@ def run_blast(query_sequences, db_faa_file, blast_type, keep_homologs, db):
     return len(result), None
 
 
-def process_conservation(focal_sp, conservation_df, colname, query_sequences, db=None):
+def process_conservation_for_species(species, focal_sp, conservation_df, colname, query_sequences, db=None):
     """Process the conservation for the focal species and add to the dataframe"""
     # Keep homolog sequences for the CDSs
     homologs, keep_homologs = None, False
@@ -228,30 +229,48 @@ def process_conservation(focal_sp, conservation_df, colname, query_sequences, db
         keep_homologs = True
         homologs = {}
 
-    # For each species
-    for species in conservation_df.index:
-        # For the focal species, add the number of sequences sampled
-        if species == focal_sp:
-            conservation_df.loc[species, colname] = len(query_sequences)
-            continue
-        # For all the other species, run BLAST for all the sequences
-        # Get pre-established db if exists
-        db_sp = db[species] if db else None
-        db_fasta_file = get_db(species, colname, db_sp)
-        blast_type = "blastn" if colname == "n_intergenic" else "blastp"
-        # run blast
-        nb_matches, hom = run_blast(query_sequences, db_fasta_file, blast_type, keep_homologs, db_sp)
-        print(f"Species {species}: {nb_matches} matches")
-        conservation_df.loc[species, colname] = nb_matches
-        if keep_homologs:
-            homologs[species] = hom
-        
-        # Delete db file if it was created
-        if colname in ["n_f1", "n_f2", "n_intergenic"]:
-            os.remove(db_fasta_file)
+    if species == focal_sp:
+        conservation_df.loc[species, colname] = len(query_sequences)
+        return conservation_df, homologs
+    
+    # For all the other species, run BLAST for all the sequences
+    # Get pre-established db if exists
+    db_sp = db[species] if db else None
+    db_fasta_file = get_db(species, colname, db_sp)
+    blast_type = "blastn" if colname == "n_intergenic" else "blastp"
+    # run blast
+    nb_matches, hom = run_blast(query_sequences, db_fasta_file, blast_type, keep_homologs, db_sp)
+    print(f"Species {species}: {nb_matches} matches")
+    conservation_df.loc[species, colname] = nb_matches
+    if keep_homologs:
+        homologs[species] = hom
+    
+    # Delete db file if it was created
+    if colname in ["n_f1", "n_f2", "n_intergenic"]:
+        os.remove(db_fasta_file)
 
     return conservation_df, homologs 
 
+
+def process_conservation_parallel(focal_sp, conservation_df, colname, query_sequences, db=None):
+    """Process the conservation for all species in parallel"""
+    homologs, keep_homologs = None, False
+    if colname == "n_cds":
+        keep_homologs = True
+        homologs = {}
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=NCPUS) as executor:
+        futures = {executor.submit(process_conservation_for_species, species, focal_sp, conservation_df, colname, query_sequences, db): species for species in conservation_df.index}
+        for future in concurrent.futures.as_completed(futures):
+            species = futures[future]
+            try:
+                conservation_df, hom = future.result()
+                if keep_homologs:
+                    homologs[species] = hom
+            except Exception as exc:
+                print(f"Species {species} generated an exception: {exc}")
+
+    return conservation_df, homologs
 
 
 
@@ -280,7 +299,7 @@ if __name__ == "__main__":
     focal_TRGs = get_seqs_from_gene_names(FOCAL_SPECIES, focal_TRG_genes, "faa")
     print(f"Extracted {len(focal_TRGs)} TRGs for the focal species {FOCAL_SPECIES}\n")
     # Calculate the TRG conservation and add to dataframe
-    conservation_df, _ = process_conservation(FOCAL_SPECIES, conservation_df, "n_trg", focal_TRGs)
+    conservation_df, _ = process_conservation_parallel(FOCAL_SPECIES, conservation_df, "n_trg", focal_TRGs)
     print("\n\n")
 
 
@@ -297,7 +316,7 @@ if __name__ == "__main__":
     # Translate to get 100 aa-long protein sequences
     focal_CDSs = {k: v[:300].translate(table=11) for k, v in focal_CDSs_nt.items()}
     # Calculate the CDS conservation and add to dataframe + keep homolog sequences
-    conservation_df, homologs = process_conservation(FOCAL_SPECIES, conservation_df, "n_cds", focal_CDSs)
+    conservation_df, homologs = process_conservation_parallel(FOCAL_SPECIES, conservation_df, "n_cds", focal_CDSs)
     print("\n\n")
 
 
@@ -307,11 +326,11 @@ if __name__ == "__main__":
     focal_CDS_frame_2 = {k: v[2:302].translate(table=11) for k, v in focal_CDSs_nt.items()}
     print("Calculating conservation for +1 frame...")
     # Calculate the conservation for +1 frame and add to dataframe
-    conservation_df, _ = process_conservation(FOCAL_SPECIES, conservation_df, "n_f1", focal_CDS_frame_1, homologs)
+    conservation_df, _ = process_conservation_parallel(FOCAL_SPECIES, conservation_df, "n_f1", focal_CDS_frame_1, homologs)
     print("\n\n")
     print("Calculating conservation for +2 frame...")
     # Calculate the conservation for +2 frame and add to dataframe
-    conservation_df, _ = process_conservation(FOCAL_SPECIES, conservation_df, "n_f2", focal_CDS_frame_2, homologs)
+    conservation_df, _ = process_conservation_parallel(FOCAL_SPECIES, conservation_df, "n_f2", focal_CDS_frame_2, homologs)
     print("\n\n")
 
 
@@ -332,7 +351,7 @@ if __name__ == "__main__":
     focal_intergenic = {k: focal_intergenic[k] for k in focal_intergenic_names}
     print(f"Extracted {len(focal_intergenic)} intergenic sequences for the focal species {FOCAL_SPECIES}\n")
     # Calculate the intergenic conservation and add to dataframe
-    conservation_df, _ = process_conservation(FOCAL_SPECIES, conservation_df, "n_intergenic", focal_intergenic)
+    conservation_df, _ = process_conservation_parallel(FOCAL_SPECIES, conservation_df, "n_intergenic", focal_intergenic)
     print("\n\n")
 
 
