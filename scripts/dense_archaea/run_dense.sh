@@ -24,6 +24,7 @@ cp -r $GENDIR .
 cp $TREE .
 cp $TAXID_FILE .
 cp $GENERA_OUTFILE .
+GENERA_OUT_TMP=*_gene_ages.tsv
 # Create temp output directory
 mkdir -p out/
 
