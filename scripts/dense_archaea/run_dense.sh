@@ -33,14 +33,14 @@ echo "Running Dense..." >> $LOG_OUTPUT
 nextflow run /home/eliott.tempez/dense \
     -profile singularity \
     --max_cpus 8 \
-    --max_memory 32.GB \
-    --max_time 50.h \
+    --max_memory 16.GB \
+    --max_time 10.h \
     --num_outgroups 2 \
     --gendir $GENDIR \
     --focal $archaea \
     --tree $TREE \
     --taxids $TAXID_FILE \
-    --genera_db $NR \
+    --genera_out $GENERA_OUTFILE \
     --trg_node Thermococcaceae \
     --outdir $OUT_DIR >> $LOG_OUTPUT 2>> $LOG_ERROR
 
