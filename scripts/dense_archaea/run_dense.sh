@@ -47,7 +47,7 @@ nextflow run /home/eliott.tempez/dense \
     --focal $archaea \
     --tree whole_tree.nwk \
     --taxids taxid.csv \
-    --genera_out ${archaea}_gene_ages.tsv \
+    --genera_out "*gene_ages.tsv" \
     --trg_node Thermococcaceae \
     --outdir out/ >> $LOG_OUTPUT 2>> $LOG_ERROR
 
