@@ -14,7 +14,7 @@ for ((i = 1; i < 10; i++)); do
         -o /home/eliott.tempez/dense_output_$species.log \
         -e /home/eliott.tempez/dense_error_$species.log \
         -q common \
-        -l ncpus=8 -l mem=32gb -l walltime=50:00:00 \
+        -l ncpus=16 -l mem=54gb -l walltime=50:00:00 \
         run_dense.sh
         )
 done

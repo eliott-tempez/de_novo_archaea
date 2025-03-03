@@ -17,8 +17,9 @@ LOG_ERROR=/home/eliott.tempez/dense_error_$archaea.log
 
 # Set up environment
 source /home/eliott.tempez/miniconda3/bin/activate dense
-mkdir -p /scratchlocal/$USER/$SLURM_JOBID
-cd /scratchlocal/$USER/$SLURM_JOBID
+rm -r /scratchlocal/$USER/
+mkdir /scratchlocal/$USER/
+cd /scratchlocal/$USER
 # Copy all inputs
 cp -r $GENDIR .
 cp $TREE .
@@ -40,9 +41,9 @@ echo $archaea >> $LOG_OUTPUT
 echo "Running Dense..." >> $LOG_OUTPUT
 nextflow run /home/eliott.tempez/dense \
     -profile singularity \
-    --max_cpus 8 \
-    --max_memory 32.GB \
-    --max_time 10.h \
+    --max_cpus 16 \
+    --max_memory 54.GB \
+    --max_time 50.h \
     --num_outgroups 2 \
     --gendir gendir_for_dense/ \
     --focal $archaea \
@@ -50,7 +51,8 @@ nextflow run /home/eliott.tempez/dense \
     --taxids taxid.csv \
     --genera_out $GENERA_OUT_TMP \
     --trg_node Thermococcaceae \
-    --outdir out/ >> $LOG_OUTPUT 2>> $LOG_ERROR
+    --outdir out/ \
+    -with-trace /scratchlocal/$USER/pipeline_info/execution_trace_${archaea}.txt >> $LOG_OUTPUT 2>> $LOG_ERROR
 
 
 # Copy output
@@ -58,6 +60,6 @@ mkdir -p $OUT_DIR
 cp -r out/* $OUT_DIR
 
 # Deactivate conda environment
-rm -r /scratchlocal/$USER/$SLURM_JOBID
+rm -r /scratchlocal/$USER/
 conda deactivate
 echo -e "Job completed successfully\n" >> $LOG_OUTPUT
