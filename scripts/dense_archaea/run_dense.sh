@@ -22,6 +22,7 @@ SCRATCH_DIR=/scratchlocal/$USER/$PBS_JOBID
 mkdir -p $SCRATCH_DIR
 cd $SCRATCH_DIR
 # Copy all inputs
+cp -r /home/eliott.tempez/dense .
 cp -r $GENDIR .
 cp $TREE .
 cp $TAXID_FILE .
@@ -40,7 +41,7 @@ echo $archaea >> $LOG_OUTPUT
 
 # Run Dense
 echo "Running Dense..." >> $LOG_OUTPUT
-nextflow run /home/eliott.tempez/dense \
+nextflow run ./dense \
     -profile singularity \
     --max_cpus 8 \
     --max_memory 64.GB \
