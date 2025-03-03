@@ -5,7 +5,7 @@ declare -a archaeas=("GCA_000007305@Pyrococcus_furiosus_DSM_3638" "GCA_000009965
 
 
 # Submit the rest of the jobs with dependency on the previous job
-for ((i = 1; i < 10; i++)); do
+for ((i = 0; i < 20; i++)); do
     species=${archaeas[$i]}
     job_id=$(
         qsub \
@@ -14,7 +14,7 @@ for ((i = 1; i < 10; i++)); do
         -o /home/eliott.tempez/dense_output_$species.log \
         -e /home/eliott.tempez/dense_error_$species.log \
         -q common \
-        -l ncpus=16 -l mem=54gb -l walltime=50:00:00 \
+        -l ncpus=8 -l mem=64gb -l walltime=50:00:00 \
         run_dense.sh
         )
 done
