@@ -10,10 +10,10 @@ for ((i = 1; i < 10; i++)); do
     job_id=$(
         qsub \
         -v SPECIES=$species \
-        -N dense_archaea_$i \
+        -N dense_no_extension_$i \
         -o /home/eliott.tempez/dense_output_$species.log \
         -e /home/eliott.tempez/dense_error_$species.log \
-        -q lowprio \
+        -q common \
         -l ncpus=8 -l mem=32gb -l walltime=50:00:00 \
         run_dense.sh
         )
