@@ -278,6 +278,7 @@ def process_conservation_parallel(focal_sp, conservation_df, colname, query_sequ
 def ssearch_for_species(species, focal_sp, conservation_df, colname, query_sequences, homologs):
     """Run ssearch for each cds for the focal species"""
     if species == focal_sp:
+        print(f"Species {species}: {nb_matches} matches")
         conservation_df.loc[species, colname] = len(query_sequences)
         return conservation_df
 
