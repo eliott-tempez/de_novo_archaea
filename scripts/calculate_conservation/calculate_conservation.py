@@ -23,7 +23,7 @@ NCPUS = 12
 ############################## FUNCTIONS ##############################
 def initialise_conservation_df(genomes):
     """Initialise the dataframe with empty rows and columns"""
-    col = ["n_trg", "n_cds", "n_intergenic", "n_f1", "n_f2"]
+    col = ["n_trg", "n_cds", "n_intergenic", "ssearch_f0", "ssearch_f1", "ssearch_f2, ssearch_f0_comp, ssearch_f1_comp, ssearch_f2_comp"]
     conservation_df = pd.DataFrame(columns=col, index=genomes)
     return conservation_df
 
@@ -93,7 +93,7 @@ def extract_intergenic(species):
             # Get all nucl positions in CDSs from the genbank file
             coding_loci = []
             for feature in record.features:
-                if feature.type == "gene":
+                if feature.type == "CDS":
                     # Make sure we don't include the bugged CDS that is as long as the genome
                     if feature.location.end - feature.location.start < contig_length:
                         coding_loci += list(range(feature.location.start, feature.location.end))
@@ -140,28 +140,29 @@ def get_db(species, colname, db):
     """Get the database fasta file for the species depending on the type of sequences"""
     if colname == "n_trg" or colname == "n_cds":
         db_fasta_file = os.path.join(DATA_DIR, "CDS/" + species + "_CDS.faa")
-    elif colname == "n_f1":
+
+    elif colname in ["n_f1", "n_f2", "ssearch_f0", "ssearch_f1", "ssearch_f2", "ssearch_f0_comp", "ssearch_f1_comp", "ssearch_f2_comp"]:
         # Get the dna sequences for the matching genes
         gene_names = list(db.values())
         gene_dict = get_seqs_from_gene_names(species, gene_names, "fna")
-        # Keep +1 frame only and translate to protein
-        gene_dict = {k: v[1:-2].translate(table=11) for k, v in gene_dict.items()}
+        # Keep right frame only
+        if "0" in colname:
+            gene_dict_nt = {k: v[:-3] for k, v in gene_dict.items()}
+        elif "1" in colname:
+            gene_dict_nt = {k: v[1:-2] for k, v in gene_dict.items()}
+        elif "2" in colname:
+            gene_dict_nt = {k: v[2:-1] for k, v in gene_dict.items()}
+        # Translate in +/- frames
+        if "comp" not in colname:
+            gene_dict = {k: v.translate(table=11) for k, v in gene_dict_nt.items()}
+        else:
+            gene_dict = {k: v.reverse_complement().translate(table=11) for k, v in gene_dict_nt.items()}
         # Write the sequences to a temporary file
         with tempfile.NamedTemporaryFile(mode='w', delete=False) as db_file:
             for gene, seq in gene_dict.items():
                 db_file.write(f">{gene}\n{seq}\n")
             db_fasta_file = db_file.name
-    elif colname == "n_f2":
-        # Get the dna sequences for the matching genes
-        gene_names = list(db.values())
-        gene_dict = get_seqs_from_gene_names(species, gene_names, "fna")
-        # Keep +2 frame only and translate to protein
-        gene_dict = {k: v[2:-1].translate(table=11) for k, v in gene_dict.items()}
-        # Write the sequences to a temporary file
-        with tempfile.NamedTemporaryFile(mode='w', delete=False) as db_file:
-            for gene, seq in gene_dict.items():
-                db_file.write(f">{gene}\n{seq}\n")
-            db_fasta_file = db_file.name
+
     elif colname == "n_intergenic":
         # Extract intergenic sequences
         intergenic_dict = extract_intergenic(species)
@@ -170,6 +171,7 @@ def get_db(species, colname, db):
             for gene, seq in intergenic_dict.items():
                 db_file.write(f">{gene}\n{seq}\n")
             db_fasta_file = db_file.name
+
     return db_fasta_file
 
 
@@ -186,7 +188,7 @@ def run_blast(query_sequences, db_faa_file, blast_type, keep_homologs, db):
 
     # Run the BLAST
     try:
-        output = subprocess.run([blast_type, "-query", query_file_path, "-subject", db_faa_file, "-out", output_file_path, "-outfmt", "6 qseqid sseqid qlen evalue qcovs", "-num_threads", str(NCPUS)], capture_output=True, check=True)
+        output = subprocess.run([blast_type, "-query", query_file_path, "-subject", db_faa_file, "-out", output_file_path, "-outfmt", "6 qseqid sseqid qlen evalue qcovs", "-evalue", "1e-3", "-num_threads", str(NCPUS)], capture_output=True, check=True)
     except subprocess.CalledProcessError as e:
         print(f"BLAST command failed with return code {e.returncode}: {e.stderr.decode()}")
         raise
@@ -202,8 +204,6 @@ def run_blast(query_sequences, db_faa_file, blast_type, keep_homologs, db):
     # Read the output file
     result = pd.read_csv(output_file_path, sep="\t", header=None)
     result.columns = ["qseqid", "sseqid", "qlen", "evalue", "qcov"]
-    # Keep only rows for which qcov > 50 % and evalue < 1e-3
-    result = result[(result["qcov"] > 50) & (result["evalue"] < 1e-3)]
     # If we have a match couple already known
     if db:
         # Keep only the matches in the right CDS
@@ -233,10 +233,15 @@ def process_conservation_for_species(species, focal_sp, conservation_df, colname
         return conservation_df, homologs
     
     # For all the other species, run BLAST for all the sequences
-    # Get pre-established db if exists
+    # Get the database
     db_sp = db[species] if db else None
     db_fasta_file = get_db(species, colname, db_sp)
-    blast_type = "blastn" if colname == "n_intergenic" else "blastp"
+    # Get the type of BLAST to run
+    if colname == "n_cds" or colname == "n_trg":
+        blast_type = "blastp"
+    elif colname == "n_intergenic":
+        blast_type = "tblastx"
+
     # run blast
     nb_matches, homologs = run_blast(query_sequences, db_fasta_file, blast_type, keep_homologs, db_sp)
     print(f"Species {species}: {nb_matches} matches")
@@ -270,6 +275,72 @@ def process_conservation_parallel(focal_sp, conservation_df, colname, query_sequ
     return conservation_df, homologs
 
 
+def ssearch_for_species(species, focal_sp, conservation_df, colname, query_sequences, homologs):
+    """Run ssearch for each cds for the focal species"""
+    if species == focal_sp:
+        conservation_df.loc[species, colname] = len(query_sequences)
+        return conservation_df
+
+    nb_matches = 0
+    db = get_db(species, colname, homologs)
+    for query_gene in homologs:
+        db_gene = homologs[query_gene]
+
+        # Write temporary files for the query and the homolog
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as query_file:
+            query_file.write(f">{query_gene}\n{str(query_sequences[query_gene])}\n")
+            query_file_path = query_file.name
+        fasta = SeqIO.parse(db, "fasta")
+        for record in fasta:
+            if record.name == db_gene:
+                db_seq = str(record.seq)
+                pass
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as db_file:
+            db_file.write(f">{db_gene}\n{str(db_seq)}\n")
+            db_file_path = db_file.name
+        # Write temporary file for the output
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as output_file:
+            output_file_path = output_file.name
+
+        # Run ssearch
+        try:
+            output = subprocess.run(["ssearch36", "-m", "8", "-E", "1e-3", query_file_path, db_file_path, "-O", output_file_path], capture_output=True, check=True)
+        except subprocess.CalledProcessError as e:
+            print(f"Water command failed with return code {e.returncode}: {e.stderr.decode()}")
+            raise
+        
+        # Check the file isn't blank
+        with open(output_file_path, "r") as f:
+            content = f.read().strip()
+        if content == "":
+            os.remove(query_file_path)
+            os.remove(db_file_path)
+            os.remove(output_file_path)
+            continue
+
+        # If it isn't, then we have a match
+        nb_matches += 1
+        # Remove the temporary files
+        os.remove(query_file_path)
+        os.remove(db_file_path)
+        os.remove(output_file_path)
+
+    print(f"Species {species}: {nb_matches} matches")
+    conservation_df.loc[species, colname] = nb_matches
+    return conservation_df
+
+
+def run_ssearch_parallel(focal_sp, conservation_df, colname, query_sequences, homologs):
+    """Run ssearch in parallel"""
+    with concurrent.futures.ThreadPoolExecutor(max_workers=NCPUS) as executor:
+        futures = {executor.submit(ssearch_for_species, species, focal_sp, conservation_df, colname, query_sequences, homologs[species]): species for species in conservation_df.index}
+        for future in concurrent.futures.as_completed(futures):
+            species = futures[future]
+            try:
+                conservation_df = future.result()
+            except Exception as exc:
+                print(f"Species {species} generated an exception: {exc}")
+    return conservation_df
 
 
 
@@ -284,6 +355,21 @@ if __name__ == "__main__":
     # Initiate the dataframe
     conservation_df = initialise_conservation_df(genomes)
     print("\n")
+
+
+    ########################################
+    ################# CDSs #################
+    ########################################
+    print("Calculating CDS conservation...")
+    # Extract 1000 CDss of the focal species
+    focal_CDSs_nt = extract_focal_CDSs(FOCAL_SPECIES)
+    print(f"Extracted {len(focal_CDSs_nt)} CDSs for the focal species {FOCAL_SPECIES}\n")
+    # Translate the CDSs
+    focal_CDSs = {k: v.translate(table=11) for k, v in focal_CDSs_nt.items()}
+    # Calculate the CDS conservation and add to dataframe + keep homolog sequences
+    conservation_df, homologs = process_conservation_parallel(FOCAL_SPECIES, conservation_df, "n_cds", focal_CDSs)
+    print("\n\n")
+
 
 
     ########################################
@@ -302,6 +388,69 @@ if __name__ == "__main__":
 
 
     ########################################
+    ############## Intergenic ##############
+    ########################################
+    print("Calculating intergenic conservation...")
+    # Extract 1000 intergenic 100 sequences of the focal species
+    focal_intergenic_nt = extract_intergenic(FOCAL_SPECIES)
+    # Keep only the intergenic sequences of at least 100 nt and cut chunks
+    focal_intergenic = {k: v for k, v in focal_intergenic_nt.items() if len(v) >= 100}
+    focal_intergenic = cut_chunks(focal_intergenic, 100)
+    # Keep 1000 at most
+    focal_intergenic_names = list(focal_intergenic.keys())
+    if len(focal_intergenic) > 1000:
+        focal_intergenic_names = random.sample(focal_intergenic_names, 1000)
+    focal_intergenic = {k: focal_intergenic[k] for k in focal_intergenic_names}
+    print(f"Extracted {len(focal_intergenic)} intergenic sequences for the focal species {FOCAL_SPECIES}\n")
+    # Calculate the intergenic conservation and add to dataframe
+    conservation_df, _ = process_conservation_parallel(FOCAL_SPECIES, conservation_df, "n_intergenic", focal_intergenic)
+    print("\n\n")
+
+
+
+    ########################################
+    ################ Ssearch ###############
+    ########################################
+    # Cut 302-long chunks randomly for the CDSs
+    focal_CDSs_nt = cut_chunks(focal_CDSs_nt, 302)
+    focal_CDSs_nt_comp = {k: v.reverse_complement() for k, v in focal_CDSs_nt.items()}
+    # Translate in the 6 frames
+    focal_CDSs_f0 = {k: v[:300].translate(table=11) for k, v in focal_CDSs_nt.items()}
+    focal_CDSs_f1 = {k: v[1:301].translate(table=11) for k, v in focal_CDSs_nt.items()}
+    focal_CDSs_f2 = {k: v[2:].translate(table=11) for k, v in focal_CDSs_nt.items()}
+    focal_CDSs_f0_comp = {k: v[2:].translate(table=11) for k, v in focal_CDSs_nt_comp.items()}
+    focal_CDSs_f1_comp = {k: v[1:301].translate(table=11) for k, v in focal_CDSs_nt_comp.items()}
+    focal_CDSs_f2_comp = {k: v[:300].translate(table=11) for k, v in focal_CDSs_nt_comp.items()}
+    # Run ssearch for the 6 frames
+    print(f"Running ssearch for all 6 frames of the {len(focal_CDSs_nt)} CDSs...\n")
+    print("Frame 0...")
+    conservation_df = run_ssearch_parallel(FOCAL_SPECIES, conservation_df, "ssearch_f0", focal_CDSs_f0, homologs)
+    print("\nFrame 1...")
+    conservation_df = run_ssearch_parallel(FOCAL_SPECIES, conservation_df, "ssearch_f1", focal_CDSs_f1, homologs)
+    print("\nFrame 2...")
+    conservation_df = run_ssearch_parallel(FOCAL_SPECIES, conservation_df, "ssearch_f2", focal_CDSs_f2, homologs)
+    print("\nFrame -0...")
+    conservation_df = run_ssearch_parallel(FOCAL_SPECIES, conservation_df, "ssearch_f0_comp", focal_CDSs_f0_comp, homologs)
+    print("\nFrame -1...")
+    conservation_df = run_ssearch_parallel(FOCAL_SPECIES, conservation_df, "ssearch_f1_comp", focal_CDSs_f1_comp, homologs)
+    print("\nFrame -2...")
+    conservation_df = run_ssearch_parallel(FOCAL_SPECIES, conservation_df, "ssearch_f2_comp", focal_CDSs_f2_comp, homologs)
+    print("\n\n")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    """########################################
     ############ CDSs / +1 / +2 ############
     ########################################
     print("Calculating CDS conservation...")
@@ -328,28 +477,7 @@ if __name__ == "__main__":
     print("Calculating conservation for +2 frame...")
     # Calculate the conservation for +2 frame and add to dataframe
     conservation_df, _ = process_conservation_parallel(FOCAL_SPECIES, conservation_df, "n_f2", focal_CDS_frame_2, homologs)
-    print("\n\n")
-
-
-
-    ########################################
-    ############## Intergenic ##############
-    ########################################
-    print("Calculating intergenic conservation...")
-    # Extract 1000 intergenic 100 sequences of the focal species
-    focal_intergenic_nt = extract_intergenic(FOCAL_SPECIES)
-    # Keep only the intergenic sequences of at least 100 nt and cut chunks
-    focal_intergenic = {k: v for k, v in focal_intergenic_nt.items() if len(v) >= 100}
-    focal_intergenic = cut_chunks(focal_intergenic, 100)
-    # Keep 1000 at most
-    focal_intergenic_names = list(focal_intergenic.keys())
-    if len(focal_intergenic) > 1000:
-        focal_intergenic_names = random.sample(focal_intergenic_names, 1000)
-    focal_intergenic = {k: focal_intergenic[k] for k in focal_intergenic_names}
-    print(f"Extracted {len(focal_intergenic)} intergenic sequences for the focal species {FOCAL_SPECIES}\n")
-    # Calculate the intergenic conservation and add to dataframe
-    conservation_df, _ = process_conservation_parallel(FOCAL_SPECIES, conservation_df, "n_intergenic", focal_intergenic)
-    print("\n\n")
+    print("\n\n")"""
 
 
 
