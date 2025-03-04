@@ -4,6 +4,7 @@ import re
 import random
 import subprocess
 import tempfile
+import argparse
 import pandas as pd
 import Bio.SeqIO as SeqIO
 from Bio.Seq import Seq
@@ -13,8 +14,8 @@ import concurrent.futures
 OUTPUT_DIR = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/calculate_conservation/"
 GENOMES_LIST = "/home/eliott.tempez/Documents/M2_Stage_I2BC/scripts/genera_archaea/genomes_list.txt"
 GENERA_DIR = "/home/eliott.tempez/Documents/archaea_data/genera/out/"
+DENSE_DIR = "/home/eliott.tempez/Documents/archaea_data/dense/"
 DATA_DIR = "/home/eliott.tempez/Documents/archaea_data/complete_122/"
-FOCAL_SPECIES = "GCA_020386975@Thermococcus_bergensis_T7324"
 TRG_RANK = 7.0
 NCPUS = 12
 
@@ -23,7 +24,7 @@ NCPUS = 12
 ############################## FUNCTIONS ##############################
 def initialise_conservation_df(genomes):
     """Initialise the dataframe with empty rows and columns"""
-    col = ["n_trg", "n_cds", "n_intergenic", "ssearch_f0", "ssearch_f1", "ssearch_f2, ssearch_f0_comp, ssearch_f1_comp, ssearch_f2_comp"]
+    col = ["n_denovo", "n_trg", "n_cds", "n_intergenic", "ssearch_f0", "ssearch_f1", "ssearch_f2", "ssearch_f0_comp", "ssearch_f1_comp", "ssearch_f2_comp"]
     conservation_df = pd.DataFrame(columns=col, index=genomes)
     return conservation_df
 
@@ -37,6 +38,24 @@ def get_seqs_from_gene_names(focal_sp, gene_names, extension_type):
         if record.name in gene_names:
             seqs[record.name] = record.seq
     return seqs
+
+
+def extract_de_novo(focal_species):
+    """Extract the name of all de novo genes of the focal species"""
+    # Make sure the file exists and read it
+    de_novo_file = os.path.join(DENSE_DIR, focal_species, "denovogenes.tsv")
+    if os.path.exists(de_novo_file):
+        # Get the number of lines in file
+        with open(de_novo_file, "r") as f:
+            de_novo_lines = f.readlines()
+            if len(de_novo_lines) == 1:
+                return []
+        de_novo_df = pd.read_csv(de_novo_file, sep="\t", header=1)
+    else:
+        raise FileNotFoundError(f"No file matching pattern {de_novo_file}")
+    # Extract the gene names
+    de_novo_genes = de_novo_df["CDS"].tolist()
+    return de_novo_genes
 
 
 def extract_focal_TRGs(focal_species, trg_threshold):
@@ -138,7 +157,7 @@ def cut_chunks(seqs, length):
 
 def get_db(species, colname, db):
     """Get the database fasta file for the species depending on the type of sequences"""
-    if colname == "n_trg" or colname == "n_cds":
+    if colname in ["n_denovo", "n_trg", "n_cds"]:
         db_fasta_file = os.path.join(DATA_DIR, "CDS/" + species + "_CDS.faa")
 
     elif colname in ["n_f1", "n_f2", "ssearch_f0", "ssearch_f1", "ssearch_f2", "ssearch_f0_comp", "ssearch_f1_comp", "ssearch_f2_comp"]:
@@ -237,7 +256,7 @@ def process_conservation_for_species(species, focal_sp, conservation_df, colname
     db_sp = db[species] if db else None
     db_fasta_file = get_db(species, colname, db_sp)
     # Get the type of BLAST to run
-    if colname == "n_cds" or colname == "n_trg":
+    if colname in ["n_denovo", "n_trg", "n_cds"]:
         blast_type = "blastp"
     elif colname == "n_intergenic":
         blast_type = "tblastx"
@@ -349,6 +368,12 @@ def run_ssearch_parallel(focal_sp, conservation_df, colname, query_sequences, ho
 
 ############################## MAIN ##############################
 if __name__ == "__main__":
+    # Parse command line arguments for focal species
+    parser = argparse.ArgumentParser(description='Calculate TRG conservation.')
+    parser.add_argument('--focal_species', type=str, required=True, help='Focal species identifier')
+    args = parser.parse_args()
+    FOCAL_SPECIES = args.focal_species
+
     # Read the list of genomes
     with open(GENOMES_LIST, "r") as f:
         genomes = f.readline().split()
@@ -356,6 +381,25 @@ if __name__ == "__main__":
     # Initiate the dataframe
     conservation_df = initialise_conservation_df(genomes)
     print("\n")
+
+
+    ########################################
+    ############### De novo ################
+    ########################################
+    print("Calculating de novo conservation...")
+    # Extract the name of all de novo genes of the focal species
+    de_novo_genes = extract_de_novo(FOCAL_SPECIES)
+    if de_novo_genes == []:
+        conservation_df["n_denovo"] = 0
+        print("No de novo genes found for the focal species")
+    else:
+        # Get the protein sequences for each de novo gene
+        de_novo_seqs = get_seqs_from_gene_names(FOCAL_SPECIES, de_novo_genes, "faa")
+        print(f"Extracted {len(de_novo_seqs)} de novo genes for the focal species {FOCAL_SPECIES}\n")
+        # Calculate the de novo conservation and add to dataframe
+        conservation_df, _ = process_conservation_parallel(FOCAL_SPECIES, conservation_df, "n_denovo", de_novo_seqs)
+    print("\n\n")
+
 
 
     ########################################
@@ -442,15 +486,7 @@ if __name__ == "__main__":
 
 
 
-
-
-
-
-
-
-
-
-
+    # Old code to calculate +1/+2 conservation with blastp
     """########################################
     ############ CDSs / +1 / +2 ############
     ########################################
