@@ -78,12 +78,15 @@ def extract_focal_TRGs(focal_species, trg_threshold):
 
 def extract_focal_CDSs(focal_species):
     """Extract at most 1000 CDSs of the focal species"""
-    # Extract all CDSs >=302 nt of the focal species
+    # Extract all CDSs >=300 nt of the focal species
     CDS_fasta_file = os.path.join(DATA_DIR, "CDS/" + focal_species + "_CDS.fna")
     CDS_fasta = SeqIO.parse(CDS_fasta_file, "fasta")
     focal_CDSs = {}
     for record in CDS_fasta:
-        if len(record.seq) >= 302:
+        # Check the length is a multiple of 3
+        if len(record.seq) % 3 != 0:
+            print(f"Warning: CDS {record.name} for {focal_species} length is not a multiple of 3")
+        if len(record.seq) >= 300:
             focal_CDSs[record.name] = record.seq
     # Keep 1000 at most
     focal_CDSs_names = list(focal_CDSs.keys())
@@ -163,19 +166,20 @@ def get_db(species, colname, db):
     elif colname in ["n_f1", "n_f2", "ssearch_f0", "ssearch_f1", "ssearch_f2", "ssearch_f0_comp", "ssearch_f1_comp", "ssearch_f2_comp"]:
         # Get the dna sequences for the matching genes
         gene_names = list(db.values())
-        gene_dict = get_seqs_from_gene_names(species, gene_names, "fna")
-        # Keep right frame only
+        gene_dict_nt = get_seqs_from_gene_names(species, gene_names, "fna")
+        # Check if genes are all a 3 multiple
+        for gene, seq in gene_dict_nt.items():
+            if len(seq) % 3 != 0:
+                print(f"Warning: CDS {gene} for {species} length is not a multiple of 3")
+        if "comp" in colname:
+            gene_dict_nt = {k: v.reverse_complement() for k, v in gene_dict_nt.items()}
+        # Translate in all 6 frames
         if "0" in colname:
-            gene_dict_nt = {k: v[:-3] for k, v in gene_dict.items()}
+            gene_dict = {k: v[:-3].translate(table=11) for k, v in gene_dict_nt.items()}
         elif "1" in colname:
-            gene_dict_nt = {k: v[1:-2] for k, v in gene_dict.items()}
+            gene_dict = {k: v[1:-2].translate(table=11) for k, v in gene_dict_nt.items()}
         elif "2" in colname:
-            gene_dict_nt = {k: v[2:-1] for k, v in gene_dict.items()}
-        # Translate in +/- frames
-        if "comp" not in colname:
-            gene_dict = {k: v.translate(table=11) for k, v in gene_dict_nt.items()}
-        else:
-            gene_dict = {k: v.reverse_complement().translate(table=11) for k, v in gene_dict_nt.items()}
+            gene_dict = {k: v[2:-1].translate(table=11) for k, v in gene_dict_nt.items()}
         # Write the sequences to a temporary file
         with tempfile.NamedTemporaryFile(mode='w', delete=False) as db_file:
             for gene, seq in gene_dict.items():
@@ -297,7 +301,7 @@ def process_conservation_parallel(focal_sp, conservation_df, colname, query_sequ
 def ssearch_for_species(species, focal_sp, conservation_df, colname, query_sequences, homologs):
     """Run ssearch for each cds for the focal species"""
     if species == focal_sp:
-        print(f"Species {species}: {nb_matches} matches")
+        print(f"Species {species}: {len(query_sequences)} matches")
         conservation_df.loc[species, colname] = len(query_sequences)
         return conservation_df
 
@@ -456,16 +460,16 @@ if __name__ == "__main__":
     ########################################
     ################ Ssearch ###############
     ########################################
-    # Cut 302-long chunks randomly for the CDSs
-    focal_CDSs_nt = cut_chunks(focal_CDSs_nt, 302)
+    # Cut 300-long chunks randomly for the CDSs
+    focal_CDSs_nt = cut_chunks(focal_CDSs_nt, 300)
     focal_CDSs_nt_comp = {k: v.reverse_complement() for k, v in focal_CDSs_nt.items()}
     # Translate in the 6 frames
-    focal_CDSs_f0 = {k: v[:300].translate(table=11) for k, v in focal_CDSs_nt.items()}
-    focal_CDSs_f1 = {k: v[1:301].translate(table=11) for k, v in focal_CDSs_nt.items()}
-    focal_CDSs_f2 = {k: v[2:].translate(table=11) for k, v in focal_CDSs_nt.items()}
-    focal_CDSs_f0_comp = {k: v[2:].translate(table=11) for k, v in focal_CDSs_nt_comp.items()}
-    focal_CDSs_f1_comp = {k: v[1:301].translate(table=11) for k, v in focal_CDSs_nt_comp.items()}
-    focal_CDSs_f2_comp = {k: v[:300].translate(table=11) for k, v in focal_CDSs_nt_comp.items()}
+    focal_CDSs_f0 = {k: v[:-3].translate(table=11) for k, v in focal_CDSs_nt.items()}
+    focal_CDSs_f1 = {k: v[1:-2].translate(table=11) for k, v in focal_CDSs_nt.items()}
+    focal_CDSs_f2 = {k: v[2:-1].translate(table=11) for k, v in focal_CDSs_nt.items()}
+    focal_CDSs_f0_comp = {k: v[:-3].translate(table=11) for k, v in focal_CDSs_nt_comp.items()}
+    focal_CDSs_f1_comp = {k: v[1:-2].translate(table=11) for k, v in focal_CDSs_nt_comp.items()}
+    focal_CDSs_f2_comp = {k: v[2:-1].translate(table=11) for k, v in focal_CDSs_nt_comp.items()}
     # Run ssearch for the 6 frames
     print(f"Running ssearch for all 6 frames of the {len(focal_CDSs_nt)} CDSs...\n")
     print("Frame 0...")
