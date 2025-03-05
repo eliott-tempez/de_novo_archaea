@@ -36,6 +36,10 @@ conservation_db <- read.table(conservation_db_file,
 ssearch_db <- conservation_db[, c("ssearch_f0", "ssearch_f1", "ssearch_f2", "ssearch_f0_comp", "ssearch_f1_comp", "ssearch_f2_comp")]
 colnames(ssearch_db) <- c("+0 ", "+1 ", "+2 ", "-0 ", "-1 ", "-2 ")
 conservation_db <- conservation_db[, c("n_denovo", "n_trg", "n_cds", "n_intergenic")]
+# Avoid division by 0 if no de novo
+if (conservation_db[focal_species, "n_denovo"] == 0) {
+  conservation_db[focal_species, "n_denovo"] <- 1
+}
 # Change to percents
 default_val <- as.numeric(conservation_db[focal_species, ])
 conservation_db_p <- sweep(conservation_db, 2, default_val, FUN = "/") * 100
