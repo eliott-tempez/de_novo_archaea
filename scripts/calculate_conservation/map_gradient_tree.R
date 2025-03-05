@@ -2,6 +2,7 @@ library(ggplot2)
 library(ggtree)
 library(ape)
 library(ggnewscale)
+library(argparse)
 ggsave <- function(..., bg = "white",
                    width = 1000, height = 1000,
                    units = "px", dpi = 100) {
@@ -15,8 +16,14 @@ ggsave <- function(..., bg = "white",
 # Filenames
 tree_file <- "/home/eliott.tempez/Documents/archaea_data/whole_tree.nwk"
 conservation_db_dir <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/calculate_conservation/"
-focal_species <- "GCA_020386975@Thermococcus_bergensis_T7324"
 output_dir <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/calculate_conservation/"
+
+# Get the focal species
+parser <- ArgumentParser(description = "Map gradient tree")
+parser$add_argument('--focal_species', type = 'character', required = TRUE, help = 'Focal species identifier')
+args <- parser$parse_args()
+focal_species <- args$focal_species
+
 
 # Get the conservation db
 conservation_db_file <- paste0(conservation_db_dir,
