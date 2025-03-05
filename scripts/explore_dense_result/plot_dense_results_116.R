@@ -62,19 +62,19 @@ p <- ggtree(tree, layout = "circular", branch.length = "none")
 p <- p + new_scale_fill()
 p <- gheatmap(p, data[, "n_denovo", drop = FALSE],
               width = .05, colnames = FALSE) +
-  scale_fill_gradient(low = "white", high = "black", name = "De novo",
+  scale_fill_gradient(low = "white", high = "black", name = "De novo (#)",
                       guide = guide_colorbar(order = 1))
 ## TRGs ##
 p <- p + new_scale_fill()
 p <- gheatmap(p, data[, "n_trg", drop = FALSE], offset = 2,
               width = .05, colnames = FALSE) +
-  scale_fill_gradient(low = "white", high = "red", name = "TRGs",
+  scale_fill_gradient(low = "white", high = "red", name = "TRGs (#)",
                       guide = guide_colorbar(order = 2), limits = c(0, max(data$n_trg)))
 ## TRGs normalised ##
 p <- p + new_scale_fill()
 p <- gheatmap(p, data[, "n_trg_norm", drop = FALSE], offset = 3,
               width = .05, colnames = FALSE) +
-  scale_fill_gradient(low = "#009E73", high = "#6b00b2", name = "Normalised\nTRGs",
+  scale_fill_gradient(low = "#009E73", high = "#6b00b2", name = "TRGs\nnormalised (%)",
                       guide = guide_colorbar(order = 3), limits = c(0, 100))
 
 # Add the title
