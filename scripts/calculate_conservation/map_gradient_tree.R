@@ -83,7 +83,6 @@ p <- gheatmap(p, conservation_db_p[, "n_cds", drop = FALSE], offset = 3,
 # Add the title
 p <- p + ggtitle(paste0("Conservation rate for\n", focal_species)) +
   theme(plot.title = element_text(hjust = 0.5, vjust = -10))
-p
 
 # Save the image
 ggsave(paste0(output_dir, "conservation_map_", focal_species, ".png"))
@@ -141,7 +140,6 @@ p <- gheatmap(p, ssearch_db_p[, "-2 ", drop = FALSE], offset = 5,
 # Add the title
 p <- p + ggtitle(paste0("Conservation rate for the 6 reading frames\n", focal_species)) +
   theme(plot.title = element_text(hjust = 0.5, vjust = -10))
-p
 
 # Save the image
 ggsave(paste0(output_dir, "conservation_map_frames_", focal_species, ".png"))
