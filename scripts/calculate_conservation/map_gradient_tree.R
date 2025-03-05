@@ -104,37 +104,37 @@ p <- ggtree(tree, layout = "circular", branch.length = "none") +
 ## Frame 0 ##
 p <- p + new_scale_fill()
 p <- gheatmap(p, ssearch_db_p[, "+0 ", drop = FALSE],
-              width = .05, colnames = TRUE, colnames_angle = 90) +
+              width = .05, colnames = TRUE, colnames_angle = 90, font.size = 3) +
   scale_fill_gradient(low = "white", high = "#009E73", name = "conservation %",
                       guide = guide_colorbar(), limits = c(0, 100))
 ## Frame 1 ##
 p <- p + new_scale_fill()
 p <- gheatmap(p, ssearch_db_p[, "+1 ", drop = FALSE], offset = 1,
-              width = .05, colnames = TRUE, colnames_angle = 90) +
+              width = .05, colnames = TRUE, colnames_angle = 90, font.size = 3) +
   scale_fill_gradient(low = "white", high = "#009E73",
                       guide = "none", limits = c(0, 100))
 ## Frame 2 ##
 p <- p + new_scale_fill()
 p <- gheatmap(p, ssearch_db_p[, "+2 ", drop = FALSE], offset = 2,
-              width = .05, colnames = TRUE, colnames_angle = 90) +
+              width = .05, colnames = TRUE, colnames_angle = 90, font.size = 3) +
   scale_fill_gradient(low = "white", high = "#009E73",
                       guide = "none", limits = c(0, 100))
 ## Frame -0 ##
 p <- p + new_scale_fill()
 p <- gheatmap(p, ssearch_db_p[, "-0 ", drop = FALSE], offset = 3,
-              width = .05, colnames = TRUE, colnames_angle = 90) +
+              width = .05, colnames = TRUE, colnames_angle = 90, font.size = 3) +
   scale_fill_gradient(low = "white", high = "#009E73",
                       guide = "none", limits = c(0, 100))
 ## Frame -1 ##
 p <- p + new_scale_fill()
 p <- gheatmap(p, ssearch_db_p[, "-1 ", drop = FALSE], offset = 4,
-              width = .05, colnames = TRUE, colnames_angle = 90) +
+              width = .05, colnames = TRUE, colnames_angle = 90, font.size = 3) +
   scale_fill_gradient(low = "white", high = "#009E73",
                       guide = "none", limits = c(0, 100))
 ## Frame -2 ##
 p <- p + new_scale_fill()
 p <- gheatmap(p, ssearch_db_p[, "-2 ", drop = FALSE], offset = 5,
-              width = .05, colnames = TRUE, colnames_angle = 90) +
+              width = .05, colnames = TRUE, colnames_angle = 90, font.size = 3) +
   scale_fill_gradient(low = "white", high = "#009E73",
                       guide = "none", limits = c(0, 100))
 
