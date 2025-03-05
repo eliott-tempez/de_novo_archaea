@@ -35,7 +35,7 @@ conservation_db <- read.table(conservation_db_file,
 # Get the ssearch result
 ssearch_db <- conservation_db[, c("ssearch_f0", "ssearch_f1", "ssearch_f2", "ssearch_f0_comp", "ssearch_f1_comp", "ssearch_f2_comp")]
 colnames(ssearch_db) <- c("+0 ", "+1 ", "+2 ", "-0 ", "-1 ", "-2 ")
-conservation_db <- conservation_db[, c("n_trg", "n_cds", "n_intergenic")]
+conservation_db <- conservation_db[, c("n_denovo", "n_trg", "n_cds", "n_intergenic")]
 # Change to percents
 default_val <- as.numeric(conservation_db[focal_species, ])
 conservation_db_p <- sweep(conservation_db, 2, default_val, FUN = "/") * 100
@@ -55,29 +55,29 @@ p <- ggtree(tree, layout = "circular", branch.length = "none") +
 
 # Add the heatmaps
 ## De novo ##
-#p <- p + new_scale_fill()
-#p <- gheatmap(p, conservation_db_p[, "n_denovo", drop = FALSE],
-#              width = .05, colnames = FALSE) +
-#  scale_fill_gradient(low = "white", high = "black", name = "De novo",
-#                      guide = guide_colorbar(order = 1), limits = c(0, 100))
+p <- p + new_scale_fill()
+p <- gheatmap(p, conservation_db_p[, "n_denovo", drop = FALSE],
+              width = .05, colnames = FALSE) +
+  scale_fill_gradient(low = "white", high = "black", name = "De novo",
+                      guide = guide_colorbar(order = 1), limits = c(0, 100))
 ## TRGs ##
 p <- p + new_scale_fill()
 p <- gheatmap(p, conservation_db_p[, "n_trg", drop = FALSE], offset = 1,
               width = .05, colnames = FALSE) +
   scale_fill_gradient(low = "white", high = "red", name = "TRGs",
-                      guide = guide_colorbar(order = 1), limits = c(0, 100))
+                      guide = guide_colorbar(order = 2), limits = c(0, 100))
 ## Noncoding ##
 p <- p + new_scale_fill()
 p <- gheatmap(p, conservation_db_p[, "n_intergenic", drop = FALSE], offset = 2,
               width = .05, colnames = FALSE) +
   scale_fill_gradient(low = "white", high = "#6b00b2", name = "Intergenic",
-                      guide = guide_colorbar(order = 2), limits = c(0, 100))
+                      guide = guide_colorbar(order = 3), limits = c(0, 100))
 ## CDSs ##
 p <- p + new_scale_fill()
 p <- gheatmap(p, conservation_db_p[, "n_cds", drop = FALSE], offset = 3,
               width = .05, colnames = FALSE) +
   scale_fill_gradient(low = "white", high = "#e67b00", name = "CDS",
-                      guide = guide_colorbar(order = 5), limits = c(0, 100))
+                      guide = guide_colorbar(order = 4), limits = c(0, 100))
 
 
 # Add the title
