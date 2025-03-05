@@ -50,7 +50,7 @@ def extract_de_novo(focal_species):
             de_novo_lines = f.readlines()
             if len(de_novo_lines) == 1:
                 return []
-        de_novo_df = pd.read_csv(de_novo_file, sep="\t", header=1)
+        de_novo_df = pd.read_csv(de_novo_file, sep="\t", header=0)
     else:
         raise FileNotFoundError(f"No file matching pattern {de_novo_file}")
     # Extract the gene names
