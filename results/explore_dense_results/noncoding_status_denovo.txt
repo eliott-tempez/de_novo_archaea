@@ -1,0 +1,118 @@
+De novo genes info: (818)
+genome	denovo	ancester_sp	loci
+GCA_900012635@Thermococcus_chitonophagus_isolate_1	CHITON_RS11030.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	['NZ_CP010835', 1294434, 1294225]
+
+
+Pyrococcus_31_3	PYRO313_v1_b1869.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	['NZ_CP010835', 156998, 156879]
+
+
+Pyrococcus_32_1	PYRO321_v1_1869.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	['NZ_CP010835', 156998, 156879]
+
+
+Pyrococcus_abyssi_GE2	PABYGE2_v1_0896.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	['NZ_CP010835', 1503410, 1503571]
+
+
+Pyrococcus_endeavori_ES4	PYES4v1_40163.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	['NZ_CP010835', 791199, 791098]
+
+
+Pyrococcus_EXT16	PYEXT16_v1_2049.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	['NZ_CP010835', 870815, 870937]
+
+
+Pyrococcus_sp_32_3	PYRO323_v1_2248.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	['NZ_CP010835', 1940485, 1940216]
+
+
+Pyrococcus_sp_32_4	PYRO324_v1_1811.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	['NZ_CP010835', 1344767, 1344564]
+
+
+Pyrococcus_sp_GE_23	PGE23_v1_0820.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	['NZ_CP010835', 83182, 82898]
+
+
+Thermococcus_29_3	THER293_v1_1950.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	['NZ_CP010835', 301016, 301423]
+
+
+Thermococcus_AMTc11	TAMTC11_v1_2463.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	['NZ_CP010835', 482441, 482382]
+
+
+Thermococcus_AMTc30	TAMTC30_v1_1012.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	['NZ_CP010835', 1951142, 1951056]
+
+
+Thermococcus_EXT11c	TEXT11C_v1_1221.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	['NZ_CP010835', 1951142, 1951056]
+
+
+Thermococcus_IRI15c	TIRI15C_v1_1343.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	['NZ_CP010835', 1225116, 1225475]
+
+
+Thermococcus_sp_AMTc79	TAMTC79_v1_0556.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	['NZ_CP010835', 301016, 301423]
+
+
+Thermococcus_sp_CIR_10a	TCIR10A_v1_2063.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	['NZ_CP010835', 1600083, 1600301]
+
+
+Thermococcus_sp_EXT09c	TEXT09C_v1_1777.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	['NZ_CP010835', 1951142, 1951056]
+
+
+Thermococcus_sp_IRI14c	TIRI14C_v1_1430.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	['NZ_CP010835', 1224423, 1224938]
+
+
+Thermococcus_sp_IRI25c	TIRI25C_v1_1426.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	['NZ_CP010835', 1224423, 1224938]
+
+
+Frame info:
+genome	denovo	ancester_sp	frame	length
+GCA_900012635@Thermococcus_chitonophagus_isolate_1	CHITON_RS11030.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	{'intergenic': 209}
+
+
+Pyrococcus_31_3	PYRO313_v1_b1869.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	{0: 52, 'intergenic': 67}
+
+
+Pyrococcus_32_1	PYRO321_v1_1869.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	{0: 52, 'intergenic': 67}
+
+
+Pyrococcus_abyssi_GE2	PABYGE2_v1_0896.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	{2: 161, 'intergenic': 0}
+
+
+Pyrococcus_endeavori_ES4	PYES4v1_40163.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	{2: 101, 'intergenic': 0}
+
+
+Pyrococcus_EXT16	PYEXT16_v1_2049.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	{2: 122, 'intergenic': 0}
+
+
+Pyrococcus_sp_32_3	PYRO323_v1_2248.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	{2: 269, 'intergenic': 0}
+
+
+Pyrococcus_sp_32_4	PYRO324_v1_1811.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	{'intergenic': 203}
+
+
+Pyrococcus_sp_GE_23	PGE23_v1_0820.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	{2: 38, 'intergenic': 246}
+
+
+Thermococcus_29_3	THER293_v1_1950.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	{2: 407, 'intergenic': 0}
+
+
+Thermococcus_AMTc11	TAMTC11_v1_2463.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	{'intergenic': 59}
+
+
+Thermococcus_AMTc30	TAMTC30_v1_1012.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	{'intergenic': 86}
+
+
+Thermococcus_EXT11c	TEXT11C_v1_1221.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	{'intergenic': 86}
+
+
+Thermococcus_IRI15c	TIRI15C_v1_1343.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	{0: 359, 'intergenic': 0}
+
+
+Thermococcus_sp_AMTc79	TAMTC79_v1_0556.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	{2: 407, 'intergenic': 0}
+
+
+Thermococcus_sp_CIR_10a	TCIR10A_v1_2063.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	{0: 218, 'intergenic': 0}
+
+
+Thermococcus_sp_EXT09c	TEXT09C_v1_1777.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	{'intergenic': 86}
+
+
+Thermococcus_sp_IRI14c	TIRI14C_v1_1430.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	{0: 515, 'intergenic': 0}
+
+
+Thermococcus_sp_IRI25c	TIRI25C_v1_1426.mRNA.0	GCA_001577775@Pyrococcus_kukulkanii_NCB100	{0: 515, 'intergenic': 0}
+
+

@@ -27,21 +27,22 @@ if __name__ == "__main__":
     data = pd.DataFrame(columns=col)
 
 
-
+    n_denovo_total = 0
     ### Get the info on all de novo genes ###
     denovo_dict_gS = {}
     # Get the names of all de novo genes
     for genome in genomes:
-        denovo_dict_gS[genome] = {}
         # Read dense result
         denovo_file = os.path.join(DENSE_DIR, genome, "denovogenes.tsv")
         denovo_df = pd.read_csv(denovo_file, sep="\t", header=0)
         if denovo_df.empty:
             continue
-        for denovo_gene in denovo_df["gene"]:
+        denovo_dict_gS[genome] = {}
+        for denovo_gene in denovo_df["CDS"]:
+            n_denovo_total += 1
             denovo_dict_gS[genome][denovo_gene] = {}
     
-    # Get the last matches in synteny for all de novo genes
+    # Get the last match in synteny for all de novo genes
     for genome in denovo_dict_gS:
         trg_file = os.path.join(DENSE_DIR, genome, "TRG_match_matrix.tsv")
         trg_df = pd.read_csv(trg_file, sep="\t", header=0)
@@ -57,11 +58,10 @@ if __name__ == "__main__":
             # Iterate over the row in reverse until we hit a cds
             i = len(matches.columns)
             cell = ""
-            while cell != "CDS":
+            while "gS" not in cell:
                 i -= 1
                 cell = matches.iloc[0, i]
-                if "gS" in cell:
-                    denovo_dict_gS[genome][denovo][matches.columns[i]] = []
+            denovo_dict_gS[genome][denovo][matches.columns[i]] = []
                     
     # Get the loci for each noncoding match of each de novo gene
     for genome in denovo_dict_gS:
@@ -71,83 +71,99 @@ if __name__ == "__main__":
                 # Get the tblastn result corresponding to the de novo gene
                 tblastn_df = pd.read_csv(tblastn_result_file, sep="\t", header=None, comment="#")
                 tblastn_df.columns = ["qseqid", "sseqid", "pident", "length", "mismatch", "gapopen", "qstart", "qend", "sstart", "send", "evalue", "bitscore", "qlength", "qcov", "sframe"]
-                tblastn_df = tblastn_df[tblastn_df["qseqid"] == f"{denovo}_elongated"]
-                # Keep only qcov > 50
-                tblastn_df = tblastn_df[tblastn_df["qcov"] > 50]
+                tblastn_df = tblastn_df[tblastn_df["qseqid"] == f"{denovo}_elongated"].reset_index(drop=True)
                 # Keep only the best evalue
                 tblastn_df = tblastn_df.sort_values("evalue")
                 contig = tblastn_df.iloc[0]["sseqid"]
                 start_loci = tblastn_df.iloc[0]["sstart"]
                 end_loci = tblastn_df.iloc[0]["send"]
-                denovo_dict_gS[genome][denovo][ancester_sp] = [contig, start_loci, end_loci]
+                denovo_dict_gS[genome][denovo][ancester_sp] = [contig, int(start_loci), int(end_loci)]
 
-# Print the info on all de novo genes
-print("genome\tdenovo\tancester_sp\tloci")
-for genome in denovo_dict_gS:
-    for denovo in denovo_dict_gS[genome]:
-        for ancester_sp in denovo_dict_gS[genome][denovo]:
-            print(f"{genome}\t{denovo}\t{ancester_sp}\t{denovo_dict_gS[genome][denovo][ancester_sp]}")
-    print("\n")
+    #########################################
+    # To delete: only keep kukulkanii
+    dict_tmp = {}
+    for genome in denovo_dict_gS:
+        for denovo in denovo_dict_gS[genome]:
+            for ancester_sp in denovo_dict_gS[genome][denovo]:
+                if ancester_sp == "GCA_001577775@Pyrococcus_kukulkanii_NCB100":
+                    dict_tmp[genome] = {denovo: {ancester_sp: denovo_dict_gS[genome][denovo][ancester_sp]}}
+    denovo_dict_gS = dict_tmp
+    #########################################
 
-
-altframes = {}
-### Get the corresponding area in the ancestor genome ###
-for genome in denovo_dict_gS:
-    altframes[genome] = {}
-    for denovo in denovo_dict_gS[genome]:
-        altframes[genome][denovo] = {}
-        for ancester_sp in denovo_dict_gS[genome][denovo]:
-            altframes[genome][denovo][ancester_sp] = {}
-            # Get all CDSs for the ancestor genome of the de novo gene
-            ancester_sp_genes = []
-            contig, start_match, end_match = denovo_dict_gS[genome][denovo][ancester_sp]
-            gbk_pattern = os.path.join(DATA_DIR, "annotation", ancester_sp + ".gb*")
-            gbk_files = [f for f in glob.glob(gbk_pattern) if not f.endswith(".fai")]
-            gbk_file = gbk_files[0]
-            for record in SeqIO.parse(gbk_file, "genbank"):
-                if record.id == contig:
-                    for feature in record.features:
-                        if feature.type == "CDS":
-                            gene_strand = feature.location.strand
-                            gene_start = feature.location.start
-                            gene_end = feature.location.end
-                            ancester_sp_genes.append([gene_strand, (gene_start, gene_end)])
-            # Get each cds in the ancestor genome for which our de novo gene is in
-            de_novo_is_on_plus = start_match < end_match
-            all_loci = list(range(start_loci, end_loci)).sort() if de_novo_is_on_plus else list(range(end_loci, start_loci)).sort()
-            loci_in_gene = []
-            altframes = {}
-            for ancester_cds in ancester_sp_genes:
-                if de_novo_is_on_plus and ancester_cds[0] == 1:
-                    if any(gene_start <= i <= gene_end for i in all_loci):                        
-                        # Get the loci that are in the cds
-                        loci_in_gene += [i for i in all_loci if gene_start <= i <= gene_end]
-                        # Get the frame
-                        frame = (min(loci_in_gene) - gene_start) % 3
-                        if frame not in altframes[genome][denovo][ancester_sp]:
-                            altframes[genome][denovo][ancester_sp][frame] = len([i for i in all_loci if gene_start <= i <= gene_end])
-                        else:
-                            altframes[genome][denovo][ancester_sp][frame] += len([i for i in all_loci if gene_start <= i <= gene_end])
-                elif not de_novo_is_on_plus and ancester_cds[0] == -1:
-                    if any(gene_start <= i <= gene_end for i in all_loci):
-                        # Get the loci that are in the cds
-                        loci_in_gene += [i for i in all_loci if gene_start <= i <= gene_end]
-                        # Get the frame
-                        frame = (gene_start - max(loci_in_gene)) % 3
-                        if frame not in altframes[genome][denovo][ancester_sp]:
-                            altframes[genome][denovo][ancester_sp][frame] = len([i for i in all_loci if gene_start <= i <= gene_end])
-                        else:
-                            altframes[genome][denovo][ancester_sp][frame] += len([i for i in all_loci if gene_start <= i <= gene_end])
-            # Get the loci that are in the intergenic
-            loci_in_intergenic = [i for i in all_loci if i not in loci_in_gene]
-            altframes[genome][denovo][ancester_sp]["intergenic"] = len(loci_in_intergenic)
-
-# Print the results
-for genome in altframes:
-    for denovo in altframes[genome]:
-        for ancester_sp in altframes[genome][denovo]:
-            print(f"{genome}\t{denovo}\t{ancester_sp}\t{altframes[genome][denovo][ancester_sp]}")
+    # Print the info on all de novo genes
+    print(f"De novo genes info: ({n_denovo_total})")
+    print("genome\tdenovo\tancester_sp\tloci")
+    for genome in denovo_dict_gS:
+        for denovo in denovo_dict_gS[genome]:
+            for ancester_sp in denovo_dict_gS[genome][denovo]:
+                print(f"{genome}\t{denovo}\t{ancester_sp}\t{denovo_dict_gS[genome][denovo][ancester_sp]}")
         print("\n")
-                    
+
+
+    altframes = {}
+    ### Get the corresponding area in the ancestor genome ###
+    for genome in denovo_dict_gS:
+        altframes[genome] = {}
+        for denovo in denovo_dict_gS[genome]:
+            altframes[genome][denovo] = {}
+            for ancester_sp in denovo_dict_gS[genome][denovo]:
+                altframes[genome][denovo][ancester_sp] = {}
+                # Get all CDSs for the ancestor genome of the de novo gene
+                ancester_sp_genes = []
+                contig, start_match, end_match = denovo_dict_gS[genome][denovo][ancester_sp]
+                gbk_pattern = os.path.join(DATA_DIR, "annotation", ancester_sp + ".gb*")
+                gbk_files = [f for f in glob.glob(gbk_pattern) if not f.endswith(".fai")]
+                gbk_file = gbk_files[0]
+                for record in SeqIO.parse(gbk_file, "genbank"):
+                    if record.name == contig:
+                        for feature in record.features:
+                            if feature.type == "CDS":
+                                gene_strand = feature.location.strand
+                                gene_start = feature.location.start
+                                gene_end = feature.location.end
+                                ancester_sp_genes.append([gene_strand, int(gene_start), int(gene_end)])
+
+                # Get each cds in the ancestor genome for which our de novo gene is in
+                de_novo_is_on_plus = start_match < end_match
+                all_loci = list(range(start_match, end_match+1)) if de_novo_is_on_plus else list(range(end_match, start_match+1))
+                loci_in_gene = []
+                for ancester_cds in ancester_sp_genes:
+                    gene_strand, gene_start, gene_end = ancester_cds
+                    if de_novo_is_on_plus:
+                        if ancester_cds[0] == 1:
+                            if any(gene_start <= i <= gene_end for i in all_loci):                        
+                                # Get the loci that are in the cds
+                                loci_in_gene += [i for i in all_loci if gene_start <= i <= gene_end]
+                                # Get the frame
+                                frame = (min(loci_in_gene) - gene_start) % 3
+                                if frame not in altframes[genome][denovo][ancester_sp]:
+                                    altframes[genome][denovo][ancester_sp][frame] = len([i for i in all_loci if gene_start <= i <= gene_end])
+                                else:
+                                    altframes[genome][denovo][ancester_sp][frame] += len([i for i in all_loci if gene_start <= i <= gene_end])
+                    elif not de_novo_is_on_plus:
+                        if ancester_cds[0] == -1:
+                            if any(gene_start <= i <= gene_end for i in all_loci):
+                                # Get the loci that are in the cds
+                                loci_in_gene += [i for i in all_loci if gene_start <= i <= gene_end]
+                                # Get the frame
+                                frame = (gene_start - max(loci_in_gene)) % 3
+                                if frame not in altframes[genome][denovo][ancester_sp]:
+                                    altframes[genome][denovo][ancester_sp][frame] = len([i for i in all_loci if gene_start <= i <= gene_end])
+                                else:
+                                    altframes[genome][denovo][ancester_sp][frame] += len([i for i in all_loci if gene_start <= i <= gene_end])
+                # Get the loci that are in the intergenic
+                loci_in_intergenic = [i for i in all_loci if i not in loci_in_gene]
+                if len(loci_in_intergenic) > 0:
+                    altframes[genome][denovo][ancester_sp]["intergenic"] = len(loci_in_intergenic)
+
+    # Print the results
+    print("Frame info:")
+    print("genome\tdenovo\tancester_sp\tframe\tlength")
+    for genome in altframes:
+        for denovo in altframes[genome]:
+            for ancester_sp in altframes[genome][denovo]:
+                print(f"{genome}\t{denovo}\t{ancester_sp}\t{altframes[genome][denovo][ancester_sp]}")
+        print("\n")
+                        
                     
             
