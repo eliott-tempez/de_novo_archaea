@@ -20,6 +20,7 @@ dense_dir <- "/home/eliott.tempez/Documents/archaea_data/dense/"
 cds_dir <- "/home/eliott.tempez/Documents/archaea_data/complete_122/CDS/"
 genomes_list <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/scripts/genera_archaea/genomes_list.txt"
 output_dir <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/explore_dense_results/"
+intergenic_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/explore_dense_result/intergenic_lengths.tsv"
 
 
 # Read genomes list
@@ -54,8 +55,46 @@ data$n_trg_norm <- data$n_trg / data$n_cds * 100
 # Get the species with the GCA identifier
 species_GCA <- genomes[which(grepl("GCA", rownames(data)))]
 
+# Intergenic mean lengths
+intergenic <- read.table(intergenic_file, header = TRUE, sep = "\t")
 
-# Plot
+
+
+########### Tree plot ###########
+# Read the tree
+tree <- read.tree(tree_file)
+# Plot the tree
+p <- ggtree(tree, layout = "circular", branch.length = "none")
+# Add the heatmaps
+## De novo ##
+p <- p + new_scale_fill()
+p <- gheatmap(p, data[, "n_denovo", drop = FALSE],
+              width = .05, colnames = FALSE) +
+  scale_fill_gradient(low = "white", high = "black", name = "De novo (#)",
+                      guide = guide_colorbar(order = 1))
+## TRGs ##
+p <- p + new_scale_fill()
+p <- gheatmap(p, data[, "n_trg", drop = FALSE], offset = 2,
+              width = .05, colnames = FALSE) +
+  scale_fill_gradient(low = "white", high = "red", name = "TRGs (#)",
+                      guide = guide_colorbar(order = 2), limits = c(0, max(data$n_trg)))
+## TRGs normalised ##
+p <- p + new_scale_fill()
+p <- gheatmap(p, data[, "n_trg_norm", drop = FALSE], offset = 3,
+              width = .05, colnames = FALSE) +
+  scale_fill_gradient(low = "#009E73", high = "#6b00b2", name = "TRGs\nnormalised (%)",
+                      guide = guide_colorbar(order = 3), limits = c(0, 100))
+
+# Add the title
+p <- p + ggtitle("Number of de novo genes and TRGs for each genome") +
+  theme(plot.title = element_text(hjust = 0.5, vjust = -10))
+p
+
+ggsave(paste0(output_dir, "denovo_trg_116.png"))
+
+
+
+########### Tree plot with GCA ###########
 # Read the tree
 tree <- read.tree(tree_file)
 # Plot the tree
@@ -88,7 +127,39 @@ p <- p + ggtitle("Number of de novo genes and TRGs for each genome") +
   theme(plot.title = element_text(hjust = 0.5, vjust = -10))
 p
 
-ggsave(paste0(output_dir, "denovo_trg_116.png"))
+ggsave(paste0(output_dir, "denovo_trg_116_GCA.png"))
 
 
 
+########## Distribution of de novo genes ##########
+p <- ggplot(data, aes(x = n_denovo)) +
+  geom_histogram(binwidth = 10, fill = "#000059", color = "black") +
+  labs(title = "Distribution of de novo genes",
+       x = "Number of de novo genes",
+       y = "Number of genomes") +
+  theme(plot.title = element_text(hjust = 0.5, vjust = -10))
+p
+
+
+
+########## Distribution of de novo genes with GCA ##########
+data$status <- ifelse(rownames(data) %in% species_GCA, "GCA", "Other")
+p <- ggplot(data, aes(x = n_denovo, fill = status)) +
+  geom_histogram(binwidth = 10, alpha = 0.8) +
+  scale_fill_manual(values = c("GCA" = "#FF9999", "Other" = "#9999FF")) +
+  labs(title = "Distribution of de novo genes",
+       x = "Number of de novo genes",
+       y = "Number of genomes") +
+  theme(plot.title = element_text(hjust = 0.5, vjust = -10))
+p
+
+
+########## Distribution of intergenic lengths with GCA ##########
+intergenic$status <- ifelse(intergenic$genome %in% species_GCA, "GCA", "Other")
+p <- ggplot(intergenic, aes(x = intergenic_length, fill = status)) +
+  geom_histogram(binwidth = 100, alpha = 0.8) +
+  scale_fill_manual(values = c("GCA" = "#FF9999", "Other" = "#9999FF")) +
+  labs(title = "Distribution of intergenic lengths",
+       x = "Intergenic length (bp)",
+       y = "Number of intergenic regions") +
+  theme(plot.title = element_text(hjust = 0.5, vjust = -10))
