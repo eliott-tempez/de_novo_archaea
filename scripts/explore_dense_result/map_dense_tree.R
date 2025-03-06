@@ -4,7 +4,7 @@ library(ape)
 library(ggnewscale)
 
 trg_file <- "/home/eliott.tempez/Documents/archaea_data/dense/Thermococcus_barophilus_CH1/TRG_match_matrix.tsv"
-gene_name <- "TBCH1v1_0272.mRNA.0_elongated"
+gene_name <- "TBCH1v1_2369.mRNA.0_elongated"
 tree <- "/home/eliott.tempez/Documents/archaea_data/whole_tree.nwk"
 focal_species = "Thermococcus_barophilus_CH1"
 
@@ -37,5 +37,13 @@ p <- ggtree(tree, branch.length = "none") +
                 color = "black", fill = "yellow",
                 size = 3, stroke = 1, alpha = 1)
 p <- p + new_scale_fill()
-p <- gheatmap(p, data = trg, offset = 0.1, width = 0.1)
+
+# Define the colors for each type
+type_colors <- c("CDS" = "#e67b00", "no match" = "darkgray", "gS" = "#009e28", "gNS" = "#00799e")
+
+# Add the heatmap with the specified colors
+p <- gheatmap(p, data = trg, offset = 0.1, width = 0.03, colnames = FALSE) +
+  scale_fill_manual(values = type_colors)
+
+# Display the plot
 p
