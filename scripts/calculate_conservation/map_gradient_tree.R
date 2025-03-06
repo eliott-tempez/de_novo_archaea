@@ -19,10 +19,11 @@ conservation_db_dir <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/calc
 output_dir <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/calculate_conservation/"
 
 # Get the focal species
-parser <- ArgumentParser(description = "Map gradient tree")
-parser$add_argument('--focal_species', type = 'character', required = TRUE, help = 'Focal species identifier')
-args <- parser$parse_args()
-focal_species <- args$focal_species
+#parser <- ArgumentParser(description = "Map gradient tree")
+#parser$add_argument('--focal_species', type = 'character', required = TRUE, help = 'Focal species identifier')
+#args <- parser$parse_args()
+#focal_species <- args$focal_species
+focal_species <- "GCA_001577775@Pyrococcus_kukulkanii_NCB100"
 
 
 # Get the conservation db
@@ -112,26 +113,26 @@ p <- ggtree(tree, layout = "circular", branch.length = "none") +
 p <- p + new_scale_fill()
 p <- gheatmap(p, ssearch_db_p[, "+0 ", drop = FALSE],
               width = .05, colnames = TRUE, colnames_angle = 90, font.size = 3) +
-  scale_fill_gradient(low = "white", high = "#009E73", name = "conservation %",
-                      guide = guide_colorbar(), limits = c(0, 100))
+  scale_fill_gradient(low = "white", high = "#e67b00", name = "sens",
+                      guide = guide_colorbar(order = 1), limits = c(0, 100))
 ## Frame 1 ##
 p <- p + new_scale_fill()
 p <- gheatmap(p, ssearch_db_p[, "+1 ", drop = FALSE], offset = 1,
               width = .05, colnames = TRUE, colnames_angle = 90, font.size = 3) +
-  scale_fill_gradient(low = "white", high = "#009E73",
+  scale_fill_gradient(low = "white", high = "#e67b00",
                       guide = "none", limits = c(0, 100))
 ## Frame 2 ##
 p <- p + new_scale_fill()
 p <- gheatmap(p, ssearch_db_p[, "+2 ", drop = FALSE], offset = 2,
               width = .05, colnames = TRUE, colnames_angle = 90, font.size = 3) +
-  scale_fill_gradient(low = "white", high = "#009E73",
+  scale_fill_gradient(low = "white", high = "#e67b00",
                       guide = "none", limits = c(0, 100))
 ## Frame -0 ##
 p <- p + new_scale_fill()
 p <- gheatmap(p, ssearch_db_p[, "-0 ", drop = FALSE], offset = 3,
               width = .05, colnames = TRUE, colnames_angle = 90, font.size = 3) +
-  scale_fill_gradient(low = "white", high = "#009E73",
-                      guide = "none", limits = c(0, 100))
+  scale_fill_gradient(low = "white", high = "#009E73", name = "antisens",
+                      guide = guide_colorbar(order = 2), limits = c(0, 100))
 ## Frame -1 ##
 p <- p + new_scale_fill()
 p <- gheatmap(p, ssearch_db_p[, "-1 ", drop = FALSE], offset = 4,
