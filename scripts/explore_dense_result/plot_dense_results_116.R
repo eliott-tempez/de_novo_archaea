@@ -51,12 +51,18 @@ for (g in genomes) {
 # Normalised de novo & trg number
 data$n_trg_norm <- data$n_trg / data$n_cds * 100
 
+# Get the species with the GCA identifier
+species_GCA <- genomes[which(grepl("GCA", rownames(data)))]
+
 
 # Plot
 # Read the tree
 tree <- read.tree(tree_file)
 # Plot the tree
-p <- ggtree(tree, layout = "circular", branch.length = "none")
+p <- ggtree(tree, layout = "circular", branch.length = "none") +
+  geom_tippoint(aes(subset = (label %in% species_GCA)), shape = 23,
+                color = "black", fill = "yellow",
+                size = 3, stroke = 1, alpha = 1)
 # Add the heatmaps
 ## De novo ##
 p <- p + new_scale_fill()
@@ -83,3 +89,6 @@ p <- p + ggtitle("Number of de novo genes and TRGs for each genome") +
 p
 
 ggsave(paste0(output_dir, "denovo_trg_116.png"))
+
+
+
