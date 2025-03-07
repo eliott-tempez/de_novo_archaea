@@ -5,7 +5,7 @@ from Bio import SeqIO
 
 DATA_DIR = "/home/eliott.tempez/Documents/archaea_data/complete_122/"
 GENOMES_LIST = "/home/eliott.tempez/Documents/M2_Stage_I2BC/scripts/genera_archaea/genomes_list.txt"
-OUTPUT_FILE = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/explore_dense_result/intergenic_lengths.tsv"
+OUTPUT_FILE = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/explore_dense_results/intergenic_lengths.tsv"
 
 
 
