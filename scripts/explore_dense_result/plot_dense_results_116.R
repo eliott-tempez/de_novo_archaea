@@ -20,7 +20,7 @@ dense_dir <- "/home/eliott.tempez/Documents/archaea_data/dense/"
 cds_dir <- "/home/eliott.tempez/Documents/archaea_data/complete_122/CDS/"
 genomes_list <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/scripts/genera_archaea/genomes_list.txt"
 output_dir <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/explore_dense_results/"
-intergenic_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/explore_dense_result/intergenic_lengths.tsv"
+intergenic_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/explore_dense_results/intergenic_lengths.tsv"
 
 
 # Read genomes list
@@ -56,7 +56,7 @@ data$n_trg_norm <- data$n_trg / data$n_cds * 100
 species_GCA <- genomes[which(grepl("GCA", rownames(data)))]
 
 # Intergenic mean lengths
-intergenic <- read.table(intergenic_file, header = TRUE, sep = "\t")
+intergenic <- read.table(intergenic_file, header = TRUE, sep = "\t", row.names = 1)
 
 
 
@@ -90,7 +90,7 @@ p <- p + ggtitle("Number of de novo genes and TRGs for each genome") +
   theme(plot.title = element_text(hjust = 0.5, vjust = -10))
 p
 
-ggsave(paste0(output_dir, "denovo_trg_116.png"))
+#ggsave(paste0(output_dir, "denovo_trg_116.png"))
 
 
 
@@ -127,39 +127,68 @@ p <- p + ggtitle("Number of de novo genes and TRGs for each genome") +
   theme(plot.title = element_text(hjust = 0.5, vjust = -10))
 p
 
-ggsave(paste0(output_dir, "denovo_trg_116_GCA.png"))
+#ggsave(paste0(output_dir, "denovo_trg_116_GCA.png"))
 
 
 
 ########## Distribution of de novo genes ##########
-p <- ggplot(data, aes(x = n_denovo)) +
-  geom_histogram(binwidth = 10, fill = "#000059", color = "black") +
-  labs(title = "Distribution of de novo genes",
+ggplot(data, aes(x = n_denovo)) +
+  geom_histogram(fill = "#8261dd", color = "black") +
+  labs(title = "Distribution of the number of de novo genes\nfound for each genome",
        x = "Number of de novo genes",
        y = "Number of genomes") +
   theme(plot.title = element_text(hjust = 0.5, vjust = -10))
-p
+#ggsave(paste0(output_dir, "denovo_distribution_116.png"))
 
 
 
 ########## Distribution of de novo genes with GCA ##########
 data$status <- ifelse(rownames(data) %in% species_GCA, "GCA", "Other")
-p <- ggplot(data, aes(x = n_denovo, fill = status)) +
-  geom_histogram(binwidth = 10, alpha = 0.8) +
-  scale_fill_manual(values = c("GCA" = "#FF9999", "Other" = "#9999FF")) +
-  labs(title = "Distribution of de novo genes",
-       x = "Number of de novo genes",
+# Divide in 2 dataframes
+data_GCA <- data[data$status == "GCA", ]
+data_other <- data[data$status == "Other", ]
+# Plot
+ggplot() +
+  geom_histogram(data = data_GCA, aes(x = n_denovo, fill = "GCA"), alpha = 0.6, color = "black") +
+  geom_histogram(data = data_other, aes(x = n_denovo, fill = "Other"), alpha = 0.6, color = "black") +
+  scale_fill_manual(values = c("GCA" = "#5370f0", "Other" = "#e76ba5"), name = NULL) +
+  labs(title = "Distribution of the number of de novo genes\nfound for each genome",
+        x = "Number of de novo genes",
+        y = "Number of genomes") +
+  theme(plot.title = element_text(hjust = 0.5, vjust = -10))
+ggsave(paste0(output_dir, "denovo_distribution_116_GCA.png"))
+
+
+
+
+########## Distribution of intergenic lengths ##########
+ggplot(intergenic, aes(x = mean_intergenic_length)) +
+  geom_histogram(fill = "#8261dd", color = "black") +
+  labs(title = "Distribution of the mean intergenic lengths",
+       x = "Mean intergenic length (bp)",
        y = "Number of genomes") +
   theme(plot.title = element_text(hjust = 0.5, vjust = -10))
-p
+ggsave(paste0(output_dir, "intergenic_distribution_116.png"))
+
+
+
+
+
+
 
 
 ########## Distribution of intergenic lengths with GCA ##########
-intergenic$status <- ifelse(intergenic$genome %in% species_GCA, "GCA", "Other")
-p <- ggplot(intergenic, aes(x = intergenic_length, fill = status)) +
-  geom_histogram(binwidth = 100, alpha = 0.8) +
-  scale_fill_manual(values = c("GCA" = "#FF9999", "Other" = "#9999FF")) +
-  labs(title = "Distribution of intergenic lengths",
-       x = "Intergenic length (bp)",
-       y = "Number of intergenic regions") +
+intergenic$status <- ifelse(rownames(intergenic) %in% species_GCA, "GCA", "Other")
+# Divide in 2 dataframes
+intergenic_GCA <- intergenic[intergenic$status == "GCA", ]
+intergenic_other <- intergenic[intergenic$status == "Other", ]
+# Plot
+ggplot() +
+  geom_histogram(data = intergenic_GCA, aes(x = mean_intergenic_length, fill = "GCA"), alpha = 0.6, color = "black") +
+  geom_histogram(data = intergenic_other, aes(x = mean_intergenic_length, fill = "Other"), alpha = 0.6, color = "black") +
+  scale_fill_manual(values = c("GCA" = "#5370f0", "Other" = "#e76ba5"), name = NULL) +
+  labs(title = "Distribution of the mean intergenic lengths",
+       x = "Mean intergenic length (bp)",
+       y = "Number of genomes") +
   theme(plot.title = element_text(hjust = 0.5, vjust = -10))
+ggsave(paste0(output_dir, "intergenic_distribution_116_GCA.png"))
