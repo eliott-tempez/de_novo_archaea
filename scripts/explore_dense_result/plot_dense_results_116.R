@@ -83,14 +83,14 @@ p <- p + new_scale_fill()
 p <- gheatmap(p, data[, "n_trg_norm", drop = FALSE], offset = 3,
               width = .05, colnames = FALSE) +
   scale_fill_gradient(low = "#009E73", high = "#6b00b2", name = "TRGs\nnormalised (%)",
-                      guide = guide_colorbar(order = 3), limits = c(0, 100))
+                      guide = guide_colorbar(order = 3))
 
 # Add the title
 p <- p + ggtitle("Number of de novo genes and TRGs for each genome") +
   theme(plot.title = element_text(hjust = 0.5, vjust = -10))
 p
 
-#ggsave(paste0(output_dir, "denovo_trg_116.png"))
+ggsave(paste0(output_dir, "denovo_trg_116.png"))
 
 
 
@@ -120,14 +120,14 @@ p <- p + new_scale_fill()
 p <- gheatmap(p, data[, "n_trg_norm", drop = FALSE], offset = 3,
               width = .05, colnames = FALSE) +
   scale_fill_gradient(low = "#009E73", high = "#6b00b2", name = "TRGs\nnormalised (%)",
-                      guide = guide_colorbar(order = 3), limits = c(0, 100))
+                      guide = guide_colorbar(order = 3))
 
 # Add the title
 p <- p + ggtitle("Number of de novo genes and TRGs for each genome") +
   theme(plot.title = element_text(hjust = 0.5, vjust = -10))
 p
 
-#ggsave(paste0(output_dir, "denovo_trg_116_GCA.png"))
+ggsave(paste0(output_dir, "denovo_trg_116_GCA.png"))
 
 
 
