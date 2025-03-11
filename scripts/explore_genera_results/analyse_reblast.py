@@ -6,7 +6,7 @@ RANKS_LETTERS = ["k", "p", "c", "o", "f", "g", "s"]
 RANK = "superkingdom"
 
 # Filenames
-INPUT = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/explore_genera_results/reblast_output_8.tsv"
+INPUT = "/home/eliott.tempez/Documents/archaea_data/re_blast_1000/reblast_output_1000.tsv"
 TAXIDS = "/home/eliott.tempez/Documents/archaea_data/re_blast_1000/ncbi_lineages_2025-02-17.csv"
 
 RANK_LETTER = RANKS_LETTERS[RANKS.index(RANK)]
@@ -55,7 +55,6 @@ for i, chunk in enumerate(pd.read_csv(INPUT, sep="\t", header=None, chunksize=ch
 print("Saving results...")
 with open(OUTPUT, "w") as f:
     for query, ranks in rank_count.items():
-        print(f"{query}\t" + ";".join(f"{rank}:{count}" for rank, count in ranks.items()))
-        #f.write(f"{query}\t" + ";".join(f"{rank}:{count}" for rank, count in ranks.items()) + "\n")
+        f.write(f"{query}\t" + ";".join(f"{rank}:{count}" for rank, count in ranks.items()) + "\n")
 
 print("Processing complete.")
