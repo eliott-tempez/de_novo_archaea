@@ -92,10 +92,15 @@ plt.yscale("log")
 plt.xlabel("Class")
 plt.ylabel("Count")
 plt.title(f"Distribution of the number of matches per class\nfor {len(archaea_prop_99)} genes with > 99% of Archaea matches")
-plt.show()
+#plt.show()
 
 
 # Genes for which we only have Archaea matches
 archaea_only = data[data["class"] == "Archaea"]
 archaea_only = archaea_only[archaea_only["proportion"] == 1]
 print(f"\nThere are {len(archaea_only)} genes for which we only have Archaea matches")
+
+# Export the gene names for which we have > 99% of Archaea matches
+with open("/home/eliott.tempez/Documents/M2_Stage_I2BC/results/explore_genera_results/archaea_prop_99_genes.txt", "w") as f:
+    for gene in archaea_prop_99["query"].unique():
+        f.write(f"{gene}\n")
