@@ -26,3 +26,4 @@ Ce stage a été effectué de Janvier 2025 à Juillet 2025 au sein de l'Institut
 - Exploration "à la main" des résultats de Dense (`explore_dense_results`)
 - Exploration des résultats de GenEra (`explore_genera_results`)
 - Calcul de la conservation de différents types de matériels génétiques à travers l'arbre phylogénétique (`calculate_conservation`)
+- Ré-annotation des génomes (`re_annotate_genomes`)
