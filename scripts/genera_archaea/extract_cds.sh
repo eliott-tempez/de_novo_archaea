@@ -1,10 +1,10 @@
-#!/bin/sh
+#!/bin/bash
 
 ########## Parameters ##########
 
 #PBS -N extract_CDS
 #PBS -q bim
-#PBS -l ncpus=4 -l host=node04 -l mem=16gb -l walltime=10:00:00
+#PBS -l ncpus=4 -l host=node04 -l mem=64gb -l walltime=10:00:00
 #PBS -o /home/eliott.tempez/extract_cds_output.log
 #PBS -e /home/eliott.tempez/extract_cds_error.log
 
@@ -23,8 +23,6 @@ OUT_DIR=/datas/ELIOTT/archaea_data/reannotated_CDS/
 # Set up environment
 source /home/eliott.tempez/miniconda3/bin/activate phylostrat
 cd /datas/ELIOTT/scripts/
-# copy scripts
-cp /home/eliott.tempez/dense/bin/discard_CDS_missing_terminal_stop_codon.sh .
 
 
 ########## Extract CDS ##########
@@ -65,4 +63,4 @@ do
 done
 
 # Copy output 
-cp ${OUT_DIR}/* /store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/complete_122/reannotated_CDS/
+cp ${OUT_DIR}* /store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/complete_122/reannotated_CDS/
