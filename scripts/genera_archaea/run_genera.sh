@@ -28,8 +28,8 @@ echo $archaea >> $LOG_OUTPUT
 TAXID=$(grep $archaea $TAXID_FILE | cut -f2 -d$'\t')
 echo "Taxid: $TAXID" >> $LOG_OUTPUT
 # Get filenames
-FASTA_CDS=/datas/ELIOTT/archaea_data/genera/CDS/${archaea}_CDS.faa
-GFF_FILE=/datas/ELIOTT/archaea_data/genome/${archaea}.gff3
+FASTA_CDS=/datas/ELIOTT/archaea_data/reannotated_CDS/${archaea}_CDS.faa
+GFF_FILE=/datas/ELIOTT/archaea_data/reannotated_gff_75/${archaea}.gff3
 # Create temp taxid file with all other fasta paths
 echo "Creating temp taxid file..." >> $LOG_OUTPUT
 TAXID_FILE_FASTA=/datas/ELIOTT/archaea_data/genera/taxid_tmp.csv
@@ -40,7 +40,7 @@ mkdir -p $OUT_DIR/out/${archaea}
 
 # Run GenEra
 echo "Running GenEra..." >> $LOG_OUTPUT
-genEra -t $TAXID -q $FASTA_CDS -a $TAXID_FILE_FASTA -n 32 -b $NR -d $TAXDUMP -o ${OUT_DIR}out/${archaea}/ >> $LOG_OUTPUT 2>> $LOG_ERROR
+genEra -t $TAXID -q $FASTA_CDS -a $TAXID_FILE_FASTA -n 16 -b $NR -o ${OUT_DIR}out/${archaea}/ >> $LOG_OUTPUT 2>> $LOG_ERROR
 
 # Deactivate conda environment
 conda deactivate
