@@ -12,12 +12,12 @@ job_id=$(
     -o /home/eliott.tempez/genera_output_$first_species.log \
     -e /home/eliott.tempez/genera_error_$first_species.log \
     -q bim \
-    -l ncpus=32 -l host=node04 -l mem=128gb -l walltime=300:00:00 \
+    -l ncpus=32 -l host=node04 -l mem=128gb -l walltime=150:00:00 \
     run_genera.sh
     )
 
 # Submit the rest of the jobs with dependency on the previous job
-for ((i = 1; i < ${#archaeas[@]}; i++)); do
+for ((i = 1; i < 60; i++)); do
     species=${archaeas[$i]}
     job_id=$(
         qsub \
@@ -27,7 +27,7 @@ for ((i = 1; i < ${#archaeas[@]}; i++)); do
         -o /home/eliott.tempez/genera_output_$species.log \
         -e /home/eliott.tempez/genera_error_$species.log \
         -q bim \
-        -l ncpus=32 -l host=node04 -l mem=128gb -l walltime=300:00:00 \
+        -l ncpus=32 -l host=node04 -l mem=128gb -l walltime=150:00:00 \
         run_genera.sh
         )
 done
