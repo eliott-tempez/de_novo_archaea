@@ -1,0 +1,234 @@
+Gene: TBCH5v1_RS00395.mRNA.0
+Number of Archaea matches: 696
+Number of non-Archaea matches: 5
+Archaea LCA: 2157 (Domain Archaea)
+
+
+Gene: TBCH5v1_RS01295.mRNA.0
+Number of Archaea matches: 111
+Number of non-Archaea matches: 1
+Archaea LCA: 183968 (Class Thermococci)
+
+
+Gene: TBCH5v1_RS01660.mRNA.0
+Number of Archaea matches: 109
+Number of non-Archaea matches: 1
+Archaea LCA: 183968 (Class Thermococci)
+
+
+Gene: TBCH5v1_RS02125.mRNA.0
+Number of Archaea matches: 201
+Number of non-Archaea matches: 1
+Archaea LCA: 2157 (Domain Archaea)
+
+
+Gene: TBCH5v1_RS02135.mRNA.0
+Number of Archaea matches: 107
+Number of non-Archaea matches: 1
+Archaea LCA: 183968 (Class Thermococci)
+
+
+Gene: TBCH5v1_RS02185.mRNA.0
+Number of Archaea matches: 50
+Number of non-Archaea matches: 0
+Archaea LCA: 183968 (Class Thermococci)
+
+
+Gene: TBCH5v1_RS02960.mRNA.0
+Number of Archaea matches: 158
+Number of non-Archaea matches: 1
+Archaea LCA: 183968 (Class Thermococci)
+
+
+Gene: TBCH5v1_RS03435.mRNA.0
+Number of Archaea matches: 543
+Number of non-Archaea matches: 3
+Archaea LCA: 2157 (Domain Archaea)
+
+
+Gene: TBCH5v1_RS03695.mRNA.0
+Number of Archaea matches: 161
+Number of non-Archaea matches: 1
+Archaea LCA: 2157 (Domain Archaea)
+
+
+Gene: TBCH5v1_RS04045.mRNA.0
+Number of Archaea matches: 1903
+Number of non-Archaea matches: 17
+Archaea LCA: 2157 (Domain Archaea)
+
+
+Gene: TBCH5v1_RS04755.mRNA.0
+Number of Archaea matches: 271
+Number of non-Archaea matches: 1
+Archaea LCA: 2157 (Domain Archaea)
+
+
+Gene: TBCH5v1_RS04985.mRNA.0
+Number of Archaea matches: 723
+Number of non-Archaea matches: 6
+Archaea LCA: 28890 (Phylum Methanobacteriota)
+
+
+Gene: TBCH5v1_RS05265.mRNA.0
+Number of Archaea matches: 116
+Number of non-Archaea matches: 1
+Archaea LCA: 2157 (Domain Archaea)
+
+
+Gene: TBCH5v1_RS05470.mRNA.0
+Number of Archaea matches: 96
+Number of non-Archaea matches: 0
+Archaea LCA: 183968 (Class Thermococci)
+
+
+Gene: TBCH5v1_RS05670.mRNA.0
+Number of Archaea matches: 110
+Number of non-Archaea matches: 1
+Archaea LCA: 183968 (Class Thermococci)
+
+
+Gene: TBCH5v1_RS05935.mRNA.0
+Number of Archaea matches: 41
+Number of non-Archaea matches: 0
+Archaea LCA: 2157 (Domain Archaea)
+
+
+Gene: TBCH5v1_RS06090.mRNA.0
+Number of Archaea matches: 156
+Number of non-Archaea matches: 0
+Archaea LCA: 183968 (Class Thermococci)
+
+
+Gene: TBCH5v1_RS06245.mRNA.0
+Number of Archaea matches: 83
+Number of non-Archaea matches: 0
+Archaea LCA: 28890 (Phylum Methanobacteriota)
+
+
+Gene: TBCH5v1_RS06485.mRNA.0
+Number of Archaea matches: 112
+Number of non-Archaea matches: 1
+Archaea LCA: 183968 (Class Thermococci)
+
+
+Gene: TBCH5v1_RS06725.mRNA.0
+Number of Archaea matches: 100
+Number of non-Archaea matches: 0
+Archaea LCA: 183968 (Class Thermococci)
+
+
+Gene: TBCH5v1_RS07160.mRNA.0
+Number of Archaea matches: 730
+Number of non-Archaea matches: 5
+Archaea LCA: 28890 (Phylum Methanobacteriota)
+
+
+Gene: TBCH5v1_RS07235.mRNA.0
+Number of Archaea matches: 210
+Number of non-Archaea matches: 2
+Archaea LCA: 2157 (Domain Archaea)
+
+
+Gene: TBCH5v1_RS07445.mRNA.0
+Number of Archaea matches: 646
+Number of non-Archaea matches: 6
+Archaea LCA: 2157 (Domain Archaea)
+
+
+Gene: TBCH5v1_RS07575.mRNA.0
+Number of Archaea matches: 665
+Number of non-Archaea matches: 3
+Archaea LCA: 2157 (Domain Archaea)
+
+
+Gene: TBCH5v1_RS08215.mRNA.0
+Number of Archaea matches: 739
+Number of non-Archaea matches: 6
+Archaea LCA: 28890 (Phylum Methanobacteriota)
+
+
+Gene: TBCH5v1_RS08840.mRNA.0
+Number of Archaea matches: 43
+Number of non-Archaea matches: 0
+Archaea LCA: 183968 (Class Thermococci)
+
+
+Gene: TBCH5v1_RS09130.mRNA.0
+Number of Archaea matches: 683
+Number of non-Archaea matches: 5
+Archaea LCA: 2157 (Domain Archaea)
+
+
+Gene: TBCH5v1_RS09365.mRNA.0
+Number of Archaea matches: 120
+Number of non-Archaea matches: 1
+Archaea LCA: 28890 (Phylum Methanobacteriota)
+
+
+Gene: TBCH5v1_RS10015.mRNA.0
+Number of Archaea matches: 108
+Number of non-Archaea matches: 1
+Archaea LCA: 183968 (Class Thermococci)
+
+
+Gene: TBCH5v1_RS10450.mRNA.0
+Number of Archaea matches: 252
+Number of non-Archaea matches: 1
+Archaea LCA: 2157 (Domain Archaea)
+
+
+Gene: TBCH5v1_RS10495.mRNA.0
+Number of Archaea matches: 1738
+Number of non-Archaea matches: 13
+Archaea LCA: 2157 (Domain Archaea)
+
+
+Gene: TBCH5v1_RS10770.mRNA.0
+Number of Archaea matches: 104
+Number of non-Archaea matches: 1
+Archaea LCA: 2157 (Domain Archaea)
+
+
+Gene: TBCH5v1_RS11020.mRNA.0
+Number of Archaea matches: 230
+Number of non-Archaea matches: 2
+Archaea LCA: 2157 (Domain Archaea)
+
+
+Gene: TBCH5v1_RS11085.mRNA.0
+Number of Archaea matches: 1468
+Number of non-Archaea matches: 11
+Archaea LCA: 2157 (Domain Archaea)
+
+
+Gene: TBCH5v1_RS11670.mRNA.0
+Number of Archaea matches: 222
+Number of non-Archaea matches: 1
+Archaea LCA: 2157 (Domain Archaea)
+
+
+Gene: TBCH5v1_RS11775.mRNA.0
+Number of Archaea matches: 100
+Number of non-Archaea matches: 1
+Archaea LCA: 183968 (Class Thermococci)
+
+
+Gene: TBCH5v1_RS12950.mRNA.0
+Number of Archaea matches: 166
+Number of non-Archaea matches: 1
+Archaea LCA: 183968 (Class Thermococci)
+
+
+Gene: TBCH5v1_RS12975.mRNA.0
+Number of Archaea matches: 679
+Number of non-Archaea matches: 6
+Archaea LCA: 28890 (Phylum Methanobacteriota)
+
+
+Gene: TBCH5v1_RS12980.mRNA.0
+Number of Archaea matches: 757
+Number of non-Archaea matches: 5
+Archaea LCA: 28890 (Phylum Methanobacteriota)
+
+
