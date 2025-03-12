@@ -2,9 +2,9 @@
 
 ########## Parameters ##########
 
-#PBS -N CDS_archaea
+#PBS -N extract_CDS
 #PBS -q bim
-#PBS -l ncpus=4 -l host=node04 -l mem=128gb -l walltime=200:00:00
+#PBS -l ncpus=4 -l host=node04 -l mem=16gb -l walltime=10:00:00
 #PBS -o /home/eliott.tempez/extract_cds_output.log
 #PBS -e /home/eliott.tempez/extract_cds_error.log
 
@@ -13,28 +13,34 @@ LOG_OUTPUT=/home/eliott.tempez/extract_cds_output.log
 LOG_ERROR=/home/eliott.tempez/extract_cds_error.log
 
 # Data files
-TAXID_FILE=/datas/ELIOTT/archaea_data/whole_set/taxid.csv
+TAXID_FILE=/datas/ELIOTT/archaea_data/taxid.csv
+GENOMES_FOLDER=/datas/ELIOTT/archaea_data/fasta_renamed/
+GFF_FOLDER=/datas/ELIOTT/archaea_data/reannotated_gff_75/
 
 # Output dir
-OUT_DIR=/datas/ELIOTT/archaea_data/whole_set/genera/
+OUT_DIR=/datas/ELIOTT/archaea_data/reannotated_CDS/
 
 # Set up environment
 source /home/eliott.tempez/miniconda3/bin/activate phylostrat
 cd /datas/ELIOTT/scripts/
-
+# copy scripts
+cp /home/eliott.tempez/dense/bin/discard_CDS_missing_terminal_stop_codon.sh .
 
 
 ########## Extract CDS ##########
 
-for file in ../archaea_data/whole_set/genome/*.fa; do
+for file in $GENOMES_FOLDER*.fa
+do
     ARCHAEA=$(basename $file .fa)
     echo $ARCHAEA >> $LOG_OUTPUT
     # Get taxid
     TAXID=$(grep $ARCHAEA $TAXID_FILE | cut -d, -f2)
 
     # Get filenames
-    FASTA_FILE=/datas/ELIOTT/archaea_data/whole_set/genome/${ARCHAEA}.fa
-    GFF_FILE=/datas/ELIOTT/archaea_data/whole_set/genome/${ARCHAEA}.gff3
+    FASTA_FILE=$file
+    GFF_FILE=$GFF_FOLDER${ARCHAEA}.gff3
+    # Create output dir
+    mkdir -p ${OUT_DIR}
 
     # fai index
     echo "Indexing $FASTA_FILE..." >> $LOG_OUTPUT
@@ -58,3 +64,5 @@ for file in ../archaea_data/whole_set/genome/*.fa; do
     echo "done!" >> $LOG_OUTPUT
 done
 
+# Copy output 
+cp ${OUT_DIR}/* /store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/complete_122/reannotated_CDS/
