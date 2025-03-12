@@ -54,11 +54,11 @@ do
     # Extract the genomic CDS.
     # -V discard any mRNAs with CDS having in-frame stop codons
     # -x : write a fasta file with spliced CDS for each GFF transcript
-    gffread -V -g $FASTA_FILE -x ${OUT_DIR}CDS/${ARCHAEA}_CDS.fna gff_filterB >> $LOG_OUTPUT 2>> $LOG_ERROR
+    gffread -V -g $FASTA_FILE -x ${OUT_DIR}${ARCHAEA}_CDS.fna gff_filterB >> $LOG_OUTPUT 2>> $LOG_ERROR
     rm gff_filterA gff_filterB
     # Remove CDS missing a terminal stop codon and get a translated version of the FASTA.
     echo "Discarding CDS missing terminal stop codon..." >> $LOG_OUTPUT
-    /datas/ELIOTT/scripts/discard_CDS_missing_terminal_stop_codon.sh ${OUT_DIR}CDS/${ARCHAEA}_CDS.fna >> $LOG_OUTPUT 2>> $LOG_ERROR
+    /datas/ELIOTT/scripts/discard_CDS_missing_terminal_stop_codon.sh ${OUT_DIR}${ARCHAEA}_CDS.fna >> $LOG_OUTPUT 2>> $LOG_ERROR
     echo "done!" >> $LOG_OUTPUT
 done
 
