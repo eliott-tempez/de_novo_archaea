@@ -33,7 +33,7 @@ GFF_FILE=/datas/ELIOTT/archaea_data/reannotated_gff_75/${archaea}.gff3
 # Create temp taxid file with all other fasta paths
 echo "Creating temp taxid file..." >> $LOG_OUTPUT
 TAXID_FILE_FASTA=/datas/ELIOTT/archaea_data/genera/taxid_tmp.csv
-grep -v $archaea $TAXID_FILE | awk -F'\t' '{print "/datas/ELIOTT/archaea_data/genera/CDS/" $1 "_CDS.faa \t " $2}' > $TAXID_FILE_FASTA
+grep -v $archaea $TAXID_FILE | awk -F'\t' '{print "/datas/ELIOTT/archaea_data/reannotated_CDS/" $1 "_CDS.faa \t " $2}' > $TAXID_FILE_FASTA
 echo "Temp taxid file created" >> $LOG_OUTPUT
 # Create output dir
 mkdir -p $OUT_DIR/out/${archaea}
