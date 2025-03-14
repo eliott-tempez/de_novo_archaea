@@ -60,11 +60,11 @@ p <- gheatmap(p, data[, "genome_size", drop = FALSE], width = 0.05, colnames = F
     scale_fill_gradient(name = "Genome size (Mb)", guide = guide_colorbar(order = 1), low = "#56B4E9", high = "#E69F00")
 # Number of CDS
 p <- p + new_scale_fill()
-p <- gheatmap(p, data[, "n_cds", drop = FALSE], offset = 2, width = 0.05, colnames = FALSE) + 
+p <- gheatmap(p, data[, "n_cds", drop = FALSE], offset = 1, width = 0.05, colnames = FALSE) + 
     scale_fill_gradient(name = "Number of CDS", guide = guide_colorbar(order = 2), low = "#F0E442", high = "#009E73")
 # GC content
 p <- p + new_scale_fill()
-p <- gheatmap(p, data[, "gc_percent", drop = FALSE], offset = 4, width = 0.05, colnames = FALSE) + 
+p <- gheatmap(p, data[, "gc_percent", drop = FALSE], offset = 3, width = 0.05, colnames = FALSE) + 
     scale_fill_gradient(name = "GC content (%)", guide = guide_colorbar(order = 3), low = "#0072B2", high = "#CC79A7")
 p
 
