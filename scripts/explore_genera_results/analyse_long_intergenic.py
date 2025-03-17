@@ -152,12 +152,13 @@ if __name__ == "__main__":
         cds_len = [len(seq) for seq in cds_seqs]
         orf_lens = [len(intergenic_orfs[orf]["seq"]) for orf in intergenic_orfs]
         first_quartile_len_cds = np.percentile(cds_len, 25)
+        median_len_orfs = np.median(orf_lens)
         # Calculate the common bin edges
         min_len = min(min(cds_len), min(orf_lens))
         max_len = max(max(cds_len), max(orf_lens))
         bins = np.linspace(min_len, max_len, 50)
         # Plot the histograms with the common bins
-        plt.hist(orf_lens, bins=bins, alpha=1, label="intergenic ORFs")
+        """plt.hist(orf_lens, bins=bins, alpha=1, label="intergenic ORFs")
         plt.hist(cds_len, bins=bins, alpha=0.6, label="CDSs")
         # Add a vertical line for first quartile
         plt.axvline(first_quartile_len_cds, color="red", linestyle="--", label="First quartile of CDS lengths")
@@ -165,18 +166,20 @@ if __name__ == "__main__":
         plt.xlabel("Length (bp)")
         plt.ylabel("Number")
         plt.title("Distribution of intergenic ORFs and CDS lengths")
-        #plt.show()
+        plt.show()"""
 
 
         # Entropy calculation
         cds_entropies = [get_entropy(seq) for seq in cds_seqs]
         orf_entropies = [get_entropy(intergenic_orfs[orf]["seq"]) for orf in intergenic_orfs]
+        orf_entropies_small = [get_entropy(intergenic_orfs[orf]["seq"]) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) < median_len_orfs]
+        orf_entropies_long = [get_entropy(intergenic_orfs[orf]["seq"]) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) >= median_len_orfs]
         # Calculate the common bin edges
         min_entropy = min(min(cds_entropies), min(orf_entropies))
         max_entropy = max(max(cds_entropies), max(orf_entropies))
         bins = np.linspace(min_entropy, max_entropy, 50)
         first_quartile_entropy_cds = np.percentile(cds_entropies, 25)
-        # Plot the histograms with the common bins
+        """# Plot the histograms with the common bins
         plt.hist(orf_entropies, bins=bins, alpha=1, label="intergenic ORFs")
         plt.hist(cds_entropies, bins=bins, alpha=0.6, label="CDSs")
         # Add a vertical line for first quartile
@@ -185,7 +188,16 @@ if __name__ == "__main__":
         plt.xlabel("Shannon Entropy")
         plt.ylabel("Number")
         plt.title("Distribution of intergenic ORFs and CDS entropies")
-        #plt.show()
+        plt.show()"""
+
+        # Split by size
+        plt.hist(orf_entropies_small, bins=bins, alpha=0.5, label="Small intergenic ORFs")
+        plt.hist(orf_entropies_long, bins=bins, alpha=0.5, label="Long intergenic ORFs")
+        plt.legend()
+        plt.xlabel("Shannon Entropy")
+        plt.ylabel("Number")
+        plt.title("Distribution of intergenic ORFs and CDS entropies")
+        plt.show()
 
 
         # Get the interesting ORFs
