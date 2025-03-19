@@ -197,7 +197,7 @@ if __name__ == "__main__":
 
 
     # Chose a random genome to do the analysis on
-    genome = random.sample(genomes, 10)
+    genome = random.sample(genomes, 1)[0]
 
     
     # Get the intergenic sequences
