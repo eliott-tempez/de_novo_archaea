@@ -17,7 +17,8 @@ LOG_ERROR=/home/eliott.tempez/genera_error_$archaea.log
 
 # Set up environment
 source /home/eliott.tempez/miniconda3/bin/activate phylostrat
-cd /datas/ELIOTT/scripts/
+mkdir -p /datas/ELIOTT/scripts/${archaea}
+cd /datas/ELIOTT/scripts/${archaea}
 
 
 ########## Run GenEra ##########
@@ -45,4 +46,5 @@ genEra -t $TAXID -q $FASTA_CDS -a $TAXID_FILE_FASTA -n 32 -b $NR -r /datas/ELIOT
 # Deactivate conda environment
 conda deactivate
 rm $TAXID_FILE_FASTA
+rm -r /datas/ELIOTT/scripts/${archaea}
 echo -e "Job completed successfully\n" >> $LOG_OUTPUT
