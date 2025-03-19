@@ -2,7 +2,7 @@ import os
 
 FASTA_FOLDER = "/home/eliott.tempez/Documents/archaea_data/complete_122/fasta_renamed/"
 GFF_folder = "/home/eliott.tempez/Documents/archaea_data/complete_122/gff3/"
-CDS_folder = "/home/eliott.tempez/Documents/archaea_data/dense/GCA_000195935@Pyrococcus_abyssi_GE5/CDS/"
+CDS_folder = "/home/eliott.tempez/Documents/archaea_data/complete_122/CDS/"
 EXTENDED_TRG_folder = "/home/eliott.tempez/Documents/archaea_data/complete_122/multielongated_TRGS/"
 TMP_DIR = os.path.join(os.getcwd(), "tmp/")
 
