@@ -1,0 +1,8 @@
+[mclIO] writing </datas/ELIOTT/scripts/tmp_523850_18217/tmp_523850.mci>
+.......................................
+[mclIO] wrote native interchange 1995x1995 matrix with 4659 entries to stream </datas/ELIOTT/scripts/tmp_523850_18217/tmp_523850.mci>
+[mclIO] wrote 1995 tab entries to stream </datas/ELIOTT/scripts/tmp_523850_18217/tmp_523850.tab>
+[mcxload] tab has 1995 entries
+[mclIO] reading </datas/ELIOTT/scripts/tmp_523850_18217/tmp_523850.mcl>
+.......................................
+[mclIO] read native interchange 1995x1434 matrix with 1995 entries
