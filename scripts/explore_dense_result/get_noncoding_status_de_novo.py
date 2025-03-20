@@ -6,6 +6,7 @@ from Bio import SeqIO
 from Bio.Seq import Seq
 import tempfile
 import subprocess
+import numpy as np
 
 
 
@@ -65,12 +66,13 @@ def get_denovo_info(genome):
             if denovo_dict[denovo]["ancestor_sp"] == ancestor:
                 tblastn_df_denov = tblastn_df[tblastn_df["qseqid"] == f"{denovo}_elongated"].reset_index(drop=True)
                 # Extract the blast result
+                strand = "+" if tblastn_df_denov.iloc[0]["sstart"] < tblastn_df_denov.iloc[0]["send"] else "-"
                 contig = tblastn_df_denov.iloc[0]["sseqid"]
-                start_loci = tblastn_df_denov.iloc[0]["sstart"]
-                end_loci = tblastn_df_denov.iloc[0]["send"]
-                denovo_dict[denovo]["loci"] = [contig, int(start_loci), int(end_loci)]
+                start_loci = tblastn_df_denov.iloc[0]["sstart"] - 1 if strand == "+" else tblastn_df_denov.iloc[0]["send"] - 1
+                end_loci = tblastn_df_denov.iloc[0]["send"] if strand == "+" else tblastn_df_denov.iloc[0]["sstart"]
+                denovo_dict[denovo]["loci"] = [contig, int(start_loci), int(end_loci), strand]
                 # Get the part of the de novo gene that matched
-                denovo_dict[denovo]["qstart"] = tblastn_df_denov.iloc[0]["qstart"]
+                denovo_dict[denovo]["qstart"] = tblastn_df_denov.iloc[0]["qstart"] - 1
                 denovo_dict[denovo]["qend"] = tblastn_df_denov.iloc[0]["qend"]
 
     return denovo_dict
@@ -85,10 +87,10 @@ def get_CDS_info(genome):
     gff_df.columns = ["seqid", "source", "type", "start", "end", "score", "strand", "phase", "attributes"]
     cds_df = gff_df[gff_df["type"] == "CDS"].reset_index(drop=True)
     for row in cds_df.itertuples():
-        contig = row.seqid
-        start = row.start
-        end = row.end
         strand = row.strand
+        contig = row.seqid
+        start = row.start - 1
+        end = row.end
         seq = ""
         fa_file = os.path.join(DATA_DIR, "fasta_renamed", genome + ".fa")
         for record in SeqIO.parse(fa_file, "fasta"):
@@ -105,7 +107,7 @@ def get_CDS_info(genome):
 def get_sequence_from_loci(genome, contig, start, end):
     fa_file = os.path.join(DATA_DIR, "fasta_renamed", genome + ".fa")
     for record in SeqIO.parse(fa_file, "fasta"):
-        if record.name == contig:
+        if str(record.name) == str(contig):
             return record.seq[start:end]
     return None
 
@@ -113,9 +115,8 @@ def get_sequence_from_loci(genome, contig, start, end):
 
 def get_frame_from_blast(query, subject):
     """Get the frame of the query sequence in the subject sequence"""
-    print(query)
-    print(subject)
     # Create temp files
+    print(query, subject)
     with tempfile.NamedTemporaryFile(mode='w', delete=False) as query_file:
         query_file.write(f">query\n{query}")
         query_file_name = query_file.name
@@ -144,80 +145,137 @@ def get_frame_from_blast(query, subject):
     return int(frame)
 
 
-def get_ancestor_seq_in_frame(seq, start, end, start_match, end_match):
-    if (start_match - start) % 3 == 0:
-        return seq[start:end]
-    elif (start_match - start) % 3 == 1:
-        return seq[start+2:end]
-    else:
-        return seq[start+1:end]
+def frame_start(x, origin, strand):
+    if strand == "+":
+        if np.abs(x - origin) % 3 == 0:
+            return x
+        elif np.abs(x - origin) % 3 == 1 and x > origin:
+            return x + 2
+        elif np.abs(x - origin) % 3 == 1 and x < origin:
+            return x + 1
+        elif np.abs(x - origin) % 3 == 2 and x > origin:
+            return x + 1
+        elif np.abs(x - origin) % 3 == 2 and x < origin:
+            return x + 2
+    elif strand == "-":
+        if np.abs(x - origin) % 3 == 0:
+            return x
+        elif np.abs(x - origin) % 3 == 1 and x > origin:
+            return x - 1
+        elif np.abs(x - origin) % 3 == 1 and x < origin:
+            return x - 2
+        elif np.abs(x - origin) % 3 == 2 and x > origin:
+            return x - 2
+        elif np.abs(x - origin) % 3 == 2 and x < origin:
+            return x - 1
+
+
+
+def frame_end(end_match, frame_start, strand):
+    if strand == "+":
+        if (end_match - frame_start) % 3 == 0:
+            return end_match
+        elif (end_match - frame_start) % 3 == 1:
+            return end_match - 1
+        elif (end_match - frame_start) % 3 == 2:
+            return end_match - 2
+    elif strand == "-":
+        if (frame_start - end_match) % 3 == 0:
+            print(end_match, frame_start)
+            print(0)
+            return end_match
+        elif (frame_start - end_match) % 3 == 1:
+            print(end_match, frame_start)
+            print(1)
+            return end_match + 2
+        elif (frame_start - end_match) % 3 == 2:
+            print(2)
+            return end_match + 1
+
+
+
+def get_ancestor_seq_in_frame(seq, start, end, start_match, end_match, strand):
+    print(f"Absolute CDS coord: {(start, end)}")
+    print(f"Absolute match coord: {(start_match, end_match)}")
+    if strand == "+":
+        begin_at = frame_start(start_match, start, strand)
+        end_at =  frame_end(end_match, begin_at, strand) - start_match
+        begin_at -= start_match
+        print(f"Relative match coord: {(begin_at, end_at)}")
+    elif strand == "-":
+        end_at = frame_start(end_match, end, strand)
+        begin_at = frame_end(start_match, end_at, strand) - start_match
+        end_at -= start_match
+        print(f"Relative match coord: {(begin_at, end_at)}")
+    return seq[begin_at:end_at]
+        
 
 
 
 def get_nc_origin(genome, denovo_dict):
     origin_frames = {}
     for denovo in denovo_dict:
+        print(denovo)
+        print(denovo_dict[denovo])
         origin_frames[denovo] = {}
         seq_ancestor_match = get_sequence_from_loci(denovo_dict[denovo]["ancestor_sp"], denovo_dict[denovo]["loci"][0], denovo_dict[denovo]["loci"][1], denovo_dict[denovo]["loci"][2])
         if seq_ancestor_match is None:
-            print(f"Could not find the sequence for {denovo} in {denovo_dict[denovo]['ancestor_sp']}")
+            print(f"Could not find the sequence for {denovo} ({genome}) in {denovo_dict[denovo]['ancestor_sp']}")
             continue
-        print(genome, denovo_dict[denovo], denovo)
 
         # Get all the CDss in the ancestor genome
         ancestor_cdss = get_CDS_info(denovo_dict[denovo]["ancestor_sp"])
-        contig_match, start_match, end_match = denovo_dict[denovo]["loci"]
+        contig_match, start_match, end_match, strand_match = denovo_dict[denovo]["loci"]
         # Keep the CDSs that contain the de novo gene
-        de_novo_is_on_plus = start_match < end_match
-        all_loci = list(range(start_match, end_match+1)) if de_novo_is_on_plus else list(range(end_match, start_match+1))
+        de_novo_is_on_plus = strand_match == "+"
+        all_loci = list(range(start_match, end_match+1))
         loci_in_gene = []
         for cds in ancestor_cdss:
             contig, strand, start, end, seq = cds
 
             # For the + strand
             if de_novo_is_on_plus:
-                if strand == "+":
+                if strand == "+" and contig == contig_match:
                     if any(start <= i <= end for i in all_loci):
-                        print(cds)
                         # Get the nucleotides in the CDS
                         loci_in_gene += [i for i in all_loci if start <= i <= end]
 
                         # Get the frame
                         # Query protein sequence
-                        qstart = denovo_dict[denovo]["qstart"] - 1
+                        qstart = denovo_dict[denovo]["qstart"]
                         qend = denovo_dict[denovo]["qend"]
                         query = denovo_dict[denovo]["sequence"][qstart:qend]
                         # Subject nucleotide sequence : in frame with the subject gene
-                        subject = get_ancestor_seq_in_frame(seq_ancestor_match, start, end, start_match, end_match)
+                        subject = get_ancestor_seq_in_frame(seq_ancestor_match, start, end, start_match, end_match, strand_match)
                         frame = get_frame_from_blast(query, subject)
                         if f"f{frame - 1}" not in origin_frames[denovo]:
-                            origin_frames[denovo][f"f{frame - 1}"] = len([i for i in all_loci if start <= i <= end])
+                            origin_frames[denovo][f"f+{frame - 1}"] = len([i for i in all_loci if start <= i <= end])
                         else:
-                            origin_frames[denovo][f"f{frame - 1}"] += len([i for i in all_loci if start <= i <= end])
+                            origin_frames[denovo][f"f+{frame - 1}"] += len([i for i in all_loci if start <= i <= end])
 
             # For the - strand
             else:
-                if strand == "-":
+                if strand == "-" and contig == contig_match:
                     if any(start <= i <= end for i in all_loci):
                         loci_in_gene += [i for i in all_loci if start <= i <= end]
                         # Get the frame
                         # Query protein sequence
-                        qstart = denovo_dict[denovo]["qstart"] - 1
+                        qstart = denovo_dict[denovo]["qstart"]
                         qend = denovo_dict[denovo]["qend"]
                         query = denovo_dict[denovo]["sequence"][qstart:qend]
                         # Subject nucleotide sequence
-                        sstart = end - denovo_dict[denovo]["loci"][2] - 1
-                        send = start - denovo_dict[denovo]["loci"][1]
-                        subject = seq[sstart:send]
+                        seq_ancestor_match = seq_ancestor_match.reverse_complement()
+                        subject = get_ancestor_seq_in_frame(seq_ancestor_match, start, end, start_match, end_match, strand_match)
                         frame = get_frame_from_blast(query, subject)
                         if f"f{frame - 1}" not in origin_frames[denovo]:
-                            origin_frames[denovo][f"f{frame - 1}"] = len([i for i in all_loci if start <= i <= end])
+                            origin_frames[denovo][f"f+{frame - 1}"] = len([i for i in all_loci if start <= i <= end])
                         else:
-                            origin_frames[denovo][f"f{frame - 1}"] += len([i for i in all_loci if start <= i <= end])
+                            origin_frames[denovo][f"f+{frame - 1}"] += len([i for i in all_loci if start <= i <= end])
         # Get the loci that are in the intergenic
         loci_in_intergenic = [i for i in all_loci if i not in loci_in_gene]
         if len(loci_in_intergenic) > 0:
-            origin_frames[denovo]["intergenic"] = len(loci_in_intergenic)
+            origin_frames[denovo]["intergenic"] = len(loci_in_intergenic) if de_novo_is_on_plus else len(loci_in_intergenic)
+        print(origin_frames[denovo])
 
     return origin_frames
 
@@ -251,19 +309,15 @@ if __name__ == "__main__":
 
     for genome in genomes:
         denovo_dict[genome] = get_denovo_info(genome)
+        if denovo_dict[genome] == {}:
+            continue
+        print(genome)
+            
+
         # Get the corresponding area in the ancestor genome
         origin_frames[genome] = get_nc_origin(genome, denovo_dict[genome])
-
-    
-    #### To delete : keep only genes coming from kukulkanii
-    for genome in denovo_dict:
-        for denovo in denovo_dict[genome]:
-            if denovo_dict[genome][denovo]["ancestor_sp"] == "GCA_001577775@Pyrococcus_kukulkanii_NCB100":
-                print(denovo)
-                print(denovo_dict[genome][denovo])
-                print(origin_frames[genome][denovo])
-                print("\n\n")
-    ####
+        print("\n")
+        
 
 
     
