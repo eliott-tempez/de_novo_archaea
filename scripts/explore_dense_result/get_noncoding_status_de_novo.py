@@ -116,7 +116,6 @@ def get_sequence_from_loci(genome, contig, start, end):
 def get_frame_from_blast(query, subject):
     """Get the frame of the query sequence in the subject sequence"""
     # Create temp files
-    print(query, subject)
     with tempfile.NamedTemporaryFile(mode='w', delete=False) as query_file:
         query_file.write(f">query\n{query}")
         query_file_name = query_file.name
@@ -181,32 +180,23 @@ def frame_end(end_match, frame_start, strand):
             return end_match - 2
     elif strand == "-":
         if (frame_start - end_match) % 3 == 0:
-            print(end_match, frame_start)
-            print(0)
             return end_match
         elif (frame_start - end_match) % 3 == 1:
-            print(end_match, frame_start)
-            print(1)
             return end_match + 2
         elif (frame_start - end_match) % 3 == 2:
-            print(2)
             return end_match + 1
 
 
 
 def get_ancestor_seq_in_frame(seq, start, end, start_match, end_match, strand):
-    print(f"Absolute CDS coord: {(start, end)}")
-    print(f"Absolute match coord: {(start_match, end_match)}")
     if strand == "+":
         begin_at = frame_start(start_match, start, strand)
         end_at =  frame_end(end_match, begin_at, strand) - start_match
         begin_at -= start_match
-        print(f"Relative match coord: {(begin_at, end_at)}")
     elif strand == "-":
         end_at = frame_start(end_match, end, strand)
         begin_at = frame_end(start_match, end_at, strand) - start_match
         end_at -= start_match
-        print(f"Relative match coord: {(begin_at, end_at)}")
     return seq[begin_at:end_at]
         
 
@@ -215,8 +205,6 @@ def get_ancestor_seq_in_frame(seq, start, end, start_match, end_match, strand):
 def get_nc_origin(genome, denovo_dict):
     origin_frames = {}
     for denovo in denovo_dict:
-        print(denovo)
-        print(denovo_dict[denovo])
         origin_frames[denovo] = {}
         seq_ancestor_match = get_sequence_from_loci(denovo_dict[denovo]["ancestor_sp"], denovo_dict[denovo]["loci"][0], denovo_dict[denovo]["loci"][1], denovo_dict[denovo]["loci"][2])
         if seq_ancestor_match is None:
@@ -275,25 +263,8 @@ def get_nc_origin(genome, denovo_dict):
         loci_in_intergenic = [i for i in all_loci if i not in loci_in_gene]
         if len(loci_in_intergenic) > 0:
             origin_frames[denovo]["intergenic"] = len(loci_in_intergenic) if de_novo_is_on_plus else len(loci_in_intergenic)
-        print(origin_frames[denovo])
 
     return origin_frames
-
-            
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -309,14 +280,13 @@ if __name__ == "__main__":
 
     for genome in genomes:
         denovo_dict[genome] = get_denovo_info(genome)
+        # Keep only the genomes with de novo genes
         if denovo_dict[genome] == {}:
             continue
-        print(genome)
             
 
         # Get the corresponding area in the ancestor genome
         origin_frames[genome] = get_nc_origin(genome, denovo_dict[genome])
-        print("\n")
         
 
 
