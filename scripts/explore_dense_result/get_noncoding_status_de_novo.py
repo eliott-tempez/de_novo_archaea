@@ -10,9 +10,11 @@ import numpy as np
 
 
 
+
 DENSE_DIR = "/home/eliott.tempez/Documents/archaea_data/dense/"
 DATA_DIR = "/home/eliott.tempez/Documents/archaea_data/complete_122/"
 GENOMES_LIST = "/home/eliott.tempez/Documents/M2_Stage_I2BC/scripts/genera_archaea/genomes_list.txt"
+OUT_FOLDER = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/explore_dense_results/"
 
 
 
@@ -277,6 +279,8 @@ if __name__ == "__main__":
     # Get the de novo genes info
     denovo_dict = {}
     origin_frames = {}
+    results_list = []
+    n_denovo = 0
 
     for genome in genomes:
         denovo_dict[genome] = get_denovo_info(genome)
@@ -287,6 +291,24 @@ if __name__ == "__main__":
 
         # Get the corresponding area in the ancestor genome
         origin_frames[genome] = get_nc_origin(genome, denovo_dict[genome])
+    
+    
+        # Store in pandas dataframe
+        for denovo in origin_frames[genome]:
+            outgroup = denovo_dict[genome][denovo]["ancestor_sp"]
+            noncoding_match_contig, noncoding_match_start, noncoding_match_end, noncoding_match_strand = denovo_dict[genome][denovo]["loci"]
+            intergenic = origin_frames[genome][denovo]["intergenic"] if "intergenic" in origin_frames[genome][denovo] else 0
+            f0 = origin_frames[genome][denovo]["f+0"] if "f+0" in origin_frames[genome][denovo] else 0
+            f1 = origin_frames[genome][denovo]["f+1"] if "f+1" in origin_frames[genome][denovo] else 0
+            f2 = origin_frames[genome][denovo]["f+2"] if "f+2" in origin_frames[genome][denovo] else 0
+            results_list.append({"genome": genome, "denovo_gene": denovo, "outgroup": outgroup, "noncoding_match_contig": noncoding_match_contig, "noncoding_match_start": noncoding_match_start, "noncoding_match_end": noncoding_match_end, "noncoding_match_strand": noncoding_match_strand, "intergenic": intergenic, "f+0": f0, "f+1": f1, "f+2": f2})
+            n_denovo += 1
+        
+    print(f"{n_denovo} de novo genes found in total")
+    results = pd.DataFrame(results_list, columns=["genome", "denovo_gene", "outgroup", "noncoding_match_contig", "noncoding_match_start", "noncoding_match_end", "noncoding_match_strand", "intergenic", "f+0", "f+1", "f+2"])
+    # Save to file
+    results.to_csv(os.path.join(OUT_FOLDER, "denovo_noncoding_status.tsv"), sep="\t", index=False)
+
         
 
 
