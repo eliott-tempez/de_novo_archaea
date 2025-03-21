@@ -68,6 +68,8 @@ def get_denovo_info(genome):
         for denovo in denovo_dict:
             if denovo_dict[denovo]["ancestor_sp"] == ancestor:
                 tblastn_df_denov = tblastn_df[tblastn_df["qseqid"] == f"{denovo}_elongated"].reset_index(drop=True)
+                # Sort by qcov then evalue
+                tblastn_df_denov = tblastn_df_denov.sort_values(by=["qcov", "evalue"])
                 # Extract the blast result
                 strand = "+" if tblastn_df_denov.iloc[0]["sstart"] < tblastn_df_denov.iloc[0]["send"] else "-"
                 contig = tblastn_df_denov.iloc[0]["sseqid"]
