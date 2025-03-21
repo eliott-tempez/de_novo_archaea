@@ -1,12 +1,13 @@
 import os
 import re
 import glob
-import pandas as pd
-from Bio import SeqIO
-from Bio.Seq import Seq
 import tempfile
 import subprocess
+import concurrent.futures
+import pandas as pd
 import numpy as np
+from Bio import SeqIO
+from Bio.Seq import Seq
 
 
 
@@ -114,6 +115,13 @@ def get_sequence_from_loci(genome, contig, start, end):
     return None
 
 
+def run_blast(query_file_name, subject_file_name, output_file_name):
+    cmd = f'tblastn -query {query_file_name} -subject {subject_file_name} -out {output_file_name} -outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qlen qcovs sframe"'
+    try:
+        subprocess.run(cmd, shell=True, check=True)
+    except subprocess.CalledProcessError as e:
+        print(e)
+
 
 def get_frame_from_blast(query, subject):
     """Get the frame of the query sequence in the subject sequence"""
@@ -127,12 +135,10 @@ def get_frame_from_blast(query, subject):
     with tempfile.NamedTemporaryFile(mode='w', delete=False) as output_file:
         output_file_name = output_file.name
     
-    # Run tblastn
-    cmd = f'tblastn -query {query_file_name} -subject {subject_file_name} -out {output_file_name} -outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qlen qcovs sframe"'
-    try:
-        subprocess.run(cmd, shell=True, check=True)
-    except subprocess.CalledProcessError as e:
-        print(e)
+    # Run tblastn in parallel
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        future = executor.submit(run_blast, query_file_name, subject_file_name, output_file_name)
+        future.result()  # Wait for the BLAST search to complete
     
     # Read the output
     blast_df = pd.read_csv(output_file_name, sep="\t", header=None)
@@ -280,7 +286,7 @@ if __name__ == "__main__":
     denovo_dict = {}
     origin_frames = {}
     results_list = []
-    n_denovo = 0
+    n_done = 0
 
     for genome in genomes:
         denovo_dict[genome] = get_denovo_info(genome)
@@ -302,8 +308,11 @@ if __name__ == "__main__":
             f1 = origin_frames[genome][denovo]["f+1"] if "f+1" in origin_frames[genome][denovo] else 0
             f2 = origin_frames[genome][denovo]["f+2"] if "f+2" in origin_frames[genome][denovo] else 0
             results_list.append({"genome": genome, "denovo_gene": denovo, "outgroup": outgroup, "noncoding_match_contig": noncoding_match_contig, "noncoding_match_start": noncoding_match_start, "noncoding_match_end": noncoding_match_end, "noncoding_match_strand": noncoding_match_strand, "intergenic": intergenic, "f+0": f0, "f+1": f1, "f+2": f2})
-            n_denovo += 1
+            n_done += 1
+            if n_done % 10 == 0:
+                print(f"{n_done} de novo genes processed...")
         
+    n_denovo = len(results_list)
     print(f"{n_denovo} de novo genes found in total")
     results = pd.DataFrame(results_list, columns=["genome", "denovo_gene", "outgroup", "noncoding_match_contig", "noncoding_match_start", "noncoding_match_end", "noncoding_match_strand", "intergenic", "f+0", "f+1", "f+2"])
     # Save to file
