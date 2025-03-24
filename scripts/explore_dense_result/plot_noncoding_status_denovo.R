@@ -21,11 +21,58 @@ barplot(c(inter, f0, f1, f2),
 ## Percentage of genes that have several origins
 origins <- data[, c("intergenic", "f.0", "f.1", "f.2")]
 # get all rows for which less than 3 cols are 0
-several_origins <- nrow(origins[apply(origins, 1, function(x) sum(x == 0) < 3), ])
-one_origin <- nrow(origins) - several_origins
+n_several_origins <- nrow(origins[apply(origins, 1, function(x) sum(x == 0) < 3), ])
+n_one_origin <- nrow(origins) - several_origins
 # Camembert plot (pie chart)
-pie(c(one_origin, several_origins),
-    labels = c(paste("one origin (", one_origin, ")", sep = ""),
-               paste("several origins (", several_origins, ")", sep = "")),
+pie(c(n_one_origin, n_several_origins),
+    labels = c(paste("one origin (", n_one_origin, ")", sep = ""),
+               paste("several origins (", n_several_origins, ")", sep = "")),
     col = c("#009E73", "#E69F00"),
     main = "For all de novo genes: number of different origins in the noncoding region")
+
+
+# Altframes
+n_f1 <- nrow(origins[origins$f.1 > 0, ])
+n_f2 <- nrow(origins[origins$f.2 > 0, ])
+# Camembert plot (pie chart)
+pie(c(n_f1, n_f2),
+    labels = c(paste("f+1 (", n_f1, ")", sep = ""),
+               paste("f+2 (", n_f2, ")", sep = "")),
+    col = c("#CC79A7", "#0072B2"),
+    main = "Frame of origin for all de novo genes\ncoming from altframes")
+
+
+# Length distributions
+len_f1 <- data[data$f.1 > 0, "f.1"]
+len_f2 <- data[data$f.2 > 0, "f.2"]
+# Boxplot
+boxplot(len_f1, len_f2,
+        names = c("f+1", "f+2"),
+        col = c("#CC79A7", "#0072B2"),
+        xlab = "Frame of origin", ylab = "Length of the noncoding region (nt)",
+        main = "Length distribution of the noncoding region\nfor de novo genes coming from altframes")
+
+
+
+
+## De novo genes with only one origin
+one_origin <- origins[apply(origins, 1, function(x) sum(x == 0) == 3), ]
+n_only_f1 <- nrow(one_origin[one_origin$f.1 > 0, ])
+n_only_f2 <- nrow(one_origin[one_origin$f.2 > 0, ])
+# Number of genes in each
+pie(c(n_only_f1, n_only_f2),
+    labels = c(paste("f+1 (", n_only_f1, ")", sep = ""),
+               paste("f+2 (", n_only_f2, ")", sep = "")),
+    col = c("#CC79A7", "#0072B2"),
+    main = "Frame of origin for all de novo genes\ncoming from only one altframe")
+
+
+# Length distributions
+len_only_f1 <- one_origin[one_origin$f.1 > 0, "f.1"]
+len_only_f2 <- one_origin[one_origin$f.2 > 0, "f.2"]
+# Boxplot
+boxplot(len_only_f1, len_only_f2,
+        names = c("f+1", "f+2"),
+        col = c("#CC79A7", "#0072B2"),
+        xlab = "Frame of origin", ylab = "Length of the noncoding region (nt)",
+        main = "Length distribution of the noncoding region\nfor de novo genes coming from only one altframe")
