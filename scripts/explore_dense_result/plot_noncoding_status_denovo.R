@@ -2,6 +2,7 @@ input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/explore_dense
 
 
 data <- read.table(input_file, header = TRUE, sep = "\t")
+data[, c("intergenic", "f.0", "f.1", "f.2")] <- lapply(data[, c("intergenic", "f.0", "f.1", "f.2")], function(x) ifelse(x < 3, 0, x))
 
 
 ## Total number of noncoding origins
