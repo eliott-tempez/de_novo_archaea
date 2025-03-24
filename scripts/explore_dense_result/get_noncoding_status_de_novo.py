@@ -146,7 +146,7 @@ def get_frame_from_blast(query, subject):
     # Read the output
     blast_df = pd.read_csv(output_file_name, sep="\t", header=None)
     blast_df.columns = ["qseqid", "sseqid", "pident", "length", "mismatch", "gapopen", "qstart", "qend", "sstart", "send", "evalue", "bitscore", "qlen", "qcov", "sframe"]
-    blast_df = blast_df.sort_values(by="evalue")
+    blast_df = blast_df.sort_values(by=["qcov", "evalue"], ascending=[False, True])
     frame = blast_df.iloc[0]["sframe"]
     # Remove temp files
     os.remove(query_file_name)
