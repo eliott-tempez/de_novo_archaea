@@ -69,7 +69,8 @@ def get_denovo_info(genome):
             if denovo_dict[denovo]["ancestor_sp"] == ancestor:
                 tblastn_df_denov = tblastn_df[tblastn_df["qseqid"] == f"{denovo}_elongated"].reset_index(drop=True)
                 # Sort by qcov then evalue
-                tblastn_df_denov = tblastn_df_denov.sort_values(by=["qcov", "evalue"])
+                tblastn_df_denov = tblastn_df_denov[tblastn_df_denov["qcov"] >= 50]
+                tblastn_df_denov = tblastn_df_denov.sort_values(by="evalue")
                 # Extract the blast result
                 strand = "+" if tblastn_df_denov.iloc[0]["sstart"] < tblastn_df_denov.iloc[0]["send"] else "-"
                 contig = tblastn_df_denov.iloc[0]["sseqid"]
@@ -277,6 +278,15 @@ def get_nc_origin(genome, denovo_dict):
     return origin_frames
 
 
+def process_genome(genome):
+    denovo_info = get_denovo_info(genome)
+    if not denovo_info:
+        return None
+
+    origin_frames = get_nc_origin(genome, denovo_info)
+    return genome, (denovo_info, origin_frames)
+
+
 
 if __name__ == "__main__":
     # Read list of genomes
@@ -290,30 +300,32 @@ if __name__ == "__main__":
     results_list = []
     n_done = 0
 
-    for genome in genomes:
-        denovo_dict[genome] = get_denovo_info(genome)
-        # Keep only the genomes with de novo genes
-        if denovo_dict[genome] == {}:
-            continue
-            
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        futures = {executor.submit(process_genome, genome): genome for genome in genomes}
+        for future in concurrent.futures.as_completed(futures):
+            genome = futures[future]
+            try:
+                result = future.result()
+                if result:
+                    genome, (denovo_info, origin_frames_genome) = result
+                    denovo_dict[genome] = denovo_info
+                    origin_frames[genome] = origin_frames_genome
 
-        # Get the corresponding area in the ancestor genome
-        origin_frames[genome] = get_nc_origin(genome, denovo_dict[genome])
-    
-    
-        # Store in pandas dataframe
-        for denovo in origin_frames[genome]:
-            outgroup = denovo_dict[genome][denovo]["ancestor_sp"]
-            noncoding_match_contig, noncoding_match_start, noncoding_match_end, noncoding_match_strand = denovo_dict[genome][denovo]["loci"]
-            intergenic = origin_frames[genome][denovo]["intergenic"] if "intergenic" in origin_frames[genome][denovo] else 0
-            f0 = origin_frames[genome][denovo]["f+0"] if "f+0" in origin_frames[genome][denovo] else 0
-            f1 = origin_frames[genome][denovo]["f+1"] if "f+1" in origin_frames[genome][denovo] else 0
-            f2 = origin_frames[genome][denovo]["f+2"] if "f+2" in origin_frames[genome][denovo] else 0
-            results_list.append({"genome": genome, "denovo_gene": denovo, "outgroup": outgroup, "noncoding_match_contig": noncoding_match_contig, "noncoding_match_start": noncoding_match_start, "noncoding_match_end": noncoding_match_end, "noncoding_match_strand": noncoding_match_strand, "intergenic": intergenic, "f+0": f0, "f+1": f1, "f+2": f2})
-            n_done += 1
-            if n_done % 10 == 0:
-                print(f"{n_done} de novo genes processed...")
-        
+                    # Store in pandas dataframe
+                    for denovo in origin_frames[genome]:
+                        outgroup = denovo_dict[genome][denovo]["ancestor_sp"]
+                        noncoding_match_contig, noncoding_match_start, noncoding_match_end, noncoding_match_strand = denovo_dict[genome][denovo]["loci"]
+                        intergenic = origin_frames[genome][denovo]["intergenic"] if "intergenic" in origin_frames[genome][denovo] else 0
+                        f0 = origin_frames[genome][denovo]["f+0"] if "f+0" in origin_frames[genome][denovo] else 0
+                        f1 = origin_frames[genome][denovo]["f+1"] if "f+1" in origin_frames[genome][denovo] else 0
+                        f2 = origin_frames[genome][denovo]["f+2"] if "f+2" in origin_frames[genome][denovo] else 0
+                        results_list.append({"genome": genome, "denovo_gene": denovo, "outgroup": outgroup, "noncoding_match_contig": noncoding_match_contig, "noncoding_match_start": noncoding_match_start, "noncoding_match_end": noncoding_match_end, "noncoding_match_strand": noncoding_match_strand, "intergenic": intergenic, "f+0": f0, "f+1": f1, "f+2": f2})
+                        n_done += 1
+                        if n_done % 10 == 0:
+                            print(f"{n_done} de novo genes processed...")
+            except Exception as e:
+                print(f"Error processing genome {genome}: {e}")
+
     n_denovo = len(results_list)
     print(f"{n_denovo} de novo genes found in total")
     results = pd.DataFrame(results_list, columns=["genome", "denovo_gene", "outgroup", "noncoding_match_contig", "noncoding_match_start", "noncoding_match_end", "noncoding_match_strand", "intergenic", "f+0", "f+1", "f+2"])
