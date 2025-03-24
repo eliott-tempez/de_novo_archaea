@@ -76,7 +76,7 @@ if __name__ == "__main__":
     for i in range(0, nrows, 60):
         profiles_df_subset = profiles_df.iloc[i:i+60]
 
-        sns.set_theme(font_scale=0.5)
+        sns.set_theme(font_scale=0.6)
         # Set the colors
         colors = ["#A9A9A9", "#009e28", "#00799e", "#e67b00"]
         cmap = LinearSegmentedColormap.from_list('Custom', colors, len(colors))
