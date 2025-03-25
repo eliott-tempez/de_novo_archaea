@@ -290,7 +290,7 @@ if __name__ == "__main__":
     for median in box['medians']:
         median.set_color('black')
     plt.ylabel("Length (bp)")
-    plt.title(f"Intergenic ORFs and CDSs lengths distribution\n(CDS length 1dt decile = {round(decile_len_cds)} nt)")
+    plt.title(f"Intergenic ORFs and CDSs lengths distribution\n(CDS length 1st decile = {round(decile_len_cds)} nt)")
     # Save the plots
     os.makedirs(OUT_DIR, exist_ok=True)
     plt.savefig(os.path.join(OUT_DIR, f"{genome}_lengths.png"))
