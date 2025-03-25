@@ -212,6 +212,7 @@ if __name__ == "__main__":
     orf_lens = [len(intergenic_orfs[orf]["seq"]) for orf in intergenic_orfs]
     first_quartile_len_cds = np.percentile(cds_len, 25)
     median_len_orfs = np.median(orf_lens)
+    decile_len_cds = np.percentile(cds_len, 10)
     """# Calculate the common bin edges
     min_len = min(min(cds_len), min(orf_lens))
     max_len = max(max(cds_len), max(orf_lens))
@@ -291,13 +292,13 @@ if __name__ == "__main__":
     plt.title("Distribution of intergenic ORFs and CDS lengths")
     # Save the plots
     os.makedirs(OUT_DIR, exist_ok=True)
-    plt.savefig(os.path.join(OUT_DIR, f"{genome}_lengths.png"))
+    #plt.savefig(os.path.join(OUT_DIR, f"{genome}_lengths.png"))
 
 
     ##### HETERRGENEITY METRICS ####
     ## Entropy of dna sequence
-    orf_entropies_small = [get_entropy(intergenic_orfs[orf]["seq"]) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) < median_len_orfs]
-    orf_entropies_long = [get_entropy(intergenic_orfs[orf]["seq"]) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) >= median_len_orfs]
+    orf_entropies_small = [get_entropy(intergenic_orfs[orf]["seq"]) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) < decile_len_cds]
+    orf_entropies_long = [get_entropy(intergenic_orfs[orf]["seq"]) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) >= decile_len_cds]
     cds_entropies = [get_entropy(seq) for seq in cds_seqs]
     # Common bins
     min_entropy = min(min(orf_entropies_small), min(orf_entropies_long), min(cds_entropies))
@@ -312,11 +313,11 @@ if __name__ == "__main__":
     plt.xlabel("Shannon Entropy")
     plt.ylabel("Number")
     plt.title("Distribution of intergenic ORFs entropies (DNA sequence)")
-    plt.savefig(os.path.join(OUT_DIR, f"{genome}_entropy.png"))
+    #plt.savefig(os.path.join(OUT_DIR, f"{genome}_entropy.png"))
 
     ## Entropy of amino acid sequence
-    orf_entropies_aa_small = [get_entropy(str(intergenic_orfs[orf]["seq"].translate())) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) < median_len_orfs]
-    orf_entropies_aa_long = [get_entropy(str(intergenic_orfs[orf]["seq"].translate())) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) >= median_len_orfs]
+    orf_entropies_aa_small = [get_entropy(str(intergenic_orfs[orf]["seq"].translate())) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) < decile_len_cds]
+    orf_entropies_aa_long = [get_entropy(str(intergenic_orfs[orf]["seq"].translate())) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) >= decile_len_cds]
     cds_entropies_aa = [get_entropy(str(seq.translate())) for seq in cds_seqs]
     # Common bins
     min_entropy = min(min(orf_entropies_aa_small), min(orf_entropies_aa_long), min(cds_entropies_aa))
@@ -331,7 +332,7 @@ if __name__ == "__main__":
     plt.xlabel("Shannon Entropy")
     plt.ylabel("Number")
     plt.title("Distribution of intergenic ORFs entropies (amino acid sequence)")
-    plt.savefig(os.path.join(OUT_DIR, f"{genome}_entropy_aa.png"))
+    #plt.savefig(os.path.join(OUT_DIR, f"{genome}_entropy_aa.png"))
 
     ## Hexameric score
     # Get the hexamer frequencies
@@ -341,8 +342,8 @@ if __name__ == "__main__":
     hexamer_scores = calculate_log_odds_ratio(cds_freq, intergenic_freq)
     # Calculate the scores
     cds_scores = [score_sequence(seq, hexamer_scores) for seq in cds_seqs]
-    orf_scores_small = [score_sequence(intergenic_orfs[orf]["seq"], hexamer_scores) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) < median_len_orfs]
-    orf_scores_long = [score_sequence(intergenic_orfs[orf]["seq"], hexamer_scores) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) >= median_len_orfs]
+    orf_scores_small = [score_sequence(intergenic_orfs[orf]["seq"], hexamer_scores) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) < decile_len_cds]
+    orf_scores_long = [score_sequence(intergenic_orfs[orf]["seq"], hexamer_scores) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) >= decile_len_cds]
     # Common bins
     min_score = min(min(orf_scores_small), min(orf_scores_long), min(cds_scores))
     max_score = max(max(orf_scores_small), max(orf_scores_long), max(cds_scores))
@@ -356,24 +357,5 @@ if __name__ == "__main__":
     plt.xlabel("Hexamer score")
     plt.ylabel("Number")
     plt.title("Distribution of hexamer scores")
-    plt.savefig(os.path.join(OUT_DIR, f"{genome}_hexamer.png"))
-
-    ## Disordered score (metapredict)
-    cds_dis = [get_disordered_score(seq.translate()) for seq in cds_seqs]
-    orf_dis_small = [get_disordered_score(intergenic_orfs[orf]["seq"].translate()) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) < median_len_orfs]
-    orf_dis_long = [get_disordered_score(intergenic_orfs[orf]["seq"].translate()) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) >= median_len_orfs]
-    # Common bins
-    min_dis = min(min(orf_dis_small), min(orf_dis_long), min(cds_dis))
-    max_dis = max(max(orf_dis_small), max(orf_dis_long), max(cds_dis))
-    bins = np.linspace(min_dis, max_dis, 50)
-    # Plot
-    plt.figure()
-    plt.hist(orf_dis_small, bins=bins, alpha=0.5, label="Small intergenic ORFs")
-    plt.hist(orf_dis_long, bins=bins, alpha=0.5, label="Long intergenic ORFs")
-    plt.hist(cds_dis, bins=bins, alpha=0.5, label="CDSs")
-    plt.legend()
-    plt.xlabel("Disordered score (mean)")        
-    plt.ylabel("Number")
-    plt.title("Distribution of mean disordered scores")
-    plt.savefig(os.path.join(OUT_DIR, f"{genome}_disorder.png"))
+    #plt.savefig(os.path.join(OUT_DIR, f"{genome}_hexamer.png"))
     
