@@ -290,7 +290,7 @@ if __name__ == "__main__":
     for median in box['medians']:
         median.set_color('black')
     plt.ylabel("Length (bp)")
-    plt.title(f"Distribution of intergenic ORFs and CDS lengths\nCDS length decile = {round(decile_len_cds)}")
+    plt.title(f"Intergenic ORFs and CDSs lengths distribution\n(CDS length 1dt decile = {round(decile_len_cds)} nt)")
     # Save the plots
     os.makedirs(OUT_DIR, exist_ok=True)
     plt.savefig(os.path.join(OUT_DIR, f"{genome}_lengths.png"))
@@ -326,7 +326,7 @@ if __name__ == "__main__":
     # Plot
     plt.figure()
     data = [orf_entropies_aa_small, orf_entropies_aa_long, cds_entropies_aa]
-    plt.boxplot(data, tick_labels=[f"Small intergenic ORFs\n(n = {len(orf_entropies_aa_small)})", 
+    box = plt.boxplot(data, tick_labels=[f"Small intergenic ORFs\n(n = {len(orf_entropies_aa_small)})", 
                                    f"Long intergenic ORFs\n(n = {len(orf_entropies_aa_long)})", 
                                    f"CDSs\n(n = {len(cds_entropies_aa)})"],
                                    patch_artist=True)
@@ -351,7 +351,7 @@ if __name__ == "__main__":
     # Plot
     plt.figure()
     data = [orf_scores_small, orf_scores_long, cds_scores]
-    plt.boxplot(data, tick_labels=[f"Small intergenic ORFs\n(n = {len(orf_scores_small)})",
+    box = plt.boxplot(data, tick_labels=[f"Small intergenic ORFs\n(n = {len(orf_scores_small)})",
                                    f"Long intergenic ORFs\n(n = {len(orf_scores_long)})",
                                    f"CDSs\n(n = {len(cds_scores)})"],
                                    patch_artist=True)
