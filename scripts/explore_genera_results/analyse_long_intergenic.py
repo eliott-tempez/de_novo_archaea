@@ -110,13 +110,14 @@ def get_cds_seqs(genome):
     fa_content = list(SeqIO.parse(fasta_file, "fasta"))
     for contig in gff["contig"].unique():
         for row in gff[gff["contig"] == contig].iterrows():
-            start = row[1]["start"]
-            end = row[1]["end"]
-            for record in fa_content:
-                if record.name == str(contig):
-                    seq = record.seq[start:end]
-                    seqs.append(seq)
-                    break
+            if row[1]["type"] == "CDS":
+                start = row[1]["start"]
+                end = row[1]["end"]
+                for record in fa_content:
+                    if record.name == str(contig):
+                        seq = record.seq[start:end]
+                        seqs.append(seq)
+                        break
     return seqs
 
 
@@ -280,19 +281,19 @@ if __name__ == "__main__":
     # ORF length
     cds_len = [len(seq) for seq in cds_seqs]
     orf_lens = [len(intergenic_orfs[orf]["seq"]) for orf in intergenic_orfs]
-    min_len = min(min(cds_len), min(orf_lens))
-    max_len = max(max(cds_len), max(orf_lens))
-    bins = np.linspace(min_len, max_len, 50)
     plt.figure()
-    plt.hist(orf_lens, bins=bins, alpha=1, label="intergenic ORFs")
-    plt.hist(cds_len, bins=bins, alpha=0.6, label="CDSs")
-    plt.legend()
-    plt.xlabel("Length (bp)")
-    plt.ylabel("Number")
-    plt.title("Distribution of intergenic ORFs and CDS lengths")
+    data = [orf_lens, cds_len]
+    box = plt.boxplot(data, patch_artist=True, labels=["intergenic ORFs", "CDSs"])
+    colors = ['#009E73', '#E69F00']
+    for patch, color in zip(box['boxes'], colors):
+        patch.set_facecolor(color)
+    for median in box['medians']:
+        median.set_color('black')
+    plt.ylabel("Length (bp)")
+    plt.title(f"Distribution of intergenic ORFs and CDS lengths\nCDS length decile = {round(decile_len_cds)}")
     # Save the plots
     os.makedirs(OUT_DIR, exist_ok=True)
-    #plt.savefig(os.path.join(OUT_DIR, f"{genome}_lengths.png"))
+    plt.savefig(os.path.join(OUT_DIR, f"{genome}_lengths.png"))
 
 
     ##### HETERRGENEITY METRICS ####
@@ -300,39 +301,42 @@ if __name__ == "__main__":
     orf_entropies_small = [get_entropy(intergenic_orfs[orf]["seq"]) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) < decile_len_cds]
     orf_entropies_long = [get_entropy(intergenic_orfs[orf]["seq"]) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) >= decile_len_cds]
     cds_entropies = [get_entropy(seq) for seq in cds_seqs]
-    # Common bins
-    min_entropy = min(min(orf_entropies_small), min(orf_entropies_long), min(cds_entropies))
-    max_entropy = max(max(orf_entropies_small), max(orf_entropies_long), max(cds_entropies))
-    bins = np.linspace(min_entropy, max_entropy, 50)
     # Plot
     plt.figure()
-    plt.hist(orf_entropies_small, bins=bins, alpha=0.5, label="Small intergenic ORFs")
-    plt.hist(orf_entropies_long, bins=bins, alpha=0.5, label="Long intergenic ORFs")
-    plt.hist(cds_entropies, bins=bins, alpha=0.5, label="CDSs")
-    plt.legend()
-    plt.xlabel("Shannon Entropy")
-    plt.ylabel("Number")
+    data = [orf_entropies_small, orf_entropies_long, cds_entropies]
+    box = plt.boxplot(data, 
+                      tick_labels=[f"Small intergenic ORFs\n(n = {len(orf_entropies_small)})", 
+                                   f"Long intergenic ORFs\n(n = {len(orf_entropies_long)})", 
+                                   f"CDSs\n(n = {len(cds_entropies)})"], 
+                                   patch_artist=True)
+    colors = ["#CC79A7", "#56B4E9", "#E69F00"]
+    for patch, color in zip(box["boxes"], colors):
+        patch.set_facecolor(color)
+    for median in box['medians']:
+        median.set_color('black')
+    plt.ylabel("Shannon Entropy")
     plt.title("Distribution of intergenic ORFs entropies (DNA sequence)")
-    #plt.savefig(os.path.join(OUT_DIR, f"{genome}_entropy.png"))
+    plt.savefig(os.path.join(OUT_DIR, f"{genome}_entropy.png"))
+
 
     ## Entropy of amino acid sequence
     orf_entropies_aa_small = [get_entropy(str(intergenic_orfs[orf]["seq"].translate())) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) < decile_len_cds]
     orf_entropies_aa_long = [get_entropy(str(intergenic_orfs[orf]["seq"].translate())) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) >= decile_len_cds]
     cds_entropies_aa = [get_entropy(str(seq.translate())) for seq in cds_seqs]
-    # Common bins
-    min_entropy = min(min(orf_entropies_aa_small), min(orf_entropies_aa_long), min(cds_entropies_aa))
-    max_entropy = max(max(orf_entropies_aa_small), max(orf_entropies_aa_long), max(cds_entropies_aa))
-    bins = np.linspace(min_entropy, max_entropy, 50)
     # Plot
     plt.figure()
-    plt.hist(orf_entropies_aa_small, bins=bins, alpha=0.5, label="Small intergenic ORFs")
-    plt.hist(orf_entropies_aa_long, bins=bins, alpha=0.5, label="Long intergenic ORFs")
-    plt.hist(cds_entropies_aa, bins=bins, alpha=0.5, label="CDSs")
-    plt.legend()
-    plt.xlabel("Shannon Entropy")
-    plt.ylabel("Number")
+    data = [orf_entropies_aa_small, orf_entropies_aa_long, cds_entropies_aa]
+    plt.boxplot(data, tick_labels=[f"Small intergenic ORFs\n(n = {len(orf_entropies_aa_small)})", 
+                                   f"Long intergenic ORFs\n(n = {len(orf_entropies_aa_long)})", 
+                                   f"CDSs\n(n = {len(cds_entropies_aa)})"],
+                                   patch_artist=True)
+    for patch, color in zip(box["boxes"], colors):
+        patch.set_facecolor(color)
+    for median in box['medians']:
+        median.set_color('black')
+    plt.ylabel("Shannon Entropy")
     plt.title("Distribution of intergenic ORFs entropies (amino acid sequence)")
-    #plt.savefig(os.path.join(OUT_DIR, f"{genome}_entropy_aa.png"))
+    plt.savefig(os.path.join(OUT_DIR, f"{genome}_entropy_aa.png"))
 
     ## Hexameric score
     # Get the hexamer frequencies
@@ -344,18 +348,17 @@ if __name__ == "__main__":
     cds_scores = [score_sequence(seq, hexamer_scores) for seq in cds_seqs]
     orf_scores_small = [score_sequence(intergenic_orfs[orf]["seq"], hexamer_scores) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) < decile_len_cds]
     orf_scores_long = [score_sequence(intergenic_orfs[orf]["seq"], hexamer_scores) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) >= decile_len_cds]
-    # Common bins
-    min_score = min(min(orf_scores_small), min(orf_scores_long), min(cds_scores))
-    max_score = max(max(orf_scores_small), max(orf_scores_long), max(cds_scores))
-    bins = np.linspace(min_score, max_score, 50)
     # Plot
     plt.figure()
-    plt.hist(orf_scores_small, bins=bins, alpha=0.5, label="Small intergenic ORFs")
-    plt.hist(orf_scores_long, bins=bins, alpha=0.5, label="Long intergenic ORFs")
-    plt.hist(cds_scores, bins=bins, alpha=0.5, label="CDSs")
-    plt.legend()
-    plt.xlabel("Hexamer score")
-    plt.ylabel("Number")
+    data = [orf_scores_small, orf_scores_long, cds_scores]
+    plt.boxplot(data, tick_labels=[f"Small intergenic ORFs\n(n = {len(orf_scores_small)})",
+                                   f"Long intergenic ORFs\n(n = {len(orf_scores_long)})",
+                                   f"CDSs\n(n = {len(cds_scores)})"],
+                                   patch_artist=True)
+    for patch, color in zip(box["boxes"], colors):
+        patch.set_facecolor(color)
+    for median in box['medians']:
+        median.set_color('black')
+    plt.ylabel("Hexamer score")
     plt.title("Distribution of hexamer scores")
-    #plt.savefig(os.path.join(OUT_DIR, f"{genome}_hexamer.png"))
-    
+    plt.savefig(os.path.join(OUT_DIR, f"{genome}_hexamer.png"))
