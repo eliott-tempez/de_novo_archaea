@@ -9,6 +9,8 @@ import matplotlib.pyplot as plt
 from collections import defaultdict
 import metapredict as meta
 import random
+from Bio.SeqRecord import SeqRecord
+from orffinder import orffinder
 
 
 GENOMES_LIST = "/home/eliott.tempez/Documents/M2_Stage_I2BC/scripts/genera_archaea/genomes_list.txt"
@@ -81,22 +83,14 @@ def extract_orfs(intergenic_dict):
     i = 0
     for inter in intergenic_dict:
         seq = intergenic_dict[inter]["seq"]
-        start_inter = intergenic_dict[inter]["pos"][0]
-        # Get all ORFs
-        for frame in range(3):
-            for i in range(frame, len(seq), 3):
-                if i + 3 < len(seq):
-                    codon = seq[i:i+3]
-                    if codon == "ATG":
-                        start = i
-                        for j in range(i, len(seq), 3):
-                            if j + 3 < len(seq):
-                                codon = seq[j:j+3]
-                                if codon in ["TAA", "TAG", "TGA"]:
-                                    i += 1
-                                    end = j + 3
-                                    orf_dict[f"orf_{i}"] = {"inter": inter, "start": start + start_inter, "end": end + start_inter, "seq": seq[start:end]}
-                                    break
+        # Make record object
+        seq_name = f"{intergenic_dict[inter]['contig']}_{inter}"
+        record = SeqRecord(seq, id=seq_name, description="")
+        # Get ORFs
+        orfs_seqs = orffinder.getORFNucleotides(record, minimum_length=30)
+        for orf in orfs_seqs:
+            i += 1 
+            orf_dict[f"orf_{i}"] = {"inter": inter, "seq": orf}
     return orf_dict
 
 
@@ -121,18 +115,27 @@ def get_cds_seqs(genome):
     return seqs
 
 
-def get_entropy(seq):
-    """Calculate the entropy of a sequence"""
+def get_letter_frequencies(seq):
+    """Get the frequencies of each letter in a sequence"""
     seq = str(seq)
     freqs = {}
     for base in seq:
+        if base == "*":
+            continue
         if base in freqs:
             freqs[base] += 1
         else:
             freqs[base] = 1
+    len_seq = len(seq)
+    freqs = {k: v / len_seq for k, v in freqs.items()}
+    return freqs
+
+
+def get_entropy(freqs):
+    """Calculate the entropy of a sequence based on a frequency dict"""
     entropy = 0
     for base in freqs:
-        p = freqs[base] / len(seq)
+        p = freqs[base]
         entropy -= p * np.log2(p)
     return entropy
 
@@ -184,6 +187,10 @@ def get_disordered_score(seq):
     seq = re.sub(r"\*", "", seq)
     scores = meta.predict_disorder(seq)
     return np.mean(scores)
+
+
+
+
 
 
 
@@ -283,7 +290,7 @@ if __name__ == "__main__":
     orf_lens = [len(intergenic_orfs[orf]["seq"]) for orf in intergenic_orfs]
     plt.figure()
     data = [orf_lens, cds_len]
-    box = plt.boxplot(data, patch_artist=True, labels=["intergenic ORFs", "CDSs"])
+    box = plt.boxplot(data, patch_artist=True, tick_labels=["intergenic ORFs", "CDSs"])
     colors = ['#009E73', '#E69F00']
     for patch, color in zip(box['boxes'], colors):
         patch.set_facecolor(color)
@@ -296,17 +303,22 @@ if __name__ == "__main__":
     plt.savefig(os.path.join(OUT_DIR, f"{genome}_lengths.png"))
 
 
-    ##### HETERRGENEITY METRICS ####
+    ##### HETEROGENEITY METRICS ####
     ## Entropy of dna sequence
-    orf_entropies_small = [get_entropy(intergenic_orfs[orf]["seq"]) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) < decile_len_cds]
-    orf_entropies_long = [get_entropy(intergenic_orfs[orf]["seq"]) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) >= decile_len_cds]
-    cds_entropies = [get_entropy(seq) for seq in cds_seqs]
+    # Nucleotide frequencies
+    cds_freqs = [get_letter_frequencies(seq) for seq in cds_seqs]
+    small_orf_freqs = [get_letter_frequencies(intergenic_orfs[orf]["seq"]) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) < decile_len_cds]
+    long_orf_freqs = [get_letter_frequencies(intergenic_orfs[orf]["seq"]) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) >= decile_len_cds]
+    # Entropies
+    cds_entropies = [get_entropy(freq) for freq in cds_freqs]
+    small_orf_entropies = [get_entropy(freq) for freq in small_orf_freqs]
+    long_orf_entropies = [get_entropy(freq) for freq in long_orf_freqs]
     # Plot
     plt.figure()
-    data = [orf_entropies_small, orf_entropies_long, cds_entropies]
+    data = [small_orf_entropies, long_orf_entropies, cds_entropies]
     box = plt.boxplot(data, 
-                      tick_labels=[f"Small intergenic ORFs\n(n = {len(orf_entropies_small)})", 
-                                   f"Long intergenic ORFs\n(n = {len(orf_entropies_long)})", 
+                      tick_labels=[f"Small intergenic ORFs\n(n = {len(small_orf_entropies)})", 
+                                   f"Long intergenic ORFs\n(n = {len(long_orf_entropies)})", 
                                    f"CDSs\n(n = {len(cds_entropies)})"], 
                                    patch_artist=True)
     colors = ["#CC79A7", "#56B4E9", "#E69F00"]
@@ -320,14 +332,19 @@ if __name__ == "__main__":
 
 
     ## Entropy of amino acid sequence
-    orf_entropies_aa_small = [get_entropy(str(intergenic_orfs[orf]["seq"].translate())) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) < decile_len_cds]
-    orf_entropies_aa_long = [get_entropy(str(intergenic_orfs[orf]["seq"].translate())) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) >= decile_len_cds]
-    cds_entropies_aa = [get_entropy(str(seq.translate())) for seq in cds_seqs]
+    # aa frequencies
+    cds_freqs_aa = [get_letter_frequencies(str(seq.translate())) for seq in cds_seqs]
+    small_orf_freqs_aa = [get_letter_frequencies(str(intergenic_orfs[orf]["seq"].translate())) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) < decile_len_cds]
+    long_orf_freqs_aa = [get_letter_frequencies(str(intergenic_orfs[orf]["seq"].translate())) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) >= decile_len_cds]
+    # Entropies
+    cds_entropies_aa = [get_entropy(freq) for freq in cds_freqs_aa]
+    small_orf_entropies_aa = [get_entropy(freq) for freq in small_orf_freqs_aa]
+    long_orf_entropies_aa = [get_entropy(freq) for freq in long_orf_freqs_aa]
     # Plot
     plt.figure()
-    data = [orf_entropies_aa_small, orf_entropies_aa_long, cds_entropies_aa]
-    box = plt.boxplot(data, tick_labels=[f"Small intergenic ORFs\n(n = {len(orf_entropies_aa_small)})", 
-                                   f"Long intergenic ORFs\n(n = {len(orf_entropies_aa_long)})", 
+    data = [small_orf_entropies_aa, long_orf_entropies_aa, cds_entropies_aa]
+    box = plt.boxplot(data, tick_labels=[f"Small intergenic ORFs\n(n = {len(small_orf_entropies_aa)})", 
+                                   f"Long intergenic ORFs\n(n = {len(long_orf_entropies_aa)})", 
                                    f"CDSs\n(n = {len(cds_entropies_aa)})"],
                                    patch_artist=True)
     for patch, color in zip(box["boxes"], colors):
@@ -362,3 +379,35 @@ if __name__ == "__main__":
     plt.ylabel("Hexamer score")
     plt.title("Distribution of hexamer scores")
     plt.savefig(os.path.join(OUT_DIR, f"{genome}_hexamer.png"))
+
+
+    ## Paired entropies
+    # Get aa frequencies
+    cds_aa_freq = get_letter_frequencies("".join([str(seq.translate()) for seq in cds_seqs]))
+    long_orfs_aa_freq = get_letter_frequencies("".join([str(intergenic_orfs[orf]["seq"].translate()) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) >= decile_len_cds]))
+    short_orfs_aa_freq = get_letter_frequencies("".join([str(intergenic_orfs[orf]["seq"].translate()) for orf in intergenic_orfs if len(intergenic_orfs[orf]["seq"]) < decile_len_cds]))
+    # Get ratio for each couple
+    aas = set(cds_aa_freq.keys()).union(long_orfs_aa_freq.keys()).union(short_orfs_aa_freq.keys())
+    ratio_long_cds = {}
+    ratio_short_cds = {}
+    ratio_short_long = {}
+    for aa in aas:
+        fc = cds_aa_freq.get(aa, 1e-6)
+        fl = long_orfs_aa_freq.get(aa, 1e-6)
+        fs = short_orfs_aa_freq.get(aa, 1e-6)
+        ratio_long_cds[aa] = fl / fc
+        ratio_short_cds[aa] = fs / fc
+        ratio_short_long[aa] = fs / fl
+    print(f"Ratio of long ORFs vs CDSs: {ratio_long_cds}")
+    print(f"Ratio of short ORFs vs CDSs: {ratio_short_cds}")
+    print(f"Ratio of short ORFs vs long ORFs: {ratio_short_long}")
+    # Get coupled entropies
+    print("\n\nLog entropies")
+    long_cds_entropy = get_entropy(ratio_long_cds)
+    short_cds_entropy = get_entropy(ratio_short_cds)
+    short_long_entropy = get_entropy(ratio_short_long)
+    print(f"Log ratio entropy of long ORFs vs CDSs: {long_cds_entropy}")
+    print(f"Log ratio entropy of short ORFs vs CDSs: {short_cds_entropy}")
+    print(f"Log ratio entropy of short ORFs vs long ORFs: {short_long_entropy}")
+
+    
