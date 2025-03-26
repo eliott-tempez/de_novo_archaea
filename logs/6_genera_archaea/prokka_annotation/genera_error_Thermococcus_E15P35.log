@@ -1,0 +1,8 @@
+[mclIO] writing </datas/ELIOTT/scripts/Thermococcus_E15P35/tmp_163002_3057/tmp_163002.mci>
+.......................................
+[mclIO] wrote native interchange 2287x2287 matrix with 5715 entries to stream </datas/ELIOTT/scripts/Thermococcus_E15P35/tmp_163002_3057/tmp_163002.mci>
+[mclIO] wrote 2287 tab entries to stream </datas/ELIOTT/scripts/Thermococcus_E15P35/tmp_163002_3057/tmp_163002.tab>
+[mcxload] tab has 2287 entries
+[mclIO] reading </datas/ELIOTT/scripts/Thermococcus_E15P35/tmp_163002_3057/tmp_163002.mcl>
+.......................................
+[mclIO] read native interchange 2287x1611 matrix with 2287 entries
