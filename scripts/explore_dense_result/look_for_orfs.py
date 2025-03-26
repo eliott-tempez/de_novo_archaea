@@ -30,16 +30,19 @@ for row in data.iterrows():
     contig = row["noncoding_match_contig"]
     noncoding_match_start = row["noncoding_match_start"]
     noncoding_match_end = row["noncoding_match_end"]
-    nc_zones.append((outgroup, contig, noncoding_match_start, noncoding_match_end))
+    strand = row["noncoding_match_strand"]
+    nc_zones.append((outgroup, contig, noncoding_match_start, noncoding_match_end, strand))
 nc_zones = set(nc_zones)
 
 
 # Get the sequence for each match
-i = 0
-for outgroup, contig, start, end in nc_zones:
-    i += 1
+for outgroup, contig, start, end, strand in nc_zones:
     seq = get_sequence_from_loci(outgroup, contig, start, end)
+    if strand == "-":
+        seq = seq.reverse_complement()
     orfs = orffinder.getORFs(seq, minimum_length=30)
+    # Keep only ORFs on the right strand
+    orfs = [dict for dict in orfs if dict["sense"] == "+"]
     max_len = 0
     if orfs:
         for dict in orfs:
@@ -47,7 +50,9 @@ for outgroup, contig, start, end in nc_zones:
                 max_len = dict["length"]
                 max_start = dict["start"]
                 max_end = dict["end"]
-    print(f"Match n°{i} of length {len(seq)} has {len(orfs)} ORFs with max length {max_len} ({max_start}-{max_end})")
+    print(f"De novo with match in {outgroup} ({contig}, {start}-{end}):")
+    print(f"Match of length {len(seq)} has {len(orfs)} ORFs with max length {max_len} ({max_start}-{max_end})")
+    print()
     
 
 
