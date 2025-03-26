@@ -76,3 +76,13 @@ boxplot(len_only_f1, len_only_f2,
         col = c("#CC79A7", "#0072B2"),
         xlab = "Frame of origin", ylab = "Length of the noncoding region (nt)",
         main = "Length distribution of the noncoding region\nfor de novo genes coming from only one altframe")
+
+
+# Print all genes with several origins
+f_origins <- data[, c("f.0", "f.1", "f.2")]
+data_several_origins <- data[rownames(f_origins[apply(f_origins, 1, function(x) sum(x == 0) < 2),]),]
+# Order alphabetically by the row "outgroup" then ascending "noncoding_match_start"
+data_several_origins <- data_several_origins[order(data_several_origins$outgroup, data_several_origins$noncoding_match_start), ]
+print(data_several_origins)
+# Save to file
+write.table(data_several_origins, file = "/home/eliott.tempez/Documents/M2_Stage_I2BC/status_several_origins.tsv", sep = "\t", quote = FALSE, row.names = FALSE)
