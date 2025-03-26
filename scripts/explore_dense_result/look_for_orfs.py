@@ -45,7 +45,9 @@ for outgroup, contig, start, end in nc_zones:
         for dict in orfs:
             if dict["length"] > max_len:
                 max_len = dict["length"]
-    print(f"Match n°{i} of length {len(seq)} has {len(orfs)} ORFs with max length {max_len}")
+                max_start = dict["start"]
+                max_end = dict["end"]
+    print(f"Match n°{i} of length {len(seq)} has {len(orfs)} ORFs with max length {max_len} ({max_start}-{max_end})")
     
 
 
