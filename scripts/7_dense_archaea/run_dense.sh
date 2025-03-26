@@ -17,8 +17,9 @@ LOG_ERROR=/home/eliott.tempez/dense_error_$archaea.log
 
 # Set up environment
 source /home/eliott.tempez/miniconda3/bin/activate dense
+
 # Create a unique scratch directory using PBS job ID
-SCRATCH_DIR=/scratchlocal/$USER/$PBS_JOBID
+SCRATCH_DIR=/scratch/$SLURM_JOB_USER/$SLURM_JOB_ID
 mkdir -p $SCRATCH_DIR
 cd $SCRATCH_DIR
 # Copy all inputs

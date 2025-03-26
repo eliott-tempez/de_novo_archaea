@@ -5,16 +5,19 @@ declare -a archaeas=("GCA_000007305@Pyrococcus_furiosus_DSM_3638" "GCA_000009965
 
 
 # Submit the jobs
-for ((i = 0; i < 20; i++)); do
-    species=${archaeas[$i]}
-    job_id=$(
-        qsub \
-        -v SPECIES=$species \
-        -N dense_$i \
-        -o /home/eliott.tempez/dense_output_$species.log \
-        -e /home/eliott.tempez/dense_error_$species.log \
-        -q common \
-        -l ncpus=8 -l mem=64gb -l walltime=10:00:00 \
-        run_dense.sh
-        )
+for ((i = 0; i < 5; i++)); do
+    sbatch <<EOF
+#!/bin/bash
+#SBATCH --job-name=dense_$i
+#SBATCH --output=/home/eliott.tempez/dense_output_$species.log
+#SBATCH --error=/home/eliott.tempez/dense_error_$species.log
+#SBATCH --partition=common
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=64G
+#SBATCH --time=10:00:00
+
+export SPECIES=$species
+bash run_dense.sh
+EOF
 done
