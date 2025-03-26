@@ -19,7 +19,7 @@ LOG_ERROR=/home/eliott.tempez/dense_error_$archaea.log
 source /home/eliott.tempez/miniconda3/bin/activate dense
 
 # Create a unique scratch directory using PBS job ID
-SCRATCH_DIR=/scratch/$SLURM_JOB_USER/$SLURM_JOB_ID
+SCRATCH_DIR=/scratchlocal/$USER/$SLURM_JOBID
 mkdir -p $SCRATCH_DIR
 cd $SCRATCH_DIR
 # Copy all inputs
@@ -45,7 +45,7 @@ echo "Running Dense..." >> $LOG_OUTPUT
 nextflow run ./dense \
     -profile singularity \
     --max_cpus 8 \
-    --max_memory 64.GB \
+    --max_memory 32.GB \
     --max_time 10.h \
     --num_outgroups 2 \
     --gendir gendir_for_dense/ \
