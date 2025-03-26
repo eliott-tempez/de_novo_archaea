@@ -45,7 +45,7 @@ nextflow run ./dense \
     -profile singularity \
     --max_cpus 8 \
     --max_memory 64.GB \
-    --max_time 50.h \
+    --max_time 10.h \
     --num_outgroups 2 \
     --gendir gendir_for_dense/ \
     --focal $archaea \
