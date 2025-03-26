@@ -51,8 +51,10 @@ for outgroup, contig, start, end, strand in nc_zones:
                 max_start = dict["start"]
                 max_end = dict["end"]
     print(f"De novo with match in {outgroup} ({contig}, {start}-{end}):")
-    print(f"Match of length {len(seq)} has {len(orfs)} ORFs with max length {max_len} ({max_start}-{max_end})")
-    print()
+    print(f"Match of length {len(seq)} has {len(orfs)} ORFs with max length {max_len} ({max_start}-{max_end}):")
+    print("-"*100)
+    print(f"{' '*round((max_start/len(seq))*100-1)}{'-'*round(((max_end-max_start)/len(seq))*100)}")
+    print("\n\n")
     
 
 
