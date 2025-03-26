@@ -1,3 +1,7 @@
+"""
+This script facilitates the re-do of tblastns.
+"""
+
 import os
 
 FASTA_FOLDER = "/home/eliott.tempez/Documents/archaea_data/complete_122/fasta_renamed/"

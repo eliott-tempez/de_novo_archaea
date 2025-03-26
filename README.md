@@ -25,11 +25,11 @@ Ce stage a été effectué de Janvier 2025 à Juillet 2025 au sein de l'Institut
 - Utilisation de Dense sur les données générées par GenEra (`7_dense_archaea`)
 - Ré-annotation des génomes (`8_re_annotate_genomes`)
 
-
-
-
-
-- Exploration "à la main" des résultats de Dense (`explore_dense_results`)
-- Exploration des résultats de GenEra (`explore_genera_results`)
-- Calcul de la conservation de différents types de matériels génétiques à travers l'arbre phylogénétique (`calculate_conservation`)
-
+**Exploration des résultats :**
+- Fonctions python généralistes pour effectuer les analyses (`9_general_analysis_functions`)
+- Analyse des régions intergéniques des génomes annotés (`10_analyse_intergenic`)
+- Calcul de la conservation de différents types de matériels génétiques à travers l'arbre phylogénétique (`11_calculate_conservation`)
+- Re-analyse Diamond de 1000 gènes aléatoires avec un LCA LUCA selon GenEra (`12_reblast_rank1`)
+- Visualisation des résultats de Dense (`13_plot_dense_results`)
+- Récupération de l'origine des gènes de novo dans le noncodant du patch outgroup (`14_get_noncoding_match`)
+- Etude des gènes de novo "ratés" à cause d'une rupture de synténie (`15_explore_synteny_mismatches`)
