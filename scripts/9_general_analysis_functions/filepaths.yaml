@@ -1,0 +1,7 @@
+local_paths:
+  genomes_list: "/home/eliott.tempez/Documents/M2_Stage_I2BC/scripts/genera_archaea/genomes_list.txt"
+  genera_dir: "/home/eliott.tempez/Documents/archaea_data/genera/out/"
+  dense_dir: "/home/eliott.tempez/Documents/archaea_data/dense/"
+  gff_dir: "/home/eliott.tempez/Documents/archaea_data/complete_122/reannotated_gff_75/"
+  fa_dir: "/home/eliott.tempez/Documents/archaea_data/complete_122/fasta_renamed/"
+  cds_dir: "/home/eliott.tempez/Documents/archaea_data/complete_122/reannotated_cds/"
