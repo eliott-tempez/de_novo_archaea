@@ -16,14 +16,20 @@ Ce stage a été effectué de Janvier 2025 à Juillet 2025 au sein de l'Institut
 
 
 ### Etapes du stage (sous-dossiers) :
-- Utilisation de Dense sur Saccharomyces cerevisiae pour me familiariser avec l'outil (`dense_yeast`)
-- Etude et visualisation des données d'entrée (`initial_data_analysis`)
-- Conversion des fichiers `genbank` dans les données d'entrée en fichiers `gff` (`gbk_to_gff3`)
-- Récupération des identifiants taxonomiques NCBI correspondant aux données d'entrée (`retrieve_taxids`)
-- Récupération des noms de contigs discordant entre les fichiers genbank et fasta (`retrieve_contigs`)
-- Utilisation de GenEra sur les données d'entrée (`genera_archaea`)
-- Utilisation de Dense sur les données générées par GenEra (`dense_archaea`)
+- Utilisation de Dense sur Saccharomyces cerevisiae pour me familiariser avec l'outil (`1_dense_yeast`)
+- Etude et visualisation des données d'entrée (`2_initial_data_analysis`)
+- Conversion des fichiers `genbank` dans les données d'entrée en fichiers `gff` (`3_gbk_to_gff3`)
+- Récupération des identifiants taxonomiques NCBI correspondant aux données d'entrée (`4_retrieve_taxids`)
+- Récupération des noms de contigs discordant entre les fichiers genbank et fasta (`5_rename_contigs`)
+- Utilisation de GenEra sur les données d'entrée (`6_genera_archaea`)
+- Utilisation de Dense sur les données générées par GenEra (`7_dense_archaea`)
+- Ré-annotation des génomes (`8_re_annotate_genomes`)
+
+
+
+
+
 - Exploration "à la main" des résultats de Dense (`explore_dense_results`)
 - Exploration des résultats de GenEra (`explore_genera_results`)
 - Calcul de la conservation de différents types de matériels génétiques à travers l'arbre phylogénétique (`calculate_conservation`)
-- Ré-annotation des génomes (`re_annotate_genomes`)
+
