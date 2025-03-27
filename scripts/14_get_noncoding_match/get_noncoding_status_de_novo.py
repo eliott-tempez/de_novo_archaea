@@ -322,15 +322,15 @@ if __name__ == "__main__":
             f1 = origin_frames[genome][denovo]["f+1"] if "f+1" in origin_frames[genome][denovo] else 0
             f2 = origin_frames[genome][denovo]["f+2"] if "f+2" in origin_frames[genome][denovo] else 0
             n_genes = origin_frames[genome][denovo]["n_different_genes"]
-            gene_matches = origin_frames[genome][denovo]["different_genes"]
-            results_list.append({"genome": genome, "denovo_gene": denovo, "outgroup": outgroup, "noncoding_match_contig": noncoding_match_contig, "noncoding_match_start": noncoding_match_start, "noncoding_match_end": noncoding_match_end, "noncoding_match_strand": noncoding_match_strand, "intergenic": intergenic, "f+0": f0, "f+1": f1, "f+2": f2, "n_genes": n_genes})
+            gene_matches = ";".join(origin_frames[genome][denovo]["different_genes"])
+            results_list.append({"genome": genome, "denovo_gene": denovo, "outgroup": outgroup, "noncoding_match_contig": noncoding_match_contig, "noncoding_match_start": noncoding_match_start, "noncoding_match_end": noncoding_match_end, "noncoding_match_strand": noncoding_match_strand, "intergenic": intergenic, "f+0": f0, "f+1": f1, "f+2": f2, "n_genes": n_genes, "gene_matches": gene_matches})
             n_done += 1
             if n_done % 10 == 0:
                 print(f"{n_done} de novo genes processed...")
         
     n_denovo = len(results_list)
     print(f"{n_denovo} de novo genes found in total")
-    results = pd.DataFrame(results_list, columns=["genome", "denovo_gene", "outgroup", "noncoding_match_contig", "noncoding_match_start", "noncoding_match_end", "noncoding_match_strand", "intergenic", "f+0", "f+1", "f+2"])
+    results = pd.DataFrame(results_list, columns=["genome", "denovo_gene", "outgroup", "noncoding_match_contig", "noncoding_match_start", "noncoding_match_end", "noncoding_match_strand", "intergenic", "f+0", "f+1", "f+2", "n_genes", "gene_matches"])
     # Save to file
     results.to_csv(os.path.join(OUT_FOLDER, "denovo_noncoding_status.tsv"), sep="\t", index=False)
 
