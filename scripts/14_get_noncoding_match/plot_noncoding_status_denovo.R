@@ -1,4 +1,4 @@
-input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/explore_dense_results/denovo_noncoding_status.tsv"
+input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/denovo_noncoding_status.tsv"
 
 
 data <- read.table(input_file, header = TRUE, sep = "\t")
