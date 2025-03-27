@@ -229,6 +229,7 @@ def get_nc_origin(genome, denovo_dict):
         de_novo_is_on_plus = strand_match == "+"
         all_loci = list(range(start_match, end_match+1))
         loci_in_gene = []
+        n_different_genes = 0
         for cds in ancestor_cdss:
             contig, strand, start, end, seq = cds
 
@@ -236,6 +237,7 @@ def get_nc_origin(genome, denovo_dict):
             if de_novo_is_on_plus:
                 if strand == "+" and contig == contig_match:
                     if any(start <= i <= end for i in all_loci):
+                        n_different_genes += 1
                         # Get the nucleotides in the CDS
                         loci_in_gene += [i for i in all_loci if start <= i <= end]
 
@@ -256,6 +258,7 @@ def get_nc_origin(genome, denovo_dict):
             else:
                 if strand == "-" and contig == contig_match:
                     if any(start <= i <= end for i in all_loci):
+                        n_different_genes += 1
                         loci_in_gene += [i for i in all_loci if start <= i <= end]
                         # Get the frame
                         # Query protein sequence
@@ -270,6 +273,9 @@ def get_nc_origin(genome, denovo_dict):
                             origin_frames[denovo][f"f+{frame - 1}"] = len([i for i in all_loci if start <= i <= end])
                         else:
                             origin_frames[denovo][f"f+{frame - 1}"] += len([i for i in all_loci if start <= i <= end])
+        # Keep the number of genes we found a match in
+        origin_frames[denovo]["n_different_genes"] = n_different_genes
+
         # Get the loci that are in the intergenic
         loci_in_intergenic = [i for i in all_loci if i not in loci_in_gene]
         if len(loci_in_intergenic) > 0:
@@ -310,7 +316,8 @@ if __name__ == "__main__":
             f0 = origin_frames[genome][denovo]["f+0"] if "f+0" in origin_frames[genome][denovo] else 0
             f1 = origin_frames[genome][denovo]["f+1"] if "f+1" in origin_frames[genome][denovo] else 0
             f2 = origin_frames[genome][denovo]["f+2"] if "f+2" in origin_frames[genome][denovo] else 0
-            results_list.append({"genome": genome, "denovo_gene": denovo, "outgroup": outgroup, "noncoding_match_contig": noncoding_match_contig, "noncoding_match_start": noncoding_match_start, "noncoding_match_end": noncoding_match_end, "noncoding_match_strand": noncoding_match_strand, "intergenic": intergenic, "f+0": f0, "f+1": f1, "f+2": f2})
+            n_genes = origin_frames[genome][denovo]["n_different_genes"]
+            results_list.append({"genome": genome, "denovo_gene": denovo, "outgroup": outgroup, "noncoding_match_contig": noncoding_match_contig, "noncoding_match_start": noncoding_match_start, "noncoding_match_end": noncoding_match_end, "noncoding_match_strand": noncoding_match_strand, "intergenic": intergenic, "f+0": f0, "f+1": f1, "f+2": f2, "n_genes": n_genes})
             n_done += 1
             if n_done % 10 == 0:
                 print(f"{n_done} de novo genes processed...")
