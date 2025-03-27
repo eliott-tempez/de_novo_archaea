@@ -4,7 +4,7 @@ This script will import all hardcoded paths from the yaml file
 
 import yaml
 
-with open("filepaths.yaml", "r") as file:
+with open("/home/eliott.tempez/Documents/M2_Stage_I2BC/scripts/my_functions/filepaths.yaml", "r") as file:
     config = yaml.safe_load(file)
 
 # Define paths
