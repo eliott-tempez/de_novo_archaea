@@ -128,18 +128,17 @@ if __name__ == "__main__":
 
             # Get the location of the stop codons
             stops = [pos for pos, char in enumerate(match_seq_aa) if char == "*"]
-            max_threshold_codon = len(match_seq_aa) - 4
             # Get the number of sequences that could be CDSs
-            all_stops_after_threshold = all(stop > max_threshold_codon for stop in stops)
+            is_end_stop = stops == [len(match_seq_aa) - 1]
             no_stops = len(stops) == 0
-            if all_stops_after_threshold or no_stops:
+            if is_end_stop or no_stops:
                 n_potential_CDSs += 1
             else:
                 good_denovo_stops.append(stops)
 
 
-    print(f"Out of {n_denovo} de novo genes, {n_potential_CDSs} corresponding hits in the noncoding have no stop at all, or only stops in the last 3 amino acids")
-    print(f"The rest have a mean of {np.mean([len(stops) for stops in good_denovo_stops])} stops in the sequence")
+    print(f"Out of {n_denovo} de novo genes, {n_potential_CDSs} corresponding hits in the noncoding have no stop at all, or only one stop at the end")
+    print(f"The rest (n = {n_denovo - n_potential_CDSs}) have a mean of {np.mean([len(stops) for stops in good_denovo_stops])} stops in the sequence")
     print()
 
                 
