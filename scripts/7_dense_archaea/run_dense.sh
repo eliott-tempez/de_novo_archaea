@@ -28,7 +28,12 @@ source /home/eliott.tempez/miniconda3/bin/activate dense
 
 # Create a unique scratch directory using PBS job ID
 SCRATCH_DIR=/scratchlocal/$USER/$SLURM_JOBID
-mkdir -p $SCRATCH_DIR
+# Set up Singularity environment
+export SINGULARITY_TMPDIR=$SCRATCH_DIR/tmp
+export SINGULARITY_CACHEDIR=$SCRATCH_DIR/cache
+# Create directories
+mkdir -p $SINGULARITY_TMPDIR $SINGULARITY_CACHEDIR $SCRATCH_DIR
+
 cd $SCRATCH_DIR
 # Copy all inputs
 cp -r /home/eliott.tempez/dense .

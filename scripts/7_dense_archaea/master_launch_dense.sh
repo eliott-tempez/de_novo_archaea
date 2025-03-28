@@ -16,7 +16,5 @@ for ((i = 45; i < 90; i++)); do
         --cpus-per-task=8 \
         --mem=64gb \
         --time=10:00:00 \
-        --ntasks-per-node=1 \
-        --nodes=1 \
         run_dense.sh
 done
