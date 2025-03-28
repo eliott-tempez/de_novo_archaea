@@ -15,6 +15,14 @@ OUT_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/dense/${archaea}/
 LOG_OUTPUT=/home/eliott.tempez/dense_output_$archaea.log
 LOG_ERROR=/home/eliott.tempez/dense_error_$archaea.log
 
+# Check if we already have the result
+OUT_FILE=$OUT_DIR/denovogenes.tsv
+if [ -f $OUT_FILE ]; then
+    echo "Output file already exists, skipping job"
+    exit 0
+fi
+
+
 # Set up environment
 source /home/eliott.tempez/miniconda3/bin/activate dense
 
@@ -44,7 +52,7 @@ echo $archaea >> $LOG_OUTPUT
 echo "Running Dense..." >> $LOG_OUTPUT
 nextflow run ./dense \
     -profile singularity \
-    --max_cpus 16 \
+    --max_cpus 8 \
     --max_memory 64.GB \
     --max_time 10.h \
     --num_outgroups 2 \
