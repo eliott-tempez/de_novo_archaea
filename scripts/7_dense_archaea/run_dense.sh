@@ -36,6 +36,8 @@ export SINGULARITY_CACHEDIR=$SCRATCH_DIR/cache
 mkdir -p $SINGULARITY_TMPDIR $SINGULARITY_CACHEDIR $SCRATCH_DIR
 
 cd $SCRATCH_DIR
+# Delete old tmp files
+find /tmp -maxdepth 1 -type d -name "rootfs-*" -user eliott.tempez -exec rm -rf {} +
 # Copy all inputs
 cp -r /home/eliott.tempez/dense .
 cp -r $GENDIR .
