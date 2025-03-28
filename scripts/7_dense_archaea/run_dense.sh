@@ -25,6 +25,7 @@ fi
 
 # Set up environment
 source /home/eliott.tempez/miniconda3/bin/activate dense
+module load singularity
 
 # Create a unique scratch directory using PBS job ID
 SCRATCH_DIR=/scratchlocal/$USER/$SLURM_JOBID
