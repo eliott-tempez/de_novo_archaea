@@ -5,7 +5,7 @@ declare -a archaeas=("GCA_000007305@Pyrococcus_furiosus_DSM_3638" "GCA_000009965
 
 
 # Submit the jobs
-for ((i = 1; i < 60; i++)); do
+for ((i = 45; i < 90; i++)); do
     species=${archaeas[$i]}
     sbatch \
         --export=SPECIES=$species \
@@ -13,7 +13,7 @@ for ((i = 1; i < 60; i++)); do
         -o /home/eliott.tempez/dense_output_$species.log \
         -e /home/eliott.tempez/dense_error_$species.log \
         -p common \
-        --cpus-per-task=16 \
+        --cpus-per-task=8 \
         --mem=64gb \
         --time=10:00:00 \
         run_dense.sh
