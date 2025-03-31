@@ -214,6 +214,7 @@ def get_ancestor_seq_in_frame(seq, start, end, start_match, end_match, strand):
 def get_nc_origin(genome, denovo_dict):
     origin_frames = {}
     for denovo in denovo_dict:
+        print(denovo, genome, denovo_dict[denovo])
         origin_frames[denovo] = {}
         seq_ancestor_match = get_sequence_from_loci(denovo_dict[denovo]["ancestor_sp"], denovo_dict[denovo]["loci"][0], denovo_dict[denovo]["loci"][1], denovo_dict[denovo]["loci"][2])
         if seq_ancestor_match is None:
@@ -225,7 +226,7 @@ def get_nc_origin(genome, denovo_dict):
         contig_match, start_match, end_match, strand_match = denovo_dict[denovo]["loci"]
         # Keep the CDSs that contain the de novo gene
         de_novo_is_on_plus = strand_match == "+"
-        all_loci = list(range(start_match, end_match+1))
+        all_loci = list(range(start_match, end_match))
         loci_in_gene = []
         n_different_genes = 0
         different_genes = []
@@ -274,6 +275,7 @@ def get_nc_origin(genome, denovo_dict):
                             origin_frames[denovo][f"f+{frame - 1}"] = len([i for i in all_loci if start <= i <= end])
                         else:
                             origin_frames[denovo][f"f+{frame - 1}"] += len([i for i in all_loci if start <= i <= end])
+            
         # Keep the number of genes we found a match in
         origin_frames[denovo]["n_different_genes"] = n_different_genes
         origin_frames[denovo]["different_genes"] = different_genes
@@ -282,6 +284,7 @@ def get_nc_origin(genome, denovo_dict):
         loci_in_intergenic = [i for i in all_loci if i not in loci_in_gene]
         if len(loci_in_intergenic) > 0:
             origin_frames[denovo]["intergenic"] = len(loci_in_intergenic) if de_novo_is_on_plus else len(loci_in_intergenic)
+        print(origin_frames[denovo])
 
     return origin_frames
 
@@ -304,7 +307,7 @@ if __name__ == "__main__":
         # Keep only the genomes with de novo genes
         if denovo_dict[genome] == {}:
             continue
-            
+       
 
         # Get the corresponding area in the ancestor genome
         origin_frames[genome] = get_nc_origin(genome, denovo_dict[genome])
