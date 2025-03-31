@@ -4,6 +4,6 @@ local_paths:
   dense_dir: "/home/eliott.tempez/Documents/archaea_data/dense/"
   gff_dir: "/home/eliott.tempez/Documents/archaea_data/complete_122/reannotated_gff_75/"
   fa_dir: "/home/eliott.tempez/Documents/archaea_data/complete_122/fasta_renamed/"
-  cds_dir: "/home/eliott.tempez/Documents/archaea_data/complete_122/reannotated_CDS/"
+  cds_dir: "/home/eliott.tempez/Documents/archaea_data/dense/GCA_000007305@Pyrococcus_furiosus_DSM_3638/CDS/"
   gbk_dir: "/home/eliott.tempez/Documents/archaea_data/complete_122/reannotated_gbk_75/"
   tree_file: "/home/eliott.tempez/Documents/archaea_data/whole_tree.nwk"

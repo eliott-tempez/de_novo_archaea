@@ -11,10 +11,7 @@ from Bio.Seq import Seq
 
 
 
-
-DENSE_DIR = "/home/eliott.tempez/Documents/archaea_data/dense/"
-DATA_DIR = "/home/eliott.tempez/Documents/archaea_data/complete_122/"
-GENOMES_LIST = "/home/eliott.tempez/Documents/M2_Stage_I2BC/scripts/6_genera_archaea/genomes_list.txt"
+from my_functions.paths import DENSE_DIR, GENOMES_LIST, CDS_DIR, GFF_DIR, FA_DIR
 OUT_FOLDER = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/"
 
 
@@ -32,7 +29,7 @@ def get_denovo_info(genome):
         denovo_dict[denovo_gene] = {}
 
     # Get the de novo sequence
-    fna_file = os.path.join(DATA_DIR, "CDS", genome + "_CDS.faa")
+    fna_file = os.path.join(CDS_DIR, genome + "_CDS.faa")
     for denovo_gene in denovo_dict:
         for record in SeqIO.parse(fna_file, "fasta"):
             if record.name == denovo_gene:
@@ -88,7 +85,7 @@ def get_denovo_info(genome):
 def get_CDS_info(genome):
     """Get the list of all CDSs for a given genome"""
     sp_genes = []
-    gff_file = os.path.join(DATA_DIR, "gff3_no_fasta", genome + ".gff3")
+    gff_file = os.path.join(GFF_DIR, genome + ".gff3")
     gff_df = pd.read_csv(gff_file, sep="\t", header=None, comment="#")
     gff_df.columns = ["seqid", "source", "type", "start", "end", "score", "strand", "phase", "attributes"]
     cds_df = gff_df[gff_df["type"] == "CDS"].reset_index(drop=True)
@@ -99,7 +96,7 @@ def get_CDS_info(genome):
         end = row.end
         seq = ""
         cds_name = row.attributes.split(";")[0].split("=")[1]
-        fa_file = os.path.join(DATA_DIR, "fasta_renamed", genome + ".fa")
+        fa_file = os.path.join(FA_DIR, genome + ".fa")
         for record in SeqIO.parse(fa_file, "fasta"):
             if record.name == contig:
                 if strand == "+":
@@ -112,7 +109,7 @@ def get_CDS_info(genome):
 
 
 def get_sequence_from_loci(genome, contig, start, end):
-    fa_file = os.path.join(DATA_DIR, "fasta_renamed", genome + ".fa")
+    fa_file = os.path.join(FA_DIR, genome + ".fa")
     for record in SeqIO.parse(fa_file, "fasta"):
         if str(record.name) == str(contig):
             return record.seq[start:end]
