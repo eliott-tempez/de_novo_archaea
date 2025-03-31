@@ -144,7 +144,7 @@ ggplot(data, aes(x = n_denovo)) +
        x = "Number of de novo genes",
        y = "Number of genomes") +
   theme(plot.title = element_text(hjust = 0.5, vjust = -10))
-#ggsave(paste0(output_dir, "denovo_distribution_116.png"))
+ggsave(paste0(output_dir, "denovo_distribution_116.png"))
 
 
 
