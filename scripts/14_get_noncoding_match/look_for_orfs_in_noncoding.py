@@ -13,9 +13,7 @@ from Bio.SeqRecord import SeqRecord
 
 
 
-DENSE_DIR = "/home/eliott.tempez/Documents/archaea_data/dense/"
-DATA_DIR = "/home/eliott.tempez/Documents/archaea_data/complete_122/"
-GENOMES_LIST = "/home/eliott.tempez/Documents/M2_Stage_I2BC/scripts/6_genera_archaea/genomes_list.txt"
+from my_functions.paths import *
 OUT_FOLDER = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/"
 
 
@@ -33,7 +31,7 @@ def get_denovo_info(genome):
         denovo_dict[denovo_gene] = {}
 
     # Get the de novo sequence
-    fna_file = os.path.join(DATA_DIR, "CDS", genome + "_CDS.faa")
+    fna_file = os.path.join(CDS_DIR, genome + "_CDS.faa")
     for denovo_gene in denovo_dict:
         for record in SeqIO.parse(fna_file, "fasta"):
             if record.name == denovo_gene:
@@ -88,7 +86,7 @@ def get_denovo_info(genome):
 
 
 def get_sequence_from_loci(genome, contig, start, end, strand):
-    fa_file = os.path.join(DATA_DIR, "fasta_renamed", genome + ".fa")
+    fa_file = os.path.join(FA_DIR, genome + ".fa")
 
     for record in SeqIO.parse(fa_file, "fasta"):
         if str(record.name) == str(contig):
