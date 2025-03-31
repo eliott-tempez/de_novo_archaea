@@ -2,6 +2,7 @@ library(ggplot2)
 library(ggtree)
 library(ape)
 library(ggnewscale)
+library(yaml)
 ggsave <- function(..., bg = "white",
                    width = 1000, height = 1000,
                    units = "px", dpi = 100) {
@@ -13,14 +14,19 @@ ggsave <- function(..., bg = "white",
 }
 
 
+config <- yaml.load_file("/home/eliott.tempez/Documents/M2_Stage_I2BC/scripts/my_functions/filepaths.yaml")
+paths <- config$local_paths
+
+
+
 # Filenames
-tree_file <- "/home/eliott.tempez/Documents/archaea_data/whole_tree.nwk"
-genera_dir <- "/home/eliott.tempez/Documents/archaea_data/genera/out/"
-dense_dir <- "/home/eliott.tempez/Documents/archaea_data/dense/"
-cds_dir <- "/home/eliott.tempez/Documents/archaea_data/complete_122/CDS/"
-genomes_list <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/scripts/genera_archaea/genomes_list.txt"
-output_dir <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/explore_dense_results/"
-intergenic_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/explore_dense_results/intergenic_lengths.tsv"
+tree_file <- paths$tree_file
+genera_dir <- paths$genera_dir
+dense_dir <- paths$dense_dir
+cds_dir <- paths$cds_dir
+genomes_list <- paths$genomes_list
+output_dir <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/"
+intergenic_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/10_analyse_intergenic/intergenic_lengths.tsv"
 
 
 # Read genomes list

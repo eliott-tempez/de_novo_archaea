@@ -4,8 +4,8 @@ import re
 from Bio import SeqIO
 
 DATA_DIR = "/home/eliott.tempez/Documents/archaea_data/complete_122/"
-GENOMES_LIST = "/home/eliott.tempez/Documents/M2_Stage_I2BC/scripts/genera_archaea/genomes_list.txt"
-OUTPUT_FILE = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/explore_dense_results/intergenic_lengths.tsv"
+GENOMES_LIST = "/home/eliott.tempez/Documents/M2_Stage_I2BC/scripts/6_genera_archaea/genomes_list.txt"
+OUTPUT_FILE = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/10_analyse_intergenic/intergenic_lengths.tsv"
 
 
 
@@ -13,7 +13,7 @@ OUTPUT_FILE = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/explore_dense
 def extract_intergenic(species):
         """Extract all intergenic sequences"""
         # Make sure the file exists and read it
-        gbk_pattern = os.path.join(DATA_DIR, "annotation", species + ".gb*")
+        gbk_pattern = os.path.join(DATA_DIR, "reannotated_gbk_75", species + ".gbk")
         gbk_files = [f for f in glob.glob(gbk_pattern) if not f.endswith(".fai")]
         if gbk_files:
             gbk_file = gbk_files[0]
