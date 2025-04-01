@@ -48,6 +48,7 @@ declare -a archaeas=("GCA_000007305@Pyrococcus_furiosus_DSM_3638" "GCA_000009965
 
 for archaea in "${archaeas[@]}"; do
     python 11_calculate_conservation/calculate_conservation.py --focal_species $archaea >> $OUTPUT_LOG 2>> $ERROR_LOG
+    cp -f out/* $OUT_DIR
 done
 
 # Copy output
