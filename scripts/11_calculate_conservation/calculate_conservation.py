@@ -18,7 +18,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 OUTPUT_DIR = "out/"
 from my_functions.paths import GENOMES_LIST, GENERA_DIR, DENSE_DIR, CDS_DIR, FA_DIR, GBK_DIR
 TRG_RANK = 7.0
-NCPUS = 12
+# Get the max available cpus
+NCPUS = os.cpu_count()
 
 
 
