@@ -5,8 +5,8 @@ This script facilitates the re-do of tblastns.
 import os
 
 FASTA_FOLDER = "/home/eliott.tempez/Documents/archaea_data/complete_122/fasta_renamed/"
-GFF_folder = "/home/eliott.tempez/Documents/archaea_data/complete_122/gff3/"
-CDS_folder = "/home/eliott.tempez/Documents/archaea_data/complete_122/CDS/"
+GFF_folder = "/home/eliott.tempez/Documents/archaea_data/complete_122/reannotated_gff_75/"
+CDS_folder = "/home/eliott.tempez/Documents/archaea_data/dense/GCA_000007305@Pyrococcus_furiosus_DSM_3638/CDS/"
 EXTENDED_TRG_folder = "/home/eliott.tempez/Documents/archaea_data/complete_122/multielongated_TRGS/"
 TMP_DIR = os.path.join(os.getcwd(), "tmp/")
 
