@@ -11,7 +11,7 @@
 
 SCRIPTS=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/stage/M2_stage_I2BC/scripts
 GENERA_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/genera/out
-DENSE_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/dense
+DENSE_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/dense/dense_files_only
 FA_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/complete_122/fasta_renamed
 GBK_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/complete_122/reannotated_gbk_75
 OUTPUT_LOG=/home/eliott.tempez/conservation_calculations.log
@@ -25,7 +25,8 @@ cd $SCRATCH_DIR
 cp -r $SCRIPTS/* .
 mkdir -p genera/
 cp -r $GENERA_DIR/* genera/
-cp -r $DENSE_DIR dense/
+mkdir -p dense/
+cp -r $DENSE_DIR/* dense/
 mkdir -p cds/
 cp genera/GCA_000007*/CDS/* cds/
 mkdir -p fa/
@@ -33,6 +34,7 @@ cp -r $FA_DIR/* fa/
 mkdir -p gbk/
 cp -r $GBK_DIR/* gbk/
 mkdir -p out/
+echo "Environment created" >> $OUTPUT_LOG
 
 
 # Launch calculation
@@ -46,3 +48,4 @@ done
 cp -r out/* $OUT_DIR
 # Clean up
 rm -rf $SCRATCH_DIR
+echo "Done" >> $OUTPUT_LOG
