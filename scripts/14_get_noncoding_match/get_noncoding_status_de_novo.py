@@ -214,7 +214,6 @@ def get_ancestor_seq_in_frame(seq, start, end, start_match, end_match, strand):
 def get_nc_origin(genome, denovo_dict):
     origin_frames = {}
     for denovo in denovo_dict:
-        print(denovo, genome, denovo_dict[denovo])
         origin_frames[denovo] = {}
         seq_ancestor_match = get_sequence_from_loci(denovo_dict[denovo]["ancestor_sp"], denovo_dict[denovo]["loci"][0], denovo_dict[denovo]["loci"][1], denovo_dict[denovo]["loci"][2])
         if seq_ancestor_match is None:
@@ -236,11 +235,11 @@ def get_nc_origin(genome, denovo_dict):
             # For the + strand
             if de_novo_is_on_plus:
                 if strand == "+" and contig == contig_match:
-                    if any(start <= i <= end for i in all_loci):
+                    if any(start <= i < end for i in all_loci):
                         n_different_genes += 1
                         different_genes.append(cds_name)
                         # Get the nucleotides in the CDS
-                        loci_in_gene += [i for i in all_loci if start <= i <= end]
+                        loci_in_gene += [i for i in all_loci if start <= i < end]
 
                         # Get the frame
                         # Query protein sequence
@@ -251,17 +250,17 @@ def get_nc_origin(genome, denovo_dict):
                         subject = get_ancestor_seq_in_frame(seq_ancestor_match, start, end, start_match, end_match, strand_match)
                         frame = get_frame_from_blast(query, subject)
                         if f"f{frame - 1}" not in origin_frames[denovo]:
-                            origin_frames[denovo][f"f+{frame - 1}"] = len([i for i in all_loci if start <= i <= end])
+                            origin_frames[denovo][f"f+{frame - 1}"] = len([i for i in all_loci if start <= i < end])
                         else:
-                            origin_frames[denovo][f"f+{frame - 1}"] += len([i for i in all_loci if start <= i <= end])
+                            origin_frames[denovo][f"f+{frame - 1}"] += len([i for i in all_loci if start <= i < end])
 
             # For the - strand
             else:
                 if strand == "-" and contig == contig_match:
-                    if any(start <= i <= end for i in all_loci):
+                    if any(start <= i < end for i in all_loci):
                         n_different_genes += 1
                         different_genes.append(cds_name)
-                        loci_in_gene += [i for i in all_loci if start <= i <= end]
+                        loci_in_gene += [i for i in all_loci if start <= i < end]
                         # Get the frame
                         # Query protein sequence
                         qstart = denovo_dict[denovo]["qstart"]
@@ -272,9 +271,9 @@ def get_nc_origin(genome, denovo_dict):
                         subject = get_ancestor_seq_in_frame(seq_ancestor_match, start, end, start_match, end_match, strand_match)
                         frame = get_frame_from_blast(query, subject)
                         if f"f{frame - 1}" not in origin_frames[denovo]:
-                            origin_frames[denovo][f"f+{frame - 1}"] = len([i for i in all_loci if start <= i <= end])
+                            origin_frames[denovo][f"f+{frame - 1}"] = len([i for i in all_loci if start <= i < end])
                         else:
-                            origin_frames[denovo][f"f+{frame - 1}"] += len([i for i in all_loci if start <= i <= end])
+                            origin_frames[denovo][f"f+{frame - 1}"] += len([i for i in all_loci if start <= i < end])
             
         # Keep the number of genes we found a match in
         origin_frames[denovo]["n_different_genes"] = n_different_genes
@@ -284,7 +283,6 @@ def get_nc_origin(genome, denovo_dict):
         loci_in_intergenic = [i for i in all_loci if i not in loci_in_gene]
         if len(loci_in_intergenic) > 0:
             origin_frames[denovo]["intergenic"] = len(loci_in_intergenic) if de_novo_is_on_plus else len(loci_in_intergenic)
-        print(origin_frames[denovo])
 
     return origin_frames
 
