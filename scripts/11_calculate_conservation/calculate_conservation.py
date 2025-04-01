@@ -11,7 +11,8 @@ from Bio.Seq import Seq
 import concurrent.futures
 
 
-OUTPUT_DIR = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/11_calculate_conservation/"
+#OUTPUT_DIR = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/11_calculate_conservation/"
+OUTPUT_DIR = "out/"
 from my_functions.paths import GENOMES_LIST, GENERA_DIR, DENSE_DIR, CDS_DIR, FA_DIR, GBK_DIR
 TRG_RANK = 7.0
 NCPUS = 12
