@@ -15,7 +15,6 @@ input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncod
 
 
 data <- read.table(input_file, header = TRUE, sep = "\t")
-data[, c("intergenic", "f.0", "f.1", "f.2")] <- lapply(data[, c("intergenic", "f.0", "f.1", "f.2")], function(x) ifelse(x < 3, 0, x))
 
 
 
@@ -125,3 +124,9 @@ text(x = 1, y = -10, labels = paste("n =", length(len_intergenic_several_origins
 text(x = 2, y = -10, labels = paste("n =", length(len_f0_several_origins)), pos = 3, cex = 0.8)
 text(x = 3, y = -10, labels = paste("n =", length(len_f1_several_origins)), pos = 3, cex = 0.8)
 text(x = 4, y = -10, labels = paste("n =", length(len_f2_several_origins)), pos = 3, cex = 0.8)
+
+
+
+# Drop duplicates (same outgroup, start and end)
+data_no_dup <- data[!duplicated(data[, c("outgroup", "noncoding_match_start", "noncoding_match_end")]), ]
+data_no_dup[order(data_no_dup$intergenic), ]
