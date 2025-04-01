@@ -15,15 +15,14 @@ ggsave <- function(..., bg = "white",
 
 # Filenames
 tree_file <- "/home/eliott.tempez/Documents/archaea_data/whole_tree.nwk"
-conservation_db_dir <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/calculate_conservation/"
-output_dir <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/calculate_conservation/"
+conservation_db_dir <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/11_calculate_conservation/"
+output_dir <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/11_calculate_conservation/"
 
 # Get the focal species
-#parser <- ArgumentParser(description = "Map gradient tree")
-#parser$add_argument('--focal_species', type = 'character', required = TRUE, help = 'Focal species identifier')
-#args <- parser$parse_args()
-#focal_species <- args$focal_species
-focal_species <- "GCA_001577775@Pyrococcus_kukulkanii_NCB100"
+parser <- ArgumentParser(description = "Map gradient tree")
+parser$add_argument('--focal_species', type = 'character', required = TRUE, help = 'Focal species identifier')
+args <- parser$parse_args()
+focal_species <- args$focal_species
 
 
 # Get the conservation db

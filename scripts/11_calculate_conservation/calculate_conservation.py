@@ -26,10 +26,8 @@ def initialise_conservation_df(genomes):
     return conservation_df
 
 
-def get_seqs_from_gene_names(focal_sp, gene_names, extension_type, delete_mrna_tag=False):
+def get_seqs_from_gene_names(focal_sp, gene_names, extension_type):
     """Get the sequences of the genes from the gene names"""
-    if delete_mrna_tag:
-        gene_names = [re.sub(r"\_mRNA.*", "", g) for g in gene_names]
     fasta_file = os.path.join(CDS_DIR + focal_sp + "_CDS." + extension_type)
     fasta = SeqIO.parse(fasta_file, "fasta")
     seqs = {}
@@ -427,7 +425,7 @@ if __name__ == "__main__":
     # Extract the name of 1000 (at most) TRGs of the focal species
     focal_TRG_genes = extract_focal_TRGs(FOCAL_SPECIES, TRG_RANK)
     # Get the protein sequences for each TRG
-    focal_TRGs = get_seqs_from_gene_names(FOCAL_SPECIES, focal_TRG_genes, "faa", True)
+    focal_TRGs = get_seqs_from_gene_names(FOCAL_SPECIES, focal_TRG_genes, "faa")
     print(f"Extracted {len(focal_TRGs)} TRGs for the focal species {FOCAL_SPECIES}\n")
     # Calculate the TRG conservation and add to dataframe
     conservation_df, _ = process_conservation_parallel(FOCAL_SPECIES, conservation_df, "n_trg", focal_TRGs)
