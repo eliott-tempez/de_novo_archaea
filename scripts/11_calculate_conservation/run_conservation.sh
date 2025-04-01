@@ -49,5 +49,7 @@ done
 cp -r out/* $OUT_DIR
 # Clean up
 rm -rf $SCRATCH_DIR
+find /tmp -maxdepth 1 -type d -name "rootfs-*" -user eliott.tempez -exec rm -rf {} +
+find /tmp -maxdepth 1 -name "tmp*" -user eliott.tempez -exec rm -rf {} +
 conda deactivate
 echo "Done" >> $OUTPUT_LOG
