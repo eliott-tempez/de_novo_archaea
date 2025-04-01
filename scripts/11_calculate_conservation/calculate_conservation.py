@@ -9,6 +9,9 @@ import pandas as pd
 import Bio.SeqIO as SeqIO
 from Bio.Seq import Seq
 import concurrent.futures
+import sys
+sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 
 #OUTPUT_DIR = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/11_calculate_conservation/"

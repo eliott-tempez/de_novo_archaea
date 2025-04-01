@@ -4,8 +4,12 @@ This script will import all hardcoded paths from the yaml file
 CLUSTER = True
 
 import yaml
+import os
+import sys
 
-with open("/home/eliott.tempez/Documents/M2_Stage_I2BC/scripts/my_functions/filepaths.yaml", "r") as file:
+# Get file directory
+file_dir = os.path.dirname(os.path.abspath(__file__))
+with open(file_dir + "/filepaths.yaml", "r") as file:
     config = yaml.safe_load(file)
 
 # Define paths
