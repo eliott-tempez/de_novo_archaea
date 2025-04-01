@@ -4,7 +4,7 @@ This script contains functions that are used for genomic analysis.
 
 import os
 # Paths import
-from paths import *
+from my_functions.paths import *
 # Data handling
 import pandas as pd
 import numpy as np
@@ -171,7 +171,7 @@ def extract_cds_info(genome):
                 if strand == "+":
                     seq = record.seq[start:end]
                 else:
-                    seq = record.seq[start:end].reverse_complement
+                    seq = record.seq[start:end].reverse_complement()
         cdss[cds_name] = {"contig": contig, "strand": strand, "start": start, "end": end, "seq": seq}
 
     return cdss
