@@ -9,7 +9,7 @@ local_paths:
   tree_file: "/home/eliott.tempez/Documents/archaea_data/whole_tree.nwk"
 
 cluster_paths:
-  genomes_list: "genomes_list.txt"
+  genomes_list: "6_genera_archaea/genomes_list.txt"
   genera_dir: "genera/"
   dense_dir: "dense/"
   gff_dir: "gff/"
