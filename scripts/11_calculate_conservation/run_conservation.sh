@@ -36,6 +36,11 @@ cp -r $GBK_DIR/* gbk/
 mkdir -p out/
 echo "Environment created" >> $OUTPUT_LOG
 
+# Set up a trap to clean up on exit or interruption
+trap "rm -rf $SCRATCH_DIR; find /tmp -maxdepth 1 -type d -name 'rootfs-*' -user eliott.tempez -exec rm -rf {} +; find /tmp -maxdepth 1 -name 'tmp*' -user eliott.tempez -exec rm -rf {} +" EXIT
+
+
+
 
 # Launch calculation
 source /home/eliott.tempez/miniconda3/bin/activate python_basics
