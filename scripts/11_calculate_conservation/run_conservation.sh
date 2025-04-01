@@ -1,8 +1,8 @@
 #! /bin/sh
 
-#SBATCH -p run2
+#SBATCH -p common
 #SBATCH -J conservation_calculations
-#SBATCH --time=3-00
+#SBATCH --time=10-00
 #SBATCH --cpus-per-task=16
 #SBATCH --ntasks=1
 #SBATCH --mem=64gb
@@ -37,7 +37,7 @@ mkdir -p out/
 echo "Environment created" >> $OUTPUT_LOG
 
 # Set up a trap to clean up on exit or interruption
-trap "rm -rf $SCRATCH_DIR; find /tmp -maxdepth 1 -type d -name 'rootfs-*' -user eliott.tempez -exec rm -rf {} +; find /tmp -maxdepth 1 -name 'tmp*' -user eliott.tempez -exec rm -rf {} +; cp -r out/* $OUT_DIR" EXIT
+trap "cp -r out/* $OUT_DIR; rm -rf $SCRATCH_DIR; find /tmp -maxdepth 1 -type d -name 'rootfs-*' -user eliott.tempez -exec rm -rf {} +; find /tmp -maxdepth 1 -name 'tmp*' -user eliott.tempez -exec rm -rf {} +" EXIT
 
 
 
