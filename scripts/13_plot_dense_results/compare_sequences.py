@@ -53,7 +53,9 @@ if __name__ == "__main__":
     genomes = [re.sub('"', '', g) for g in genomes]
     all_values = []
 
+    i = 0
     for genome in genomes:
+        i += 1
         # Extract info for all CDSs
         cds_dict_tmp = extract_cds_info(genome)
         cds_dict = {}
@@ -101,6 +103,10 @@ if __name__ == "__main__":
         instability_mean_trg = sum([v for k, v in instability_dict.items() if k in trg_names]) / len(trg_names)
         instability_mean_denovo = sum([v for k, v in instability_dict.items() if k in denovo_names]) / len(denovo_names) if denovo_names else np.nan
         all_values.append([genome, "instability", instability_mean_cds, instability_mean_trg, instability_mean_denovo])
+
+        if i % 10 == 0:
+            print(f"{i}/{len(genomes)}...")
+    print("Done!")
 
     # Save the results
     df = pd.DataFrame(all_values, columns=["genome", "feature", "cds", "trg", "denovo"])
