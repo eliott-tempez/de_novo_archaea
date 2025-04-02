@@ -3,15 +3,26 @@ import os
 import glob
 import re
 import pandas as pd
-from my_functions.genomic_functions import extract_cds_info
+from Bio import SeqIO
 from Bio.SeqUtils import GC
 from Bio.SeqUtils.ProtParam import ProteinAnalysis
 import numpy as np
 
 
-OUT_DIR = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/"
-from my_functions.paths import DENSE_DIR, GENERA_DIR, GENOMES_LIST
+
+OUT_DIR = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences/"
+from my_functions.paths import DENSE_DIR, GENERA_DIR, GENOMES_LIST, CDS_DIR
 TRG_RANK = 7.0
+
+
+def extract_cds_sequences(genome):
+    cds_dict = {}
+    faa_file = os.path.join(CDS_DIR, f"{genome}_CDS.fna")
+    if not os.path.exists(faa_file):
+        raise FileNotFoundError(f"No file {faa_file}")
+    for record in SeqIO.parse(faa_file, "fasta"):
+        cds_dict[record.name] = record.seq
+    return cds_dict
 
 
 def extract_trg_names(focal_species, trg_threshold):
@@ -43,71 +54,59 @@ def extract_denovo_names(focal_species):
 
 
 
-
-
-
 if __name__ == "__main__":
     # Get the list of genomes
     with open(GENOMES_LIST, "r") as f:
         genomes = f.readline().split()
     genomes = [re.sub('"', '', g) for g in genomes]
     all_values = []
+    n_cds = 0
+    n_trg = 0
+    n_denovo = 0
 
     i = 0
     for genome in genomes:
         i += 1
         # Extract info for all CDSs
-        cds_dict_tmp = extract_cds_info(genome)
-        cds_dict = {}
-        #Rename
-        for cds in cds_dict_tmp:
-            cds_dict[f"{cds}_gene_mRNA"] = cds_dict_tmp[cds]
+        cds_dict = extract_cds_sequences(genome)
         cds_names = list(cds_dict.keys())
+        n_cds += len(cds_names)
         # Extract TRG names
         trg_names = extract_trg_names(genome, TRG_RANK)
+        n_trg += len(trg_names)
         # Extract de novo names
         denovo_names = extract_denovo_names(genome)
+        n_denovo += len(denovo_names)
 
-        # Extract GC rate
-        gc_dict = {}
-        aa_percent_dict = {}
-        aromaticity_dict = {}
-        instability_dict = {}
-        flexibility_dict = {}
+
         for cds in cds_dict:
             # Extract GC rate
-            gc_dict[cds] = GC(cds_dict[cds]["seq"])
+            gc_content = GC(cds_dict[cds])
             # Extract protein info
-            prot_seq = re.sub(r"[\*X]", "", str(cds_dict[cds]["seq"].translate()))
+            nuc_seq = cds_dict[cds]
+            prot_seq = re.sub(r"[\*X]", "", str(cds_dict[cds].translate()))
             analysis = ProteinAnalysis(prot_seq)
-            aa_percent_dict[cds] = analysis.get_amino_acids_percent()
-            aromaticity_dict[cds] = analysis.aromaticity()
-            instability_dict[cds] = analysis.instability_index()
-            flexibility_dict[cds] = analysis.flexibility()
+            aromaticity = analysis.aromaticity()
+            instability = analysis.instability_index()
+            flexibility = analysis.flexibility()
+            mean_flexibility = sum(flexibility) / len(flexibility)
+            hydropathy = analysis.gravy()
+            # Extract sequence length
+            len_nu = len(nuc_seq)
 
-        # Get the mean for all the values
-        ## GC
-        gc_mean_cds = sum(list(gc_dict.values())) / len(gc_dict)
-        gc_mean_trg = sum([v for k, v in gc_dict.items() if k in trg_names]) / len(trg_names)
-        gc_mean_denovo = sum([v for k, v in gc_dict.items() if k in denovo_names]) / len(denovo_names) if denovo_names else np.nan
-        all_values.append([genome, "gc", gc_mean_cds, gc_mean_trg, gc_mean_denovo])
-
-        ## Aromaticity
-        aromaticity_mean_cds = sum(list(aromaticity_dict.values())) / len(aromaticity_dict)
-        aromaticity_mean_trg = sum([v for k, v in aromaticity_dict.items() if k in trg_names]) / len(trg_names)
-        aromaticity_mean_denovo = sum([v for k, v in aromaticity_dict.items() if k in denovo_names]) / len(denovo_names) if denovo_names else np.nan
-        all_values.append([genome, "aromaticity", aromaticity_mean_cds, aromaticity_mean_trg, aromaticity_mean_denovo])
-
-        ## Instability
-        instability_mean_cds = sum(list(instability_dict.values())) / len(instability_dict)
-        instability_mean_trg = sum([v for k, v in instability_dict.items() if k in trg_names]) / len(trg_names)
-        instability_mean_denovo = sum([v for k, v in instability_dict.items() if k in denovo_names]) / len(denovo_names) if denovo_names else np.nan
-        all_values.append([genome, "instability", instability_mean_cds, instability_mean_trg, instability_mean_denovo])
+            # Add to results
+            results = [genome, cds, gc_content, aromaticity, instability, mean_flexibility, hydropathy, len_nu]
+            all_values.append(results + ["cds"])
+            if cds in trg_names:
+                all_values.append(results + ["trg"])
+            if cds in denovo_names:
+                all_values.append(results + ["denovo"])
 
         if i % 10 == 0:
             print(f"{i}/{len(genomes)}...")
+
     print("Done!")
 
     # Save the results
-    df = pd.DataFrame(all_values, columns=["genome", "feature", "cds", "trg", "denovo"])
+    df = pd.DataFrame(all_values, columns=["genome", "cds", "gc_content", "aromaticity", "instability", "mean_flexibility", "hydropathy", "len_nu", "type"])
     df.to_csv(os.path.join(OUT_DIR, "sequence_features.csv"), sep="\t", index=False)
