@@ -148,7 +148,10 @@ if __name__ == "__main__":
         genome = good_candidates[denovo]["genome"]
         seq = good_candidates[denovo]["seq"]
         stops = good_candidates[denovo]["stops"]
-        relative_stops = [(math.floor((s/len(seq))*100) + 1) for s in stops]
+        """if denovo != "KOPGNMII_00670_gene_mRNA":
+            continue
+        print(stops)"""
+        relative_stops = [math.floor((s/len(seq))*100) for s in stops]
         orf_lst = ["-"] * 100
         for i in relative_stops:
             orf_lst[i] = "*"
