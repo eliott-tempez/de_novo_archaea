@@ -4,12 +4,12 @@ import glob
 import tempfile
 import subprocess
 import concurrent.futures
+import math
 import pandas as pd
 import numpy as np
 from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
-
 
 
 
@@ -56,7 +56,7 @@ def get_denovo_info(genome):
             i -= 1
             cell = matches.iloc[0, i]
         denovo_dict[denovo]["ancestor_sp"] = matches.columns[i]
-    
+
     ## Loci of the noncoding match
     unique_ancestors = set(denovo_dict[denovo]["ancestor_sp"] for denovo in denovo_dict)
     # Get the tblastn result for each ancestor
@@ -84,7 +84,6 @@ def get_denovo_info(genome):
 
 
 
-
 def get_sequence_from_loci(genome, contig, start, end, strand):
     fa_file = os.path.join(FA_DIR, genome + ".fa")
 
@@ -96,10 +95,6 @@ def get_sequence_from_loci(genome, contig, start, end, strand):
 
 
 
-
-
-
-
 if __name__ == "__main__":
     # Read list of genomes
     with open(GENOMES_LIST, "r") as f:
@@ -107,9 +102,13 @@ if __name__ == "__main__":
     genomes = [re.sub('"', '', g) for g in genomes]
 
     denovo_dict = {}
-    n_potential_CDSs = 0
     n_denovo = 0
     good_denovo_stops = []
+    no_stops = 0
+    only_final_stop = 0
+    stops_at_end = 0
+    good_candidates = {}
+
     for genome in genomes:
         # Get de novo info for each genome
         denovo_dict[genome] = get_denovo_info(genome)
@@ -126,18 +125,66 @@ if __name__ == "__main__":
 
             # Get the location of the stop codons
             stops = [pos for pos, char in enumerate(match_seq_aa) if char == "*"]
-            # Get the number of sequences that could be CDSs
-            is_end_stop = stops == [len(match_seq_aa) - 1]
-            no_stops = len(stops) == 0
-            if is_end_stop or no_stops:
-                n_potential_CDSs += 1
+
+            # Number of sequences without stop codons
+            if len(stops) == 0:
+                no_stops += 1
+            elif stops == [len(match_seq_aa) - 1]:
+                only_final_stop += 1
+            elif min(stops) >= len(match_seq_aa) - 5:
+                stops_at_end += 1
             else:
-                good_denovo_stops.append(stops)
+                good_candidates[denovo] = {"seq": match_seq_aa, "stops": stops, "genome": genome}
+
+    print(f"\nOut of {n_denovo} de novo genes:")
+    print(f"\t{no_stops} have no stop codon")
+    print(f"\t{only_final_stop} have only one stop codon at the end")
+    print(f"\t{stops_at_end} have stop codon(s) only in the last 5 codons")
+    print(f"\n-> {len(good_candidates)} are good candidates")
+
+    # Display ORFs with stops
+    print("\nHere are where the stops are:\n")
+    for denovo in good_candidates:
+        genome = good_candidates[denovo]["genome"]
+        seq = good_candidates[denovo]["seq"]
+        stops = good_candidates[denovo]["stops"]
+        relative_stops = [(math.floor((s/len(seq))*100) + 1) for s in stops]
+        orf_lst = ["-"] * 100
+        for i in relative_stops:
+            orf_lst[i] = "*"
+        orf_str = "".join(orf_lst)
+        print(f"{orf_str}\n")
+    
+
+        """# Re-blast to make sure we are in the right frame
+        faa_file = os.path.join(CDS_DIR, genome + "_CDS.faa")
+        for record in SeqIO.parse(faa_file, "fasta"):
+            if record.name == denovo:
+                db_seq = record.seq
+        db = tempfile.NamedTemporaryFile(delete=False)
+        db.write(f">{outgroup}\n{db_seq}\n".encode())
+        db.close()
+        query = tempfile.NamedTemporaryFile(delete=False)
+        query.write(f">{denovo}\n{seq}\n".encode())
+        query.close()
+        out = tempfile.NamedTemporaryFile(delete=False)
+        subprocess.run(["blastp", "-query", query.name, "-subject", db.name, "-out", out.name, "-outfmt", "6"], 
+                       stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        result = pd.read_csv(out.name, sep="\t", header=None)
+        if result.empty:
+            print(f"No blast result for {denovo} in {outgroup}")
+            break
+        result.columns = ["qseqid", "sseqid", "pident", "length", "mismatch", "gapopen", "qstart", "qend", "sstart", "send", "evalue", "bitscore"]
+        # Print the lowest evalue
+        print(result.sort_values(by="evalue")[["evalue", "pident"]])
+        os.remove(db.name)
+        os.remove(query.name)
+        os.remove(out.name)"""
+        
 
 
-    print(f"Out of {n_denovo} de novo genes, {n_potential_CDSs} corresponding hits in the noncoding have no stop at all, or only one stop at the end")
-    print(f"The rest (n = {n_denovo - n_potential_CDSs}) have a mean of {np.mean([len(stops) for stops in good_denovo_stops])} stops in the sequence")
-    print()
+            
+
 
                 
 
