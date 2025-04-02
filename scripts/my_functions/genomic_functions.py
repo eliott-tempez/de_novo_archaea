@@ -167,7 +167,7 @@ def extract_cds_info(genome):
         if not os.path.exists(fa_file):
             raise FileNotFoundError(f"{fa_file} does not exist")
         for record in SeqIO.parse(fa_file, "fasta"):
-            if record.name == contig:
+            if str(record.name) == str(contig):
                 if strand == "+":
                     seq = record.seq[start:end]
                 else:
