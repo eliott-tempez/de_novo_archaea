@@ -14,6 +14,7 @@ from Bio.SeqRecord import SeqRecord
 
 
 from my_functions.paths import *
+ORIGIN_FILE = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/denovo_noncoding_status.tsv"
 OUT_FOLDER = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/"
 
 
@@ -79,6 +80,7 @@ def get_denovo_info(genome):
                 # Get the part of the de novo gene that matched
                 denovo_dict[denovo]["qstart"] = tblastn_df_denov.iloc[0]["qstart"] - 1
                 denovo_dict[denovo]["qend"] = tblastn_df_denov.iloc[0]["qend"]
+                denovo_dict[denovo]["qcov"] = tblastn_df_denov.iloc[0]["qcov"]
 
     return denovo_dict
 
@@ -94,63 +96,109 @@ def get_sequence_from_loci(genome, contig, start, end, strand):
 
 
 
+def parse_origin_file():
+    origin_dict = {}
+    origin_data = pd.read_csv(ORIGIN_FILE, sep="\t", header=0)
+    # Replace by 0 the columns that have less than 3 codons match
+    origin_data[["intergenic", "f+0", "f+1", "f+2"]] = origin_data[["intergenic", "f+0", "f+1", "f+2"]].replace(list(range(1, 10)), 0)
+    for row in origin_data.iterrows():
+        denovo = row[1]["denovo_gene"]
+        intergenic = int(row[1]["intergenic"])
+        f0 = int(row[1]["f+0"])
+        f1 = int(row[1]["f+1"])
+        f2 = int(row[1]["f+2"])
+        origin_dict[denovo] = {"intergenic": intergenic, "f0": f0, "f1": f1, "f2": f2}
+    return origin_dict
+
+
+
+def get_good_candidates(denovo_dict, origin_dict, gene_list, threshold=5):
+    no_stops, only_final_stop, stops_at_end = 0, 0, 0
+    good_candidates = {}
+
+    for denovo in gene_list:
+        # Get the info
+        outgroup = denovo_dict[denovo]["ancestor_sp"]
+        contig, start, end, strand = denovo_dict[denovo]["loci"]
+        match_seq = get_sequence_from_loci(outgroup, contig, start, end, strand)
+        match_seq_aa = str(match_seq.translate(table=11))
+
+        # Get the location of the stop codons
+        stops = [pos for pos, char in enumerate(match_seq_aa) if char == "*"]
+
+        # Get the bad and good candidates
+        if len(stops) == 0:
+            no_stops += 1
+        elif stops == [len(match_seq_aa) - 1]:
+            only_final_stop += 1
+        elif min(stops) >= len(match_seq_aa) - threshold:
+            stops_at_end += 1
+        else:
+            good_candidates[denovo] = {"seq": match_seq, "seq_aa": match_seq_aa, "stops": stops}
+
+    return good_candidates, no_stops, only_final_stop, stops_at_end
+
+
+
+
+
 
 if __name__ == "__main__":
     # Read list of genomes
     with open(GENOMES_LIST, "r") as f:
         genomes = f.readline().split()
     genomes = [re.sub('"', '', g) for g in genomes]
+    # Get origin for each de novo
+    origin_dict = parse_origin_file()
 
+    n_denovo, n_denovo_intergenic = 0, 0
     denovo_dict = {}
-    n_denovo = 0
-    good_denovo_stops = []
-    no_stops = 0
-    only_final_stop = 0
-    stops_at_end = 0
-    good_candidates = {}
-
+    intergenic_denovo = []
     for genome in genomes:
+
         # Get de novo info for each genome
-        denovo_dict[genome] = get_denovo_info(genome)
-        if denovo_dict[genome] == {}:
+        denovo_info = get_denovo_info(genome)
+        if denovo_info == {}:
             continue
 
-        # For each de novo gene, get the protein sequence of the match
-        for denovo in denovo_dict[genome]:
+        for denovo in denovo_info:
             n_denovo += 1
-            outgroup = denovo_dict[genome][denovo]["ancestor_sp"]
-            contig, start, end, strand = denovo_dict[genome][denovo]["loci"]
-            match_seq = get_sequence_from_loci(outgroup, contig, start, end, strand)
-            match_seq_aa = str(match_seq.translate())
+            denovo_dict[denovo] = denovo_info[denovo]
+            denovo_dict[denovo]["genome"] = genome
 
-            # Get the location of the stop codons
-            stops = [pos for pos, char in enumerate(match_seq_aa) if char == "*"]
+            # Origin
+            n_intergenic = origin_dict[denovo]["intergenic"]
+            n_f0 = origin_dict[denovo]["f0"]
+            n_f1 = origin_dict[denovo]["f1"]
+            n_f2 = origin_dict[denovo]["f2"]
 
-            # Number of sequences without stop codons
-            if len(stops) == 0:
-                no_stops += 1
-            elif stops == [len(match_seq_aa) - 1]:
-                only_final_stop += 1
-            elif min(stops) >= len(match_seq_aa) - 5:
-                stops_at_end += 1
-            else:
-                good_candidates[denovo] = {"seq": match_seq_aa, "stops": stops, "genome": genome}
+            # Get de novo intergenic genes
+            if n_intergenic > 0 and [n_f0, n_f1, n_f2] == [0, 0, 0]:
+                n_denovo_intergenic += 1
+                intergenic_denovo.append(denovo)
 
-    print(f"\nOut of {n_denovo} de novo genes:")
-    print(f"\t{no_stops} have no stop codon")
-    print(f"\t{only_final_stop} have only one stop codon at the end")
-    print(f"\t{stops_at_end} have stop codon(s) only in the last 5 codons")
-    print(f"\n-> {len(good_candidates)} are good candidates")
+
+    # Get the good candidates for the intergenic genes
+    good_candidates_intergenic, no_stops_intergenic, only_final_stop_intergenic, stops_at_end_intergenic = get_good_candidates(denovo_dict, origin_dict, intergenic_denovo)
+
+
+            
+    ############ Print results ############
+    print(f"\nOut of {n_denovo} de novo genes, there are {n_denovo_intergenic} coming from an intergenic area:")
+    print(f"   -> {no_stops_intergenic} have no stop codon")
+    print(f"   -> {only_final_stop_intergenic} have only one stop codon at the end")
+    print(f"   -> {stops_at_end_intergenic} have stop codon(s) only in the last 5 codons")
+    print(f"\nWhich means {len(good_candidates_intergenic)} are good candidates")
+
+
+
 
     # Display ORFs with stops
     print("\nHere are where the stops are:\n")
-    for denovo in good_candidates:
-        genome = good_candidates[denovo]["genome"]
-        seq = good_candidates[denovo]["seq"]
-        stops = good_candidates[denovo]["stops"]
-        """if denovo != "KOPGNMII_00670_gene_mRNA":
-            continue
-        print(stops)"""
+    for denovo in good_candidates_intergenic:
+        genome = denovo_dict[denovo]["genome"]
+        seq = good_candidates_intergenic[denovo]["seq_aa"]
+        stops = good_candidates_intergenic[denovo]["stops"]
         relative_stops = [math.floor((s/len(seq))*100) for s in stops]
         orf_lst = ["-"] * 100
         for i in relative_stops:
@@ -159,30 +207,7 @@ if __name__ == "__main__":
         print(f"{orf_str}\n")
     
 
-        """# Re-blast to make sure we are in the right frame
-        faa_file = os.path.join(CDS_DIR, genome + "_CDS.faa")
-        for record in SeqIO.parse(faa_file, "fasta"):
-            if record.name == denovo:
-                db_seq = record.seq
-        db = tempfile.NamedTemporaryFile(delete=False)
-        db.write(f">{outgroup}\n{db_seq}\n".encode())
-        db.close()
-        query = tempfile.NamedTemporaryFile(delete=False)
-        query.write(f">{denovo}\n{seq}\n".encode())
-        query.close()
-        out = tempfile.NamedTemporaryFile(delete=False)
-        subprocess.run(["blastp", "-query", query.name, "-subject", db.name, "-out", out.name, "-outfmt", "6"], 
-                       stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        result = pd.read_csv(out.name, sep="\t", header=None)
-        if result.empty:
-            print(f"No blast result for {denovo} in {outgroup}")
-            break
-        result.columns = ["qseqid", "sseqid", "pident", "length", "mismatch", "gapopen", "qstart", "qend", "sstart", "send", "evalue", "bitscore"]
-        # Print the lowest evalue
-        print(result.sort_values(by="evalue")[["evalue", "pident"]])
-        os.remove(db.name)
-        os.remove(query.name)
-        os.remove(out.name)"""
+
         
 
 
