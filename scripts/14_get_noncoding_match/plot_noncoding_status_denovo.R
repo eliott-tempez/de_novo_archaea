@@ -127,6 +127,9 @@ text(x = 4, y = -10, labels = paste("n =", length(len_f2_several_origins)), pos 
 
 
 
-# Drop duplicates (same outgroup, start and end)
-data_no_dup <- data[!duplicated(data[, c("outgroup", "noncoding_match_start", "noncoding_match_end")]), ]
-data_no_dup[order(data_no_dup$intergenic), ]
+
+
+###############################################################
+####################### Intergenic - f0 #######################
+###############################################################
+intergenic_f0 <- data[data$intergenic > 0 & data$f.0 > 0, ]
