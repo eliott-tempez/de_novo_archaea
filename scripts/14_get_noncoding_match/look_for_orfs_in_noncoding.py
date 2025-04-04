@@ -113,31 +113,34 @@ def parse_origin_file():
 
 
 
-def get_good_candidates(denovo_dict, origin_dict, gene_list, threshold=5):
-    no_stops, only_final_stop, stops_at_end = 0, 0, 0
-    good_candidates = {}
-
+def get_orf_cov(denovo_dict, gene_list):
+    orf_dict = {}
     for denovo in gene_list:
         # Get the info
         outgroup = denovo_dict[denovo]["ancestor_sp"]
         contig, start, end, strand = denovo_dict[denovo]["loci"]
         match_seq = get_sequence_from_loci(outgroup, contig, start, end, strand)
         match_seq_aa = str(match_seq.translate(table=11))
+        query_aa_seq = str(denovo_dict[denovo]["sequence"])
 
         # Get the location of the stop codons
         stops = [pos for pos, char in enumerate(match_seq_aa) if char == "*"]
+        orf_dict[denovo] = {"seq": match_seq, "seq_aa": match_seq_aa, "stops": stops}
 
-        # Get the bad and good candidates
-        if len(stops) == 0:
-            no_stops += 1
-        elif stops == [len(match_seq_aa) - 1]:
-            only_final_stop += 1
-        elif min(stops) >= len(match_seq_aa) - threshold:
-            stops_at_end += 1
-        else:
-            good_candidates[denovo] = {"seq": match_seq, "seq_aa": match_seq_aa, "stops": stops}
+        # Get the longest orf
+        match_stops = [0] + stops + [len(match_seq_aa) - 1]
+        longest_orf = 0
+        for i in range(len(match_stops) - 1):
+            orf_len = match_stops[i + 1] - match_stops[i] - 1
+            if orf_len > longest_orf:
+                longest_orf = orf_len
+        orf_dict[denovo]["longest_orf"] = longest_orf
 
-    return good_candidates, no_stops, only_final_stop, stops_at_end
+        # Get the coverage
+        coverage = (longest_orf / len(query_aa_seq)) * 100
+        orf_dict[denovo]["orf_qcov"] = round(coverage, 2)
+
+    return orf_dict
 
 
 
@@ -177,176 +180,89 @@ if __name__ == "__main__":
             if n_intergenic > 0 and [n_f0, n_f1, n_f2] == [0, 0, 0]:
                 n_denovo_intergenic += 1
                 intergenic_denovo.append(denovo)
-
-
-    # Get the good candidates for the intergenic genes
-    good_candidates_intergenic, no_stops_intergenic, only_final_stop_intergenic, stops_at_end_intergenic = get_good_candidates(denovo_dict, origin_dict, intergenic_denovo)
-    # Get the good candidates for the rest
-    good_candidates_rest, no_stops_rest, only_final_stop_rest, stops_at_end_rest = get_good_candidates(denovo_dict, origin_dict, [nov for nov in denovo_dict if nov not in intergenic_denovo])
-
-
-            
-    ############ Print results ############
-    print(f"\nOut of {n_denovo} de novo genes, there are {n_denovo_intergenic} coming from an intergenic area:")
-    print(f"   -> {no_stops_intergenic} have no stop codon")
-    print(f"   -> {only_final_stop_intergenic} have only one stop codon at the end")
-    print(f"   -> {stops_at_end_intergenic} have stop codon(s) only in the last 5 codons")
-    print(f"\nWhich means {len(good_candidates_intergenic)} are good candidates")
-
-    # Global query coverage of the tblast hit
-    qcovs = [denovo_dict[denovo]["qcov"] for denovo in good_candidates_intergenic]
-
-    # Coverage of the longuest ORF
-    qcovs_orf = []
-    good_good_candidates_intergenic = {}
-    for denovo in good_candidates_intergenic:
-        query_aa_seq_len = len(denovo_dict[denovo]["sequence"])
-        aa_seq_len = len(good_candidates_intergenic[denovo]["seq_aa"])
-        match_stops = [0] + good_candidates_intergenic[denovo]["stops"] + [aa_seq_len - 1]
-        # Get the length of the longest ORF
-        longest_orf = 0
-        for i in range(len(match_stops) - 1):
-            orf_len = match_stops[i + 1] - match_stops[i] - 1
-            if orf_len > longest_orf:
-                longest_orf = orf_len
-        # Get the coverage
-        coverage = (longest_orf / query_aa_seq_len) * 100
-        good_candidates_intergenic[denovo]["longest_orf"] = longest_orf
-        good_candidates_intergenic[denovo]["orf_qcov"] = round(coverage, 2)
-        qcovs_orf.append(coverage)
-        # Keep only < 70
-        if coverage < 70:
-            good_good_candidates_intergenic[denovo] = good_candidates_intergenic[denovo]
     
-    # Show the results
-    print(f"\n\nOut of {len(good_candidates_intergenic)} good candidates, there are {len(good_good_candidates_intergenic)} for which the longest ORF covers < 70% of the de novo gene")
+
+    # Get the genes with a qcov < 70
+    low_qcov_genes_intergenic = [denovo for denovo in intergenic_denovo if denovo_dict[denovo]["qcov"] < 70]
+    low_qcov_genes_rest = [denovo for denovo in denovo_dict if denovo not in intergenic_denovo and denovo_dict[denovo]["qcov"] < 70]
+    print(f"\nOut of the {n_denovo} de novo genes, there are {n_denovo_intergenic} coming from an intergenic area and {n_denovo - n_denovo_intergenic} coming either from an altframe or a mix of the 2.\n")
+    print(f"For the intergenic ones, {len(low_qcov_genes_intergenic)} have a qcov < 70%.")
+    print(f"For the rest, {len(low_qcov_genes_rest)} have a qcov < 70%.")
+
     show_plots = input("\nDo you want to see the plots? (y/n) ")
     if show_plots == "y":
+        qcov_intergenic = [denovo_dict[denovo]["qcov"] for denovo in intergenic_denovo]
+        qcov_rest = [denovo_dict[denovo]["qcov"] for denovo in denovo_dict if denovo not in intergenic_denovo]
+
         # Get the common bin edges
         bin_edges = np.linspace(0, 100, 20)
 
         # Histograms
         plt.figure()
-        plt.hist(qcovs, edgecolor = "black", bins=bin_edges)
+        plt.hist(qcov_intergenic, edgecolor = "black", bins=bin_edges)
         plt.xlim([0, 100])
-        plt.ylim([0, 26])
+        plt.ylim([0, 60])
+        plt.vlines(x = 70, ymin = 0, ymax = 60, color = "red", linestyle = "dashed")
         plt.xlabel("Coverage of query sequence (%)")
         plt.ylabel("Number of hits")
-        plt.title(f"Coverage of de novo genes by the tblastn hits\nfor the good intergenic candidates (n = {len(good_candidates_intergenic)})")
+        plt.title(f"Coverage of de novo genes by the tblastn hits\nfor the intergenic genes (n = {len(intergenic_denovo)})")
 
         plt.figure()
-        plt.hist(qcovs_orf, edgecolor = "black", bins=bin_edges)
+        plt.hist(qcov_rest, edgecolor = "black", bins=bin_edges)
         plt.xlim([0, 100])
-        plt.ylim([0, 26])
-        plt.vlines(x = 70, ymin = 0, ymax = 30, color = "red", linestyle = "dashed")
+        plt.ylim([0, 10])
+        plt.vlines(x = 70, ymin = 0, ymax = 10, color = "red", linestyle = "dashed")
         plt.xlabel("Coverage of query sequence (%)")
-        plt.ylabel("Number of ORFs")
-        plt.title(f"Coverage of de novo genes by the longest ORF in the tblastn hits\nfor the good intergenic candidates (n = {len(good_candidates_intergenic)})")
+        plt.ylabel("Number of hits")
+        plt.title(f"Coverage of de novo genes by the tblastn hits\nfor the rest (n = {len(denovo_dict) - len(intergenic_denovo)})")
         plt.show()
 
 
-    # Display ORFs with stops
-    print(f"\n\nHere are where the stops are for the {len(good_good_candidates_intergenic)} chosen candidates:\t\t\tLongest ORF length / de novo gene length (coverage)\n")
-    for denovo in good_good_candidates_intergenic:
-        genome = denovo_dict[denovo]["genome"]
-        seq = good_candidates_intergenic[denovo]["seq_aa"]
-        stops = good_candidates_intergenic[denovo]["stops"]
-        relative_stops = [math.floor((s/len(seq))*100) for s in stops]
-        orf_lst = ["-"] * 100
-        for i in relative_stops:
-            orf_lst[i] = "*"
-        orf_str = "".join(orf_lst)
-        print(f"{orf_str}   {good_candidates_intergenic[denovo]["longest_orf"]} / {len(denovo_dict[denovo]["sequence"])} ({good_candidates_intergenic[denovo]["orf_qcov"]}%)\n")
+    # Get the genes with an ORF cov < 70
+    # Get the sequences and stop positions for the genes of interest
+    orf_cov_dict_intergenic = get_orf_cov(denovo_dict, [denovo for denovo in intergenic_denovo if denovo not in low_qcov_genes_intergenic])
+    orf_cov_dict_rest = get_orf_cov(denovo_dict, [denovo for denovo in denovo_dict if denovo not in intergenic_denovo and denovo not in low_qcov_genes_rest])
+    # Get the ORF covs < 70
+    low_orf_cov_genes_intergenic = [denovo for denovo in orf_cov_dict_intergenic if orf_cov_dict_intergenic[denovo]["orf_qcov"] < 70]
+    low_orf_cov_genes_rest = [denovo for denovo in orf_cov_dict_rest if orf_cov_dict_rest[denovo]["orf_qcov"] < 70]
+    # Print result
+    print(f"\n\n\n\nFor the matches with a query coverage > 70%, we extracted the longuest ORF and calculated its coverage of the query (the de novo gene sequence)")
+    print(f"\nFor the intergenic genes, {len(low_orf_cov_genes_intergenic)}/{n_denovo_intergenic - len(low_qcov_genes_intergenic)} have a longuest ORF coverage < 70%.")
+    print(f"For the rest, {len(low_orf_cov_genes_rest)}/{(n_denovo - n_denovo_intergenic) - len(low_qcov_genes_rest)} have a longuest ORF coverage < 70%.")
 
-    
-    # For the rest
-    print(f"For the {n_denovo - n_denovo_intergenic} de novo genes that are not 100% intergenic, there are:")
-    print(f"   -> {no_stops_rest} that have no stop codon")
-    print(f"   -> {only_final_stop_rest} that have only one stop codon at the end")
-    print(f"   -> {stops_at_end_rest} that have stop codon(s) only in the last 5 codons")
-    print(f"\nWhich means {len(good_candidates_rest)} are good candidates")
+    show_plots = input("\nDo you want to see the plots? (y/n) ")
+    if show_plots == "y":
+        orf_cov_intergenic = [orf_cov_dict_intergenic[denovo]["orf_qcov"] for denovo in orf_cov_dict_intergenic]
+        orf_cov_rest = [orf_cov_dict_rest[denovo]["orf_qcov"] for denovo in orf_cov_dict_rest]
 
-    # Global query coverage of the tblast hit
-    qcovs_rest = [denovo_dict[denovo]["qcov"] for denovo in good_candidates_rest]
-
-    # Coverage of the longuest ORF
-    qcovs_orf_rest = []
-    good_good_candidates_rest = {}
-    for denovo in good_candidates_rest:
-        query_aa_seq_len = len(denovo_dict[denovo]["sequence"])
-        aa_seq_len = len(good_candidates_rest[denovo]["seq_aa"])
-        match_stops = [0] + good_candidates_rest[denovo]["stops"] + [aa_seq_len - 1]
-        # Get the length of the longest ORF
-        longest_orf = 0
-        for i in range(len(match_stops) - 1):
-            orf_len = match_stops[i + 1] - match_stops[i] - 1
-            if orf_len > longest_orf:
-                longest_orf = orf_len
-        # Get the coverage
-        coverage = (longest_orf / query_aa_seq_len) * 100
-        good_candidates_rest[denovo]["longest_orf"] = longest_orf
-        good_candidates_rest[denovo]["orf_qcov"] = round(coverage, 2)
-        qcovs_orf_rest.append(coverage)
-        # Keep only < 70
-        if coverage < 70:
-            good_good_candidates_rest[denovo] = good_candidates_rest[denovo]
-
-    # Show the results
-    print(f"\n\nOut of {len(good_candidates_rest)} good candidates, there are {len(good_good_candidates_rest)} for which the longest ORF covers < 70% of the de novo gene")
-    show_plots_rest = input("\nDo you want to see the plots? (y/n) ")
-
-    if show_plots_rest == "y":
         # Get the common bin edges
-        bin_edges_rest = np.linspace(0, 100, 20)
+        bin_edges = np.linspace(0, 100, 20)
 
         # Histograms
         plt.figure()
-        plt.hist(qcovs_rest, edgecolor = "black", bins=bin_edges_rest)
+        plt.hist(orf_cov_intergenic, edgecolor = "black", bins=bin_edges)
         plt.xlim([0, 100])
-        plt.ylim([0, 10])
+        plt.ylim([0, 60])
+        plt.vlines(x = 70, ymin = 0, ymax = 60, color = "red", linestyle = "dashed")
         plt.xlabel("Coverage of query sequence (%)")
-        plt.ylabel("Number of hits")
-        plt.title(f"Coverage of de novo genes by the tblastn hits\nfor the good candidates (n = {len(good_candidates_rest)})")
+        plt.ylabel("Number of ORFs")
+        plt.title(f"Coverage of de novo genes by the longest ORF in the tblastn hits\nfor the intergenic genes (n = {len(orf_cov_dict_intergenic)})")
 
         plt.figure()
-        plt.hist(qcovs_orf_rest, edgecolor = "black", bins=bin_edges_rest)
+        plt.hist(orf_cov_rest, edgecolor = "black", bins=bin_edges)
         plt.xlim([0, 100])
         plt.ylim([0, 10])
         plt.vlines(x = 70, ymin = 0, ymax = 10, color = "red", linestyle = "dashed")
         plt.xlabel("Coverage of query sequence (%)")
         plt.ylabel("Number of ORFs")
-        plt.title(f"Coverage of de novo genes by the longest ORF in the tblastn hits\nfor the good candidates (n = {len(good_candidates_rest)})")
+        plt.title(f"Coverage of de novo genes by the longest ORF in the tblastn hits\nfor the rest (n = {len(orf_cov_dict_rest)})")
         plt.show()
     
-    # Display ORFs with stops
-    print(f"\n\nHere are where the stops are for the {len(good_good_candidates_rest)} chosen candidates:\t\t\tLongest ORF length / de novo gene length (coverage) - origin\n")
-    for denovo in good_good_candidates_rest:
-        genome = denovo_dict[denovo]["genome"]
-        seq = good_candidates_rest[denovo]["seq_aa"]
-        stops = good_candidates_rest[denovo]["stops"]
-        relative_stops = [math.floor((s/len(seq))*100) for s in stops]
-        orf_lst = ["-"] * 100
-        for i in relative_stops:
-            orf_lst[i] = "*"
-        orf_str = "".join(orf_lst)
-        origin_sup0 = [[k, origin_dict[denovo][k]] for k in origin_dict[denovo] if origin_dict[denovo][k] != 0]
-        origin_str = ""
-        for x in origin_sup0:
-            origin_str += f"{x[0]} ({str(x[1])}) + "
-        print(f"{orf_str}   {good_candidates_rest[denovo]["longest_orf"]} / {len(denovo_dict[denovo]["sequence"])} ({good_candidates_rest[denovo]["orf_qcov"]}%) - {origin_str[:-3]}\n")
-    
 
-
-        
-
-
-            
-
-
-                
-
-        
-
+    # Conclusion
+    print(f"\n\n\n\nIn conclusion, we have {len(low_qcov_genes_intergenic) + len(low_orf_cov_genes_intergenic)} intergenic de novo genes with a qcov < 70% or an ORF coverage < 70%.")
+    print(f"For the rest, we have {len(low_qcov_genes_rest) + len(low_orf_cov_genes_rest)} de novo genes with a qcov < 70% or an ORF coverage < 70%.\n")
+    print(f"\n-> We have {len(low_qcov_genes_intergenic) + len(low_orf_cov_genes_intergenic) + len(low_qcov_genes_rest) + len(low_orf_cov_genes_rest)} good de novo gene candidates\n")
 
 
 
