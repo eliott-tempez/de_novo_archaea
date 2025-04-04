@@ -213,7 +213,7 @@ def run_blast(query_sequences, db_faa_file, blast_type, keep_homologs, db):
 
     # Run the BLAST
     try:
-        output = subprocess.run([blast_type, "-query", query_file_path, "-subject", db_faa_file, "-out", output_file_path, "-outfmt", "6 qseqid sseqid qlen evalue qcovs", "-evalue", "1e-3", "-num_threads", str(NCPUS)], capture_output=True, check=True)
+        output = subprocess.run([blast_type, "-query", query_file_path, "-subject", db_faa_file, "-out", output_file_path, "-outfmt", "6 qseqid sseqid qlen evalue qcovhsp", "-evalue", "1e-3", "-num_threads", str(NCPUS)], capture_output=True, check=True)
     except subprocess.CalledProcessError as e:
         print(f"BLAST command failed with return code {e.returncode}: {e.stderr.decode()}")
         raise
@@ -234,6 +234,7 @@ def run_blast(query_sequences, db_faa_file, blast_type, keep_homologs, db):
         # Keep only the matches in the right CDS
         result = result[result.apply(lambda row: db.get(row ["qseqid"]) == row ["sseqid"], axis=1)]
     # Keep only the best hit for each query
+    result = result[result["qcov"] >= 50]
     result = result.sort_values("evalue").drop_duplicates("qseqid")
     # Keep homolog sequences
     if keep_homologs:
