@@ -86,6 +86,8 @@ def extract_denovo_info(genome):
     denovo_df = pd.read_csv(denovo_file, sep="\t", header=0)
     if denovo_df.empty:
         return {}
+    for row in denovo_df.iterrows():
+        denovo_dict[row[1]["CDS"]] = {}
     
     # Get the de novo sequence
     fna_file = os.path.join(CDS_DIR, genome + "_CDS.faa")
@@ -95,6 +97,7 @@ def extract_denovo_info(genome):
         for record in SeqIO.parse(fna_file, "fasta"):
             if record.name == denovo_gene:
                 denovo_dict[denovo_gene]["sequence"] = record.seq
+                pass
 
     # Get the last NC hit in synteny
     ## Name of the ancestor
