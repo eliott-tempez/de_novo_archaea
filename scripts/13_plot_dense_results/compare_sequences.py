@@ -40,16 +40,23 @@ def extract_trg_names(focal_species, trg_threshold):
     return focal_TRGs
 
 
-def extract_denovo_names(focal_species):
+def extract_denovo_names(focal_species, use_good_candidates=False):
     """Extract the names of the de novo genes"""
     # Make sure the file exists and read it
-    denovo_file = os.path.join(DENSE_DIR, focal_species, "denovogenes.tsv")
-    if os.path.exists(denovo_file):
-        denovo_df = pd.read_csv(denovo_file, sep="\t", header=0)
+    if not use_good_candidates:
+        denovo_file = os.path.join(DENSE_DIR, focal_species, "denovogenes.tsv")
+        if os.path.exists(denovo_file):
+            denovo_df = pd.read_csv(denovo_file, sep="\t", header=0)
+        else:
+            raise FileNotFoundError(f"No file {denovo_file}")
+        # Extract the names
+        denovo_names = denovo_df["CDS"].tolist()
     else:
-        raise FileNotFoundError(f"No file {denovo_file}")
-    # Extract the names
-    denovo_names = denovo_df["CDS"].tolist()
+        denovo_names = []
+        denovo_file = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/good_candidates.txt"
+        with open(denovo_file, "r") as f:
+            for line in f:
+                denovo_names.append(line.strip())
     return denovo_names
 
 
@@ -75,7 +82,7 @@ if __name__ == "__main__":
         trg_names = extract_trg_names(genome, TRG_RANK)
         n_trg += len(trg_names)
         # Extract de novo names
-        denovo_names = extract_denovo_names(genome)
+        denovo_names = extract_denovo_names(genome, True)
         n_denovo += len(denovo_names)
 
 
@@ -109,4 +116,4 @@ if __name__ == "__main__":
 
     # Save the results
     df = pd.DataFrame(all_values, columns=["genome", "cds", "gc_content", "aromaticity", "instability", "mean_flexibility", "hydropathy", "len_nu", "type"])
-    df.to_csv(os.path.join(OUT_DIR, "sequence_features.csv"), sep="\t", index=False)
+    df.to_csv(os.path.join(OUT_DIR, "sequence_features_good_candidates.csv"), sep="\t", index=False)
