@@ -264,6 +264,13 @@ if __name__ == "__main__":
     print(f"For the rest, we have {len(low_qcov_genes_rest) + len(low_orf_cov_genes_rest)} de novo genes with a qcov < 70% or an ORF coverage < 70%.\n")
     print(f"\n-> We have {len(low_qcov_genes_intergenic) + len(low_orf_cov_genes_intergenic) + len(low_qcov_genes_rest) + len(low_orf_cov_genes_rest)} good de novo gene candidates\n")
 
+    # Export good candidates
+    good_candidates = low_qcov_genes_intergenic + low_orf_cov_genes_intergenic + low_qcov_genes_rest + low_orf_cov_genes_rest
+    good_candidates = list(set(good_candidates))
+    with open(os.path.join(OUT_FOLDER, "good_candidates.txt"), "w") as f:
+        for candidate in good_candidates:
+            f.write(f"{candidate}\n")
+
 
 
 
