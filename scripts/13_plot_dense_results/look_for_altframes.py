@@ -24,6 +24,20 @@ def get_extended_matched_seq(genome, contig, start, end, strand, missing_right, 
     return seq, limit_start, limit_end
 
 
+def in_frame(pos, start_or_end):
+    """Get the closest number that is a 3 multiple"""
+    if pos % 3 == 0:
+        return pos
+    is_start = start_or_end == "start"
+    if is_start:
+        if (pos - 1) % 3 == 0:
+            return pos - 1
+        return pos - 2
+    if (pos + 1) % 3 == 0:
+        return pos + 1
+    return pos + 2
+
+
 def smith_waterman(ref_seq, subject_seq):
     aln_dict = {}
     # Remove stops
@@ -121,11 +135,11 @@ def recursively_align(query_seq, subject_seq_nu, start_pos_query_l, end_pos_quer
     best_aln = None
     # For all segment combinations
     for i in range(len(start_pos_query_l)):
-        start_pos_query = start_pos_query_l[i]
-        end_pos_query = end_pos_query_l[i]
+        start_pos_query = in_frame(start_pos_query_l[i], "start")
+        end_pos_query = in_frame(end_pos_query_l[i], "end")
         for j in range(len(start_pos_subject_l)):
-            start_pos_subject = start_pos_subject_l[j]
-            end_pos_subject = end_pos_subject_l[j]
+            start_pos_subject = in_frame(start_pos_subject_l[j], "start")
+            end_pos_subject = in_frame(end_pos_subject_l[j], "end")
             # Get the cut sequences
             query_seq_segment = query_seq[start_pos_query:end_pos_query]
             subject_seq_nu_segment = subject_seq_nu[start_pos_subject:end_pos_subject]
