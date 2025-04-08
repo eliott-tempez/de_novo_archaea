@@ -155,10 +155,10 @@ def recursively_align(query_seq, subject_seq_nu, start_pos_query_l, end_pos_quer
 def order_matches(matches):
     qstarts = np.array([m["qstart"] for m in matches])
     sorted_index = np.argsort(qstarts)
-    sorted_qstarts = []
+    sorted_matches = []
     for i in sorted_index:
-        sorted_qstarts.append(qstarts[i])
-    return sorted_qstarts
+        sorted_matches.append(matches[i])
+    return sorted_matches
 
 
 def look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_seq, extended_start, extended_end):
@@ -180,7 +180,7 @@ def look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_se
         extended_right_seq = extended_match_seq[extended_end:]
         # Get the matches recursively
         recursively_align(right_denovo, extended_right_seq, [0], [len(right_denovo)], [0], [len(extended_right_seq)], matches_right)
-        matches_right = [get_absolute_match(r, denovo_end, extended_end) for r in right_denovo]
+        matches_right = [get_absolute_match(r, denovo_end, extended_end) for r in matches_right]
         # Order the matches
         matches_right = order_matches(matches_right)
     return matches_left, matches_right
@@ -249,5 +249,5 @@ if __name__ == "__main__":
 
         # Look for frameshift on both sides
         frameshifts_left, frameshifts_right = look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_seq, extended_start, extended_end)
-        for f in frameshifts_left + frameshifts_right:
-            print(f)
+        print(frameshifts_left)
+        print(frameshifts_right)
