@@ -1,4 +1,5 @@
 import re
+import numpy as np
 import psa
 from my_functions.genomic_functions import extract_denovo_info, get_sequence_from_loci
 
@@ -10,7 +11,7 @@ def get_extended_matched_seq(genome, contig, start, end, strand, missing_right, 
     """
     Get the sequence (nucleotides) of the match, extended on each relevant side.
     """
-    # Extend sequence on bith sides
+    # Extend sequence on both sides
     add_right = (missing_right * 3) * 2 if missing_right > 4 else 0
     add_left = (missing_left * 3) * 2 if missing_left > 4 else 0
     match_start = start - add_left
@@ -23,103 +24,166 @@ def get_extended_matched_seq(genome, contig, start, end, strand, missing_right, 
     return seq, limit_start, limit_end
 
 
-def align_extensions(ref_seq, seq_f0, seq_f1, seq_f2):
-    """
-    Try aligning the match extensions in all 3 frames with the de novo sequence that isn't aligned with the match.
-    """
-    matches = []
+def smith_waterman(ref_seq, subject_seq):
+    aln_dict = {}
     # Remove stops
     ref_seq = re.sub(r"\*", "", str(ref_seq))
-    # Get optimal local alignment for each seq couple
-    subjects = [seq_f0, seq_f1, seq_f2]
-    for i in range(3):
-        subject_seq = re.sub(r"\*", "", str(subjects[i]))
-        # Do a smith waterman alignment
-        aln = psa.water(moltype = "prot", qseq = ref_seq, sseq = subject_seq)
-        # Keep only alignments with pval <10-3 and length >= 5aa
-        pval = aln.pvalue()
-        if pval < 10e-3 and aln.length >= 5:
-            qstart, qend = aln.qstart, aln.qend
-            sstart, send = aln.sstart, aln.send
-            frame = i
-            matches.append([frame, qstart, qend, sstart, send, pval])
-    return matches
+    subject_seq = re.sub(r"\*", "", str(subject_seq))
+    # Align
+    aln = psa.water(moltype = "prot", qseq = ref_seq, sseq = subject_seq)
+    # Store alignment in dict
+    aln_dict["pval"] = aln.pvalue()
+    aln_dict["length"] = aln.length
+    aln_dict["qstart"], aln_dict["qend"] = aln.qstart, aln.qend
+    aln_dict["sstart"], aln_dict["send"] = aln.sstart, aln.send
+    # Uncomment to show the raw alignment output
+    #aln_dict["raw"] = aln.raw
+    return aln_dict
 
 
-def get_uncovered_segments(extension_sequence, local_aln_matches):
-    """Get the fragments longer than 5aa in the query extension that weren't aligned"""
-    extension_len = len(extension_sequence)
-    matches_segments = []
-    # Get all the aa indexes covered by the alignments
-    for match in local_aln_matches:
-        qstart = match[1]
-        qend = match[2]
-        matches_segments += list(range((qstart - 1), qend))
-    matches_segments = set(matches_segments)
-    # Get all the indexes uncovered by the alignments
-    unmatched_indexes = set(list(range(extension_len))) - matches_segments
-    if unmatched_indexes < 5:
-        return []
-    # Transform indexes to continuous segments
+def is_significant(alignment):
+    aln_len = alignment["length"]
+    aln_pval = alignment["pval"]
+    if aln_len >= 5 and aln_pval <= 10e-3:
+        return True
+    return False
+
+
+def get_absolute_match(aln, start_pos_query, start_pos_subject):
+    # For the qstart
+    relative_qstart = aln["qstart"]
+    absolute_qstart = relative_qstart + start_pos_query
+    aln["qstart"] = absolute_qstart
+    # For the sstart
+    frame = aln["frame"]
+    relative_sstart = aln["sstart"]
+    absolute_sstart = relative_sstart * 3 + start_pos_subject + frame
+    aln["sstart"] = absolute_sstart
+    # For the qend
+    relative_qend = aln["qend"]
+    absolute_qend = relative_qend + start_pos_query
+    aln["qend"] = absolute_qend
+    # For the send
+    relative_send = aln["send"]
+    absolute_send = relative_send * 3 + start_pos_subject + frame
+    aln["send"] = absolute_send
+    return aln
+
+
+def get_segments_from_set(indexes, threshold):
+    """
+    Take a set of continuous numbers and extract the segments of consecutive numbers.
+    """
     continuous_segments = []
-    unmatched_indexes = sorted(list(unmatched_indexes))
+    unmatched_indexes = sorted(list(indexes))
     segment_start = unmatched_indexes[0]
-    for i in range(len(unmatched_indexes - 1)):
+    for i in range(len(unmatched_indexes) - 1):
         if unmatched_indexes[i+1] - unmatched_indexes[i] > 1:
             segment_end = unmatched_indexes[i]
-            if segment_end - segment_start >= 5:
+            if segment_end - segment_start >= threshold:
                 continuous_segments.append((segment_start, segment_end))
             segment_start = unmatched_indexes[i+1]
     if unmatched_indexes[i+1] - unmatched_indexes[i] == 1:
-        if unmatched_indexes[i+1] - segment_start >= 5:
+        if unmatched_indexes[i+1] - segment_start >= threshold:
             continuous_segments.append((segment_start, unmatched_indexes[i+1]))
     return continuous_segments
 
 
-def recursively_align(matches, unaligned_segments, ref_seq, seq_f0, seq_f1, seq_f2):
-    if unaligned_segments == []:
-        return []
-    unaligned_segments = get_uncovered_segments(ref_seq, matches)
+def get_uncovered_segments(matches, query_len, subject_len):
+    """
+    Get all the segments > 4 aa in the query and subject sequences that haven't found a match.
+    """
+    covered_segments_query = []
+    covered_segments_subject = []
+    for match in matches:
+        qstart = match["qstart"]
+        qend = match["qend"]
+        covered_segments_query += list(range(qstart, qend))
+        sstart = match["sstart"]
+        send = match["send"]
+        covered_segments_subject += list(range(sstart, send))
+    uncovered_pos_query = set(range(query_len)) - set(covered_segments_query)
+    uncovered_pos_subject = set(range(subject_len)) - set(covered_segments_subject)
+    uncovered_segments_query = get_segments_from_set(uncovered_pos_query, 5)
+    uncovered_segments_subject = get_segments_from_set(uncovered_pos_subject, 15)
+    # Get the start and end points
+    qstarts, qends, sstarts, sends = [], [], [], []
+    for segment in uncovered_segments_query:
+        qstarts.append(segment[0])
+        qends.append(segment[1])
+    for segment in uncovered_segments_subject:
+        sstarts.append(segment[0])
+        sends.append(segment[1])
+    return qstarts, qends, sstarts, sends
 
+
+def recursively_align(query_seq, subject_seq_nu, start_pos_query_l, end_pos_query_l, start_pos_subject_l, end_pos_subject_l, matches):
+    best_aln = None
+    # For all segment combinations
+    for i in range(len(start_pos_query_l)):
+        start_pos_query = start_pos_query_l[i]
+        end_pos_query = end_pos_query_l[i]
+        for j in range(len(start_pos_subject_l)):
+            start_pos_subject = start_pos_subject_l[j]
+            end_pos_subject = end_pos_subject_l[j]
+            # Get the cut sequences
+            query_seq_segment = query_seq[start_pos_query:end_pos_query]
+            subject_seq_nu_segment = subject_seq_nu[start_pos_subject:end_pos_subject]
+            # Align in all 3 frames and keep the best one
+            best_pval = 1
+            for frame in [0, 1, 2]:
+                subject_seq_aa = subject_seq_nu_segment[frame:(frame-3)].translate(table=11)
+                aln = smith_waterman(query_seq_segment, subject_seq_aa)
+                pval = aln["pval"]
+                if pval < best_pval:
+                    best_pval = pval
+                    best_aln = aln
+                    best_aln.update({"frame": frame})
+                    best_start_pos_query = start_pos_query
+                    best_start_pos_subject = start_pos_subject
+    # Check the best alignment is qualitative
+    if best_aln and is_significant(best_aln):
+        # Replace the relative positions by absolute ones
+        best_aln = get_absolute_match(best_aln, best_start_pos_query, best_start_pos_subject)
+        # Save the alignment
+        matches.append(best_aln)
+        # Get the segments that aren't covered by a match
+        qstarts, qends, sstarts, sends = get_uncovered_segments(matches, len(query_seq), len(subject_seq_nu))
+        recursively_align(query_seq, subject_seq_nu, qstarts, qends, sstarts, sends, matches)
+
+
+def order_matches(matches):
+    qstarts = np.array([m["qstart"] for m in matches])
+    sorted_index = np.argsort(qstarts)
+    sorted_qstarts = []
+    for i in sorted_index:
+        sorted_qstarts.append(qstarts[i])
+    return sorted_qstarts
 
 
 def look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_seq, extended_start, extended_end):
     extend_left = extended_start != 0
     extend_right = extended_end != len(extended_match_seq)
-    frameshifts = {}
+    matches_left = []
+    matches_right = []
     # Start with the left
     if extend_left:
-    # Translate in the 3 frames
         left_denovo = denovo_seq[:denovo_start]
-        left_f0 = extended_match_seq[:extended_start].translate(table=11)
-        left_f1 = extended_match_seq[1:extended_start+1].translate(table=11)
-        left_f2 = extended_match_seq[2:extended_start+2].translate(table=11)
-        # Get the matches
-        matches = recursively_align(matches, left_denovo, left_f0, left_f1, left_f2)
-        matches = align_extensions(left_denovo, left_f0, left_f1, left_f2)
-        # See if the qcov is completely covered
-        segments_left = get_uncovered_segments(left_denovo, matches)
-        while segments_left != []:
-            for segment in segments_left:
-                left_denovo_segment = left_denovo[segment[0]:segment[1]]
-
-
-
-
-
-
-
-
+        extended_left_seq = extended_match_seq[:extended_start]
+        # Get the matches recursively
+        recursively_align(left_denovo, extended_left_seq, [0], [len(left_denovo)], [0], [len(extended_left_seq)], matches_left)
+        # Order the matches
+        matches_left = order_matches(matches_left)
     # Do the right
     if extend_right:
         right_denovo = denovo_seq[denovo_end:]
-        right_f0 = extended_match_seq[extended_end:].translate(table=11)
-        right_f1 = extended_match_seq[extended_end-1:-1].translate(table=11)
-        right_f2 = extended_match_seq[extended_end-2:-2].translate(table=11)
-        # Get the matches
-        matches = align_extensions(right_denovo, right_f0, right_f1, right_f2)
-        # See if the qcov is completely covered
-        segments_left = get_uncovered_segments(right_denovo, matches)
+        extended_right_seq = extended_match_seq[extended_end:]
+        # Get the matches recursively
+        recursively_align(right_denovo, extended_right_seq, [0], [len(right_denovo)], [0], [len(extended_right_seq)], matches_right)
+        matches_right = [get_absolute_match(r, denovo_end, extended_end) for r in right_denovo]
+        # Order the matches
+        matches_right = order_matches(matches_right)
+    return matches_left, matches_right
 
 
 
@@ -136,27 +200,31 @@ if __name__ == "__main__":
     for genome in genomes:
         new_denovo = extract_denovo_info(genome)
 
+        # For each denovo gene
         for denovo in new_denovo:
-            if denovo == "HPMEPLIM_01176_gene_mRNA":
-                new_denovo[denovo]["genome"] = genome
+            #--------------------------------------------
+            if denovo != "HPMEPLIM_01176_gene_mRNA":
+                continue
+            #--------------------------------------------
+            new_denovo[denovo]["genome"] = genome
 
-                # Get the match sequence
-                gene_len = len(new_denovo[denovo]["sequence"])
-                loci = new_denovo[denovo]["loci"]
-                contig = loci[0]
-                start = loci[1]
-                end = loci[2]
-                strand = loci[3]
-                outgroup = new_denovo[denovo]["ancestor_sp"]
-                # Look if the Cter has been entirely matched
-                missing_right = gene_len - new_denovo[denovo]["qend"] - 1
-                # Look if the Nter has been entirely matched
-                missing_left = new_denovo[denovo]["qstart"]
-                # Get the extended match sequence in outgroup
-                match_seq_extended, extended_start, extended_end = get_extended_matched_seq(outgroup, contig, start, end, strand, missing_right, missing_left)
-                new_denovo[denovo]["extended_match_seq"] = match_seq_extended
-                new_denovo[denovo]["extended_start"] = extended_start
-                new_denovo[denovo]["extended_end"] = extended_end
+            # Get the match sequence
+            gene_len = len(new_denovo[denovo]["sequence"])
+            loci = new_denovo[denovo]["loci"]
+            contig = loci[0]
+            start = loci[1]
+            end = loci[2]
+            strand = loci[3]
+            outgroup = new_denovo[denovo]["ancestor_sp"]
+            # Look if the Cter has been entirely matched
+            missing_right = gene_len - new_denovo[denovo]["qend"] - 1
+            # Look if the Nter has been entirely matched
+            missing_left = new_denovo[denovo]["qstart"]
+            # Get the extended match sequence in outgroup
+            match_seq_extended, extended_start, extended_end = get_extended_matched_seq(outgroup, contig, start, end, strand, missing_right, missing_left)
+            new_denovo[denovo]["extended_match_seq"] = match_seq_extended
+            new_denovo[denovo]["extended_start"] = extended_start
+            new_denovo[denovo]["extended_end"] = extended_end
 
         # Add to global dict
         denovo_dict.update(new_denovo)
@@ -180,4 +248,6 @@ if __name__ == "__main__":
         denovo_end = denovo_dict[denovo]["qend"]
 
         # Look for frameshift on both sides
-        frameshifts = look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_seq, extended_start, extended_end)
+        frameshifts_left, frameshifts_right = look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_seq, extended_start, extended_end)
+        for f in frameshifts_left + frameshifts_right:
+            print(f)
