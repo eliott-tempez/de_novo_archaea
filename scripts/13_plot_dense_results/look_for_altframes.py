@@ -196,11 +196,28 @@ def look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_se
         extended_right_seq = extended_match_seq[extended_end:]
         # Get the matches recursively
         recursively_align(right_denovo, extended_right_seq, [0], [len(right_denovo)], [0], [len(extended_right_seq)], matches_right)
-        print(matches_right)
         matches_right = [get_absolute_match(r, denovo_end, extended_end) for r in matches_right]
         # Order the matches
         matches_right = order_matches(matches_right)
     return matches_left, matches_right
+
+
+def print_results(denovo, all_matches, qcov):
+    # Get the frame covers in string form
+    strings = {0: ["-"] * 100, 1: ["-"] * 100, 2: ["-"] * 100}
+    min_start = min([dic["sstart"] for dic in all_matches])
+    max_end = max([dic["send"] for dic in all_matches])
+    factor = 100 / (max_end - min_start)
+    n_nucl_subject = 0
+    for match in all_matches:
+        frame = match["frame"]
+        str_start = round((match["sstart"] - min_start) * factor)
+        str_end = round((match["send"] - min_start) * factor)
+        for i in range(str_start, str_end):
+            strings[frame][i] = "*"
+    print(f"{''.join(strings[0])}\t{denovo}\n")
+    print(f"{''.join(strings[1])}\tqcov = {qcov}%\n")
+    print(f"{''.join(strings[2])}\n\n")
 
 
 
@@ -219,10 +236,10 @@ if __name__ == "__main__":
 
         # For each denovo gene
         for denovo in new_denovo:
-            #--------------------------------------------
+            """#--------------------------------------------
             if denovo != "HPMEPLIM_01176_gene_mRNA":
                 continue
-            #--------------------------------------------
+            #--------------------------------------------"""
             new_denovo[denovo]["genome"] = genome
 
             # Get the match sequence
@@ -247,13 +264,13 @@ if __name__ == "__main__":
         denovo_dict.update(new_denovo)
 
 
-    #--------------------------------------------------------------
+    """#--------------------------------------------------------------
     # Keep only gene of interest
     dict_interest = {}
     dict_interest["HPMEPLIM_01176_gene_mRNA"] = denovo_dict["HPMEPLIM_01176_gene_mRNA"]
     denovo_dict = dict_interest
     print(denovo_dict)
-    #--------------------------------------------------------------
+    #--------------------------------------------------------------"""
 
     
     for denovo in denovo_dict:
@@ -266,4 +283,14 @@ if __name__ == "__main__":
 
         # Look for frameshift on both sides
         frameshifts_left, frameshifts_right = look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_seq, extended_start, extended_end)
-        print(frameshifts_right)
+        # Get list of all matches for all frames
+        origin_match = {"qstart": denovo_start, "qend": denovo_end, "sstart": extended_start, "send": extended_end, "frame": 0}
+        all_matches = frameshifts_left + [origin_match] + frameshifts_right
+        # Get the total qcov
+        bases_covered = []
+        for dic in all_matches:
+            bases_covered += list(range(dic["qstart"], dic["qend"]))
+        total_qcov = round((len(set(bases_covered)) / len(denovo_seq) * 100), 1)
+        # Print the results
+        print_results(denovo, all_matches, total_qcov)
+        print("\n")
