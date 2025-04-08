@@ -56,6 +56,8 @@ def smith_waterman(ref_seq, subject_seq):
 
 
 def is_significant(alignment):
+    if not alignment:
+        return False
     aln_len = alignment["length"]
     aln_pval = alignment["pval"]
     if aln_len >= 5 and aln_pval <= 10e-3:
@@ -71,7 +73,7 @@ def get_absolute_match(aln, start_pos_query, start_pos_subject):
     # For the sstart
     frame = aln["frame"]
     relative_sstart = aln["sstart"]
-    absolute_sstart = relative_sstart * 3 + start_pos_subject + frame
+    absolute_sstart = relative_sstart * 3 + start_pos_subject - frame
     aln["sstart"] = absolute_sstart
     # For the qend
     relative_qend = aln["qend"]
@@ -156,7 +158,7 @@ def recursively_align(query_seq, subject_seq_nu, start_pos_query_l, end_pos_quer
                     best_start_pos_query = start_pos_query
                     best_start_pos_subject = start_pos_subject
     # Check the best alignment is qualitative
-    if best_aln and is_significant(best_aln):
+    if is_significant(best_aln):
         # Replace the relative positions by absolute ones
         best_aln = get_absolute_match(best_aln, best_start_pos_query, best_start_pos_subject)
         # Save the alignment
@@ -194,6 +196,7 @@ def look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_se
         extended_right_seq = extended_match_seq[extended_end:]
         # Get the matches recursively
         recursively_align(right_denovo, extended_right_seq, [0], [len(right_denovo)], [0], [len(extended_right_seq)], matches_right)
+        print(matches_right)
         matches_right = [get_absolute_match(r, denovo_end, extended_end) for r in matches_right]
         # Order the matches
         matches_right = order_matches(matches_right)
@@ -263,5 +266,4 @@ if __name__ == "__main__":
 
         # Look for frameshift on both sides
         frameshifts_left, frameshifts_right = look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_seq, extended_start, extended_end)
-        print(frameshifts_left)
         print(frameshifts_right)
