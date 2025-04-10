@@ -283,13 +283,13 @@ def look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_se
     return matches_left, matches_right
 
 
-def print_results(denovo, all_matches, qcov):
+def print_results(denovo, all_matches, qcov, real_scale=False):
     # Get the frame covers in string form
-    strings = {0: ["-"] * 100, 1: ["-"] * 100, 2: ["-"] * 100}
     min_start = min([dic["sstart"] for dic in all_matches])
     max_end = max([dic["send"] for dic in all_matches])
-    factor = 100 / (max_end - min_start)
-    n_nucl_subject = 0
+    line_len = (max_end - min_start) if real_scale else 100
+    strings = {0: ["-"] * line_len, 1: ["-"] * line_len, 2: ["-"] * line_len}
+    factor = 1 if real_scale else 100 / (max_end - min_start)
     for match in all_matches:
         frame = match["frame"]
         str_start = round((match["sstart"] - min_start) * factor)
@@ -363,7 +363,7 @@ if __name__ == "__main__":
         denovo_end = denovo_dict[denovo]["qend"]
 
         # Look for frameshift on both sides
-        frameshifts_left, frameshifts_right = look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_seq, extended_start, extended_end, True)
+        frameshifts_left, frameshifts_right = look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_seq, extended_start, extended_end, use_blast=False)
         # Keep gene only if there are matches
         if frameshifts_left == [] and frameshifts_right == []:
             continue
@@ -376,5 +376,5 @@ if __name__ == "__main__":
             bases_covered += list(range(dic["qstart"], dic["qend"]))
         total_qcov = round((len(set(bases_covered)) / len(denovo_seq) * 100), 1)
         # Print the results
-        print_results(denovo, all_matches, total_qcov)
+        print_results(denovo, all_matches, total_qcov, True)
         print("\n")
