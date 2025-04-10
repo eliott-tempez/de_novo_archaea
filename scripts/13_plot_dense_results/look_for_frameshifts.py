@@ -1,5 +1,9 @@
+import os
 import re
+import tempfile
+import subprocess
 import numpy as np
+import pandas as pd
 import psa
 from my_functions.genomic_functions import extract_denovo_info, get_sequence_from_loci
 
@@ -175,7 +179,6 @@ def recursively_align(query_seq, subject_seq_nu, start_pos_query_l, end_pos_quer
                         best_aln.update({"frame": frame})
                         best_start_pos_query = start_pos_query
                         best_start_pos_subject = start_pos_subject
-
     # Check the best alignment is qualitative
     if is_significant(best_aln):
         # Replace the relative positions by absolute ones
@@ -196,7 +199,61 @@ def order_matches(matches):
     return sorted_matches
 
 
-def look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_seq, extended_start, extended_end):
+def get_significant_blastp(query, subject):
+    hits = []
+    # Create temp files
+    with tempfile.NamedTemporaryFile(mode='w', delete=False) as query_file:
+        query_file.write(f">query\n{query}\n")
+        query_file_path = query_file.name
+    with tempfile.NamedTemporaryFile(mode='w', delete=False) as subject_file:
+        subject_file.write(f">subject\n{subject}\n")
+        subject_file_path = subject_file.name
+    with tempfile.NamedTemporaryFile(mode='w', delete=False) as output_file:
+        output_file_path = output_file.name
+    # Run Blast
+    out_format = "6 qseqid sseqid evalue qcovhsp qstart qend sstart send length"
+    output = subprocess.run(["blastp", "-query", query_file_path, "-subject", subject_file_path, "-out", output_file_path, "-outfmt", out_format, "-evalue", "1e-3"], capture_output=True, check=True)
+    # Check the output isn't blank
+    with open(output_file_path, "r") as f:
+        content = f.read().strip()
+    if content == "":
+        os.remove(query_file_path)
+        os.remove(subject_file_path)
+        os.remove(output_file_path)
+        return []
+    # Read the output
+    result = pd.read_csv(output_file_path, sep="\t", header=None)
+    result.columns = ["qseqid", "sseqid", "evalue", "qcov", "qstart", "qend", "sstart", "send", "length"]
+    for row in result.iterrows():
+        qstart = int(row[1]["qstart"])
+        qend = int(row[1]["qend"]) + 1
+        sstart = int(row[1]["sstart"])
+        send = int(row[1]["send"]) + 1
+        length = int(row[1]["length"])
+        eval = int(row[1]["evalue"])
+        if length >= 5:
+            hits.append({"qstart": qstart, "qend": qend, "sstart": sstart, "send": send, "length": length, "eval": eval})
+    # Delete temp files
+    os.remove(query_file_path)
+    os.remove(subject_file_path)
+    os.remove(output_file_path)
+    return hits
+
+
+def blast_align(query_seq_aa, subject_seq_nu):
+    # Blast query for all 3 frames
+    matches = []
+    for frame in [0, 1, 2]:
+        subject_seq_aa = subject_seq_nu[frame:(frame-3)].translate(table=11)
+        hits = get_significant_blastp(query_seq_aa, subject_seq_aa)
+        # Add the frame
+        for hit in hits:
+            hit.update({"frame": frame})
+        matches += hits
+    return matches
+
+
+def look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_seq, extended_start, extended_end, use_blast=False):
     extend_left = extended_start != 0
     extend_right = extended_end != len(extended_match_seq)
     matches_left, matches_right = [], []
@@ -204,16 +261,22 @@ def look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_se
     if extend_left:
         left_denovo = denovo_seq[:denovo_start]
         extended_left_seq = extended_match_seq[:extended_start]
-        # Get the matches recursively
-        recursively_align(left_denovo, extended_left_seq, [0], [len(left_denovo)], [0], [len(extended_left_seq)], matches_left)
+        # Get the matches (recursively or not)
+        if use_blast:
+            matches_left = blast_align(left_denovo, extended_left_seq)
+        else:
+            recursively_align(left_denovo, extended_left_seq, [0], [len(left_denovo)], [0], [len(extended_left_seq)], matches_left)
         # Order the matches
         matches_left = order_matches(matches_left)
     # Do the right
     if extend_right:
         right_denovo = denovo_seq[denovo_end:]
         extended_right_seq = extended_match_seq[extended_end:]
-        # Get the matches recursively
-        recursively_align(right_denovo, extended_right_seq, [0], [len(right_denovo)], [0], [len(extended_right_seq)], matches_right)
+        # Get the matches (recursively or not)
+        if use_blast:
+            matches_right = blast_align(right_denovo, extended_right_seq)
+        else:
+            recursively_align(right_denovo, extended_right_seq, [0], [len(right_denovo)], [0], [len(extended_right_seq)], matches_right)
         matches_right = [get_absolute_match(r, denovo_end, extended_end) for r in matches_right]
         # Order the matches
         matches_right = order_matches(matches_right)
@@ -300,7 +363,7 @@ if __name__ == "__main__":
         denovo_end = denovo_dict[denovo]["qend"]
 
         # Look for frameshift on both sides
-        frameshifts_left, frameshifts_right = look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_seq, extended_start, extended_end)
+        frameshifts_left, frameshifts_right = look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_seq, extended_start, extended_end, True)
         # Keep gene only if there are matches
         if frameshifts_left == [] and frameshifts_right == []:
             continue
