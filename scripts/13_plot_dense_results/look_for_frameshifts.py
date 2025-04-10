@@ -168,13 +168,13 @@ def recursively_align(query_seq, subject_seq_nu, start_pos_query_l, end_pos_quer
                     best_start_pos_query = start_pos_query
                     best_start_pos_subject = start_pos_subject
                 # If we have the same pval, chose the match with the highest similarity
-                """elif pval == best_pval:
+                elif pval == best_pval:
                     if psim > best_psim:
                         best_psim = psim
                         best_aln = aln
                         best_aln.update({"frame": frame})
                         best_start_pos_query = start_pos_query
-                        best_start_pos_subject = start_pos_subject"""
+                        best_start_pos_subject = start_pos_subject
 
     # Check the best alignment is qualitative
     if is_significant(best_aln):
