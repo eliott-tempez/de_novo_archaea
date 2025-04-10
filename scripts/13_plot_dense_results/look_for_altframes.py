@@ -23,8 +23,8 @@ def get_extended_matched_seq(genome, contig, start, end, strand, missing_cter, m
     # Extract extended sequence
     seq = get_sequence_from_loci(genome, contig, match_start, match_end, strand)
     # Get the limits of the actual match
-    limit_start = add_left
-    limit_end = len(seq) - add_right
+    limit_start = add_left if strand == "+" else add_right
+    limit_end = (len(seq) - add_right) if strand == "+" else (len(seq) - add_left)
     return seq, limit_start, limit_end
 
 
@@ -51,6 +51,7 @@ def smith_waterman(ref_seq, subject_seq):
     aln = psa.water(moltype = "prot", qseq = ref_seq, sseq = subject_seq)
     # Store alignment in dict
     aln_dict["pval"] = aln.pvalue()
+    aln_dict["psim"] = aln.psimilarity
     aln_dict["length"] = aln.length
     aln_dict["qstart"], aln_dict["qend"] = aln.qstart, aln.qend
     aln_dict["sstart"], aln_dict["send"] = aln.sstart, aln.send
@@ -96,15 +97,17 @@ def get_segments_from_set(indexes, threshold):
     """
     continuous_segments = []
     unmatched_indexes = sorted(list(indexes))
+    if len(indexes) < threshold:
+        return []
     segment_start = unmatched_indexes[0]
     for i in range(len(unmatched_indexes) - 1):
         if unmatched_indexes[i+1] - unmatched_indexes[i] > 1:
             segment_end = unmatched_indexes[i]
-            if segment_end - segment_start >= threshold:
+            if segment_end - segment_start >= threshold - 1:
                 continuous_segments.append((segment_start, segment_end))
             segment_start = unmatched_indexes[i+1]
     if unmatched_indexes[i+1] - unmatched_indexes[i] == 1:
-        if unmatched_indexes[i+1] - segment_start >= threshold:
+        if unmatched_indexes[i+1] - segment_start >= threshold - 1:
             continuous_segments.append((segment_start, unmatched_indexes[i+1]))
     return continuous_segments
 
@@ -151,16 +154,28 @@ def recursively_align(query_seq, subject_seq_nu, start_pos_query_l, end_pos_quer
             subject_seq_nu_segment = subject_seq_nu[start_pos_subject:end_pos_subject]
             # Align in all 3 frames and keep the best one
             best_pval = 1
+            best_psim = 0
             for frame in [0, 1, 2]:
                 subject_seq_aa = subject_seq_nu_segment[frame:(frame-3)].translate(table=11)
                 aln = smith_waterman(query_seq_segment, subject_seq_aa)
                 pval = aln["pval"]
+                psim = aln["psim"]
                 if pval < best_pval:
                     best_pval = pval
+                    best_psim = psim
                     best_aln = aln
                     best_aln.update({"frame": frame})
                     best_start_pos_query = start_pos_query
                     best_start_pos_subject = start_pos_subject
+                # If we have the same pval, chose the match with the highest similarity
+                """elif pval == best_pval:
+                    if psim > best_psim:
+                        best_psim = psim
+                        best_aln = aln
+                        best_aln.update({"frame": frame})
+                        best_start_pos_query = start_pos_query
+                        best_start_pos_subject = start_pos_subject"""
+
     # Check the best alignment is qualitative
     if is_significant(best_aln):
         # Replace the relative positions by absolute ones
@@ -184,8 +199,7 @@ def order_matches(matches):
 def look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_seq, extended_start, extended_end):
     extend_left = extended_start != 0
     extend_right = extended_end != len(extended_match_seq)
-    matches_left = []
-    matches_right = []
+    matches_left, matches_right = [], []
     # Start with the left
     if extend_left:
         left_denovo = denovo_seq[:denovo_start]
@@ -226,8 +240,6 @@ def print_results(denovo, all_matches, qcov):
 
 
 
-
-
 if __name__ == "__main__":
     with open(GENOMES_LIST, "r") as f:
         genomes = f.readline().split()
@@ -241,7 +253,7 @@ if __name__ == "__main__":
         # For each denovo gene
         for denovo in new_denovo:
             """#--------------------------------------------------
-            if denovo != "HPMEPLIM_01176_gene_mRNA":
+            if "IOIKJFFK_00291_gene_mRNA" not in denovo:
                 continue
             #--------------------------------------------------"""
             new_denovo[denovo]["genome"] = genome
@@ -255,7 +267,7 @@ if __name__ == "__main__":
             strand = loci[3]
             outgroup = new_denovo[denovo]["ancestor_sp"]
             # Look if the Cter has been entirely matched
-            missing_cter = gene_len - new_denovo[denovo]["qend"] - 1
+            missing_cter = gene_len - new_denovo[denovo]["qend"]
             # Look if the Nter has been entirely matched
             missing_nter = new_denovo[denovo]["qstart"]
             # Get the extended match sequence in outgroup
@@ -265,6 +277,7 @@ if __name__ == "__main__":
             new_denovo[denovo]["extended_start"] = extended_start
             new_denovo[denovo]["extended_end"] = extended_end
 
+
         # Add to global dict
         denovo_dict.update(new_denovo)
 
@@ -272,7 +285,7 @@ if __name__ == "__main__":
     """#--------------------------------------------------------------
     # Keep only gene of interest
     dict_interest = {}
-    dict_interest["HPMEPLIM_01176_gene_mRNA"] = denovo_dict["HPMEPLIM_01176_gene_mRNA"]
+    dict_interest["IOIKJFFK_00291_gene_mRNA"] = denovo_dict["IOIKJFFK_00291_gene_mRNA"]
     denovo_dict = dict_interest
     print(denovo_dict)
     #--------------------------------------------------------------"""
@@ -289,7 +302,7 @@ if __name__ == "__main__":
         # Look for frameshift on both sides
         frameshifts_left, frameshifts_right = look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_seq, extended_start, extended_end)
         # Keep gene only if there are matches
-        if frameshifts_left == {} and frameshifts_right == {}:
+        if frameshifts_left == [] and frameshifts_right == []:
             continue
         # Get list of all matches for all frames
         origin_match = {"qstart": denovo_start, "qend": denovo_end, "sstart": extended_start, "send": extended_end, "frame": 0}
