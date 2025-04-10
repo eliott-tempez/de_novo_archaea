@@ -53,8 +53,8 @@ def smith_waterman(ref_seq, subject_seq):
     aln_dict["pval"] = aln.pvalue()
     aln_dict["psim"] = aln.psimilarity
     aln_dict["length"] = aln.length
-    aln_dict["qstart"], aln_dict["qend"] = aln.qstart, aln.qend
-    aln_dict["sstart"], aln_dict["send"] = aln.sstart, aln.send
+    aln_dict["qstart"], aln_dict["qend"] = aln.qstart, aln.qend + 1
+    aln_dict["sstart"], aln_dict["send"] = aln.sstart, aln.send + 1
     # Uncomment to show the raw alignment output
     #aln_dict["raw"] = aln.raw
     return aln_dict
