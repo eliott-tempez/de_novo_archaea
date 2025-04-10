@@ -57,8 +57,8 @@ def smith_waterman(ref_seq, subject_seq):
     aln_dict["pval"] = aln.pvalue()
     aln_dict["psim"] = aln.psimilarity
     aln_dict["length"] = aln.length
-    aln_dict["qstart"], aln_dict["qend"] = aln.qstart, aln.qend + 1
-    aln_dict["sstart"], aln_dict["send"] = aln.sstart, aln.send + 1
+    aln_dict["qstart"], aln_dict["qend"] = aln.qstart - 1, aln.qend
+    aln_dict["sstart"], aln_dict["send"] = aln.sstart - 1, aln.send
     # Uncomment to show the raw alignment output
     #aln_dict["raw"] = aln.raw
     return aln_dict
@@ -225,10 +225,10 @@ def get_significant_tblastn(query, subject):
     result = pd.read_csv(output_file_path, sep="\t", header=None)
     result.columns = ["qseqid", "sseqid", "evalue", "qcov", "qstart", "qend", "sstart", "send", "length", "sframe"]
     for row in result.iterrows():
-        qstart = int(row[1]["qstart"])
-        qend = int(row[1]["qend"]) + 1
-        sstart = int(row[1]["sstart"])
-        send = int(row[1]["send"]) + 1
+        qstart = int(row[1]["qstart"]) - 1
+        qend = int(row[1]["qend"])
+        sstart = int(row[1]["sstart"]) - 1
+        send = int(row[1]["send"])
         length = int(row[1]["length"])
         eval = int(row[1]["evalue"])
         sframe = int(row[1]["sframe"]) - 1
