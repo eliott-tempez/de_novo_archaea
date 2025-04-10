@@ -98,6 +98,28 @@ def extract_denovo_info(genome):
             if record.name == denovo_gene:
                 denovo_dict[denovo_gene]["sequence"] = record.seq
                 pass
+    
+    """# Get the strand of the de novo gene
+    gff_file = os.path.join(GFF_DIR, genome + ".gff3")
+    if not os.path.exists(gff_file):
+        raise FileNotFoundError(f"{gff_file} does not exist")
+    gff_pd = pd.read_csv(gff_file, sep="\t", header=None, comment="#")
+    gff_pd.columns = ["contig", "source", "type", "start", "end", "score", "strand", "phase", "attributes"]
+    gene_names = gff_pd["attributes"].str.split(";", expand=True)[0].str.split("=", expand=True)
+    gff_pd["gene_name"] = gene_names[1]
+    for denovo_gene in denovo_dict:
+        if "gene_mRNA" in denovo_gene:
+            denovo_name = denovo_gene.split("_gene_mRNA")[0]
+        # Get the strand of the de novo gene
+        try:
+            matches = gff_pd[gff_pd["gene_name"] == denovo_name]
+            if matches.empty:
+                raise ValueError(f"No corresponding row found for {denovo_gene} in {genome}")
+        except ValueError as e:
+            print(e)
+            continue
+        # Get the strand and contig
+        denovo_dict[denovo_gene]["strand"] = matches.iloc[0]["strand"]"""
 
     # Get the last NC hit in synteny
     ## Name of the ancestor
