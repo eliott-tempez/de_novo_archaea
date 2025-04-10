@@ -7,13 +7,17 @@ from my_functions.genomic_functions import extract_denovo_info, get_sequence_fro
 from my_functions.paths import GENOMES_LIST
 
 
-def get_extended_matched_seq(genome, contig, start, end, strand, missing_right, missing_left):
+def get_extended_matched_seq(genome, contig, start, end, strand, missing_cter, missing_nter):
     """
     Get the sequence (nucleotides) of the match, extended on each relevant side.
     """
     # Extend sequence on both sides
-    add_right = (missing_right * 3) * 2 if missing_right > 4 else 0
-    add_left = (missing_left * 3) * 2 if missing_left > 4 else 0
+    if strand == "+":
+        add_right = (missing_cter * 3) * 2 if missing_cter > 4 else 0
+        add_left = (missing_nter * 3) * 2 if missing_nter > 4 else 0
+    elif strand == "-":
+        add_left = (missing_cter * 3) * 2 if missing_cter > 4 else 0
+        add_right = (missing_nter * 3) * 2 if missing_nter > 4 else 0
     match_start = start - add_left
     match_end = end + add_right
     # Extract extended sequence
@@ -236,10 +240,10 @@ if __name__ == "__main__":
 
         # For each denovo gene
         for denovo in new_denovo:
-            """#--------------------------------------------
+            """#--------------------------------------------------
             if denovo != "HPMEPLIM_01176_gene_mRNA":
                 continue
-            #--------------------------------------------"""
+            #--------------------------------------------------"""
             new_denovo[denovo]["genome"] = genome
 
             # Get the match sequence
@@ -251,11 +255,12 @@ if __name__ == "__main__":
             strand = loci[3]
             outgroup = new_denovo[denovo]["ancestor_sp"]
             # Look if the Cter has been entirely matched
-            missing_right = gene_len - new_denovo[denovo]["qend"] - 1
+            missing_cter = gene_len - new_denovo[denovo]["qend"] - 1
             # Look if the Nter has been entirely matched
-            missing_left = new_denovo[denovo]["qstart"]
+            missing_nter = new_denovo[denovo]["qstart"]
             # Get the extended match sequence in outgroup
-            match_seq_extended, extended_start, extended_end = get_extended_matched_seq(outgroup, contig, start, end, strand, missing_right, missing_left)
+            match_seq_extended, extended_start, extended_end = get_extended_matched_seq(outgroup, contig, start, end, strand, missing_cter, missing_nter)
+            # Add the info to the dict
             new_denovo[denovo]["extended_match_seq"] = match_seq_extended
             new_denovo[denovo]["extended_start"] = extended_start
             new_denovo[denovo]["extended_end"] = extended_end
@@ -283,6 +288,9 @@ if __name__ == "__main__":
 
         # Look for frameshift on both sides
         frameshifts_left, frameshifts_right = look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_seq, extended_start, extended_end)
+        # Keep gene only if there are matches
+        if frameshifts_left == {} and frameshifts_right == {}:
+            continue
         # Get list of all matches for all frames
         origin_match = {"qstart": denovo_start, "qend": denovo_end, "sstart": extended_start, "send": extended_end, "frame": 0}
         all_matches = frameshifts_left + [origin_match] + frameshifts_right
