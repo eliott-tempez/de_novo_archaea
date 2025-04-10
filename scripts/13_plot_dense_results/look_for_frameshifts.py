@@ -347,7 +347,7 @@ if __name__ == "__main__":
         denovo_end = denovo_dict[denovo]["qend"]
 
         # Look for frameshift on both sides
-        use_blast = True
+        use_blast = False
         frameshifts = look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_seq, extended_start, extended_end, use_blast)
         # Keep gene only if there are matches
         if frameshifts == [] or (use_blast and len(frameshifts) == 1):
@@ -361,5 +361,5 @@ if __name__ == "__main__":
             bases_covered += list(range(dic["qstart"], dic["qend"]))
         total_qcov = round((len(set(bases_covered)) / len(denovo_seq) * 100), 1)
         # Print the results
-        print_results(denovo, all_matches, total_qcov, real_scale=True)
+        print_results(denovo, all_matches, total_qcov, real_scale=False)
         print("\n")
