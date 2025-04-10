@@ -231,7 +231,7 @@ def get_significant_tblastn(query, subject):
         send = int(row[1]["send"]) + 1
         length = int(row[1]["length"])
         eval = int(row[1]["evalue"])
-        sframe = int(row[1]["sframe"])
+        sframe = int(row[1]["sframe"]) - 1
         if length >= 5:
             hits.append({"qstart": qstart, "qend": qend, "sstart": sstart, "send": send, "length": length, "eval": eval, "frame": sframe})
     # Delete temp files
