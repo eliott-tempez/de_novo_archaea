@@ -199,7 +199,7 @@ def order_matches(matches):
     return sorted_matches
 
 
-def get_significant_blastp(query, subject):
+def get_significant_tblastn(query, subject):
     hits = []
     # Create temp files
     with tempfile.NamedTemporaryFile(mode='w', delete=False) as query_file:
@@ -211,8 +211,8 @@ def get_significant_blastp(query, subject):
     with tempfile.NamedTemporaryFile(mode='w', delete=False) as output_file:
         output_file_path = output_file.name
     # Run Blast
-    out_format = "6 qseqid sseqid evalue qcovhsp qstart qend sstart send length"
-    output = subprocess.run(["blastp", "-query", query_file_path, "-subject", subject_file_path, "-out", output_file_path, "-outfmt", out_format, "-evalue", "1e-3"], capture_output=True, check=True)
+    out_format = "6 qseqid sseqid evalue qcovhsp qstart qend sstart send length sframe"
+    output = subprocess.run(["tblastn", "-query", query_file_path, "-subject", subject_file_path, "-out", output_file_path, "-outfmt", out_format, "-evalue", "1e-3"], capture_output=True, check=True)
     # Check the output isn't blank
     with open(output_file_path, "r") as f:
         content = f.read().strip()
@@ -223,7 +223,7 @@ def get_significant_blastp(query, subject):
         return []
     # Read the output
     result = pd.read_csv(output_file_path, sep="\t", header=None)
-    result.columns = ["qseqid", "sseqid", "evalue", "qcov", "qstart", "qend", "sstart", "send", "length"]
+    result.columns = ["qseqid", "sseqid", "evalue", "qcov", "qstart", "qend", "sstart", "send", "length", "sframe"]
     for row in result.iterrows():
         qstart = int(row[1]["qstart"])
         qend = int(row[1]["qend"]) + 1
@@ -231,8 +231,9 @@ def get_significant_blastp(query, subject):
         send = int(row[1]["send"]) + 1
         length = int(row[1]["length"])
         eval = int(row[1]["evalue"])
+        sframe = int(row[1]["sframe"])
         if length >= 5:
-            hits.append({"qstart": qstart, "qend": qend, "sstart": sstart, "send": send, "length": length, "eval": eval})
+            hits.append({"qstart": qstart, "qend": qend, "sstart": sstart, "send": send, "length": length, "eval": eval, "frame": sframe})
     # Delete temp files
     os.remove(query_file_path)
     os.remove(subject_file_path)
@@ -240,20 +241,9 @@ def get_significant_blastp(query, subject):
     return hits
 
 
-def blast_align(query_seq_aa, subject_seq_nu):
-    # Blast query for all 3 frames
-    matches = []
-    for frame in [0, 1, 2]:
-        subject_seq_aa = subject_seq_nu[frame:(frame-3)].translate(table=11)
-        hits = get_significant_blastp(query_seq_aa, subject_seq_aa)
-        # Add the frame
-        for hit in hits:
-            hit.update({"frame": frame})
-        matches += hits
-    return matches
-
-
 def look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_seq, extended_start, extended_end, use_blast=False):
+    if use_blast:
+        return get_significant_tblastn(denovo_seq, extended_match_seq)
     extend_left = extended_start != 0
     extend_right = extended_end != len(extended_match_seq)
     matches_left, matches_right = [], []
@@ -261,26 +251,20 @@ def look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_se
     if extend_left:
         left_denovo = denovo_seq[:denovo_start]
         extended_left_seq = extended_match_seq[:extended_start]
-        # Get the matches (recursively or not)
-        if use_blast:
-            matches_left = blast_align(left_denovo, extended_left_seq)
-        else:
-            recursively_align(left_denovo, extended_left_seq, [0], [len(left_denovo)], [0], [len(extended_left_seq)], matches_left)
+        # Get the matches recursively
+        recursively_align(left_denovo, extended_left_seq, [0], [len(left_denovo)], [0], [len(extended_left_seq)], matches_left)
         # Order the matches
         matches_left = order_matches(matches_left)
     # Do the right
     if extend_right:
         right_denovo = denovo_seq[denovo_end:]
         extended_right_seq = extended_match_seq[extended_end:]
-        # Get the matches (recursively or not)
-        if use_blast:
-            matches_right = blast_align(right_denovo, extended_right_seq)
-        else:
-            recursively_align(right_denovo, extended_right_seq, [0], [len(right_denovo)], [0], [len(extended_right_seq)], matches_right)
+        # Get the matches recursively
+        recursively_align(right_denovo, extended_right_seq, [0], [len(right_denovo)], [0], [len(extended_right_seq)], matches_right)
         matches_right = [get_absolute_match(r, denovo_end, extended_end) for r in matches_right]
         # Order the matches
         matches_right = order_matches(matches_right)
-    return matches_left, matches_right
+    return matches_left + matches_right
 
 
 def print_results(denovo, all_matches, qcov, real_scale=False):
@@ -363,18 +347,18 @@ if __name__ == "__main__":
         denovo_end = denovo_dict[denovo]["qend"]
 
         # Look for frameshift on both sides
-        frameshifts_left, frameshifts_right = look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_seq, extended_start, extended_end, use_blast=False)
+        frameshifts = look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_seq, extended_start, extended_end, use_blast=True)
         # Keep gene only if there are matches
-        if frameshifts_left == [] and frameshifts_right == []:
+        if frameshifts == []:
             continue
         # Get list of all matches for all frames
         origin_match = {"qstart": denovo_start, "qend": denovo_end, "sstart": extended_start, "send": extended_end, "frame": 0}
-        all_matches = frameshifts_left + [origin_match] + frameshifts_right
+        all_matches = frameshifts + [origin_match]
         # Get the total qcov
         bases_covered = []
         for dic in all_matches:
             bases_covered += list(range(dic["qstart"], dic["qend"]))
         total_qcov = round((len(set(bases_covered)) / len(denovo_seq) * 100), 1)
         # Print the results
-        print_results(denovo, all_matches, total_qcov, True)
+        print_results(denovo, all_matches, total_qcov, real_scale=True)
         print("\n")
