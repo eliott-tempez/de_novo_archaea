@@ -143,6 +143,8 @@ def get_uncovered_segments(matches, query_len, subject_len):
 def recursively_align(query_seq, subject_seq_nu, start_pos_query_l, end_pos_query_l, start_pos_subject_l, end_pos_subject_l, matches):
     best_aln = None
     # For all segment combinations
+    best_pval = 1
+    best_psim = 0
     for i in range(len(start_pos_query_l)):
         start_pos_query = in_frame(start_pos_query_l[i], "start")
         end_pos_query = in_frame(end_pos_query_l[i], "end")
@@ -153,8 +155,6 @@ def recursively_align(query_seq, subject_seq_nu, start_pos_query_l, end_pos_quer
             query_seq_segment = query_seq[start_pos_query:end_pos_query]
             subject_seq_nu_segment = subject_seq_nu[start_pos_subject:end_pos_subject]
             # Align in all 3 frames and keep the best one
-            best_pval = 1
-            best_psim = 0
             for frame in [0, 1, 2]:
                 subject_seq_aa = subject_seq_nu_segment[frame:(frame-3)].translate(table=11)
                 aln = smith_waterman(query_seq_segment, subject_seq_aa)
