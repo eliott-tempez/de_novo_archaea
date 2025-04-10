@@ -347,9 +347,10 @@ if __name__ == "__main__":
         denovo_end = denovo_dict[denovo]["qend"]
 
         # Look for frameshift on both sides
-        frameshifts = look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_seq, extended_start, extended_end, use_blast=True)
+        use_blast = True
+        frameshifts = look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_seq, extended_start, extended_end, use_blast)
         # Keep gene only if there are matches
-        if frameshifts == []:
+        if frameshifts == [] or (use_blast and len(frameshifts) == 1):
             continue
         # Get list of all matches for all frames
         origin_match = {"qstart": denovo_start, "qend": denovo_end, "sstart": extended_start, "send": extended_end, "frame": 0}
