@@ -75,12 +75,15 @@ subject            2 SRTLLL-SLSGLERGILTPSAESIL     25
 
 Query  27   PSFAYLLLEWNPNVTNAEGSIEIPMNVPKSTALVPKGNPSDNKEVTSRYEGRTHERERKD  86
             PS AYLL  W P VT A+GS +IPMN  +S  ++P G   +++E+TSRYEG T + ER  
+Sbjct  157  PSLAYLLP*WKPRVTRAKGSTDIPMNTTRSAMVIPGGYWPESRELTSRYEGSTQDSERNA  336
 --
 Query  87   IMPPTKKALGGDVA  100
             I PPT KA GG+VA
+Sbjct  337  ITPPTTKAAGGEVA  378
 --
 Query  9    PMAKSPLPLIFESLLTASP  27
             PM +SPLPL  ESL TA P
+Sbjct  104  PMIRSPLPLTEESLSTALP  160
 
 
 
@@ -139,9 +142,11 @@ subject            1 AVPVVRKHE      9
 
 Query  1   MNRSALRRILSVFSFRMIPKGRALPKGRP  29
            MNRSALRRILS+FSFR++PKGRA  +  P
+Sbjct  1   MNRSALRRILSIFSFRLMPKGRAFQRAGP  87
 --
 Query  13   FSFRMIPKGRALPKGRPRAALVVRKHE*  40
             F F    +G+ L KGRPRA  VVRKHE*
+Sbjct  36   F*F*ADAQGKGLSKGRPRAVPVVRKHE*  119
 
 
 
@@ -200,6 +205,7 @@ subject           15 VRHPAV     20
 
 Query  13   GAWLTKAGHRTRINYAPGTYNVFPTGEEKEKEIIP  47
             GAWLTKAGHRTRINYAP TYNVFP+ EEKEKE +P
+Sbjct  73   GAWLTKAGHRTRINYAPETYNVFPSREEKEKESLP  177
 
 
 
@@ -233,9 +239,70 @@ With tblastn: found 1 significant alignments
 
 Query  1    MYIISGNGTFRLFYVSFDLRRTFTAISERTRLLSPKYQIIIEYEEKRKRR  50
             M+I   N TF LF  SF+L+R FT+I +RT+LLS KY IIIEY  KRKRR
+Sbjct  1    MFIKFKNRTFLLFCESFELKRVFTSILKRTKLLSSKYLIIIEYGGKRKRR  150
 --
 Query  33   LSPKYQIIIEYEE  45
             L P Y III+Y E
+Sbjct  140  LFPPYSIIIKYFE  102
+
+
+
+____________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+
+
+GCEEKKGH_00611_gene_mRNA
+
+With water & recursion: found 1 significant alignments
+
+With tblastn: found 0 significant alignments
+
+
+
+-------------------------------------******************************************************************************************************************	GCEEKKGH_00611_gene_mRNA
+
+**************************-----------------------------------------------------------------------------------------------------------------------------	qcov = 80.7%
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------	smith-waterman
+
+
+
+#=======================================
+#
+# Aligned_sequences: 2
+# 1: query
+# 2: subject
+# Matrix: EBLOSUM62
+# Gap_penalty: 10.0
+# Extend_penalty: 0.5
+#
+# Length: 8
+# Identity:       4/8 (50.0%)
+# Similarity:     7/8 (87.5%)
+# Gaps:           0/8 ( 0.0%)
+# Score: 27.0
+# 
+#
+#=======================================
+
+query              3 FKLPSELP     10
+                     :|||.::|
+subject           21 YKLPFDVP     28
+
+
+#---------------------------------------
+#---------------------------------------
+
+                                     ******************************************************************************************************************	GCEEKKGH_00611_gene_mRNA
+
+                                     ------------------------------------------------------------------------------------------------------------------	qcov = 66.7%
+
+                                     ------------------------------------------------------------------------------------------------------------------	blast
+
+
+
+Query  17   ETTNKKQREVMGMIEDALLLYLESMSREKRVRRKKGRL  54
+             +  K+ +EV   +EDALL Y+ SM RE   R+KK R 
+Sbjct  97   HSARKQLKEVKDTVEDALLFYIASMRRETEQRKKKKRF  210
 
 
 
@@ -319,12 +386,15 @@ subject            2 SRTLLL-SLSGLERGILTPSAESIL     25
 
 Query  27   PSFAYLLLEWNPNVTNAEGSIEIPMNVPKSTALVPKGNPSDNKEVTSRYEGRTHERERKD  86
             PS AYLL  W P VT A+GS +IPMN  +S  ++P G   +++E+TSRYEG T + ER  
+Sbjct  157  PSLAYLLP*WKPRVTRAKGSTDIPMNTTRSAMVIPGGYWPESRELTSRYEGSTQDSERNA  336
 --
 Query  87   IMPPTKKALGGDVA  100
             I PPT KA GG+VA
+Sbjct  337  ITPPTTKAAGGEVA  378
 --
 Query  9    PMAKSPLPLIFESLLTASP  27
             PM +SPLPL  ESL TA P
+Sbjct  104  PMIRSPLPLTEESLSTALP  160
 
 
 
@@ -383,12 +453,15 @@ subject            3 VPPEGEKGNDDEGQSG----------HKEEEGRWLKVKAA     32
 
 Query  1    MQTTNQMAKRLRTAETAQRVFSLLSGCIFKILSLAHWMSDVRRRMRSMAIPPSRARSAVL  60
             M+TT Q A++LRTAET Q V S LS     IL+ AHW S  R +  + A+PP++ R    
+Sbjct  1    MRTTVQTARKLRTAETVQEVSSPLSI*SPTILANAHWRSGGRTKTANRAVPPTKRRIERP  180
 --
 Query  61   ASTTTPAEPKRMAV  74
               TTTP + +  AV
+Sbjct  181  TRTTTPEDAESTAV  222
 --
 Query  78   VPPEGKKGNNDERKRG  93
             VPPEG+KGN+DE + G
+Sbjct  231  VPPEGEKGNDDEGQSG  278
 
 
 
@@ -447,6 +520,7 @@ subject            9 MSIDVPSV     16
 
 Query  10   MKKRTVAILRVRERGADASRPTRIPKAFPFTTMKLTSS  47
             MKKRTVA LRVRERGA++S PT  P +  F TMK+  +
+Sbjct  55   MKKRTVATLRVRERGAESSNPTTRPGSPVFVTMKVNGT  168
 
 
 
@@ -480,9 +554,11 @@ With tblastn: found 1 significant alignments
 
 Query  1    MYIISGNGTFRLFYVSFDLRRTFTAISERTRLLIPKYQIIIEYEEKRKRR  50
             M+I   N TF LF  SF+L+R FT+I +RT+LL  KY IIIEY  KRKRR
+Sbjct  1    MFIKFKNRTFLLFCESFELKRVFTSILKRTKLLSSKYLIIIEYGGKRKRR  150
 --
 Query  33   LIPKYQIIIEYEE  45
             L P Y III+Y E
+Sbjct  140  LFPPYSIIIKYFE  102
 
 
 
@@ -541,9 +617,11 @@ subject           26 TGCCTSLPHSCS     37
 
 Query  23   AVLYPEGHKRHWQILCVESLNYVVALHLYVEEVLDLPHECIPELFKALEFPRITGLKANL  82
             AVLYP+  +R  ++L +E L YVVALHLYVEEVLDL HE +PEL KALE PR+ G KANL
+Sbjct  133  AVLYPQR*ERDRKVLGIEGLYYVVALHLYVEEVLDLLHEGLPELLKALEVPRVAGFKANL  312
 --
 Query  83   LARSWINAVVRGYLKDFW  100
             LA SWINAVV GYL+DFW
+Sbjct  313  LASSWINAVVEGYLEDFW  366
 
 
 
@@ -627,18 +705,23 @@ subject            4 IMKISKEILLSVFSF     18
 
 Query  1    LRANSTVMYWKSTFLK-LRAKSNPKIQKVSHFNNTHDEKHPNNQQKLLF---FCILSFLI  56
             LRANSTV YWKSTFLK +RAK NPK  K          + P    K  F   FC+  +  
+Sbjct  1    LRANSTVTYWKSTFLKKIRAKLNPKNTKSKPLQQYI**ETPKQSTKSCFSSVFCLFWWTK  180
 --
 Query  57   ERMERKATVK----NERVLKKSPRIIMMSETTKARSLNQGVSGFLILRICSTLGNGLNKP  112
              R + ++  +    N  +     R  M       +SLNQ V GFLIL+ICST G+ LNKP
+Sbjct  181  *REKPRSKTREY*RNLYI*S*GVRQQM------PQSLNQ*VLGFLILKICSTPGDELNKP  342
 --
 Query  113  IkrkklaleekerqlqllvqrlrIFPPFQMTMEEGK  148
             IKRKK  L+EKERQLQL VQR RIFPPFQMTMEEGK
+Sbjct  343  IKRKK*VLKEKERQLQLSVQRQRIFPPFQMTMEEGK  450
 --
 Query  44   QKLLFFCILSFLIERMERKATVKNERVLKKSPRIIMMSETTKA  86
             +KLLFFCILSFL++++ERKAT+KNERVLKKS  IIM SETT A
+Sbjct  135  KKLLFFCILSFLVDKIERKATLKNERVLKKSLHIIMRSETTNA  263
 --
 Query  23   PKIQKVSHFNNTHDEKHPNNQQKLLFFCILSFL  55
             PKIQKVSHFNNT++EKHPNNQQK+ F     F 
+Sbjct  71   PKIQKVSHFNNTYNEKHPNNQQKVAFLLYFVFF  169
 
 
 
@@ -697,9 +780,11 @@ subject           17 LNPGPRVSPGQSSKGSSP     34
 
 Query  19   ISKPARLHTSGARDDGPGYTTPPSITLKPTPIYKLYDILLDTVR  62
             ISKPARLHTSGARDDGPGYTTPPSITLKPTP YKLYD +  T R
+Sbjct  109  ISKPARLHTSGARDDGPGYTTPPSITLKPTPTYKLYDAVEQTTR  240
 --
 Query  1    LNPGPRVSPGQSSKGSSPIS  20
             LNPGPRVSPGQSSKGSSP S
+Sbjct  53   LNPGPRVSPGQSSKGSSPKS  112
 
 
 
@@ -783,6 +868,7 @@ subject            1 KKGEEEKKNGKI     12
 
 Query  18   LHSLAPIFNKNLIIHMVLSTNFGTINFKRPMASHH  52
             LH L  IFNKNLIIH V S NFGT+NFKRPMASHH
+Sbjct  103  LHPLTSIFNKNLIIHGVSSINFGTVNFKRPMASHH  207
 
 
 
@@ -841,92 +927,11 @@ subject           14 MMSLAAPERGIL     25
 
 Query  1    MMSLAAPERGILGIFLPNPILLKIFP  26
             MMSLAAPERGIL  F PN   ++  P
+Sbjct  42   MMSLAAPERGILEKFSPNSFFIQYPP  119
 --
 Query  28   VNQKIINFTNKLPKGEKNAKD*  49
             + QK+IN  NKL  GEKNAKD*
-
-
-
-____________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
-
-
-LBEMKAPA_01754_gene_mRNA
-
-With water & recursion: found 2 significant alignments
-
-With tblastn: found 0 significant alignments
-
-
-
-******************---------------------------------------------------------------------------------------------------------------------------------******************************************************************************************	LBEMKAPA_01754_gene_mRNA
-
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	qcov = 82.8%
-
--------------------------------------------------------------*************************************************-------------------------------------------------------------------------------------------------------------------------------	smith-waterman
-
-
-
-#=======================================
-#
-# Aligned_sequences: 2
-# 1: query
-# 2: subject
-# Matrix: EBLOSUM62
-# Gap_penalty: 10.0
-# Extend_penalty: 0.5
-#
-# Length: 15
-# Identity:       7/15 (46.7%)
-# Similarity:     8/15 (53.3%)
-# Gaps:           1/15 ( 6.7%)
-# Score: 29.0
-# 
-#
-#=======================================
-
-query              1 MRSVNEVRAH-LPSG     14
-                     ||.|.:|..| .|.|
-subject           25 MRPVQQVHTHPAPGG     39
-
-
-#---------------------------------------
-#---------------------------------------
-#=======================================
-#
-# Aligned_sequences: 2
-# 1: query
-# 2: subject
-# Matrix: EBLOSUM62
-# Gap_penalty: 10.0
-# Extend_penalty: 0.5
-#
-# Length: 6
-# Identity:       4/6 (66.7%)
-# Similarity:     5/6 (83.3%)
-# Gaps:           0/6 ( 0.0%)
-# Score: 19.0
-# 
-#
-#=======================================
-
-query              1 SGIKRE      6
-                     :|||.|
-subject            4 TGIKPE      9
-
-
-#---------------------------------------
-#---------------------------------------
-
-                                                                                                                                                   ******************************************************************************************	LBEMKAPA_01754_gene_mRNA
-
-                                                                                                                                                   ------------------------------------------------------------------------------------------	qcov = 51.7%
-
-                                                                                                                                                   ------------------------------------------------------------------------------------------	blast
-
-
-
-Query  27   KRPQITRKQVGELNIFRERFAEQRALGGAK  56
-            KR Q+ +KQVG +  FRERFAEQRAL  A+
+Sbjct  124  IKQKVINRINKLVMGEKNAKD*  189
 
 
 
@@ -985,12 +990,15 @@ subject            1 GSSMPSFMA--LICLVFLAKPTFP     22
 
 Query  3    FEKSDTTEAAPAIRPTRKGPAPRVIAKGEIMGLTRLIPRKKKRVERFRSQMSLKELPMAQ  62
              +  +T  A PA  PTRKG APRVIA GEI GL RLIPRKKK VE+ R+   LK LP   
+Sbjct  1    LDTRETPLATPATNPTRKG*APRVIA*GEIRGLRRLIPRKKKNVEKLRNHRYLK-LPTKH  177
 --
 Query  63   TP  64
              P
+Sbjct  178  QP  183
 --
 Query  63   TPATGSFMPSFMKAWLMCFVFFAKPTLP  90
             TPA+GS MPSFM A L+C VF AKPT P
+Sbjct  174  TPASGSSMPSFM*A*LICLVFLAKPTFP  257
 
 
 
@@ -1049,6 +1057,7 @@ subject            3 VKLLVILIIILLL     15
 
 Query  2    NINERFLYVNSLFILSMMQMVRTMRRINLITIKY  35
             NINE+FLY     I  MM M +T  R NL+T+KY
+Sbjct  1    NINEKFLYGQVSSIFPMMYMNKTKIRKNLMTMKY  102
 
 
 
@@ -1057,17 +1066,17 @@ ________________________________________________________________________________
 
 AJGPKGBP_00419_gene_mRNA
 
-With water & recursion: found 1 significant alignments
+With water & recursion: found 2 significant alignments
 
 With tblastn: found 2 significant alignments
 
 
 
-                                        ************************************************************************************************************************************************************************************************************************----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	AJGPKGBP_00419_gene_mRNA
+                                        ************************************************************************************************************************************************************************************************************************-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	AJGPKGBP_00419_gene_mRNA
 
-                                        --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************	qcov = 88.7%
+                                        -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************	qcov = 92.3%
 
-                                        ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	smith-waterman
+                                        -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------****************************************************************************************************************************************************************************************************************************************--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	smith-waterman
 
 
 
@@ -1081,45 +1090,70 @@ With tblastn: found 2 significant alignments
 # Gap_penalty: 10.0
 # Extend_penalty: 0.5
 #
-# Length: 76
-# Identity:      30/76 (39.5%)
-# Similarity:    40/76 (52.6%)
-# Gaps:          20/76 (26.3%)
-# Score: 143.5
+# Length: 24
+# Identity:      12/24 (50.0%)
+# Similarity:    14/24 (58.3%)
+# Gaps:           0/24 ( 0.0%)
+# Score: 43.0
 # 
 #
 #=======================================
 
-query              9 RRSNVPAPKFKENSLYS--------------------KNVGITKCYISET     38
-                     ||.::..|.|:|..:.:                    .|:|:||||||.|
-subject           17 RRGSLECPGFQEKPISAGKRSHPAFCLYPAIRRKFVMSNLGVTKCYISGT     66
-
-query             39 ARMGFRGTYGGLFRTKLHNRAGNPKK     64
-                     .:.||..||.|||||||||||.:.|:
-subject           67 TKRGFLDTYDGLFRTKLHNRAEDLKR     92
+query              3 RYNGSSRRSNVPAPKFKENSLYSK     26
+                     |.|....||||..|:.:||||..|
+subject           34 RGNDPILRSNVFIPQSEENSLCLK     57
 
 
 #---------------------------------------
 #---------------------------------------
-----------------------------------------************************************************************************************************************************************************************************************************************************----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  	AJGPKGBP_00419_gene_mRNA
+#=======================================
+#
+# Aligned_sequences: 2
+# 1: query
+# 2: subject
+# Matrix: EBLOSUM62
+# Gap_penalty: 10.0
+# Extend_penalty: 0.5
+#
+# Length: 38
+# Identity:      25/38 (65.8%)
+# Similarity:    30/38 (78.9%)
+# Gaps:           0/38 ( 0.0%)
+# Score: 135.0
+# 
+#
+#=======================================
 
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------***************************************************************************************************************************************************                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  	qcov = 84.5%
+query              3 NVGITKCYISETARMGFRGTYGGLFRTKLHNRAGNPKK     40
+                     |:|:||||||.|.:.||..||.|||||||||||.:.|:
+subject            1 NLGVTKCYISGTTKRGFLDTYDGLFRTKLHNRAEDLKR     38
 
-***************************************************************************************-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  	blast
+
+#---------------------------------------
+#---------------------------------------
+----------------------------------------************************************************************************************************************************************************************************************************************************----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             	AJGPKGBP_00419_gene_mRNA
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------***************************************************************************************************************************************************                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             	qcov = 84.5%
+
+***************************************************************************************-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             	blast
 
 
 
 Query  116  PKFKENSLYSKNVGITKCYISETARMGFRGTYGGLFRTKLHNRAGNPKK  164
             P  +   + S N+G+TKCYIS T + GF  TY GLFRTKLHNRA + K+
+Sbjct  398  PAIRRKFVMS*NLGVTKCYISGTTKRGFLDTYDGLFRTKLHNRAEDLKR  544
 --
 Query  8    GLQQLPYDV-SILMESYCNFGGRRPRWGTAGCFNSPRVLLQQGVFCPVPLMGFNGCFSIK  66
             GL +  Y + SIL++SYCN                      + VFC V  M FN C SIK
+Sbjct  43   GLSRTLYHLLSILLKSYCN----------------------RAVFCSVSPMEFNECPSIK  156
 --
 Query  67   PFCRKpplgppipppSSGRRGVNTARKRITAPYC  100
             PFCR   LGP  P   +   GVN       A  C
+Sbjct  157  PFCRNL*LGPSHPHEETAAVGVNAGINASRASCC  258
 --
 Query  16  VSILMESYCNFGGRRPRWGTAGCFNSPRV  44
            +SIL++SYCN   R   +  +  FNSP+V
+Sbjct  3   LSILLKSYCNALLRIVAYIVSPPFNSPKV  89
 
 
 
@@ -1182,18 +1216,23 @@ subject           50 VSGDVKRLSALPHEEVVGVTNANQ     73
 
 Query  3    GVDAKAYTAGHICGFAVDWSLRCLHRNRMSVVRAEQLLGTGFRMPRRMGSRAVGGDTMKA  62
             GVDA+A TAGH+CGFAVD SLRCLH NRM +VRAEQLLGTGFRMPRRMGSRAVGG TMKA
+Sbjct  1    GVDAEACTAGHVCGFAVDRSLRCLHCNRMPMVRAEQLLGTGFRMPRRMGSRAVGGGTMKA  180
 --
 Query  63   EETAVIPFILIFIGLMLSLLWGKDGGSVKENAELSFYIILAIPVALAIWRIIHEVWKHTS  122
             EETAVIPFILIFIGLMLSLLWGKDGGSVKENAELSFYIILAIPVALA+WR IHEVWKHTS
+Sbjct  181  EETAVIPFILIFIGLMLSLLWGKDGGSVKENAELSFYIILAIPVALAMWRAIHEVWKHTS  360
 --
 Query  123  NAVFPACWGLRFLWGLA  139
             NAV     G+    G  
+Sbjct  361  NAVVSCLLGIAVFMGFG  411
 --
 Query  126  FPACWGLRFLWGLASPMESWRSAELISKVSLRVWLLERSPLSPNTGKRKAVLSIPA----  181
             FPACWGLRFLWGLASPMES R AELIS+VSLRVWLLERSPLSPNTGKRKAVLSIPA    
+Sbjct  371  FPACWGLRFLWGLASPMES*RLAELISRVSLRVWLLERSPLSPNTGKRKAVLSIPATNQT  550
 --
 Query  182  ANQKVSGDVKRLSALPHEEVVGVTNANQ*  210
             ANQKVSGDVKRLSALPHEEVVGVTNANQ*
+Sbjct  551  ANQKVSGDVKRLSALPHEEVVGVTNANQ*  637
 
 
 
@@ -1277,12 +1316,15 @@ subject            2 SRTLLL-SLSGLERGILTPSAESIL     25
 
 Query  27   PSFAYLLLEWNPNVTNAEGSIEIPMNVPKSTALVPKGNPSDNKEVTSRYEGRTHERERKD  86
             PS AYLL  W P VT A+GS +IPMN  +S  ++P G   +++E+TSRYEG T + ER  
+Sbjct  157  PSLAYLLP*WKPRVTRAKGSTDIPMNTTRSAMVIPGGYWPESRELTSRYEGSTQDSERNA  336
 --
 Query  87   IMPPTKKALGGDVA  100
             I PPT KA GG+VA
+Sbjct  337  ITPPTTKAAGGEVA  378
 --
 Query  9    PMAKSPLPLIFESLLTASP  27
             PM +SPLPL  ESL TA P
+Sbjct  104  PMIRSPLPLTEESLSTALP  160
 
 
 
@@ -1316,15 +1358,19 @@ With tblastn: found 1 significant alignments
 
 Query  1    VKLKRRGADIRTPLNIFVRESGLPRYSVS------IHPA---ILPKAIPRDSYDKTSESS  51
             VKLKRRGADIRTPLNIFVRESGLPRY +        +P    ++P   P      TS + 
+Sbjct  1    VKLKRRGADIRTPLNIFVRESGLPRYDIQ*ASIRRYYPKLSPVIPMIKPPRVLMNTS*TG  180
 --
 Query  52   NEHELNRIKRNTEEHLVDA------------QKLPPGNRDAED----PRRIMi----nnl  91
             +   L  I    +   ++             +K   G  D E+     R+++        
+Sbjct  181  SSGRLRSISWMPKSFSLETVTLKKRALEILDEKYARGEIDDEEYQRRKRKLLEG*GLTAQ  360
 --
 Query  92   llilCRHYQPHDIIEEVLDLFYFKARPLDVSLSFPQQRSSEERSYEGLHEVEGDVEKL*  150
               + C +YQPHDIIEEVLDLFYFKARPLDVSLSFPQQRSSEERSYEGLHEVEGDVEKL*
+Sbjct  361  SSVFCSYYQPHDIIEEVLDLFYFKARPLDVSLSFPQQRSSEERSYEGLHEVEGDVEKL*  537
 --
 Query  26   YSVSIHPAILPKAIPRDSYDKTSESSNEHELNRIKRNTEEHLVDAQKLPPGNRDAED  82
             YSVSIHPAILPKAIPRDSYDKTSESSNEH+LNRIKR TEEHLVDAQKL PGNRDAE+
+Sbjct  81   YSVSIHPAILPKAIPRDSYDKTSESSNEHKLNRIKRKTEEHLVDAQKLLPGNRDAEE  251
 
 
 
@@ -1383,9 +1429,11 @@ subject            1 AVPVVRKHE      9
 
 Query  1   MNRSALRRILSVFSFRMIPKGRALPKGRP  29
            MNRSALRRILS+FSFR++PKGRA  +  P
+Sbjct  1   MNRSALRRILSIFSFRLMPKGRAFQRAGP  87
 --
 Query  13   FSFRMIPKGRALPKGRPRAALVVRKHE*  40
             F F    +G+ L KGRPRA  VVRKHE*
+Sbjct  36   F*F*ADAQGKGLSKGRPRAVPVVRKHE*  119
 
 
 
@@ -1444,9 +1492,11 @@ subject            1 AVPVVRKHE      9
 
 Query  1   MNRSALRRILSVFSFRMIPKGRALPKGRP  29
            MNRSALRRILS+FSFR++PKGRA  +  P
+Sbjct  1   MNRSALRRILSIFSFRLMPKGRAFQRAGP  87
 --
 Query  13   FSFRMIPKGRALPKGRPRAALVVRKHE*  40
             F F    +G+ L KGRPRA  VVRKHE*
+Sbjct  36   F*F*ADAQGKGLSKGRPRAVPVVRKHE*  119
 
 
 
@@ -1505,6 +1555,7 @@ subject            3 VKLLVILIIILLL     15
 
 Query  2    NINERFLYVNSLFILSMMQMVRTMRRINLITIKY  35
             NINE+FLY     I  MM M +T  R NL+T+KY
+Sbjct  1    NINEKFLYGQVSSIFPMMYMNKTKIRKNLMTMKY  102
 
 
 
@@ -1563,9 +1614,11 @@ subject           25 MRKVVVVAVALLIVLGAVTGAVYVG     49
 
 Query  28   REPGREVIPRNDEDSPDPESILIKFLERPSDELLKSRIDE---ESKPRLPEVHPTAFTGS  84
             REPGREV PRND DSPDPES+L+KFLERPS + L+   DE   E     P  HP      
+Sbjct  163  REPGREVAPRNDGDSPDPESVLLKFLERPSSDPLQVPPDEGWAEVVTGFPAGHPAVLKVF  342
 --
 Query  85   MVPLGANSHHEPQYQRTLQASRWWGTEAALLGLLVGAFPPAMNFLEV  131
               P    S   P   +     R   +E A   L VG  P    FL V
+Sbjct  343  ATP--DTSASPPASLKCAGDKRHQQSETATSDLPVG-LPSGPRFLGV  474
 
 
 
@@ -1649,12 +1702,15 @@ subject            1 RH-ITPLEVYLHTTGVNCF     18
 
 Query  2    PGLIELQKRELGYTGADDEISDEELEAFFEGKGSFKSNPPNSF  44
             PGLIELQKRELGYT ADDEISDEEL  FFEGKG      P SF
+Sbjct  1    PGLIELQKRELGYTEADDEISDEELIEFFEGKGEL*VESPKSF  129
 --
 Query  54   SPGRHTITQLEIYLHTTGVDCF*  76
             +PGRH IT LE+YLHTTGV+CF*
+Sbjct  156  TPGRH-ITPLEVYLHTTGVNCF*  221
 --
 Query  28   AFFEGKGSFKSNPPNSFGFVGFLQGH  53
             +F  G+GSFKSNPPN FG VGFLQGH
+Sbjct  80   SFLRGRGSFKSNPPNPFGSVGFLQGH  157
 
 
 
@@ -1713,6 +1769,7 @@ subject            3 VKLLVILIIILLL     15
 
 Query  2    NINERFLYVNSLFILSMTQMVRTMRRINLITIKY  35
             NINE+FLY     I  M  M +T  R NL+T+KY
+Sbjct  1    NINEKFLYGQVSSIFPMMYMNKTKIRKNLMTMKY  102
 
 
 
@@ -1771,9 +1828,11 @@ subject           10 VVRSPND     16
 
 Query  10   REGKDLLKPKTRHDKLECKLEKYWVLEES*  39
             REGKDLLKPKTRHDKLECKLEKYWV EES*
+Sbjct  55   REGKDLLKPKTRHDKLECKLEKYWVFEES*  144
 --
 Query  2   VVRSPNDKR  10
            VVRSPND+R
+Sbjct  33  VVRSPNDER  59
 
 
 
@@ -1832,6 +1891,7 @@ subject            3 VKLLVILIIILLL     15
 
 Query  2    NINERFLYVNSLFILSMTQMVRTMRRINLITIKY  35
             NINE+FLY     I  M  M +T  R NL+T+KY
+Sbjct  1    NINEKFLYGQVSSIFPMMYMNKTKIRKNLMTMKY  102
 
 
 
@@ -1890,9 +1950,11 @@ subject           10 VVRSPND     16
 
 Query  10   REGKDLLKPKTRHDKLECKLEKYWVLEES*  39
             REGKDLLKPKTRHDKLECKLEKYWV EES*
+Sbjct  55   REGKDLLKPKTRHDKLECKLEKYWVFEES*  144
 --
 Query  2   VVRSPNDKR  10
            VVRSPND+R
+Sbjct  33  VVRSPNDER  59
 
 
 
@@ -1951,6 +2013,7 @@ subject            1 KERVKKVEDDERLPV     15
 
 Query  1   MHEEIKMFLSSQLTLFSSPVRVANGHHGPKLN  32
            MHE IKMF + QLTLFSSPVRVANGHHGPKLN
+Sbjct  1   MHEGIKMF*A-QLTLFSSPVRVANGHHGPKLN  93
 
 
 
@@ -2009,9 +2072,11 @@ subject           10 VVRSPND     16
 
 Query  10   REGKDLLKPKTRHDKLECKLEKYWVLEES*  39
             REGKDLLKPKTRHDKLECKLEKYWV EES*
+Sbjct  55   REGKDLLKPKTRHDKLECKLEKYWVFEES*  144
 --
 Query  2   VVRSPNDKR  10
            VVRSPND+R
+Sbjct  33  VVRSPNDER  59
 
 
 
@@ -2070,6 +2135,7 @@ subject            3 VKLLVILIIILLL     15
 
 Query  2    NINERFLYVNSLFILSMTQMVRTMRRINLITIKY  35
             NINE+FLY     I  M  M +T  R NL+T+KY
+Sbjct  1    NINEKFLYGQVSSIFPMMYMNKTKIRKNLMTMKY  102
 
 
 
@@ -2128,6 +2194,7 @@ subject            3 VKLLVILIIILLL     15
 
 Query  2    NINERFLYVNSLFILSMTQMVRTMRRINLITIKY  35
             NINE+FLY     I  M  M +T  R NL+T+KY
+Sbjct  1    NINEKFLYGQVSSIFPMMYMNKTKIRKNLMTMKY  102
 
 
 
@@ -2211,9 +2278,11 @@ subject           27 LMYSSMAFAAFFPSPM     42
 
 Query  24   KITVASTLIASPSPKTPRIGVVRLLSTFVVPSGFTSKQND  63
             KITVAS LIASP  KTP + V+R  STF+VPSGFTSK + 
+Sbjct  139  KITVASPLIASPPAKTPGMEVIRFSSTFIVPSGFTSKPDS  258
 --
 Query  1   MTFLPRLIS  9
            MTFLPRLIS
+Sbjct  47  MTFLPRLIS  73
 
 
 
@@ -2247,9 +2316,11 @@ With tblastn: found 1 significant alignments
 
 Query  1   MSDDGNRVAAELMRKPFQTEEEKFYFYKITS  31
            + DDGNRVAAELMRKPFQTE +  +    TS
+Sbjct  1   LPDDGNRVAAELMRKPFQTEGKVLFL*N*TS  93
 --
 Query  22  EKFYFYKI  29
            EKFYFYKI
+Sbjct  62  EKFYFYKI  85
 
 
 
@@ -2308,6 +2379,7 @@ subject            1 GKRKNCRTSTGTL     13
 
 Query  10   FLTILIVTELHIYAVKIKLQLEKVQLKSIRKNLYRSLAILQIEEVIK  56
             FL IL V ELH +   IKL   K    S +KNLYRS   L  EEV+K
+Sbjct  55   FLIILRVAELHNHTF*IKLLCRKRATNSDKKNLYRSSTFL*KEEVVK  195
 
 
 
@@ -2341,27 +2413,35 @@ With tblastn: found 2 significant alignments
 
 Query  50   IFCHLVFPLASSAVRIAPLSEFLANRIVP-----SELACITLPPSL--------LLHITF  96
             IFCHL FPL  S  R   +S FL+   V      S      +PP+L          H T 
+Sbjct  61   IFCHLTFPL--SFKRKTNVSLFLSKDTVEPAMIMSPFGATAIPPALS*YPLP*VFCHFTL  234
 --
 Query  97   PLLSRYIVIE-----PVATMSPSGVI-----STELIQLSEYVDSGVYTFCHSTSPFLSNF  146
             P  SR I  +     P  ++SP   +     ST L+  S +V    Y FCH   P  SN 
+Sbjct  235  PSSSRAISHKSLLPTPKDSVSPRTNMLPFE*STTLLASSFFVPP--YIFCHFVLPSWSNL  408
 --
 Query  147  RSQALWIVFPPFSALDMAPAASIFPLG  173
             R+QA + + P      + PA  I P G
+Sbjct  409  RTQAFFPLLP---KDFVYPATIISPFG  480
 --
 Query  23   SVLPAMMIFPLGAKANELTLSFQLFPQIFCHLVFPLASSAV-----------RIAPLSEF  71
             +V PAM++ P GA A    LS    P +FCH   P +S A+            ++P +  
+Sbjct  133  TVEPAMIMSPFGATAIPPALS*YPLP*VFCHFTLPSSSRAISHKSLLPTPKDSVSPRTNM  312
 --
 Query  72   L----------ANRIVPSELACITLPPS---LLLHITFPLLSRYIVIEPVATMSPSGVIS  118
             L          ++  VP  + C  + PS   L     FPLL +  V  P   +SP G  +
+Sbjct  313  LPFE*STTLLASSFFVPPYIFCHFVLPSWSNLRTQAFFPLLPKDFVY-PATIISPFGKRA  489
 --
 Query  119  TELIQLSEYVDSGVYTFCHSTSPFLSN  145
             TE+   S       Y FCH  SPF S+
+Sbjct  490  TEVAVSSL---PPPYIFCHMNSPF*SS  561
 --
 Query  11   KIHASLPPMLELSVLPAMMIFPLGAKANELTLSFQLFPQIFCHLVFPLASSAVRIAPLSE  70
             +  A  P + +  V PA +I P G +A E+ +S    P IFCH+  P  S          
+Sbjct  409  RTQAFFPLLPKDFVYPATIISPFGKRATEVAVSSLPPPYIFCHMNSPF*S----------  558
 --
 Query  71   FLANRIVPSELACITLPPSLLLHITFPLLSRYIVIEPVATMSPSGVISTELIQLSEYV  128
                               SL++H    +    +VI P   +SP+ V + ELI+LS YV
+Sbjct  559  ------------------SLIIHADLFVEKLDLVIYPTPIISPASVSAIELIELS*YV  678
 
 
 
@@ -2420,9 +2500,11 @@ subject            1 SMPSFMA--LICLVFLAKPTFPWESTIIIPIVSLPK     34
 
 Query  63   TPATGSSIPSFMKAWLMCFVFFAKPTLPLASTIIMPIVSAPK  104
             TPA+GSS+PSFM A L+C VF AKPT P  STII+PIVS PK
+Sbjct  174  TPASGSSMPSFM*A*LICLVFLAKPTFPWESTIIIPIVSLPK  299
 --
 Query  20   KGVALRVIAKGDIMGLTTLIPRKKKKVEKLRSQMSRSALSMAQTPA  65
             KG A +VIA G+I GL  LIPRKKK VE+LR+Q      +  Q PA
+Sbjct  52   KG*APKVIA*GEIRGLRRLIPRKKKNVERLRNQRCLKLPTKHQPPA  189
 
 
 
@@ -2456,24 +2538,31 @@ With tblastn: found 2 significant alignments
 
 Query  1    MSGWPGTEGCGGPPLLRPTSFACAKLDQNGLTVQEGRGRVACVI-NSHGFRFTLTMVRGR  59
             MSGWPGTEGCGGPPLLRPTSFACAKLDQNGLTVQ+G+ +V CVI  S G  FTLT+  G 
+Sbjct  1    MSGWPGTEGCGGPPLLRPTSFACAKLDQNGLTVQKGKRKVVCVIKQSTGSGFTLTISPG-  177
 --
 Query  60   KVFSFKQRPKGANGRKTRSKLAG--LEVNPHENKPFKRHANFDETLHR----------QS  107
                          G   +  L G   E N  +   F      ++T+ +            
+Sbjct  178  ------------EGV*LKRVLGGR*CEKNTLKTGEFGSKLP*EQTIQKGMPALMKLCWAK  321
 --
 Query  108  FLTWGEAPLRGFESTGSFWKKLHQKLVAPMQGLEWRRFCSQNCTFSKENTPKPPLQKGLL  167
             FL  G  P  G        +KL  KLVAPMQGLEWRRFCSQNCTFSKENTPKPPLQKGLL
+Sbjct  322  FLNVGAKPHSGGLRVQEALRKLD*KLVAPMQGLEWRRFCSQNCTFSKENTPKPPLQKGLL  501
 --
 Query  168  SLDALRASILKDKLFTPRSNVRWFSHSKRPVNKENLSKVNSEEGATNLGQTSRRRSL  224
             SLDALRASILKDK F PRSNVRWFSHSKRPVNKENLSKVNSEEGATNLGQTSRRRSL
+Sbjct  502  SLDALRASILKDKPFIPRSNVRWFSHSKRPVNKENLSKVNSEEGATNLGQTSRRRSL  672
 --
 Query  55   MVRG-------RKVFSFKQRPKGANGRKTRSKLAGLEVNPHENKPFKRHANFDETLHRQS  107
             +VRG        KVF+ K   +GAN RKTR KLA LEVN  ENKPFK+          QS
+Sbjct  143  LVRGLHLQYLLEKVFNLKGCSEGANVRKTRLKLASLEVNSPENKPFKKACRL**NFAGQS  322
 --
 Query  108  FLTWGEAPLRG  118
             FLTWG +P  G
+Sbjct  323  FLTWGRSPTPG  355
 --
 Query  94   KRHANFDETLHRQSFLTWGEAPLRGFESTGSFWK  127
             KRHA FDETL  +     GEAPLRGFESTGSF K
+Sbjct  282  KRHAGFDETLLGKVS*RGGEAPLRGFESTGSFEK  383
 
 
 
@@ -2532,9 +2621,11 @@ subject            1 FSTFFSASLRFFWCSLRNS     19
 
 Query  1    VWELYDAGDYRGIKERTRGEVELARRVYQELRRLRNGFPCRPG--------FHLFNGSGI  52
             VWELYD G+Y  I +RT+ EVE+A+RVY +L +LRN    +          F   +GSGI
+Sbjct  1    VWELYDQGEYEKIAKRTKEEVEIAKRVYSKLIKLRNNRENKSSSNR*SLDFFFYLSGSGI  180
 --
 Query  53   AFSHCSLASSPVYLN  67
             A SHCSLASSPVYLN
+Sbjct  181  ALSHCSLASSPVYLN  225
 
 
 
@@ -2593,70 +2684,15 @@ subject            1 NIIQSITN      8
 
 Query  1    MLLSTLQIDIETIPETIPRIAPFRIINQSLSCKDSFLKNSCRFLTCSFKTKATKTTAINV  60
             MLLSTLQIDI+TIPET+P+I  FRIIN+  SCKD FLKNSCRFLTCSFKTK TKTTAI V
+Sbjct  1    MLLSTLQIDIDTIPETMPKIIAFRIINRVSSCKDKFLKNSCRFLTCSFKTKVTKTTAITV  180
 --
 Query  61   TPARKTLSKVSDSKIPMYANSNKYGNIRTYRLSSGSFLSISLANGLIPENFNNKTTSMYE  120
             TPARKTLSKVSDSKIPMYANS+KYGNIRTYRLSSGSFLSISLANGLIPENFNN TTS+  
+Sbjct  181  TPARKTLSKVSDSKIPMYANSSKYGNIRTYRLSSGSFLSISLANGLIPENFNNNTTSI*A  360
 --
 Query  121  KRKKRRGTHTPNisttiifpfsssMYIG  148
             K KK +G HT NISTTII PFSSSMYIG
-
-
-
-____________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
-
-
-PCHKGBCN_01343_gene_mRNA
-
-With water & recursion: found 1 significant alignments
-
-With tblastn: found 0 significant alignments
-
-
-
-******************------------------------------------------------------***************************************************************************************************************************	PCHKGBCN_01343_gene_mRNA
-
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	qcov = 69.8%
-
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	smith-waterman
-
-
-
-#=======================================
-#
-# Aligned_sequences: 2
-# 1: query
-# 2: subject
-# Matrix: EBLOSUM62
-# Gap_penalty: 10.0
-# Extend_penalty: 0.5
-#
-# Length: 6
-# Identity:       4/6 (66.7%)
-# Similarity:     5/6 (83.3%)
-# Gaps:           0/6 ( 0.0%)
-# Score: 26.0
-# 
-#
-#=======================================
-
-query              4 HFCPQL      9
-                     |||.:|
-subject           27 HFCVRL     32
-
-
-#---------------------------------------
-#---------------------------------------
-
-                                                                        ***************************************************************************************************************************	PCHKGBCN_01343_gene_mRNA
-
-                                                                        ---------------------------------------------------------------------------------------------------------------------------	qcov = 60.3%
-
-                                                                        ---------------------------------------------------------------------------------------------------------------------------	blast
-
-
-
-Query  26   TAMNVFENSIELFERYKPTPLLRLR---TRGDVFCQVRVL*  63
-            + +NVF +++ELFE++KPTPLL+L     RGDVFCQ  +L*
+Sbjct  361  KMKKSKGVHTFNISTTIILPFSSSMYIG  444
 
 
 
@@ -2715,6 +2751,7 @@ subject           24 VEVWGFVVGVAGVVVDIAEGDDVELV     49
 
 Query  27   SFEAIQPVattapsrsrttrsaVLFMVITWTFCPD*  62
             SFEAIQPVATTAPSRSRTT SA+LF+ ITWTFCPD*
+Sbjct  157  SFEAIQPVATTAPSRSRTTMSALLFIAITWTFCPD*  264
 
 
 
@@ -2748,9 +2785,11 @@ With tblastn: found 1 significant alignments
 
 Query  1    MYIISGNGTFRLFYVSFDLRRTFTAISERTRLLSPKYQIIIEYEEKRKRR  50
             M+I   N TF LF  SF+L+R FT+I +RT+LLS KY IIIEY  KRKRR
+Sbjct  1    MFIKFKNRTFLLFCESFELKRVFTSILKRTKLLSSKYLIIIEYGGKRKRR  150
 --
 Query  33   LSPKYQIIIEYEE  45
             L P Y III+Y E
+Sbjct  140  LFPPYSIIIKYFE  102
 
 
 
@@ -2809,12 +2848,15 @@ subject            1 PLSFAFIRSKTVGISSPLTTRSN     23
 
 Query  2    KIEAFGIYLLSILVHKLQDFPFVFSKGLCEVLPFLPSLFNFNGMYGDIDVPCFRCSQDAS  61
             +I+AF I+ L +LVHKL DFPFVF++   EVLPF P+ F+F GMY  I+VPCF C QD S
+Sbjct  1    EIDAFEIHFLPVLVHKL*DFPFVFTENSNEVLPFSPNFFDFKGMYRCINVPCFWCPQDTS  180
 --
 Query  62   RDVDFPDFERKVFIVDILNYINEFLDF  88
             R+VDF DFERK+  +DILNY+N+  +F
+Sbjct  181  REVDFSDFERKIISIDILNYLNKLFNF  261
 --
 Query  91   SFWDFIMSKTVGMSTPLTIRSN  112
             SF  FI SKTVG+S+PLT RSN
+Sbjct  269  SF*AFIRSKTVGISSPLTTRSN  334
 
 
 
@@ -2823,34 +2865,61 @@ ________________________________________________________________________________
 
 OKCMFDEG_00691_gene_mRNA
 
-With water & recursion: found 0 significant alignments
+With water & recursion: found 1 significant alignments
 
 With tblastn: found 1 significant alignments
 
 
 
-                                     ***************************************************************************************************************************	OKCMFDEG_00691_gene_mRNA
+-----------------------------------------***************************************************************************************************************************	OKCMFDEG_00691_gene_mRNA
 
-                                     ---------------------------------------------------------------------------------------------------------------------------	qcov = 70.7%
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------	qcov = 87.9%
 
-                                     ---------------------------------------------------------------------------------------------------------------------------	smith-waterman
-
-
+**********************************----------------------------------------------------------------------------------------------------------------------------------	smith-waterman
 
 
--------------------------------------***************************************************************************************************************************	OKCMFDEG_00691_gene_mRNA
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------	qcov = 96.6%
+#=======================================
+#
+# Aligned_sequences: 2
+# 1: query
+# 2: subject
+# Matrix: EBLOSUM62
+# Gap_penalty: 10.0
+# Extend_penalty: 0.5
+#
+# Length: 10
+# Identity:       4/10 (40.0%)
+# Similarity:     5/10 (50.0%)
+# Gaps:           0/10 ( 0.0%)
+# Score: 23.0
+# 
+#
+#=======================================
 
-*********************************************************************************************************************************************************-------	blast
+query              1 MMPAVEVRAH     10
+                     |.|..:|..|
+subject           10 MRPVQQVHTH     19
+
+
+#---------------------------------------
+#---------------------------------------
+
+    -------------------------------------***************************************************************************************************************************	OKCMFDEG_00691_gene_mRNA
+
+    ----------------------------------------------------------------------------------------------------------------------------------------------------------------	qcov = 96.6%
+
+    *********************************************************************************************************************************************************-------	blast
 
 
 
 Query  12   PSGIVKGANKPKEGIKRPPLAEERVCELKAFRERFAKQRAL  52
             P G   G  + ++ +KR  L +++V  +  FRERFA+QRAL
+Sbjct  67   PEGAFHG*TEAEKAVKRHQLEKKQVGWIITFRERFAEQRAL  189
 --
 Query  1    MMPAVEVRAH-SPSGIVKGANKPKEGIKRPPLAEERVCELKAFRERFAKQRALGGAK  56
             M P  +V  H +P G +   N+ +EG K  P+ E+       F       RAL GAK
+Sbjct  30   MRPVQQVHTHPAPGGRISRVNRSREGRKEAPIREKASWMDNNF------PRALCGAK  182
 
 
 
@@ -2909,6 +2978,7 @@ subject            9 MSIDVPSV     16
 
 Query  10   MKKRTVAILRVRERGADASRPTRIPKAFPFTTMKLTSS  47
             MKKRTVA LRVRERGA++S PT  P +  F TMK+  +
+Sbjct  55   MKKRTVATLRVRERGAESSNPTTRPGSPVFVTMKVNGT  168
 
 
 
@@ -2967,67 +3037,7 @@ subject            2 KLPRALAEARAHR     14
 
 Query  1   MGVNKVIVMHGFERKNVRNPITRGALEET  29
             G  +V +M GFERK VRNPIT  ALE T
-
-
-
-____________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
-
-
-EEHIGLKK_01721_gene_mRNA
-
-With water & recursion: found 1 significant alignments
-
-With tblastn: found 0 significant alignments
-
-
-
-******************************------------------------------------------------------------------*********************************************************************************************************************	EEHIGLKK_01721_gene_mRNA
-
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	qcov = 64.3%
-
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	smith-waterman
-
-
-
-#=======================================
-#
-# Aligned_sequences: 2
-# 1: query
-# 2: subject
-# Matrix: EBLOSUM62
-# Gap_penalty: 10.0
-# Extend_penalty: 0.5
-#
-# Length: 10
-# Identity:       6/10 (60.0%)
-# Similarity:     8/10 (80.0%)
-# Gaps:           0/10 ( 0.0%)
-# Score: 32.0
-# 
-#
-#=======================================
-
-query              2 QKFDVNAAKI     11
-                     :|.|||.||:
-subject           39 RKADVNVAKV     48
-
-
-#---------------------------------------
-#---------------------------------------
-
-      ***************************************************************************************************************************************************************************************************************	EEHIGLKK_01721_gene_mRNA
-
-      ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	qcov = 98.6%
-
-      ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	blast
-
-
-
-Query  2    QKFDVNAAKILTIAKTGAFYGAELGFPITFRSHGEHKNKMKKSVHK----YPYLSTLKLG  57
-            +K DVN AK+      G    A   F +  R   E  N+ K+ VH+      +L T KLG
---
-Query  58   LSTFTLGTRHFP*  70
-            LSTFTLGTRHFP*
+Sbjct  1   WG*REVTLMGGFERKTVRNPITGRALEGT  87
 
 
 
@@ -3086,12 +3096,15 @@ subject            3 VPPEGEKGNDDEGQSG----------HKEEEGRWLKVKAA     32
 
 Query  1    MQTTNQMAKRLRTAETAQRVFSLLSGCIFKILSLAHWMSDVRRRMRSMAIPPSRARSAVL  60
             M+TT Q A++LRTAET Q V S LS     IL+ AHW S  R +  + A+PP++ R    
+Sbjct  1    MRTTVQTARKLRTAETVQEVSSPLSI*SPTILANAHWRSGGRTKTANRAVPPTKRRIERP  180
 --
 Query  61   ASTTTPAEPKRMAV  74
               TTTP + +  AV
+Sbjct  181  TRTTTPEDAESTAV  222
 --
 Query  78   VPPEGKKGNNDERKRG  93
             VPPEG+KGN+DE + G
+Sbjct  231  VPPEGEKGNDDEGQSG  278
 
 
 
@@ -3150,6 +3163,7 @@ subject            1 FKKFGVKK      8
 
 Query  2   ANQEARNAWD-SKVEISVTVDDRHHQGIEMSPR  33
            ANQEA   W  S VEI VTVDDRHHQG+EMS R
+Sbjct  1   ANQEA---WKFSDVEIGVTVDDRHHQGMEMSSR  90
 
 
 
@@ -3208,6 +3222,7 @@ subject            1 FKKFGVKK      8
 
 Query  2   ANQEARNAWD-SKVEISVTVDDRHHQGIEMSPR  33
            ANQEA   W  S VEI VTVDDRHHQG+EMS R
+Sbjct  1   ANQEA---WKFSDVEIGVTVDDRHHQGMEMSSR  90
 
 
 
@@ -3241,27 +3256,35 @@ With tblastn: found 3 significant alignments
 
 Query  1    VPYAELLDWWGYTRVVQGRVKNAEFLQKWAYIQGGV-SESTRKNIRVRRTGNITLIRVTH  59
             VPY +     G+ +V   R +  +   K   I GGV S+STRKNIRVRRT NI   +VTH
+Sbjct  1    VPYTDA--PAGFKQVGARREEKIQNFCKKGLIYGGVVSKSTRKNIRVRRTVNIIHPKVTH  174
 --
 Query  60   GCTSFAVQMYSNSRSLFSVPFEFFAKLGGPCPPYIHQRSGKRGVSRAKSTNLPHNAIRLF  119
              CTSFAVQM SNSRSLF+VPF FFA  GG    YIH+RSGK  VSR K TN+PHN     
+Sbjct  175  RCTSFAVQMCSNSRSLFAVPF*FFAFSGGSDLSYIHKRSGKMRVSRVKFTNMPHN-----  339
 --
 Query  120  IVMFSGS-----LNDFFSIFKNPRVQVQTWVYTALKSTRDVLFGFFTKFKKLYREQVYII  174
              V F  S      +  F  F+N RV+VQT V   LK   DV FGFFTK  K YRE+    
+Sbjct  340  -VYFCSS*CSLVRSTIFLFFRNLRVRVQTCVCDELKCAPDVRFGFFTKS*KSYRERFINF  516
 --
 Query  175  FMHIKTAFL  183
               H    FL
+Sbjct  517  LAHKNDIFL  543
 --
 Query  115  AIRLFIVMFSGSLNDFFSIFKNP  137
              + LFIVMFSGSLNDFF +F+ P
+Sbjct  339  CLLLFIVMFSGSLNDFF-VFQKP  404
 --
 Query  174  IFMHIKTAFLC  184
             IF+HIKT F C
+Sbjct  512  IFLHIKTTFFC  544
 --
 Query  20   VKNAEFLQKWAYIQGGVSESTRKNIRVRRTGNITLIRVTHGCTSFAVQMYSNSRSLFSVP  79
             VK A +     Y +G      RK  RVRRTGN  L             ++    SLF+VP
+Sbjct  310  VKLASYHSFCVYKRGQTPLKMRKIKRVRRTGNANLNTFVQQNLYTGALLWGVLCSLFAVP  131
 --
 Query  80   FEFFAKLGGPCP  91
               FFA    P P
+Sbjct  130  *YFFAYFC*PHP  95
 
 
 
@@ -3320,9 +3343,11 @@ subject           19 MGVTLIDLLHRIDEIEKFLKDL     40
 
 Query  25   LKRSSQRSGRNRPSGSAETTSSLSGTW*  52
             LKR S+RSG+ RPS + E TSSLSGTW*
+Sbjct  145  LKRPSRRSGKKRPSKNVELTSSLSGTW*  228
 --
 Query  1    MGTSLVEIMQRIDEIEKFLKEL  22
             MG +L++++ RIDEIEKFLK+L
+Sbjct  57   MGVTLIDLLHRIDEIEKFLKDL  122
 
 
 
@@ -3356,9 +3381,11 @@ With tblastn: found 1 significant alignments
 
 Query  1    MTPFGEVHNHYAPEGRYREVNAGKWPFKKPPVRHNAQLVSKRLSASACASKGSSE  55
             M P  +VH H AP GR   VN  +   K+ P+R  A  +      + C +KGS E
+Sbjct  1    MRPVQQVHTHPAPGGRISRVNRSREGRKEAPIREKASWMDNNFPRALCGAKGSKE  165
 --
 Query  5   GEVHNHYAPEGRYREVNAGKWP  26
              VH   AP GR   VN   WP
+Sbjct  69  ASVHP*NAPSGRRVSVNLLDWP  4
 
 
 
@@ -3417,9 +3444,11 @@ subject           17 NLYPYCPRNH----HRPKQLVDVKLPYLREGYKRTGIGDNN     53
 
 Query  1    MKSNARVPATFIPRDFAMSLGIFSSRISK------IRVQLSGEHYGLGLSNLDLPHEDLN  54
             +K  AR+P T  PRDFA+  GIFSSR  +           S   + + LS +  P   L 
+Sbjct  1    IKRTARLPETLRPRDFAIIPGIFSSRSKRGAFSSLASTMASASPFSISLSRISTPRTSLT  180
 --
 Query  55   AQSVVY  60
             + + ++
+Sbjct  181  STTSIH  198
 
 
 

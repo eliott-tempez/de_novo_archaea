@@ -216,7 +216,7 @@ def get_significant_tblastn(query, subject):
     out_format = "6 qseqid sseqid evalue qcovhsp qstart qend sstart send length sframe"
     subprocess.run(["tblastn", "-query", query_file_path, "-subject", subject_file_path, "-out", output_file_path, "-outfmt", out_format, "-evalue", "1e-3"], capture_output=True, check=True)
     subprocess.run(["tblastn", "-query", query_file_path, "-subject", subject_file_path, "-out", output_file_path_raw, "-outfmt", "0", "-evalue", "1e-3"], capture_output=True, check=True)
-    raw = subprocess.run(f"grep -A 1 'Query  ' {output_file_path_raw}", check=True, capture_output=True, text=True, shell=True)
+    raw = subprocess.run(f"grep -A 2 'Query  ' {output_file_path_raw}", check=True, capture_output=True, text=True, shell=True)
     # Check the output isn't blank
     with open(output_file_path, "r") as f:
         content = f.read().strip()
