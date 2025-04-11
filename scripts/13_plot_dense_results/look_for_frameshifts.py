@@ -60,7 +60,7 @@ def smith_waterman(ref_seq, subject_seq):
     aln_dict["qstart"], aln_dict["qend"] = aln.qstart - 1, aln.qend
     aln_dict["sstart"], aln_dict["send"] = aln.sstart - 1, aln.send
     # Uncomment to show the raw alignment output
-    #aln_dict["raw"] = aln.raw
+    aln_dict["raw"] = aln.raw
     return aln_dict
 
 
@@ -210,9 +210,13 @@ def get_significant_tblastn(query, subject):
         subject_file_path = subject_file.name
     with tempfile.NamedTemporaryFile(mode='w', delete=False) as output_file:
         output_file_path = output_file.name
+    with tempfile.NamedTemporaryFile(mode='w', delete=False) as output_file_raw:
+        output_file_path_raw = output_file_raw.name
     # Run Blast
     out_format = "6 qseqid sseqid evalue qcovhsp qstart qend sstart send length sframe"
-    output = subprocess.run(["tblastn", "-query", query_file_path, "-subject", subject_file_path, "-out", output_file_path, "-outfmt", out_format, "-evalue", "1e-3"], capture_output=True, check=True)
+    subprocess.run(["tblastn", "-query", query_file_path, "-subject", subject_file_path, "-out", output_file_path, "-outfmt", out_format, "-evalue", "1e-3"], capture_output=True, check=True)
+    subprocess.run(["tblastn", "-query", query_file_path, "-subject", subject_file_path, "-out", output_file_path_raw, "-outfmt", "0", "-evalue", "1e-3"], capture_output=True, check=True)
+    raw = subprocess.run(f"grep -A 1 'Query  ' {output_file_path_raw}", check=True, capture_output=True, text=True, shell=True)
     # Check the output isn't blank
     with open(output_file_path, "r") as f:
         content = f.read().strip()
@@ -220,6 +224,7 @@ def get_significant_tblastn(query, subject):
         os.remove(query_file_path)
         os.remove(subject_file_path)
         os.remove(output_file_path)
+        os.remove(output_file_path_raw)
         return []
     # Read the output
     result = pd.read_csv(output_file_path, sep="\t", header=None)
@@ -233,11 +238,12 @@ def get_significant_tblastn(query, subject):
         eval = int(row[1]["evalue"])
         sframe = int(row[1]["sframe"]) - 1
         if length >= 5:
-            hits.append({"qstart": qstart, "qend": qend, "sstart": sstart, "send": send, "length": length, "eval": eval, "frame": sframe})
+            hits.append({"qstart": qstart, "qend": qend, "sstart": sstart, "send": send, "length": length, "eval": eval, "frame": sframe, "raw": raw.stdout})
     # Delete temp files
     os.remove(query_file_path)
     os.remove(subject_file_path)
     os.remove(output_file_path)
+    os.remove(output_file_path_raw)
     return hits
 
 
@@ -290,6 +296,10 @@ def print_results(denovo, all_matches_recursive, all_matches_blast, qcov_rec, qc
     print(f"{''.join(strings[1])}\tqcov = {qcov_rec}%\n")
     print(f"{''.join(strings[2])}\tsmith-waterman\n\n\n")
 
+    for match in order_matches(all_matches_recursive):
+        print(match["raw"])
+
+
     # Print result for blast algorithm
     strings = {0: [" "] * (min_start_blast - min_start) + ["-"] * (max_end_blast - min_start_blast) + [" "] * (max_end - max_end_blast),
                1: [" "] * (min_start_blast - min_start) + ["-"] * (max_end_blast - min_start_blast) + [" "] * (max_end - max_end_blast),
@@ -303,6 +313,8 @@ def print_results(denovo, all_matches_recursive, all_matches_blast, qcov_rec, qc
     print(f"{''.join(strings[0])}\t{denovo}\n")
     print(f"{''.join(strings[1])}\tqcov = {qcov_blast}%\n")
     print(f"{''.join(strings[2])}\tblast\n\n\n")
+
+    print(all_matches_blast[0]["raw"])
 
 
 
@@ -371,7 +383,7 @@ if __name__ == "__main__":
         all_matches_blast = look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_seq, extended_start, extended_end, use_blast=True)
 
         # Get list of all matches for all frames
-        origin_match = {"qstart": denovo_start, "qend": denovo_end, "sstart": extended_start, "send": extended_end, "frame": 0}
+        origin_match = {"qstart": denovo_start, "qend": denovo_end, "sstart": extended_start, "send": extended_end, "frame": 0, "raw": ""}
         all_matches_recursive = frameshifts_recursive + [origin_match]
 
         # Don't continue if no match
@@ -393,4 +405,4 @@ if __name__ == "__main__":
         print(f"With water & recursion: found {len(all_matches_recursive)-1} significant alignments\n")
         print(f"With tblastn: found {len(all_matches_blast)-1} significant alignments\n\n\n")
         print_results(denovo, all_matches_recursive, all_matches_blast, total_qcov_rec, total_qcov_blast, real_scale=True)
-        print("\n\n___________________________________________________________________________________________________________\n\n")
+        print(f"\n\n{"_" * 300}\n\n")
