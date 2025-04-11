@@ -229,6 +229,8 @@ def get_significant_tblastn(query, subject):
     # Read the output
     result = pd.read_csv(output_file_path, sep="\t", header=None)
     result.columns = ["qseqid", "sseqid", "evalue", "qcov", "qstart", "qend", "sstart", "send", "length", "sframe"]
+    # Delete matches in antisens
+    result = result[result["sframe"] > 0]
     for row in result.iterrows():
         qstart = int(row[1]["qstart"]) - 1
         qend = int(row[1]["qend"])
@@ -273,14 +275,29 @@ def look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_se
     return matches_left + matches_right
 
 
+def grep_after(text, pattern, num_lines=2):
+    """Mimic grep -A 2"""
+    lines = text.split('\n')
+    result = []
+    i = 0
+    while i < len(lines):
+        if pattern in lines[i]:
+            result.extend(lines[i:i + num_lines + 1])
+            result.append('--') 
+            i += num_lines 
+        else:
+            i += 1
+    return '\n'.join(result)
+
+
 def print_results(denovo, all_matches_recursive, all_matches_blast, qcov_rec, qcov_blast, real_scale=False):
     # Get the frame covers in string form
-    min_start_blast = min([dic["sstart"] for dic in all_matches_blast])
-    max_end_blast = max([dic["send"] for dic in all_matches_blast])
-    min_start_recursive = min([dic["sstart"] for dic in all_matches_recursive])
-    max_end_recursive = max([dic["send"] for dic in all_matches_recursive])
-    min_start = min(min_start_blast, min_start_recursive)
-    max_end = max(max_end_blast, max_end_recursive)
+    min_start_blast = int(min([dic["sstart"] for dic in all_matches_blast]) / 3)
+    max_end_blast = int(max([dic["send"] for dic in all_matches_blast]) / 3)
+    min_start_recursive = int(min([dic["sstart"] for dic in all_matches_recursive]) / 3)
+    max_end_recursive = int(max([dic["send"] for dic in all_matches_recursive]) / 3)
+    min_start = int(min(min_start_blast, min_start_recursive) / 3)
+    max_end = int(max(max_end_blast, max_end_recursive) / 3)
 
     # Print result for recursive algorithm
     strings = {0: [" "] * (min_start_recursive - min_start) + ["-"] * (max_end_recursive - min_start_recursive) + [" "] * (max_end - max_end_recursive),
@@ -288,8 +305,8 @@ def print_results(denovo, all_matches_recursive, all_matches_blast, qcov_rec, qc
                2: [" "] * (min_start_recursive - min_start) + ["-"] * (max_end_recursive - min_start_recursive) + [" "] * (max_end - max_end_recursive)}
     for match in all_matches_recursive:
         frame = match["frame"]
-        str_start = round((match["sstart"] - min_start))
-        str_end = round((match["send"] - min_start))
+        str_start = int((match["sstart"] / 3 - min_start))
+        str_end = int((match["send"] / 3 - min_start))
         for i in range(str_start, str_end):
             strings[frame][i] = "*"
     print(f"{''.join(strings[0])}\t{denovo}\n")
@@ -297,7 +314,7 @@ def print_results(denovo, all_matches_recursive, all_matches_blast, qcov_rec, qc
     print(f"{''.join(strings[2])}\tsmith-waterman\n\n\n")
 
     for match in order_matches(all_matches_recursive):
-        print(match["raw"])
+        print(grep_after(match["raw"], "query  "))
 
 
     # Print result for blast algorithm
@@ -306,8 +323,8 @@ def print_results(denovo, all_matches_recursive, all_matches_blast, qcov_rec, qc
                2: [" "] * (min_start_blast - min_start) + ["-"] * (max_end_blast - min_start_blast) + [" "] * (max_end - max_end_blast)}
     for match in all_matches_blast:
         frame = match["frame"]
-        str_start = round((match["sstart"] - min_start))
-        str_end = round((match["send"] - min_start))
+        str_start = int((match["sstart"] / 3 - min_start))
+        str_end = int((match["send"] / 3 - min_start))
         for i in range(str_start, str_end):
             strings[frame][i] = "*"
     print(f"{''.join(strings[0])}\t{denovo}\n")
