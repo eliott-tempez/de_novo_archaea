@@ -267,22 +267,42 @@ def look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_se
     return matches_left + matches_right
 
 
-def print_results(denovo, all_matches, qcov, real_scale=False):
+def print_results(denovo, all_matches_recursive, all_matches_blast, qcov_rec, qcov_blast, real_scale=False):
     # Get the frame covers in string form
-    min_start = min([dic["sstart"] for dic in all_matches])
-    max_end = max([dic["send"] for dic in all_matches])
-    line_len = (max_end - min_start) if real_scale else 100
-    strings = {0: ["-"] * line_len, 1: ["-"] * line_len, 2: ["-"] * line_len}
-    factor = 1 if real_scale else 100 / (max_end - min_start)
-    for match in all_matches:
+    min_start_blast = min([dic["sstart"] for dic in all_matches_blast])
+    max_end_blast = max([dic["send"] for dic in all_matches_blast])
+    min_start_recursive = min([dic["sstart"] for dic in all_matches_recursive])
+    max_end_recursive = max([dic["send"] for dic in all_matches_recursive])
+    min_start = min(min_start_blast, min_start_recursive)
+    max_end = max(max_end_blast, max_end_recursive)
+
+    # Print result for recursive algorithm
+    strings = {0: [" "] * (min_start_recursive - min_start) + ["-"] * (max_end_recursive - min_start_recursive) + [" "] * (max_end - max_end_recursive),
+               1: [" "] * (min_start_recursive - min_start) + ["-"] * (max_end_recursive - min_start_recursive) + [" "] * (max_end - max_end_recursive),
+               2: [" "] * (min_start_recursive - min_start) + ["-"] * (max_end_recursive - min_start_recursive) + [" "] * (max_end - max_end_recursive)}
+    for match in all_matches_recursive:
         frame = match["frame"]
-        str_start = round((match["sstart"] - min_start) * factor)
-        str_end = round((match["send"] - min_start) * factor)
+        str_start = round((match["sstart"] - min_start))
+        str_end = round((match["send"] - min_start))
         for i in range(str_start, str_end):
             strings[frame][i] = "*"
     print(f"{''.join(strings[0])}\t{denovo}\n")
-    print(f"{''.join(strings[1])}\tqcov = {qcov}%\n")
-    print(f"{''.join(strings[2])}\n\n")
+    print(f"{''.join(strings[1])}\tqcov = {qcov_rec}%\n")
+    print(f"{''.join(strings[2])}\tsmith-waterman\n\n\n")
+
+    # Print result for blast algorithm
+    strings = {0: [" "] * (min_start_blast - min_start) + ["-"] * (max_end_blast - min_start_blast) + [" "] * (max_end - max_end_blast),
+               1: [" "] * (min_start_blast - min_start) + ["-"] * (max_end_blast - min_start_blast) + [" "] * (max_end - max_end_blast),
+               2: [" "] * (min_start_blast - min_start) + ["-"] * (max_end_blast - min_start_blast) + [" "] * (max_end - max_end_blast)}
+    for match in all_matches_blast:
+        frame = match["frame"]
+        str_start = round((match["sstart"] - min_start))
+        str_end = round((match["send"] - min_start))
+        for i in range(str_start, str_end):
+            strings[frame][i] = "*"
+    print(f"{''.join(strings[0])}\t{denovo}\n")
+    print(f"{''.join(strings[1])}\tqcov = {qcov_blast}%\n")
+    print(f"{''.join(strings[2])}\tblast\n\n\n")
 
 
 
@@ -347,19 +367,30 @@ if __name__ == "__main__":
         denovo_end = denovo_dict[denovo]["qend"]
 
         # Look for frameshift on both sides
-        use_blast = False
-        frameshifts = look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_seq, extended_start, extended_end, use_blast)
-        # Keep gene only if there are matches
-        if frameshifts == [] or (use_blast and len(frameshifts) == 1):
-            continue
+        frameshifts_recursive = look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_seq, extended_start, extended_end, use_blast=False)
+        all_matches_blast = look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_seq, extended_start, extended_end, use_blast=True)
+
         # Get list of all matches for all frames
         origin_match = {"qstart": denovo_start, "qend": denovo_end, "sstart": extended_start, "send": extended_end, "frame": 0}
-        all_matches = frameshifts + [origin_match]
+        all_matches_recursive = frameshifts_recursive + [origin_match]
+
+        # Don't continue if no match
+        if len(all_matches_recursive) == 1 and len(all_matches_blast) == 1:
+            continue
+
         # Get the total qcov
-        bases_covered = []
-        for dic in all_matches:
-            bases_covered += list(range(dic["qstart"], dic["qend"]))
-        total_qcov = round((len(set(bases_covered)) / len(denovo_seq) * 100), 1)
+        bases_covered_recursive = []
+        for dic in all_matches_recursive:
+            bases_covered_recursive += list(range(dic["qstart"], dic["qend"]))
+        total_qcov_rec = round((len(set(bases_covered_recursive)) / len(denovo_seq) * 100), 1)
+        bases_covered_blast = []
+        for dic in all_matches_blast:
+            bases_covered_blast += list(range(dic["qstart"], dic["qend"]))
+        total_qcov_blast = round((len(set(bases_covered_blast)) / len(denovo_seq) * 100), 1)
+
         # Print the results
-        print_results(denovo, all_matches, total_qcov, real_scale=False)
-        print("\n")
+        print(f"{denovo}\n")
+        print(f"With water & recursion: found {len(all_matches_recursive)-1} significant alignments\n")
+        print(f"With tblastn: found {len(all_matches_blast)-1} significant alignments\n\n\n")
+        print_results(denovo, all_matches_recursive, all_matches_blast, total_qcov_rec, total_qcov_blast, real_scale=True)
+        print("\n\n___________________________________________________________________________________________________________\n\n")
