@@ -58,8 +58,7 @@ def smith_waterman(ref_seq, subject_seq):
     aln_dict["psim"] = aln.psimilarity
     aln_dict["length"] = aln.length
     aln_dict["qstart"], aln_dict["qend"] = aln.qstart - 1, aln.qend
-    aln_dict["sstart"], aln_dict["send"] = aln.sstart - 1, aln.send
-    # Uncomment to show the raw alignment output
+    aln_dict["sstart"], aln_dict["send"] = (aln.sstart - 1) * 3, aln.send * 3
     aln_dict["raw"] = aln.raw
     return aln_dict
 
@@ -69,12 +68,12 @@ def is_significant(alignment):
         return False
     aln_len = alignment["length"]
     aln_pval = alignment["pval"]
-    if aln_len >= 5 and aln_pval <= 10e-3:
+    if aln_len >= 5 and aln_pval <= 10e-2:
         return True
     return False
 
 
-def get_absolute_match(aln, start_pos_query, start_pos_subject):
+def get_absolute_match(aln, start_pos_query, start_pos_subject, is_already_nu):
     # For the qstart
     relative_qstart = aln["qstart"]
     absolute_qstart = relative_qstart + start_pos_query
@@ -82,7 +81,10 @@ def get_absolute_match(aln, start_pos_query, start_pos_subject):
     # For the sstart
     frame = aln["frame"]
     relative_sstart = aln["sstart"]
-    absolute_sstart = relative_sstart * 3 + start_pos_subject - frame
+    if is_already_nu:
+        absolute_sstart = relative_sstart + start_pos_subject
+    else:
+        absolute_sstart = relative_sstart * 3 + start_pos_subject - frame
     aln["sstart"] = absolute_sstart
     # For the qend
     relative_qend = aln["qend"]
@@ -90,7 +92,10 @@ def get_absolute_match(aln, start_pos_query, start_pos_subject):
     aln["qend"] = absolute_qend
     # For the send
     relative_send = aln["send"]
-    absolute_send = relative_send * 3 + start_pos_subject + frame
+    if is_already_nu:
+        absolute_send = relative_send + start_pos_subject
+    else:
+        absolute_send = relative_send * 3 + start_pos_subject + frame
     aln["send"] = absolute_send
     return aln
 
@@ -150,8 +155,8 @@ def recursively_align(query_seq, subject_seq_nu, start_pos_query_l, end_pos_quer
     best_pval = 1
     best_psim = 0
     for i in range(len(start_pos_query_l)):
-        start_pos_query = in_frame(start_pos_query_l[i], "start")
-        end_pos_query = in_frame(end_pos_query_l[i], "end")
+        start_pos_query = start_pos_query_l[i]
+        end_pos_query = end_pos_query_l[i]
         for j in range(len(start_pos_subject_l)):
             start_pos_subject = in_frame(start_pos_subject_l[j], "start")
             end_pos_subject = in_frame(end_pos_subject_l[j], "end")
@@ -182,7 +187,7 @@ def recursively_align(query_seq, subject_seq_nu, start_pos_query_l, end_pos_quer
     # Check the best alignment is qualitative
     if is_significant(best_aln):
         # Replace the relative positions by absolute ones
-        best_aln = get_absolute_match(best_aln, best_start_pos_query, best_start_pos_subject)
+        best_aln = get_absolute_match(best_aln, best_start_pos_query, best_start_pos_subject, False)
         # Save the alignment
         matches.append(best_aln)
         # Get the segments that aren't covered by a match
@@ -199,7 +204,7 @@ def order_matches(matches):
     return sorted_matches
 
 
-def get_significant_tblastn(query, subject):
+def get_significant_blastp(query, subject, frame):
     hits = []
     # Create temp files
     with tempfile.NamedTemporaryFile(mode='w', delete=False) as query_file:
@@ -213,10 +218,10 @@ def get_significant_tblastn(query, subject):
     with tempfile.NamedTemporaryFile(mode='w', delete=False) as output_file_raw:
         output_file_path_raw = output_file_raw.name
     # Run Blast
-    out_format = "6 qseqid sseqid evalue qcovhsp qstart qend sstart send length sframe"
-    subprocess.run(["tblastn", "-query", query_file_path, "-subject", subject_file_path, "-out", output_file_path, "-outfmt", out_format, "-evalue", "1e-3"], capture_output=True, check=True)
-    subprocess.run(["tblastn", "-query", query_file_path, "-subject", subject_file_path, "-out", output_file_path_raw, "-outfmt", "0", "-evalue", "1e-3"], capture_output=True, check=True)
-    raw = subprocess.run(f"grep -A 2 'Query  ' {output_file_path_raw}", check=True, capture_output=True, text=True, shell=True)
+    out_format = "6 qseqid sseqid evalue qcovhsp qstart qend sstart send length"
+    subprocess.run(["blastp", "-query", query_file_path, "-subject", subject_file_path, "-out", output_file_path, "-outfmt", out_format, "-evalue", "1e-3"], capture_output=True, check=True)
+    subprocess.run(["blastp", "-query", query_file_path, "-subject", subject_file_path, "-out", output_file_path_raw, "-outfmt", "0", "-evalue", "1e-3"], capture_output=True, check=True)
+    raw = subprocess.run(f"grep -A 2 'Query  ' {output_file_path_raw}", capture_output=True, text=True, shell=True)
     # Check the output isn't blank
     with open(output_file_path, "r") as f:
         content = f.read().strip()
@@ -228,19 +233,16 @@ def get_significant_tblastn(query, subject):
         return []
     # Read the output
     result = pd.read_csv(output_file_path, sep="\t", header=None)
-    result.columns = ["qseqid", "sseqid", "evalue", "qcov", "qstart", "qend", "sstart", "send", "length", "sframe"]
-    # Delete matches in antisens
-    result = result[result["sframe"] > 0]
+    result.columns = ["qseqid", "sseqid", "evalue", "qcov", "qstart", "qend", "sstart", "send", "length"]
     for row in result.iterrows():
         qstart = int(row[1]["qstart"]) - 1
         qend = int(row[1]["qend"])
-        sstart = int(row[1]["sstart"]) - 1
-        send = int(row[1]["send"])
+        sstart = (int(row[1]["sstart"]) - 1) * 3
+        send = int(row[1]["send"]) * 3
         length = int(row[1]["length"])
         eval = int(row[1]["evalue"])
-        sframe = int(row[1]["sframe"]) - 1
         if length >= 5:
-            hits.append({"qstart": qstart, "qend": qend, "sstart": sstart, "send": send, "length": length, "eval": eval, "frame": sframe, "raw": raw.stdout})
+            hits.append({"qstart": qstart, "qend": qend, "sstart": sstart, "send": send, "length": length, "eval": eval, "frame": frame, "raw": raw.stdout})
     # Delete temp files
     os.remove(query_file_path)
     os.remove(subject_file_path)
@@ -251,7 +253,12 @@ def get_significant_tblastn(query, subject):
 
 def look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_seq, extended_start, extended_end, use_blast=False):
     if use_blast:
-        return get_significant_tblastn(denovo_seq, extended_match_seq)
+        matches = []
+        for frame in [0, 1, 2]:
+            extended_match_seq_aa = extended_match_seq[frame:(frame-3)].translate(table=11)
+            matches += get_significant_blastp(denovo_seq, extended_match_seq_aa, frame)
+        return matches
+
     extend_left = extended_start != 0
     extend_right = extended_end != len(extended_match_seq)
     matches_left, matches_right = [], []
@@ -261,17 +268,13 @@ def look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_se
         extended_left_seq = extended_match_seq[:extended_start]
         # Get the matches recursively
         recursively_align(left_denovo, extended_left_seq, [0], [len(left_denovo)], [0], [len(extended_left_seq)], matches_left)
-        # Order the matches
-        matches_left = order_matches(matches_left)
     # Do the right
     if extend_right:
         right_denovo = denovo_seq[denovo_end:]
         extended_right_seq = extended_match_seq[extended_end:]
         # Get the matches recursively
         recursively_align(right_denovo, extended_right_seq, [0], [len(right_denovo)], [0], [len(extended_right_seq)], matches_right)
-        matches_right = [get_absolute_match(r, denovo_end, extended_end) for r in matches_right]
-        # Order the matches
-        matches_right = order_matches(matches_right)
+        matches_right = [get_absolute_match(r, denovo_end, extended_end, True) for r in matches_right]
     return matches_left + matches_right
 
 
@@ -296,8 +299,8 @@ def print_results(denovo, all_matches_recursive, all_matches_blast, qcov_rec, qc
     max_end_blast = int(max([dic["send"] for dic in all_matches_blast]) / 3)
     min_start_recursive = int(min([dic["sstart"] for dic in all_matches_recursive]) / 3)
     max_end_recursive = int(max([dic["send"] for dic in all_matches_recursive]) / 3)
-    min_start = int(min(min_start_blast, min_start_recursive) / 3)
-    max_end = int(max(max_end_blast, max_end_recursive) / 3)
+    min_start = int(min(min_start_blast, min_start_recursive))
+    max_end = int(max(max_end_blast, max_end_recursive))
 
     # Print result for recursive algorithm
     strings = {0: [" "] * (min_start_recursive - min_start) + ["-"] * (max_end_recursive - min_start_recursive) + [" "] * (max_end - max_end_recursive),
@@ -313,7 +316,7 @@ def print_results(denovo, all_matches_recursive, all_matches_blast, qcov_rec, qc
     print(f"{''.join(strings[1])}\tqcov = {qcov_rec}%\n")
     print(f"{''.join(strings[2])}\tsmith-waterman\n\n\n")
 
-    for match in order_matches(all_matches_recursive):
+    for match in all_matches_recursive:
         print(grep_after(match["raw"], "query  "))
 
 
@@ -331,7 +334,8 @@ def print_results(denovo, all_matches_recursive, all_matches_blast, qcov_rec, qc
     print(f"{''.join(strings[1])}\tqcov = {qcov_blast}%\n")
     print(f"{''.join(strings[2])}\tblast\n\n\n")
 
-    print(all_matches_blast[0]["raw"])
+    for match in all_matches_blast:
+        print(match["raw"])
 
 
 
@@ -397,11 +401,11 @@ if __name__ == "__main__":
 
         # Look for frameshift on both sides
         frameshifts_recursive = look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_seq, extended_start, extended_end, use_blast=False)
-        all_matches_blast = look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_seq, extended_start, extended_end, use_blast=True)
+        all_matches_blast = order_matches(look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_seq, extended_start, extended_end, use_blast=True))
 
         # Get list of all matches for all frames
-        origin_match = {"qstart": denovo_start, "qend": denovo_end, "sstart": extended_start, "send": extended_end, "frame": 0, "raw": ""}
-        all_matches_recursive = frameshifts_recursive + [origin_match]
+        origin_match = {"qstart": denovo_start, "qend": denovo_end, "sstart": extended_start * 3, "send": extended_end * 3, "frame": 0, "raw": ""}
+        all_matches_recursive = order_matches(frameshifts_recursive + [origin_match])
 
         # Don't continue if no match
         if len(all_matches_recursive) == 1 and len(all_matches_blast) == 1:
