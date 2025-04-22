@@ -15,6 +15,8 @@ input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncod
 
 
 data <- read.table(input_file, header = TRUE, sep = "\t")
+# Remove columns that have 3 codons or less
+data[, c("intergenic", "f.0", "f.1", "f.2")] <- lapply(data[, c("intergenic", "f.0", "f.1", "f.2")], function(x) ifelse(x < 10, 0, x))
 
 
 
