@@ -2,6 +2,8 @@
 import os
 import glob
 import re
+import random
+import collections
 import pandas as pd
 from Bio import SeqIO
 from Bio.SeqUtils import GC
@@ -13,6 +15,7 @@ import numpy as np
 OUT_DIR = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences/"
 from my_functions.paths import DENSE_DIR, GENERA_DIR, GENOMES_LIST, CDS_DIR
 TRG_RANK = 7.0
+GOOD_CANDIDATES_ONLY = True
 
 
 def extract_cds_sequences(genome):
@@ -21,7 +24,9 @@ def extract_cds_sequences(genome):
     if not os.path.exists(faa_file):
         raise FileNotFoundError(f"No file {faa_file}")
     for record in SeqIO.parse(faa_file, "fasta"):
-        cds_dict[record.name] = record.seq
+        if record.name not in cds_dict:
+            cds_dict[record.name] = {}
+        cds_dict[record.name]["sequence"] = record.seq
     return cds_dict
 
 
@@ -66,53 +71,73 @@ if __name__ == "__main__":
     with open(GENOMES_LIST, "r") as f:
         genomes = f.readline().split()
     genomes = [re.sub('"', '', g) for g in genomes]
+    denovo_names, trg_names, cds_names = [], [], []
+    all_cdss = {}
     all_values = []
-    n_cds = 0
-    n_trg = 0
-    n_denovo = 0
 
-    i = 0
+
+    # Extract the cds info
+    print("Extracting all CDSs...\n")
     for genome in genomes:
-        i += 1
-        # Extract info for all CDSs
-        cds_dict = extract_cds_sequences(genome)
-        cds_names = list(cds_dict.keys())
-        n_cds += len(cds_names)
+        if not GOOD_CANDIDATES_ONLY:
+            # Extract de novo names
+            denovo_names += extract_denovo_names(genome)
         # Extract TRG names
-        trg_names = extract_trg_names(genome, TRG_RANK)
-        n_trg += len(trg_names)
-        # Extract de novo names
+        trg_names += extract_trg_names(genome, TRG_RANK)
+        # Extract info for all CDSs
+        all_cds_gen = extract_cds_sequences(genome)
+        # Add the genome name
+        for cds in all_cds_gen:
+            all_cds_gen[cds]["genome"] = genome
+        all_cdss.update(all_cds_gen)
+        cds_names += all_cds_gen.keys()
+    if GOOD_CANDIDATES_ONLY:
         denovo_names = extract_denovo_names(genome, True)
-        n_denovo += len(denovo_names)
+    
+    # Drop duplicates
+    cds_names = set(cds_names) - set(trg_names)
+    trg_names = set(trg_names) - set(denovo_names)
 
 
-        for cds in cds_dict:
-            # Extract GC rate
-            gc_content = GC(cds_dict[cds])
-            # Extract protein info
-            nuc_seq = cds_dict[cds]
-            prot_seq = re.sub(r"[\*X]", "", str(cds_dict[cds].translate()))
-            analysis = ProteinAnalysis(prot_seq)
-            aromaticity = analysis.aromaticity()
-            instability = analysis.instability_index()
-            flexibility = analysis.flexibility()
-            mean_flexibility = sum(flexibility) / len(flexibility)
-            hydropathy = analysis.gravy()
-            # Extract sequence length
-            len_nu = len(nuc_seq)
+    # Sample TRGs and CDSs
+    print("Sampling CDSs and calculating descriptors...")
+    trg_names_sampled = random.sample(list(trg_names), 500)
+    cds_names_sampled = random.sample(list(cds_names), 500)
 
-            # Add to results
-            results = [genome, cds, gc_content, aromaticity, instability, mean_flexibility, hydropathy, len_nu]
+    # Calculate descriptors for all sampled cdss
+    all_samples = denovo_names + trg_names_sampled + cds_names_sampled
+    n = len(all_samples)
+    i = 0
+    for cds in all_samples:
+        i += 1
+        genome = all_cdss[cds]["genome"]
+        # Extract GC rate
+        gc_content = GC(all_cdss[cds]["sequence"])
+        # Extract protein info
+        nuc_seq = all_cdss[cds]["sequence"]
+        prot_seq = re.sub(r"[\*X]", "", str(nuc_seq.translate()))
+        analysis = ProteinAnalysis(prot_seq)
+        aromaticity = analysis.aromaticity()
+        instability = analysis.instability_index()
+        flexibility = analysis.flexibility()
+        mean_flexibility = sum(flexibility) / len(flexibility)
+        hydropathy = analysis.gravy()
+        # Extract sequence length
+        len_nu = len(nuc_seq)
+
+        # Add to results
+        results = [genome, cds, gc_content, aromaticity, instability, mean_flexibility, hydropathy, len_nu]
+        if cds in cds_names:
             all_values.append(results + ["cds"])
-            if cds in trg_names:
-                all_values.append(results + ["trg"])
-            if cds in denovo_names:
-                all_values.append(results + ["denovo"])
+        elif cds in trg_names:
+            all_values.append(results + ["trg"])
+        elif cds in denovo_names:
+            all_values.append(results + ["denovo"])
 
-        if i % 10 == 0:
-            print(f"{i}/{len(genomes)}...")
+    if i % 10 == 0:
+        print(f"{i}/{n}...")
 
-    print("Done!")
+    print("\nDone!")
 
     # Save the results
     df = pd.DataFrame(all_values, columns=["genome", "cds", "gc_content", "aromaticity", "instability", "mean_flexibility", "hydropathy", "len_nu", "type"])

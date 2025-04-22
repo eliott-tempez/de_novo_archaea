@@ -10,7 +10,7 @@ ggsave <- function(..., bg = "white",
                   dpi = dpi)
 }
 
-input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences/sequence_features.csv"
+input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences/sequence_features_good_candidates.csv"
 out_folder <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences"
 data <- read.table(input_file, header = TRUE, sep = "\t")
 n_cds <- nrow(data[data$type == "cds", ])
@@ -39,7 +39,7 @@ ggplot(data_len, aes(x = type, y = value, fill = type)) +
   scale_x_discrete(labels = c("cds" = paste0("cds\n(n = ", n_cds, ")"),
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
                               "denovo" = paste0("denovo\n(n = ", n_denovo, ")")))
-ggsave(paste0(out_folder, "/sequence_length.png"))
+#ggsave(paste0(out_folder, "/sequence_length.png"))
 
 
 
@@ -61,7 +61,7 @@ ggplot(data_gc, aes(x = type, y = value, fill = type)) +
   scale_x_discrete(labels = c("cds" = paste0("cds\n(n = ", n_cds, ")"),
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
                               "denovo" = paste0("denovo\n(n = ", n_denovo, ")")))
-ggsave(paste0(out_folder, "/gc_content.png"))
+#ggsave(paste0(out_folder, "/gc_content.png"))
 
 
 
@@ -83,7 +83,7 @@ ggplot(data_aro, aes(x = type, y = value, fill = type)) +
   scale_x_discrete(labels = c("cds" = paste0("cds\n(n = ", n_cds, ")"),
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
                               "denovo" = paste0("denovo\n(n = ", n_denovo, ")")))
-ggsave(paste0(out_folder, "/aromaticity.png"))
+#ggsave(paste0(out_folder, "/aromaticity.png"))
 
 
 
@@ -105,7 +105,7 @@ ggplot(data_inst, aes(x = type, y = value, fill = type)) +
   scale_x_discrete(labels = c("cds" = paste0("cds\n(n = ", n_cds, ")"),
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
                               "denovo" = paste0("denovo\n(n = ", n_denovo, ")")))
-ggsave(paste0(out_folder, "/instability_index.png"))
+#ggsave(paste0(out_folder, "/instability_index.png"))
 
 
 
@@ -127,7 +127,7 @@ ggplot(data_flex, aes(x = type, y = value, fill = type)) +
   scale_x_discrete(labels = c("cds" = paste0("cds\n(n = ", n_cds, ")"),
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
                               "denovo" = paste0("denovo\n(n = ", n_denovo, ")")))
-ggsave(paste0(out_folder, "/mean_flexibility.png"))
+#ggsave(paste0(out_folder, "/mean_flexibility.png"))
 
 
 
@@ -149,4 +149,4 @@ ggplot(data_hydro, aes(x = type, y = value, fill = type)) +
   scale_x_discrete(labels = c("cds" = paste0("cds\n(n = ", n_cds, ")"),
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
                               "denovo" = paste0("denovo\n(n = ", n_denovo, ")")))
-ggsave(paste0(out_folder, "/hydrophobicity.png"))
+#ggsave(paste0(out_folder, "/hydrophobicity.png"))
