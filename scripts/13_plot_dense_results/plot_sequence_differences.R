@@ -48,9 +48,9 @@ data_gc <- data[data$feature == "gc_content", ]
 data_gc$type <- factor(data_gc$type, levels = c("cds", "trg", "denovo"))
 ggplot(data_gc, aes(x = type, y = value, fill = type)) +
   geom_boxplot(na.rm = TRUE, colour = "#2c2c2c") +
-  labs(title = "GC content distribution",
+  labs(title = "GC ratio distribution",
        x = "Sequence type",
-       y = "GC content (%)") +
+       y = "GC ratio: sequence GC % / genome GC %") +
   scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c")) +
   theme_minimal() +
   theme(legend.position = "none",

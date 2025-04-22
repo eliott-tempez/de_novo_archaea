@@ -13,7 +13,7 @@ import numpy as np
 
 
 OUT_DIR = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences/"
-from my_functions.paths import DENSE_DIR, GENERA_DIR, GENOMES_LIST, CDS_DIR
+from my_functions.paths import DENSE_DIR, GENERA_DIR, GENOMES_LIST, CDS_DIR, FA_DIR
 TRG_RANK = 7.0
 GOOD_CANDIDATES_ONLY = True
 
@@ -65,6 +65,16 @@ def extract_denovo_names(focal_species, use_good_candidates=False):
     return denovo_names
 
 
+def get_species_gc_content(genome):
+    fa_file = os.path.join(FA_DIR, genome + ".fa")
+    if not os.path.exists(fa_file):
+        raise FileNotFoundError(f"No file {fa_file}")
+    seq = ""
+    for record in SeqIO.parse(fa_file, "fasta"):
+        seq += str(record.seq)
+    return GC(seq)
+
+
 
 if __name__ == "__main__":
     # Get the list of genomes
@@ -79,8 +89,11 @@ if __name__ == "__main__":
     # Extract the cds info
     print("Extracting all CDSs...\n")
     for genome in genomes:
+        # Get the species gc content
+        genome_gc = get_species_gc_content(genome)
+
+        # Extract de novo names
         if not GOOD_CANDIDATES_ONLY:
-            # Extract de novo names
             denovo_names += extract_denovo_names(genome)
         # Extract TRG names
         trg_names += extract_trg_names(genome, TRG_RANK)
@@ -89,11 +102,13 @@ if __name__ == "__main__":
         # Add the genome name
         for cds in all_cds_gen:
             all_cds_gen[cds]["genome"] = genome
+            all_cds_gen[cds]["gen_gc"] = genome_gc
         all_cdss.update(all_cds_gen)
         cds_names += all_cds_gen.keys()
+
     if GOOD_CANDIDATES_ONLY:
         denovo_names = extract_denovo_names(genome, True)
-    
+
     # Drop duplicates
     cds_names = set(cds_names) - set(trg_names)
     trg_names = set(trg_names) - set(denovo_names)
@@ -112,7 +127,9 @@ if __name__ == "__main__":
         i += 1
         genome = all_cdss[cds]["genome"]
         # Extract GC rate
-        gc_content = GC(all_cdss[cds]["sequence"])
+        gc_seq = GC(all_cdss[cds]["sequence"])
+        gc_species = all_cdss[cds]["gen_gc"]
+        gc_content = gc_seq / gc_species
         # Extract protein info
         nuc_seq = all_cdss[cds]["sequence"]
         prot_seq = re.sub(r"[\*X]", "", str(nuc_seq.translate()))
@@ -133,9 +150,6 @@ if __name__ == "__main__":
             all_values.append(results + ["trg"])
         elif cds in denovo_names:
             all_values.append(results + ["denovo"])
-
-    if i % 10 == 0:
-        print(f"{i}/{n}...")
 
     print("\nDone!")
 
