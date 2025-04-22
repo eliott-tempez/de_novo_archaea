@@ -17,6 +17,7 @@ import matplotlib.pyplot as plt
 from my_functions.paths import *
 ORIGIN_FILE = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/denovo_noncoding_status.tsv"
 OUT_FOLDER = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/"
+SEPARATE_ORIGINS = True
 
 
 
@@ -198,24 +199,39 @@ if __name__ == "__main__":
         bin_edges = np.linspace(0, 100, 20)
 
         # Histograms
-        plt.figure()
-        plt.hist(qcov_intergenic, edgecolor = "black", bins=bin_edges)
-        plt.xlim([0, 100])
-        plt.ylim([0, 60])
-        plt.vlines(x = 70, ymin = 0, ymax = 60, color = "red", linestyle = "dashed")
-        plt.xlabel("Coverage of query sequence (%)")
-        plt.ylabel("Number of hits")
-        plt.title(f"Coverage of de novo genes by the tblastn hits\nfor the intergenic genes (n = {len(intergenic_denovo)})")
+        # Separated histograms
+        if SEPARATE_ORIGINS:
+            plt.figure()
+            plt.hist(qcov_intergenic, edgecolor = "black", bins=bin_edges)
+            plt.xlim([0, 100])
+            plt.ylim([0, 60])
+            plt.vlines(x = 70, ymin = 0, ymax = 60, color = "red", linestyle = "dashed")
+            plt.xlabel("Coverage of query sequence (%)")
+            plt.ylabel("Number of hits")
+            plt.title(f"Coverage of de novo genes by the tblastn hits\nfor the intergenic genes (n = {len(intergenic_denovo)})")
 
-        plt.figure()
-        plt.hist(qcov_rest, edgecolor = "black", bins=bin_edges)
-        plt.xlim([0, 100])
-        plt.ylim([0, 10])
-        plt.vlines(x = 70, ymin = 0, ymax = 10, color = "red", linestyle = "dashed")
-        plt.xlabel("Coverage of query sequence (%)")
-        plt.ylabel("Number of hits")
-        plt.title(f"Coverage of de novo genes by the tblastn hits\nfor the rest (n = {len(denovo_dict) - len(intergenic_denovo)})")
-        plt.show()
+            plt.figure()
+            plt.hist(qcov_rest, edgecolor = "black", bins=bin_edges)
+            plt.xlim([0, 100])
+            plt.ylim([0, 10])
+            plt.vlines(x = 70, ymin = 0, ymax = 10, color = "red", linestyle = "dashed")
+            plt.xlabel("Coverage of query sequence (%)")
+            plt.ylabel("Number of hits")
+            plt.title(f"Coverage of de novo genes by the tblastn hits\nfor the rest (n = {len(denovo_dict) - len(intergenic_denovo)})")
+            plt.show()
+        
+        # Unique histogram
+        else:
+            plt.figure()
+            plt.hist(qcov_intergenic + qcov_rest, edgecolor = "black", bins=10)
+            plt.xlim([0, 100])
+            plt.ylim([0, 70])
+            plt.vlines(x = 70, ymin = 0, ymax = 70, color = "red", linestyle = "dashed")
+            plt.xlabel("Coverage of query sequence (%)")
+            plt.ylabel("Number of hits")
+            plt.title(f"Coverage of de novo genes by the tblastn hits (n = {len(denovo_dict)})")
+            plt.show()
+
 
 
     # Get the genes with an ORF cov < 70
@@ -239,24 +255,37 @@ if __name__ == "__main__":
         bin_edges = np.linspace(0, 100, 20)
 
         # Histograms
-        plt.figure()
-        plt.hist(orf_cov_intergenic, edgecolor = "black", bins=bin_edges)
-        plt.xlim([0, 100])
-        plt.ylim([0, 60])
-        plt.vlines(x = 70, ymin = 0, ymax = 60, color = "red", linestyle = "dashed")
-        plt.xlabel("Coverage of query sequence (%)")
-        plt.ylabel("Number of ORFs")
-        plt.title(f"Coverage of de novo genes by the longest ORF in the tblastn hits\nfor the intergenic genes (n = {len(orf_cov_dict_intergenic)})")
+        # Separated
+        if SEPARATE_ORIGINS:
+            plt.figure()
+            plt.hist(orf_cov_intergenic, edgecolor = "black", bins=bin_edges)
+            plt.xlim([0, 100])
+            plt.ylim([0, 60])
+            plt.vlines(x = 70, ymin = 0, ymax = 60, color = "red", linestyle = "dashed")
+            plt.xlabel("Coverage of query sequence (%)")
+            plt.ylabel("Number of ORFs")
+            plt.title(f"Coverage of de novo genes by the longest ORF in the tblastn hits\nfor the intergenic genes (n = {len(orf_cov_dict_intergenic)})")
 
-        plt.figure()
-        plt.hist(orf_cov_rest, edgecolor = "black", bins=bin_edges)
-        plt.xlim([0, 100])
-        plt.ylim([0, 10])
-        plt.vlines(x = 70, ymin = 0, ymax = 10, color = "red", linestyle = "dashed")
-        plt.xlabel("Coverage of query sequence (%)")
-        plt.ylabel("Number of ORFs")
-        plt.title(f"Coverage of de novo genes by the longest ORF in the tblastn hits\nfor the rest (n = {len(orf_cov_dict_rest)})")
-        plt.show()
+            plt.figure()
+            plt.hist(orf_cov_rest, edgecolor = "black", bins=bin_edges)
+            plt.xlim([0, 100])
+            plt.ylim([0, 10])
+            plt.vlines(x = 70, ymin = 0, ymax = 10, color = "red", linestyle = "dashed")
+            plt.xlabel("Coverage of query sequence (%)")
+            plt.ylabel("Number of ORFs")
+            plt.title(f"Coverage of de novo genes by the longest ORF in the tblastn hits\nfor the rest (n = {len(orf_cov_dict_rest)})")
+            plt.show()
+
+        else:
+            plt.figure()
+            plt.hist(orf_cov_intergenic + orf_cov_rest, edgecolor = "black", bins=15)
+            plt.xlim([0, 100])
+            plt.ylim([0, 50])
+            plt.vlines(x = 70, ymin = 0, ymax = 50, color = "red", linestyle = "dashed")
+            plt.xlabel("Coverage of query sequence (%)")
+            plt.ylabel("Number of ORFs")
+            plt.title(f"Coverage of de novo genes by the longest ORF in the tblastn hits\nfor the rest (n = {len(orf_cov_dict_intergenic) + len(orf_cov_dict_rest)})")
+            plt.show()
     
 
     # Conclusion
