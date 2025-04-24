@@ -115,9 +115,10 @@ if __name__ == "__main__":
 
 
     # Sample TRGs and CDSs
+    n_denovo = len(denovo_names)
     print("Sampling CDSs and calculating descriptors...")
-    trg_names_sampled = random.sample(list(trg_names), 500)
-    cds_names_sampled = random.sample(list(cds_names), 500)
+    trg_names_sampled = random.sample(list(trg_names), n_denovo)
+    cds_names_sampled = random.sample(list(cds_names), n_denovo)
 
     # Calculate descriptors for all sampled cdss
     all_samples = denovo_names + trg_names_sampled + cds_names_sampled
