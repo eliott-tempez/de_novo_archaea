@@ -1,7 +1,7 @@
 """
 This script will import all hardcoded paths from the yaml file
 """
-CLUSTER = False
+CLUSTER = True
 
 import yaml
 import os
