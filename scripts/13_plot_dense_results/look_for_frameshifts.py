@@ -58,7 +58,7 @@ def smith_waterman(ref_seq, subject_seq):
     aln_dict["psim"] = aln.psimilarity
     aln_dict["length"] = aln.length
     aln_dict["qstart"], aln_dict["qend"] = aln.qstart - 1, aln.qend
-    aln_dict["sstart"], aln_dict["send"] = (aln.sstart - 1) * 3, aln.send * 3
+    aln_dict["sstart"], aln_dict["send"] = aln.sstart - 1, aln.send
     aln_dict["raw"] = aln.raw
     return aln_dict
 
@@ -84,7 +84,7 @@ def get_absolute_match(aln, start_pos_query, start_pos_subject, is_already_nu):
     if is_already_nu:
         absolute_sstart = relative_sstart + start_pos_subject
     else:
-        absolute_sstart = relative_sstart * 3 + start_pos_subject - frame
+        absolute_sstart = relative_sstart * 3 + start_pos_subject + frame
     aln["sstart"] = absolute_sstart
     # For the qend
     relative_qend = aln["qend"]
@@ -314,10 +314,11 @@ def print_results(denovo, all_matches_recursive, all_matches_blast, qcov_rec, qc
             strings[frame][i] = "*"
     print(f"{''.join(strings[0])}\t{denovo}\n")
     print(f"{''.join(strings[1])}\tqcov = {qcov_rec}%\n")
-    print(f"{''.join(strings[2])}\tsmith-waterman\n\n\n")
+    print(f"{''.join(strings[2])}\tsmith-waterman\n\n")
 
     for match in all_matches_recursive:
         print(grep_after(match["raw"], "query  "))
+    print("\n\n\n\n")
 
 
     # Print result for blast algorithm
@@ -332,7 +333,7 @@ def print_results(denovo, all_matches_recursive, all_matches_blast, qcov_rec, qc
             strings[frame][i] = "*"
     print(f"{''.join(strings[0])}\t{denovo}\n")
     print(f"{''.join(strings[1])}\tqcov = {qcov_blast}%\n")
-    print(f"{''.join(strings[2])}\tblast\n\n\n")
+    print(f"{''.join(strings[2])}\tblast\n\n")
 
     for match in all_matches_blast:
         print(match["raw"])
@@ -353,7 +354,7 @@ if __name__ == "__main__":
         # For each denovo gene
         for denovo in new_denovo:
             """#--------------------------------------------------
-            if "IOIKJFFK_00291_gene_mRNA" not in denovo:
+            if "HPMEPLIM_01176_gene_mRNA" not in denovo:
                 continue
             #--------------------------------------------------"""
             new_denovo[denovo]["genome"] = genome
@@ -385,9 +386,8 @@ if __name__ == "__main__":
     """#--------------------------------------------------------------
     # Keep only gene of interest
     dict_interest = {}
-    dict_interest["IOIKJFFK_00291_gene_mRNA"] = denovo_dict["IOIKJFFK_00291_gene_mRNA"]
+    dict_interest["HPMEPLIM_01176_gene_mRNA"] = denovo_dict["HPMEPLIM_01176_gene_mRNA"]
     denovo_dict = dict_interest
-    print(denovo_dict)
     #--------------------------------------------------------------"""
 
     
@@ -404,7 +404,7 @@ if __name__ == "__main__":
         all_matches_blast = order_matches(look_for_frameshifts(denovo_seq, denovo_start, denovo_end, extended_match_seq, extended_start, extended_end, use_blast=True))
 
         # Get list of all matches for all frames
-        origin_match = {"qstart": denovo_start, "qend": denovo_end, "sstart": extended_start * 3, "send": extended_end * 3, "frame": 0, "raw": ""}
+        origin_match = {"qstart": denovo_start, "qend": denovo_end, "sstart": extended_start, "send": extended_end, "frame": 0, "raw": ""}
         all_matches_recursive = order_matches(frameshifts_recursive + [origin_match])
 
         # Don't continue if no match
