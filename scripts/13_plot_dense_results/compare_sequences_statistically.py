@@ -293,7 +293,7 @@ if __name__ == "__main__":
 
     # Repeat the process n times
     n_denovo = len(denovo_names)
-    n = 10
+    n = 100000
     num_workers = 32
 
     print(f"Starting parallel processing with {num_workers} workers...")
