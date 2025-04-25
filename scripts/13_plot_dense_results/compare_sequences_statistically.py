@@ -1,19 +1,22 @@
 
+import sys
 import os
 import glob
 import re
 import random
-import collections
+import subprocess
+import tempfile
+import io
 import pandas as pd
 from Bio import SeqIO
-from Bio.SeqUtils import GC
+from Bio.SeqUtils import gc_fraction as GC
 from Bio.SeqUtils.ProtParam import ProteinAnalysis
 import numpy as np
 
 
-
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from my_functions.paths import DENSE_DIR, GENERA_DIR, GENOMES_LIST, CDS_DIR, FA_DIR
-OUT_DIR = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences/"
+OUT_DIR = "out/"
 TRG_RANK = 7.0
 GOOD_CANDIDATES_ONLY = True
 
@@ -58,7 +61,7 @@ def extract_denovo_names(focal_species, use_good_candidates=False):
         denovo_names = denovo_df["CDS"].tolist()
     else:
         denovo_names = []
-        denovo_file = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/good_candidates.txt"
+        denovo_file = "good_candidates.txt"
         with open(denovo_file, "r") as f:
             for line in f:
                 denovo_names.append(line.strip())
@@ -77,8 +80,44 @@ def get_species_gc_content(genome):
 
 def calculate_descriptors(descriptors, all_cdss, cds_names):
     descriptors_of_interest = {}
+    current_dir = os.getcwd()
+    # Get the fold potential
+    # Create temp fasta file
+    with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix="faa") as faa:
+        for cds in cds_names:
+            faa.write(f">{cds}\n{all_cdss[cds]['sequence']}\n")
+        faa_file_path = faa.name
+    # Get the temp file directory
+    faa_dir = os.path.dirname(faa_file_path)
+    faa_basename = os.path.basename(faa_file_path)
+    # Full container path to the temp file (inside the container)
+    container_faa_path = f"/tmpdata/{faa_basename}"
+    # Create output dir
+    orfold_output_dir = os.path.join(current_dir, "orfold")
+    os.makedirs(orfold_output_dir, exist_ok=True)
+
+    # Run ORFold
+    container_path = "orfmine_latest.sif"
+    # Bind both the fasta temp dir and the output dir
+    result = subprocess.run([
+    "singularity", "exec",
+    "--bind", f"{faa_dir}:/database/tmpdata",
+    "--bind", f"{orfold_output_dir}:/workdir/orfold",
+    container_path,
+    "orfold", "-faa", container_faa_path, "-options", "H"], text=True, capture_output=True)
+    # Fix the broken output
+    result_file = os.path.join(orfold_output_dir, faa_basename + ".tab")
+    subprocess.run(["sed", "-i", r"s/[[:space:]]\+/;/g", result_file])
+
+    # Result path (in the output dir now)
+    orfold_result = pd.read_csv(result_file, sep=";", header=0)
+    # Delete temp file
+    os.remove(faa_file_path)
+    os.remove(result_file)
+
+
     for cds in cds_names:
-        # Add the info to the global dist if we don't already have it
+        # Add the info to the global dict if we don't already have it
         if cds not in descriptors:
             descriptors[cds] = {}
             # Extract GC rate
@@ -97,8 +136,9 @@ def calculate_descriptors(descriptors, all_cdss, cds_names):
             # Extract sequence length
             descriptors[cds]['length'] = len(nuc_seq)
             # Extract hca
-
-            # Extract evolutionary age
+            orfold_line = orfold_result[orfold_result["Seq_ID"] == cds]
+            descriptors[cds]['hca'] = orfold_line["HCA"].values[0]
+            # Extract aa use
 
         # Add info to descriptor dict for samples
         for descriptor_name in descriptors[cds]:
@@ -221,9 +261,9 @@ if __name__ == "__main__":
 
     # Repeat the process 10k times
     n_denovo = len(denovo_names)
-    n = 100000
+    n = 10
     for k in range(n):
-        if k % 500 == 0:
+        if k % round(n/10) == 0:
             print(f"{k}/{n} samples analysed...")
 
         # Sample TRGs and CDSs
