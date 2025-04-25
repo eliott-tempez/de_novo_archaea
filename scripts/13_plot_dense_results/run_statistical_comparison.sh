@@ -21,7 +21,7 @@ ERROR_LOG=/home/eliott.tempez/pval_comparison_error.log
 OUT_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/pvals_descriptors
 
 # Create environment
-conda activate descriptors
+source /home/eliott.tempez/miniconda3/bin/activate descriptors
 module load singularity
 
 SCRATCH_DIR=/scratchlocal/$USER/$SLURM_JOBID
