@@ -44,9 +44,6 @@ cp -r $FA_DIR/* fa/
 mkdir -p out/
 echo "Environment created" >> $OUTPUT_LOG
 
-# Cleanup rests of old tmp use
-find /tmp -maxdepth 1 -name "*" -user eliott.tempez -exec rm -rf {} +
-
 # Launch program
 python 13_plot_dense_results/compare_sequences_statistically.py >> $OUTPUT_LOG
 
@@ -55,5 +52,6 @@ cp -f out/* $OUT_DIR
 
 # Clean up
 rm -rf $SCRATCH_DIR
+find /tmp -maxdepth 1 -name "*" -user eliott.tempez -exec rm -rf {} +
 conda deactivate
 echo "Done" >> $OUTPUT_LOG
