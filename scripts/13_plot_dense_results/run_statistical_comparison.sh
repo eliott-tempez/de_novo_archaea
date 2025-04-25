@@ -20,6 +20,9 @@ OUTPUT_LOG=/home/eliott.tempez/pval_comparison_output.log
 ERROR_LOG=/home/eliott.tempez/pval_comparison_error.log
 OUT_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/pvals_descriptors
 
+# Set up a trap to clean up on exit or interruption
+trap "rm -rf $SCRATCH_DIR; find /tmp -maxdepth 1 -name "*" -user eliott.tempez -exec rm -rf {} +" EXIT
+
 # Create environment
 source /home/eliott.tempez/miniconda3/bin/activate descriptors
 module load singularity
@@ -41,8 +44,6 @@ cp -r $FA_DIR/* fa/
 mkdir -p out/
 echo "Environment created" >> $OUTPUT_LOG
 
-# Set up a trap to clean up on exit or interruption
-trap "rm -rf $SCRATCH_DIR; find /tmp -maxdepth 1 -name "*" -user eliott.tempez -exec rm -rf {} +" EXIT
 # Cleanup rests of old tmp use
 find /tmp -maxdepth 1 -name "*" -user eliott.tempez -exec rm -rf {} +
 
