@@ -1,5 +1,7 @@
 library(ggplot2)
 library(tidyr)
+library(ggpubr)
+library(rstatix)
 ggsave <- function(..., bg = "white",
                    width = 1000, height = 1000,
                    units = "px", dpi = 100) {
@@ -10,12 +12,19 @@ ggsave <- function(..., bg = "white",
                   dpi = dpi)
 }
 
-input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences/sequence_features_good_candidates.csv"
+#input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences/sequence_features_good_candidates.csv"
+#pval_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences/pvalues.tsv"
+input_file <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/13_plot_dense_results/sequences/sequence_features_good_candidates.csv"
+pval_file <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/13_plot_dense_results/sequences/pvalues.tsv"
 out_folder <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences"
 data <- read.table(input_file, header = TRUE, sep = "\t")
 n_cds <- nrow(data[data$type == "cds", ])
 n_trg <- nrow(data[data$type == "trg", ])
 n_denovo <- nrow(data[data$type == "denovo", ])
+# Import pvalues
+pvals <- read.table(pval_file, header = TRUE, sep = "\t")
+# Fix colnames
+colnames(pvals) <- c("type_1", "type_2", "feature", "pval")
 
 # Pivot to longer
 data <- pivot_longer(data, cols = c("gc_content", "aromaticity", "instability", "mean_flexibility", "hydropathy", "len_nu"), names_to = "feature", values_to = "value")
@@ -24,8 +33,11 @@ data <- pivot_longer(data, cols = c("gc_content", "aromaticity", "instability", 
 ##### Sequence length #####
 data_len <- data[data$feature == "len_nu", ]
 data_len$type <- factor(data_len$type, levels = c("cds", "trg", "denovo"))
+pval_denovo_trg <- pvals[pvals$type_1 == "denovo" & pvals$type_2 == "trg" & pvals$feature == "length", "pval"]
+pval_denovo_cds <- pvals[pvals$type_1 == "denovo" & pvals$type_2 == "cds" & pvals$feature == "length", "pval"]
+pval_trg_cds <- pvals[pvals$type_1 == "trg" & pvals$type_2 == "cds" & pvals$feature == "length", "pval"]
 ggplot(data_len, aes(x = type, y = value, fill = type)) +
-  geom_boxplot(na.rm = TRUE, colour = "#2c2c2c") +
+  geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
   labs(title = "Sequence length distribution",
        x = "Sequence type",
        y = "Length (bp)") +
@@ -36,6 +48,7 @@ ggplot(data_len, aes(x = type, y = value, fill = type)) +
         axis.title.x = element_text(size = 14),
         axis.title.y = element_text(size = 14),
         axis.text.y = element_text(size = 12)) +
+  coord_trans(y = "log10") +
   scale_x_discrete(labels = c("cds" = paste0("cds\n(n = ", n_cds, ")"),
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
                               "denovo" = paste0("denovo\n(n = ", n_denovo, ")")))
