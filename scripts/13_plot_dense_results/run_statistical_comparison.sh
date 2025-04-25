@@ -3,9 +3,9 @@
 #SBATCH -p common
 #SBATCH -J pval_descriptors
 #SBATCH --time=10-00
-#SBATCH --cpus-per-task=16
+#SBATCH --cpus-per-task=32
 #SBATCH --ntasks=1
-#SBATCH --mem=16gb
+#SBATCH --mem=64gb
 #SBATCH -o /home/eliott.tempez/pval_comparison_output.log
 #SBATCH -e /home/eliott.tempez/pval_comparison_error.log
 
