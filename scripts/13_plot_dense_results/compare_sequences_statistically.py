@@ -139,6 +139,9 @@ def calculate_descriptors(descriptors, all_cdss, cds_names):
             orfold_line = orfold_result[orfold_result["Seq_ID"] == cds]
             descriptors[cds]['hca'] = orfold_line["HCA"].values[0]
             # Extract aa use
+            aa_use = analysis.amino_acids_percent
+            for aa in aa_use:
+                descriptors[cds][f"{aa}_use"] = aa_use[aa]
 
         # Add info to descriptor dict for samples
         for descriptor_name in descriptors[cds]:
@@ -259,9 +262,9 @@ if __name__ == "__main__":
     # Calculate descriptors for the denovo genes
     descriptors, denovo_descript = calculate_descriptors(descriptors, all_cdss, denovo_names)
 
-    # Repeat the process 10k times
+    # Repeat the process n times
     n_denovo = len(denovo_names)
-    n = 10
+    n = 100000
     for k in range(n):
         if k % round(n/10) == 0:
             print(f"{k}/{n} samples analysed...")
