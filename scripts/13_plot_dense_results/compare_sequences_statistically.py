@@ -6,7 +6,8 @@ import re
 import random
 import subprocess
 import tempfile
-import io
+from concurrent.futures import ProcessPoolExecutor
+from functools import partial
 import pandas as pd
 from Bio import SeqIO
 from Bio.SeqUtils import gc_fraction as GC
@@ -203,7 +204,35 @@ def export_p_val(denovo_trg_signif, denovo_cds_signif, trg_cds_signif, file_name
     df.to_csv(file_name, sep="\t", index=False)
 
 
+def process_sample(k, n_denovo, trg_names, cds_names, denovo_descript, descriptors, all_cdss):
+    """Function to process a single sample iteration."""
+    # Sample TRGs and CDSs
+    trg_names_sampled = random.sample(list(trg_names), n_denovo)
+    cds_names_sampled = random.sample(list(cds_names), n_denovo)
 
+    # Calculate descriptors for all sampled cdss and trgs
+    descriptors, trg_descript = calculate_descriptors(descriptors, all_cdss, trg_names_sampled)
+    descriptors, cds_descript = calculate_descriptors(descriptors, all_cdss, cds_names_sampled)
+
+    # Get the median differences
+    denovo_trg_diff = get_median_diff(denovo_descript, trg_descript)
+    denovo_cds_diff = get_median_diff(denovo_descript, cds_descript)
+    trg_cds_diff = get_median_diff(trg_descript, cds_descript)
+
+    # Pool sampled cdss and get median diff
+    denovo_trg_pool_1, denovo_trg_pool_2 = pool_cdss(denovo_descript, trg_descript)
+    denovo_cds_pool_1, denovo_cds_pool_2 = pool_cdss(denovo_descript, cds_descript)
+    trg_cds_pool_1, trg_cds_pool_2 = pool_cdss(trg_descript, cds_descript)
+    denovo_trg_diff_pool = get_median_diff(denovo_trg_pool_1, denovo_trg_pool_2)
+    denovo_cds_diff_pool = get_median_diff(denovo_cds_pool_1, denovo_cds_pool_2)
+    trg_cds_diff_pool = get_median_diff(trg_cds_pool_1, trg_cds_pool_2)
+
+    # Compare medians
+    denovo_trg_signif = compare_medians({}, denovo_trg_diff, denovo_trg_diff_pool)
+    denovo_cds_signif = compare_medians({}, denovo_cds_diff, denovo_cds_diff_pool)
+    trg_cds_signif = compare_medians({}, trg_cds_diff, trg_cds_diff_pool)
+
+    return denovo_trg_signif, denovo_cds_signif, trg_cds_signif
 
 
 
@@ -264,36 +293,35 @@ if __name__ == "__main__":
 
     # Repeat the process n times
     n_denovo = len(denovo_names)
-    n = 100000
-    for k in range(n):
-        if k % round(n/10) == 0:
-            print(f"{k}/{n} samples analysed...")
+    n = 10
+    num_workers = 32
 
-        # Sample TRGs and CDSs
-        trg_names_sampled = random.sample(list(trg_names), n_denovo)
-        cds_names_sampled = random.sample(list(cds_names), n_denovo)
+    print(f"Starting parallel processing with {num_workers} workers...")
+    with ProcessPoolExecutor(max_workers=num_workers) as executor:
+        # Use partial to pass fixed arguments to the function
+        process_func = partial(process_sample, n_denovo=n_denovo, trg_names=trg_names, cds_names=cds_names,
+                               denovo_descript=denovo_descript, descriptors=descriptors, all_cdss=all_cdss)
 
-        # Calculate descriptors for all sampled cdss and trgs
-        descriptors, trg_descript = calculate_descriptors(descriptors, all_cdss, trg_names_sampled)
-        descriptors, cds_descript = calculate_descriptors(descriptors, all_cdss, cds_names_sampled)
+        # Submit tasks to the executor
+        results = list(executor.map(process_func, range(n)))
 
-        # Get the median differences
-        denovo_trg_diff = get_median_diff(denovo_descript, trg_descript)
-        denovo_cds_diff = get_median_diff(denovo_descript, cds_descript)
-        trg_cds_diff = get_median_diff(trg_descript, cds_descript)
+    # Aggregate results
+    for denovo_trg_signif_part, denovo_cds_signif_part, trg_cds_signif_part in results:
+        for descriptor in denovo_trg_signif_part:
+            if descriptor not in denovo_trg_signif:
+                denovo_trg_signif[descriptor] = []
+            denovo_trg_signif[descriptor].extend(denovo_trg_signif_part[descriptor])
 
-        # Pool sampled cdss and get median diff
-        denovo_trg_pool_1, denovo_trg_pool_2 = pool_cdss(denovo_descript, trg_descript)
-        denovo_cds_pool_1, denovo_cds_pool_2 = pool_cdss(denovo_descript, cds_descript)
-        trg_cds_pool_1, trg_cds_pool_2 = pool_cdss(trg_descript, cds_descript)
-        denovo_trg_diff_pool = get_median_diff(denovo_trg_pool_1, denovo_trg_pool_2)
-        denovo_cds_diff_pool = get_median_diff(denovo_cds_pool_1, denovo_cds_pool_2)
-        trg_cds_diff_pool = get_median_diff(trg_cds_pool_1, trg_cds_pool_2)
+        for descriptor in denovo_cds_signif_part:
+            if descriptor not in denovo_cds_signif:
+                denovo_cds_signif[descriptor] = []
+            denovo_cds_signif[descriptor].extend(denovo_cds_signif_part[descriptor])
 
-        # Add results to global dict
-        denovo_trg_signif = compare_medians(denovo_trg_signif, denovo_trg_diff, denovo_trg_diff_pool)
-        denovo_cds_signif = compare_medians(denovo_cds_signif, denovo_cds_diff, denovo_cds_diff_pool)
-        trg_cds_signif = compare_medians(trg_cds_signif, trg_cds_diff, trg_cds_diff_pool)
+        for descriptor in trg_cds_signif_part:
+            if descriptor not in trg_cds_signif:
+                trg_cds_signif[descriptor] = []
+            trg_cds_signif[descriptor].extend(trg_cds_signif_part[descriptor])
+
 
     # Calculate and export the p values
     print("\nDone!")
