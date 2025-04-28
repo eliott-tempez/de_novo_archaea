@@ -1,16 +1,18 @@
 
+import sys
 import os
 import glob
 import re
 import subprocess
 import tempfile
+import random
 import pandas as pd
 from Bio import SeqIO
-from Bio.SeqUtils import GC
+from Bio.SeqUtils import gc_fraction as GC
 from Bio.SeqUtils.ProtParam import ProteinAnalysis
 
 
-
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 OUT_DIR = "out/"
 from my_functions.paths import DENSE_DIR, GENERA_DIR, GENOMES_LIST, CDS_DIR, FA_DIR
 TRG_RANK = 7.0
@@ -57,7 +59,7 @@ def extract_denovo_names(focal_species, use_good_candidates=False):
         denovo_names = denovo_df["CDS"].tolist()
     else:
         denovo_names = []
-        denovo_file = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/good_candidates.txt"
+        denovo_file = "good_candidates.txt"
         with open(denovo_file, "r") as f:
             for line in f:
                 denovo_names.append(line.strip())
@@ -153,6 +155,10 @@ if __name__ == "__main__":
     cds_names = list(set(cds_names) - set(trg_names))
     trg_names = list(set(trg_names) - set(denovo_names))
 
+    # Sample cdss and trgs
+    trg_names = random.sample(list(trg_names), 5000)
+    cds_names = random.sample(list(cds_names), 5000)
+
     # Calculate descriptors for all cdss
     all_cds_names = denovo_names + trg_names + cds_names
     n = len(all_cdss)
@@ -203,14 +209,9 @@ if __name__ == "__main__":
             print(f"{i}/{n} cds analysed...")
         
         results.append(result)
-        if i == 10:
-            break
 
     print("\nDone!")
 
     # Save the results
-    all_values = []
-    for cds in all_cdss:
-        result = []
-    df = pd.DataFrame(all_values, columns=["genome", "cds", "gc_rate", "aromaticity", "instability", "mean_flexibility", "hydropathy", "length", "hca"] + list(sorted_aa_use.keys()) + ["type"])
+    df = pd.DataFrame(results, columns=["genome", "cds", "gc_rate", "aromaticity", "instability", "mean_flexibility", "hydropathy", "length", "hca"] + [f"{a}_use" for a in list(sorted_aa_use.keys())] + ["type"])
     df.to_csv(os.path.join(OUT_DIR, "sequence_features_good_candidates.csv"), sep="\t", index=False)
