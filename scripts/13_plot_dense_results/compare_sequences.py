@@ -2,17 +2,16 @@
 import os
 import glob
 import re
-import random
-import collections
+import subprocess
+import tempfile
 import pandas as pd
 from Bio import SeqIO
 from Bio.SeqUtils import GC
 from Bio.SeqUtils.ProtParam import ProteinAnalysis
-import numpy as np
 
 
 
-OUT_DIR = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences/"
+OUT_DIR = "out/"
 from my_functions.paths import DENSE_DIR, GENERA_DIR, GENOMES_LIST, CDS_DIR, FA_DIR
 TRG_RANK = 7.0
 GOOD_CANDIDATES_ONLY = True
@@ -75,6 +74,47 @@ def get_species_gc_content(genome):
     return GC(seq)
 
 
+def get_hcas(cds_names, all_cdss):
+    current_dir = os.getcwd()
+    # Get the fold potential
+    # Create temp fasta file
+    with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix="faa") as faa:
+        for cds in cds_names:
+            faa.write(f">{cds}\n{all_cdss[cds]['sequence']}\n")
+        faa_file_path = faa.name
+    # Get the temp file directory
+    faa_dir = os.path.dirname(faa_file_path)
+    faa_basename = os.path.basename(faa_file_path)
+    # Full container path to the temp file (inside the container)
+    container_faa_path = f"/tmpdata/{faa_basename}"
+    # Create output dir
+    orfold_output_dir = os.path.join(current_dir, "orfold")
+    os.makedirs(orfold_output_dir, exist_ok=True)
+
+    # Run ORFold
+    container_path = "orfmine_latest.sif"
+    # Bind both the fasta temp dir and the output dir
+    result = subprocess.run([
+    "singularity", "exec",
+    "--bind", f"{faa_dir}:/database/tmpdata",
+    "--bind", f"{orfold_output_dir}:/workdir/orfold",
+    container_path,
+    "orfold", "-faa", container_faa_path, "-options", "H"], text=True, capture_output=True)
+    # Fix the broken output
+    result_file = os.path.join(orfold_output_dir, faa_basename + ".tab")
+    subprocess.run(["sed", "-i", r"s/[[:space:]]\+/;/g", result_file])
+    orfold_result = pd.read_csv(result_file, sep=";", header=0)
+    # Delete temp file
+    os.remove(faa_file_path)
+    os.remove(result_file)
+    return orfold_result
+
+
+def get_hca(all_hcas, cds_name):
+    orfold_line = all_hcas[all_hcas["Seq_ID"] == cds]
+    return orfold_line["HCA"].values[0]
+
+
 
 if __name__ == "__main__":
     # Get the list of genomes
@@ -110,29 +150,27 @@ if __name__ == "__main__":
         denovo_names = extract_denovo_names(genome, True)
 
     # Drop duplicates
-    cds_names = set(cds_names) - set(trg_names)
-    trg_names = set(trg_names) - set(denovo_names)
+    cds_names = list(set(cds_names) - set(trg_names))
+    trg_names = list(set(trg_names) - set(denovo_names))
 
-
-    # Sample TRGs and CDSs
-    n_denovo = len(denovo_names)
-    print("Sampling CDSs and calculating descriptors...")
-    trg_names_sampled = random.sample(list(trg_names), n_denovo)
-    cds_names_sampled = random.sample(list(cds_names), n_denovo)
-
-    # Calculate descriptors for all sampled cdss
-    all_samples = denovo_names + trg_names_sampled + cds_names_sampled
-    n = len(all_samples)
+    # Calculate descriptors for all cdss
+    all_cds_names = denovo_names + trg_names + cds_names
+    n = len(all_cdss)
     i = 0
-    for cds in all_samples:
+
+    # Extract all hcas
+    all_hcas = get_hcas(all_cds_names, all_cdss)
+
+    results = []
+    for cds in all_cds_names:
         i += 1
         genome = all_cdss[cds]["genome"]
         # Extract GC rate
-        gc_seq = GC(all_cdss[cds]["sequence"])
-        gc_species = all_cdss[cds]["gen_gc"]
-        gc_content = gc_seq / gc_species
-        # Extract protein info
         nuc_seq = all_cdss[cds]["sequence"]
+        gc_seq = GC(nuc_seq)
+        gc_species = all_cdss[cds]["gen_gc"]
+        gc_rate = gc_seq / gc_species
+        # Extract protein info
         prot_seq = re.sub(r"[\*X]", "", str(nuc_seq.translate()))
         analysis = ProteinAnalysis(prot_seq)
         aromaticity = analysis.aromaticity()
@@ -141,19 +179,38 @@ if __name__ == "__main__":
         mean_flexibility = sum(flexibility) / len(flexibility)
         hydropathy = analysis.gravy()
         # Extract sequence length
-        len_nu = len(nuc_seq)
+        length = len(nuc_seq)
+        # Extract hca
+        hca = get_hca(all_hcas, cds)
+        result = [genome, cds, gc_rate, aromaticity, instability, mean_flexibility, hydropathy, length, hca]
 
-        # Add to results
-        results = [genome, cds, gc_content, aromaticity, instability, mean_flexibility, hydropathy, len_nu]
+        # Extract aa use
+        aa_use = analysis.amino_acids_percent
+        # Sort dict alphabetically
+        sorted_aa_use = {key: value for key, value in sorted(aa_use.items())}
+        for aa in sorted_aa_use:
+            result.append(aa_use[aa])
+
+        # Add the type of cds
         if cds in cds_names:
-            all_values.append(results + ["cds"])
+            result.append("cds")
         elif cds in trg_names:
-            all_values.append(results + ["trg"])
+            result.append("trg")
         elif cds in denovo_names:
-            all_values.append(results + ["denovo"])
+            result.append("denovo")
+        
+        if i % round(n/20) == 0:
+            print(f"{i}/{n} cds analysed...")
+        
+        results.append(result)
+        if i == 10:
+            break
 
     print("\nDone!")
 
     # Save the results
-    df = pd.DataFrame(all_values, columns=["genome", "cds", "gc_content", "aromaticity", "instability", "mean_flexibility", "hydropathy", "len_nu", "type"])
+    all_values = []
+    for cds in all_cdss:
+        result = []
+    df = pd.DataFrame(all_values, columns=["genome", "cds", "gc_rate", "aromaticity", "instability", "mean_flexibility", "hydropathy", "length", "hca"] + list(sorted_aa_use.keys()) + ["type"])
     df.to_csv(os.path.join(OUT_DIR, "sequence_features_good_candidates.csv"), sep="\t", index=False)
