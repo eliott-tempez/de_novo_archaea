@@ -74,6 +74,14 @@ def extract_intergenic_segments(species):
     return intergenic_dict
 
 
+def extract_iorfs(genome, threshold=60):
+    """Extract all iORFS longer than a certain length from a given genome"""
+    intergenic_dict = extract_intergenic_segments(genome)
+    for segment in intergenic_dict:
+        seq = intergenic_dict[segment]["seq"]
+        # Get all the ORFs
+
+
 
 def extract_denovo_info(genome):
     """Extract info for all de novo genes for one genome"""
