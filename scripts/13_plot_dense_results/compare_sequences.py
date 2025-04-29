@@ -169,10 +169,6 @@ if __name__ == "__main__":
     cds_names = list(set(cds_names) - set(trg_names))
     trg_names = list(set(trg_names) - set(denovo_names))
 
-    # Sample cdss and trgs
-    trg_names = random.sample(list(trg_names), 5000)
-    cds_names = random.sample(list(cds_names), 5000)
-
     # Calculate descriptors for all cdss
     all_cds_names = denovo_names + trg_names + cds_names
     n = len(all_cdss)
