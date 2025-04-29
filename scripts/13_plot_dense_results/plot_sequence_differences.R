@@ -156,7 +156,7 @@ ggplot(data_gc_inter, aes(x = type, y = value, fill = type)) +
   geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
   labs(title = "GC ratio distribution (intergenic)",
        x = "Sequence type",
-       y = "GC ratio: sequence GC % / genome intergenic GC %") +
+       y = "GC ratio: sequence GC % / intergenic ORFs GC %") +
   scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c")) +
   theme_minimal() +
   theme(legend.position = "none",

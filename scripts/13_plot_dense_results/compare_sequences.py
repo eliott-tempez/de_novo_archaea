@@ -15,7 +15,7 @@ from Bio.SeqUtils.ProtParam import ProteinAnalysis
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 OUT_DIR = "out/"
 from my_functions.paths import DENSE_DIR, GENERA_DIR, GENOMES_LIST, CDS_DIR, FA_DIR
-from my_functions.genomic_functions import extract_intergenic_segments
+from my_functions.genomic_functions import extract_iorfs
 TRG_RANK = 7.0
 GOOD_CANDIDATES_ONLY = True
 
@@ -77,14 +77,12 @@ def get_species_gc_content(genome):
     return GC(seq)
 
 
-def get_species_intergenic_gc(genome):
-    intergen = extract_intergenic_segments(genome)
+def get_species_iorf_gc(genome):
+    iorfs = extract_iorfs(genome)
     concat_seq = ""
-    for segment in intergen:
-        seq = intergen[segment]["seq"]
-        # Remove stops and Xs
-        seq = re.sub(r"[\*X]", "", str(seq))
-        concat_seq += str(seq)
+    for segment in iorfs:
+        seq = str(segment)
+        concat_seq += seq
     return GC(concat_seq)
 
 
@@ -145,7 +143,7 @@ if __name__ == "__main__":
     for genome in genomes:
         # Get the species gc content
         genome_gc = get_species_gc_content(genome)
-        intergenic_gc = get_species_intergenic_gc(genome)
+        intergenic_gc = get_species_iorf_gc(genome)
 
         # Extract de novo names
         if not GOOD_CANDIDATES_ONLY:
@@ -168,6 +166,11 @@ if __name__ == "__main__":
     # Drop duplicates
     cds_names = list(set(cds_names) - set(trg_names))
     trg_names = list(set(trg_names) - set(denovo_names))
+
+    """# Sample
+    cds_names = random.sample(cds_names, 10)
+    trg_names = random.sample(trg_names, 10)
+    denovo_names = random.sample(denovo_names, 10)"""
 
     # Calculate descriptors for all cdss
     all_cds_names = denovo_names + trg_names + cds_names
@@ -226,4 +229,4 @@ if __name__ == "__main__":
 
     # Save the results
     df = pd.DataFrame(results, columns=["genome", "cds", "gc_rate", "aromaticity", "instability", "mean_flexibility", "hydropathy", "length", "hca", "inter_gc_rate"] + [f"{a}_use" for a in list(sorted_aa_use.keys())] + ["type"])
-    df.to_csv(os.path.join(OUT_DIR, "sequence_features_good_candidates.csv"), sep="\t", index=False)
+    df.to_csv(os.path.join(OUT_DIR, "sequence_features_good_candidates_all.csv"), sep="\t", index=False)

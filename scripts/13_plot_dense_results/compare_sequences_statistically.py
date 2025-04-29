@@ -17,7 +17,7 @@ import numpy as np
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from my_functions.paths import DENSE_DIR, GENERA_DIR, GENOMES_LIST, CDS_DIR, FA_DIR
-from my_functions.genomic_functions import extract_intergenic_segments
+from my_functions.genomic_functions import extract_iorfs
 OUT_DIR = "out/"
 TRG_RANK = 7.0
 GOOD_CANDIDATES_ONLY = True
@@ -80,14 +80,12 @@ def get_species_gc_content(genome):
     return GC(seq)
 
 
-def get_species_intergenic_gc(genome):
-    intergen = extract_intergenic_segments(genome)
+def get_species_iorf_gc(genome):
+    iorfs = extract_iorfs(genome)
     concat_seq = ""
-    for segment in intergen:
-        seq = intergen[segment]["seq"]
-        # Remove stops and Xs
-        seq = re.sub(r"[\*X]", "", str(seq))
-        concat_seq += str(seq)
+    for segment in iorfs:
+        seq = str(segment)
+        concat_seq += seq
     return GC(concat_seq)
 
 
@@ -280,7 +278,7 @@ if __name__ == "__main__":
     for genome in genomes:
         # Get the species gc content
         genome_gc = get_species_gc_content(genome)
-        intergenic_gc = get_species_intergenic_gc(genome)
+        intergenic_gc = get_species_iorf_gc(genome)
 
         # Extract de novo names
         if not GOOD_CANDIDATES_ONLY:
@@ -310,7 +308,7 @@ if __name__ == "__main__":
     # Repeat the process n times
     n_denovo = len(denovo_names)
     n = 100000
-    num_workers = 32
+    num_workers = 8 if n < 100000 else 32
 
     print(f"Starting parallel processing with {num_workers} workers...")
     with ProcessPoolExecutor(max_workers=num_workers) as executor:

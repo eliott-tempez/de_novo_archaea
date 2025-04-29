@@ -3,6 +3,8 @@ This script contains functions that are used for genomic analysis.
 """
 
 import os
+import subprocess
+import tempfile
 # Paths import
 from my_functions.paths import *
 # Data handling
@@ -36,7 +38,7 @@ def extract_intergenic_segments(species):
         # Get all nucl positions in CDSs from the gff file
         coding_loci = []
         for i, row in gff[gff["contig"] == record].iterrows():
-            if row["type"] == "CDS":
+            if row["type"] == "gene":
                 coding_loci += list(range(row["start"], row["end"]))
         # Get all the integers that are not in the list of coding loci
         full_set = set(range(min(coding_loci), max(coding_loci) + 1))
@@ -74,12 +76,54 @@ def extract_intergenic_segments(species):
     return intergenic_dict
 
 
+def get_end_frame(start_frame):
+    if start_frame == 0:
+        return 0
+    elif start_frame == 1:
+        return -2
+    elif start_frame == 2:
+        return -1
+
+
 def extract_iorfs(genome, threshold=60):
     """Extract all iORFS longer than a certain length from a given genome"""
+    iorfs = []
+    stops = ["TAA", "TAG", "TGA"]
     intergenic_dict = extract_intergenic_segments(genome)
+    # Get the sequence in all 6 frames
     for segment in intergenic_dict:
         seq = intergenic_dict[segment]["seq"]
-        # Get all the ORFs
+        # Skip small segments
+        if len(seq) < threshold:
+            continue
+        for frame in range(3):
+            seq_fr = (str(seq[frame:get_end_frame(frame)])).upper()
+            seq_reverse_fr = (str(seq.reverse_complement()[frame:get_end_frame(frame)])).upper()
+            # Find all segments between 2 stop codons
+            for s in (seq_fr, seq_reverse_fr):
+                # Find first stop
+                start = -1
+                for i in range(0, len(s) - 2, 3):
+                    codon = s[i:i + 3]
+                    if codon in stops:
+                        start = i
+                        break
+                # If no stop codon was found, skip the segment
+                if start == -1:
+                    continue
+                # Get each stop-separated segment
+                for i in range(start + 3, len(s) - 2, 3):
+                    codon = s[i:i + 3]
+                    if codon in stops:
+                        # If the segment is longer than the threshold, add it to the list
+                        if ((i + 3) - start) >= threshold:
+                            iorfs.append(s[start:i + 3])
+                            start = i + 3
+    return iorfs
+                            
+            
+                
+                
 
 
 
