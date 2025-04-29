@@ -119,7 +119,7 @@ ggplot(data_len, aes(x = type, y = value, fill = type)) +
   stat_pvalue_manual(get_pvals("length", data_len, 0.5), label = "p.signif", inherit.aes = FALSE, hide.ns = TRUE) +
   annotate("text", x = 3.3, y = max(data_len$value) * 1,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
-ggsave(paste0(out_folder, "/sequence_length.png"))
+#ggsave(paste0(out_folder, "/sequence_length.png"))
 
 
 
@@ -144,6 +144,32 @@ ggplot(data_gc, aes(x = type, y = value, fill = type)) +
                               "denovo" = paste0("denovo\n(n = ", n_denovo, ")"))) +
   stat_pvalue_manual(get_pvals("gc_rate", data_gc, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
   annotate("text", x = 3.3, y = max(data_gc$value) * 1,
+           label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
+#ggsave(paste0(out_folder, "/gc_content.png"))
+
+
+
+##### GC content (intergenic) #####
+data_gc_inter <- data[data$feature == "inter_gc_rate", ]
+data_gc_inter$type <- factor(data_gc_inter$type, levels = c("cds", "trg", "denovo"))
+ggplot(data_gc_inter, aes(x = type, y = value, fill = type)) +
+  geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
+  labs(title = "GC ratio distribution (intergenic)",
+       x = "Sequence type",
+       y = "GC ratio: sequence GC % / genome intergenic GC %") +
+  scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c")) +
+  theme_minimal() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(size = 16),
+        axis.title.x = element_text(size = 14),
+        axis.title.y = element_text(size = 14),
+        axis.text.y = element_text(size = 12),
+        plot.title = element_text(hjust = 0.5)) +
+  scale_x_discrete(labels = c("cds" = paste0("cds\n(n = ", n_cds, ")"),
+                              "trg" = paste0("trg\n(n = ", n_trg, ")"),
+                              "denovo" = paste0("denovo\n(n = ", n_denovo, ")"))) +
+  stat_pvalue_manual(get_pvals("gc_rate", data_gc_inter, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
+  annotate("text", x = 3.3, y = max(data_gc_inter$value) * 1,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
 ggsave(paste0(out_folder, "/gc_content.png"))
 
@@ -171,7 +197,7 @@ ggplot(data_aro, aes(x = type, y = value, fill = type)) +
   stat_pvalue_manual(get_pvals("aromaticity", data_aro, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") + 
   annotate("text", x = 3.3, y = max(data_aro$value) * .65,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
-ggsave(paste0(out_folder, "/aromaticity.png"))
+#ggsave(paste0(out_folder, "/aromaticity.png"))
 
 
 
@@ -197,7 +223,7 @@ ggplot(data_inst, aes(x = type, y = value, fill = type)) +
   stat_pvalue_manual(get_pvals("instability", data_inst, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
   annotate("text", x = 3.3, y = max(data_inst$value) * .65,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
-ggsave(paste0(out_folder, "/instability_index.png"))
+#ggsave(paste0(out_folder, "/instability_index.png"))
 
 
 
@@ -223,7 +249,7 @@ ggplot(data_flex, aes(x = type, y = value, fill = type)) +
   stat_pvalue_manual(get_pvals("mean_flexibility", data_flex, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
   annotate("text", x = 3.3, y = max(data_flex$value) * 1.01,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
-ggsave(paste0(out_folder, "/mean_flexibility.png"))
+#ggsave(paste0(out_folder, "/mean_flexibility.png"))
 
 
 
@@ -249,7 +275,7 @@ ggplot(data_hydro, aes(x = type, y = value, fill = type)) +
   stat_pvalue_manual(get_pvals("hydropathy", data_hydro, 0.2), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
   annotate("text", x = 3.3, y = max(data_hydro$value) * .9,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
-ggsave(paste0(out_folder, "/hydrophobicity.png"))
+#ggsave(paste0(out_folder, "/hydrophobicity.png"))
 
 
 
@@ -275,7 +301,7 @@ ggplot(data_hca, aes(x = type, y = value, fill = type)) +
   stat_pvalue_manual(get_pvals("hca", data_hca, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
   annotate("text", x = 3.3, y = max(data_hca$value) * .95,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
-ggsave(paste0(out_folder, "/hca.png"))
+#ggsave(paste0(out_folder, "/hca.png"))
 
 
 
@@ -303,9 +329,4 @@ annotate_figure(fig, bottom = text_grob("Sequence type\n", size = 14),
                 left = text_grob("Amino-acid use (%)", rot = 90, size = 14),
                 right = text_grob("****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05\n", size = 8, rot = -90), 
                 top = text_grob("Amino-acid use distribution", size = 18))
-ggsave(paste0(out_folder, "/aa_use.png"), width = 1200, height = 1200)
-
-
-
-
-
+#ggsave(paste0(out_folder, "/aa_use.png"), width = 1200, height = 1200)
