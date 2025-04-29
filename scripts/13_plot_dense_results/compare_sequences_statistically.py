@@ -17,6 +17,7 @@ import numpy as np
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from my_functions.paths import DENSE_DIR, GENERA_DIR, GENOMES_LIST, CDS_DIR, FA_DIR
+from my_functions.genomic_functions import extract_intergenic_segments
 OUT_DIR = "out/"
 TRG_RANK = 7.0
 GOOD_CANDIDATES_ONLY = True
@@ -79,6 +80,17 @@ def get_species_gc_content(genome):
     return GC(seq)
 
 
+def get_species_intergenic_gc(genome):
+    intergen = extract_intergenic_segments(genome)
+    concat_seq = ""
+    for segment in intergen:
+        seq = intergen[segment]["seq"]
+        # Remove stops and Xs
+        seq = re.sub(r"[\*X]", "", str(seq))
+        concat_seq += str(seq)
+    return GC(concat_seq)
+
+
 def calculate_descriptors(descriptors, all_cdss, cds_names):
     descriptors_of_interest = {}
     current_dir = os.getcwd()
@@ -125,7 +137,9 @@ def calculate_descriptors(descriptors, all_cdss, cds_names):
             nuc_seq = all_cdss[cds]["sequence"]
             gc_seq = GC(nuc_seq)
             gc_species = all_cdss[cds]["gen_gc"]
+            inter_gc_species = all_cdss[cds]["intergenic_gc"]
             descriptors[cds]["gc_rate"] = gc_seq / gc_species
+            descriptors[cds]["inter_gc_rate"] = gc_seq / inter_gc_species
             # Extract protein info
             prot_seq = re.sub(r"[\*X]", "", str(nuc_seq.translate()))
             analysis = ProteinAnalysis(prot_seq)
@@ -266,6 +280,7 @@ if __name__ == "__main__":
     for genome in genomes:
         # Get the species gc content
         genome_gc = get_species_gc_content(genome)
+        intergenic_gc = get_species_intergenic_gc(genome)
 
         # Extract de novo names
         if not GOOD_CANDIDATES_ONLY:
@@ -278,6 +293,7 @@ if __name__ == "__main__":
         for cds in all_cds_gen:
             all_cds_gen[cds]["genome"] = genome
             all_cds_gen[cds]["gen_gc"] = genome_gc
+            all_cds_gen[cds]["intergenic_gc"] = intergenic_gc
         all_cdss.update(all_cds_gen)
         cds_names += all_cds_gen.keys()
 
