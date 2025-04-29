@@ -16,6 +16,7 @@ GENERA_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/genera/out
 DENSE_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/dense
 FA_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/complete_122/fasta_renamed
 CDS_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/dense/GCA_000007305@Pyrococcus_furiosus_DSM_3638/CDS
+GFF_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/complete_122/reannotated_gff_75
 OUTPUT_LOG=/home/eliott.tempez/pval_comparison_output.log
 ERROR_LOG=/home/eliott.tempez/pval_comparison_error.log
 OUT_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/pvals_descriptors
@@ -41,6 +42,8 @@ mkdir -p cds/
 cp -r $CDS_DIR/* cds/
 mkdir -p fa/
 cp -r $FA_DIR/* fa/
+mkdir -p gff/
+cp -r $GFF_DIR/* gff/
 mkdir -p out/
 echo "Environment created" >> $OUTPUT_LOG
 
