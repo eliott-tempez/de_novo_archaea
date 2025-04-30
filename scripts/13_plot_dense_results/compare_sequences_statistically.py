@@ -120,15 +120,14 @@ def calculate_descriptors(descriptors, all_cdss, cds_names):
     "--bind", f"{programs_dir}:/ORFmine/orfold_v1/orfold/softwares/",
     container_path,
     "orfold", "-faa", container_faa_path, "-options", "HIT"], text=True, capture_output=True)
-    print(result.stderr)
-    print(result.stdout)
     # Fix the broken output
     result_file = os.path.join(orfold_output_dir, faa_basename + ".tab")
+    with open(result_file, "w") as f:
+        print(f.read())
     subprocess.run(["sed", "-i", r"s/[[:space:]]\+/;/g", result_file])
 
     # Result path (in the output dir now)
     orfold_result = pd.read_csv(result_file, sep=";", header=0)
-    print(orfold_result)
     # Delete temp file
     os.remove(faa_file_path)
     os.remove(result_file)
