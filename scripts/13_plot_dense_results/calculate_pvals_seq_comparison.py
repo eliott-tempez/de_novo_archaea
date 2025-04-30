@@ -1,6 +1,7 @@
 import os
 import sys
 import re
+import random
 import pandas as pd
 from Bio import SeqIO
 from Bio.SeqUtils import gc_fraction as GC
@@ -61,7 +62,6 @@ if __name__ == "__main__":
     
     # Get the indexes for each type of cds
     denovo_indexes = list(descriptors_df[descriptors_df["type"] == "denovo"].index)
-    print(len(denovo_indexes))
     trg_indexes = list(descriptors_df[descriptors_df["type"] == "trg"].index)
     cds_indexes = list(descriptors_df[descriptors_df["type"] == "cds"].index)
     
@@ -72,6 +72,30 @@ if __name__ == "__main__":
     # Get the different bin indexes
     bin_indexes = get_bin_indexes(descriptors_df, gc_dict, bin_limits)
     print([len(bin) for bin in bin_indexes])
+    # Get the bin indexes for each type of cds
+    denovo_bin_indexes = [list(set(denovo_indexes) & set(bin)) for bin in bin_indexes]
+    trg_bin_indexes = [list(set(trg_indexes) & set(bin)) for bin in bin_indexes]
+    cds_bin_indexes = [list(set(cds_indexes) & set(bin)) for bin in bin_indexes]
+    
+    # Number of iterations
+    n = 10
+    for i in range(n):
+        # For each bin
+        for i_bin in range(len(bin_indexes)):
+            sampled_denovo_indexes = denovo_bin_indexes[i_bin]
+            n_to_sample = len(sampled_denovo_indexes)
+            
+            # Sample the trgs and de novo
+            sampled_trg_indexes = random.sample(trg_bin_indexes[i_bin], n_to_sample)
+            sampled_cds_indexes = random.sample(cds_bin_indexes[i_bin], n_to_sample)
+            sampled_denovo_df = descriptors_df.iloc[sampled_denovo_indexes]
+            sampled_trg_df = descriptors_df.iloc[sampled_trg_indexes]
+            sampled_cds_df = descriptors_df.iloc[sampled_cds_indexes]
+            
+            
+            
+        
+        
     
         
         
