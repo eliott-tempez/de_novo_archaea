@@ -106,6 +106,9 @@ def calculate_descriptors(descriptors, all_cdss, cds_names):
     # Create output dir
     orfold_output_dir = os.path.join(current_dir, "orfold")
     os.makedirs(orfold_output_dir, exist_ok=True)
+    # Get programs dir
+    programs_dir = os.path.join(current_dir, "orfold_v1")
+
 
     # Run ORFold
     container_path = "orfmine_latest.sif"
@@ -114,14 +117,16 @@ def calculate_descriptors(descriptors, all_cdss, cds_names):
     "singularity", "exec",
     "--bind", f"{faa_dir}:/database/tmpdata",
     "--bind", f"{orfold_output_dir}:/workdir/orfold",
+    "--bind", f"{programs_dir}:/ORFmine",
     container_path,
-    "orfold", "-faa", container_faa_path, "-options", "H"], text=True, capture_output=True)
+    "orfold", "-faa", container_faa_path, "-options", "HIT"], text=True, capture_output=True)
     # Fix the broken output
     result_file = os.path.join(orfold_output_dir, faa_basename + ".tab")
     subprocess.run(["sed", "-i", r"s/[[:space:]]\+/;/g", result_file])
 
     # Result path (in the output dir now)
     orfold_result = pd.read_csv(result_file, sep=";", header=0)
+    print(orfold_result)
     # Delete temp file
     os.remove(faa_file_path)
     os.remove(result_file)
@@ -307,7 +312,7 @@ if __name__ == "__main__":
 
     # Repeat the process n times
     n_denovo = len(denovo_names)
-    n = 100000
+    n = 1
     num_workers = 8 if n < 100000 else 32
 
     print(f"Starting parallel processing with {num_workers} workers...")
