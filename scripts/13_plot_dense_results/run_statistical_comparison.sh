@@ -32,8 +32,8 @@ module load singularity
 
 SCRATCH_DIR=/scratchlocal/$USER/$SLURM_JOBID
 SOFTWARE_PATH=$SCRATCH_DIR/softwares
-mkdir -p $SOFTWARE_PATH
 mkdir -p $SCRATCH_DIR
+mkdir -p $SOFTWARE_PATH
 cd $SCRATCH_DIR
 cp -r $SCRIPTS/* .
 cp $GOOD_CANDIDATES .
