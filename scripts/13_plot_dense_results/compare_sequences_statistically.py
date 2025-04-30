@@ -313,7 +313,8 @@ if __name__ == "__main__":
 
     # Repeat the process n times
     n_denovo = len(denovo_names)
-    n = 1
+    n = 10
+    pn = n / 10
     num_workers = 8 if n < 100000 else 32
 
     print(f"Starting parallel processing with {num_workers} workers...")
@@ -323,7 +324,12 @@ if __name__ == "__main__":
                                denovo_descript=denovo_descript, descriptors=descriptors, all_cdss=all_cdss)
 
         # Submit tasks to the executor
-        results = list(executor.map(process_func, range(n)))
+        results = []
+        for i, result in enumerate(executor.map(process_func, range(n)), start=1):
+            results.append(result)
+            # Print progress every 10,000 iterations
+            if i % pn == 0:
+                print(f"{i}/{n}...")
 
     # Aggregate results
     for denovo_trg_signif_part, denovo_cds_signif_part, trg_cds_signif_part in results:
