@@ -103,7 +103,7 @@ def get_hcas(cds_names, all_cdss):
     orfold_output_dir = os.path.join(current_dir, "orfold")
     os.makedirs(orfold_output_dir, exist_ok=True)
     # Get programs dir
-    programs_dir = os.path.join(current_dir, "orfold_v1")
+    programs_dir = os.path.join(current_dir, "softwares")
 
     # Run ORFold
     container_path = "orfmine_latest.sif"
@@ -112,7 +112,7 @@ def get_hcas(cds_names, all_cdss):
     "singularity", "exec",
     "--bind", f"{faa_dir}:/database/tmpdata",
     "--bind", f"{orfold_output_dir}:/workdir/orfold",
-    "--bind", f"{programs_dir}:/ORFmine",
+    "--bind", f"{programs_dir}:/ORFmine/orfold_v1/orfold/softwares/",
     container_path,
     "orfold", "-faa", container_faa_path, "-options", "HIT"], text=True, capture_output=True)
     # Fix the broken output
@@ -125,9 +125,12 @@ def get_hcas(cds_names, all_cdss):
     return orfold_result
 
 
-def get_hca(all_hcas, cds_name):
+def get_orfold_descript(all_hcas, cds_name):
     orfold_line = all_hcas[all_hcas["Seq_ID"] == cds]
-    return orfold_line["HCA"].values[0]
+    hca = orfold_line["HCA"].values[0]
+    disord = orfold_line["Disord"].values[0]
+    aggreg = orfold_line["Aggreg"].values[0]
+    return hca, disord, aggreg
 
 
 
@@ -170,10 +173,10 @@ if __name__ == "__main__":
     cds_names = list(set(cds_names) - set(trg_names))
     trg_names = list(set(trg_names) - set(denovo_names))
 
-    """# Sample
+    # Sample
     cds_names = random.sample(cds_names, 10)
     trg_names = random.sample(trg_names, 10)
-    denovo_names = random.sample(denovo_names, 10)"""
+    denovo_names = random.sample(denovo_names, 10)
 
     # Calculate descriptors for all cdss
     all_cds_names = denovo_names + trg_names + cds_names
@@ -204,9 +207,9 @@ if __name__ == "__main__":
         hydropathy = analysis.gravy()
         # Extract sequence length
         length = len(nuc_seq)
-        # Extract hca
-        hca = get_hca(all_hcas, cds)
-        result = [genome, cds, gc_rate, aromaticity, instability, mean_flexibility, hydropathy, length, hca, inter_gc_rate]
+        # Extract hca, disorder and aggregation
+        hca, disord, aggreg = get_orfold_descript(all_hcas, cds)
+        result = [genome, cds, gc_rate, aromaticity, instability, mean_flexibility, hydropathy, length, hca, disord, aggreg, inter_gc_rate]
 
         # Extract aa use
         aa_use = analysis.amino_acids_percent
@@ -231,5 +234,5 @@ if __name__ == "__main__":
     print("\nDone!")
 
     # Save the results
-    df = pd.DataFrame(results, columns=["genome", "cds", "gc_rate", "aromaticity", "instability", "mean_flexibility", "hydropathy", "length", "hca", "inter_gc_rate"] + [f"{a}_use" for a in list(sorted_aa_use.keys())] + ["type"])
+    df = pd.DataFrame(results, columns=["genome", "cds", "gc_rate", "aromaticity", "instability", "mean_flexibility", "hydropathy", "length", "hca", "disord", "aggreg", "inter_gc_rate"] + [f"{a}_use" for a in list(sorted_aa_use.keys())] + ["type"])
     df.to_csv(os.path.join(OUT_DIR, "sequence_features_good_candidates_all.csv"), sep="\t", index=False)
