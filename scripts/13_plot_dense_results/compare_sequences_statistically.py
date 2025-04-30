@@ -313,7 +313,7 @@ if __name__ == "__main__":
 
     # Repeat the process n times
     n_denovo = len(denovo_names)
-    n = 10
+    n = 100000
     pn = n / 10
     num_workers = 8 if n < 100000 else 32
 
@@ -327,9 +327,9 @@ if __name__ == "__main__":
         results = []
         for i, result in enumerate(executor.map(process_func, range(n)), start=1):
             results.append(result)
-            # Print progress every 10,000 iterations
+            # Print progress 
             if i % pn == 0:
-                print(f"{i}/{n}...")
+                print(f"{i}/{n} iterations...")
 
     # Aggregate results
     for denovo_trg_signif_part, denovo_cds_signif_part, trg_cds_signif_part in results:
