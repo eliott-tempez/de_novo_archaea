@@ -122,9 +122,6 @@ def calculate_descriptors(descriptors, all_cdss, cds_names):
     "orfold", "-faa", container_faa_path, "-options", "HIT"], text=True, capture_output=True)
     # Fix the broken output
     result_file = os.path.join(orfold_output_dir, faa_basename + ".tab")
-    with open(result_file, "r") as f:
-        content = f.read()
-        print(content)
     subprocess.run(["sed", "-i", r"s/[[:space:]]\+/;/g", result_file])
 
     # Result path (in the output dir now)
@@ -155,9 +152,11 @@ def calculate_descriptors(descriptors, all_cdss, cds_names):
             descriptors[cds]["hydropathy"] = analysis.gravy()
             # Extract sequence length
             descriptors[cds]['length'] = len(nuc_seq)
-            # Extract hca
+            # Extract hca, iupred, tango
             orfold_line = orfold_result[orfold_result["Seq_ID"] == cds]
             descriptors[cds]['hca'] = orfold_line["HCA"].values[0]
+            descriptors[cds]["disord"] = orfold_line["Disord"].values[0]
+            descriptors[cds]["aggreg"] = orfold_line["Aggreg"].values[0]
             # Extract aa use
             aa_use = analysis.amino_acids_percent
             for aa in aa_use:
