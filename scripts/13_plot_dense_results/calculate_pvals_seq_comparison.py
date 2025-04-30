@@ -1,9 +1,11 @@
 import os
+import sys
 import re
 import pandas as pd
 from Bio import SeqIO
 from Bio.SeqUtils import gc_fraction as GC
 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from my_functions.paths import GENOMES_LIST, FA_DIR
 
@@ -60,11 +62,12 @@ if __name__ == "__main__":
             max_gc = genome_gc
     
     # Read descriptors 
-    descriptors_file = "sequence_features_good_candidates_all.tsv"
+    descriptors_file = "sequence_features_good_candidates_all.csv"
     descriptors_df = pd.read_csv(descriptors_file, sep="\t", header=0)
     
     # Get the indexes for each type of cds
     denovo_indexes = list(descriptors_df[descriptors_df["type"] == "denovo"].index)
+    print(len(denovo_indexes))
     trg_indexes = list(descriptors_df[descriptors_df["type"] == "trg"].index)
     cds_indexes = list(descriptors_df[descriptors_df["type"] == "cds"].index)
     
@@ -73,6 +76,9 @@ if __name__ == "__main__":
     bin_limits = [0] + [i * bin_size + min_gc for i in range(NB_GC_BINS + 1)][1:-1] + [1]
     
     # Get the de novo bins
-    denovo_bins_indexes = binned_indexes(denovo_indexes, gc_dict, bin_limits)
+    denovo_bins_indexes = binned_indexes(denovo_indexes, descriptors_df, gc_dict, bin_limits)
+    genomes_intermediate_bin = [g for g in gc_dict if gc_dict[g] >= bin_limits[1] and gc_dict[g] < bin_limits[2]]
+    indexes_intermediate_bin = descriptors_df[descriptors_df["genome"].isin(genomes_intermediate_bin)].index.tolist()
+    print(f"There are {len(genomes_intermediate_bin)} cds in the intermediate bin out of {len(descriptors_df.index)}")
         
         
