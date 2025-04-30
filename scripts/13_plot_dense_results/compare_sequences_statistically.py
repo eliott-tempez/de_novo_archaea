@@ -117,9 +117,9 @@ def calculate_descriptors(descriptors, all_cdss, cds_names):
     "singularity", "exec",
     "--bind", f"{faa_dir}:/database/tmpdata",
     "--bind", f"{orfold_output_dir}:/workdir/orfold",
-    "--bind", f"{programs_dir}:/ORFmine",
+    "--bind", f"{programs_dir}:/ORFmine/orfold_v1/orfold/softwares/",
     container_path,
-    "orfold", "-faa", container_faa_path, "-options", "HIT"], text=True, capture_output=True)
+    "orfold", "-faa", container_faa_path, "-options", "H"], text=True, capture_output=True)
     print(result.stderr)
     print(result.stdout)
     # Fix the broken output
