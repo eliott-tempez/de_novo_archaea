@@ -107,7 +107,7 @@ def calculate_descriptors(descriptors, all_cdss, cds_names):
     orfold_output_dir = os.path.join(current_dir, "orfold")
     os.makedirs(orfold_output_dir, exist_ok=True)
     # Get programs dir
-    programs_dir = os.path.join(current_dir, "orfold_v1")
+    programs_dir = os.path.join(current_dir, "softwares")
 
 
     # Run ORFold
@@ -119,7 +119,7 @@ def calculate_descriptors(descriptors, all_cdss, cds_names):
     "--bind", f"{orfold_output_dir}:/workdir/orfold",
     "--bind", f"{programs_dir}:/ORFmine/orfold_v1/orfold/softwares/",
     container_path,
-    "orfold", "-faa", container_faa_path, "-options", "H"], text=True, capture_output=True)
+    "orfold", "-faa", container_faa_path, "-options", "HIT"], text=True, capture_output=True)
     print(result.stderr)
     print(result.stdout)
     # Fix the broken output

@@ -31,7 +31,7 @@ source /home/eliott.tempez/miniconda3/bin/activate descriptors
 module load singularity
 
 SCRATCH_DIR=/scratchlocal/$USER/$SLURM_JOBID
-SOFTWARE_PATH=$SCRATCH_DIR/orfold_v1/orfold/softwares
+SOFTWARE_PATH=$SCRATCH_DIR/softwares
 mkdir -p $SOFTWARE_PATH
 mkdir -p $SCRATCH_DIR
 cd $SCRATCH_DIR
