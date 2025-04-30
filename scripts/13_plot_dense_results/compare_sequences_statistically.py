@@ -122,8 +122,9 @@ def calculate_descriptors(descriptors, all_cdss, cds_names):
     "orfold", "-faa", container_faa_path, "-options", "HIT"], text=True, capture_output=True)
     # Fix the broken output
     result_file = os.path.join(orfold_output_dir, faa_basename + ".tab")
-    with open(result_file, "w") as f:
-        print(f.read())
+    with open(result_file, "r") as f:
+        content = f.read()
+        print(content)
     subprocess.run(["sed", "-i", r"s/[[:space:]]\+/;/g", result_file])
 
     # Result path (in the output dir now)
