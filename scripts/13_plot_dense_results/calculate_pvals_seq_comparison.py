@@ -10,7 +10,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from my_functions.paths import GENOMES_LIST, FA_DIR
 
 
-NB_GC_BINS = 3
+NB_GC_BINS = 2
 
 
 def get_species_gc_content(genome):
@@ -23,19 +23,13 @@ def get_species_gc_content(genome):
     return GC(seq)
 
 
-def binned_indexes(indexes, descriptors_df, gc_dict, bin_limits):
+def get_bin_indexes(descriptors_df, gc_dict, bin_limits):
     binned_indexes = []
-    df = descriptors_df.iloc[indexes]
-    print(df)
     for i in range(len(bin_limits) - 1):
         bin_range = [bin_limits[i], bin_limits[i + 1]]
         genomes_in_bin = [g for g in gc_dict if gc_dict[g] >= bin_range[0] and gc_dict[g] < bin_range[1]]
-        print(bin_range)
-        print([(g, gc_dict[g]) for g in genomes_in_bin])
-        bin_indexes = df[df["genome"].isin(genomes_in_bin)].index.tolist()
-        print(df[df["genome"].isin(genomes_in_bin)])
+        bin_indexes = descriptors_df[descriptors_df["genome"].isin(genomes_in_bin)].index.tolist()
         binned_indexes.append(bin_indexes)
-    
     return binned_indexes
 
 
@@ -75,10 +69,9 @@ if __name__ == "__main__":
     bin_size = (max_gc - min_gc) / NB_GC_BINS
     bin_limits = [0] + [i * bin_size + min_gc for i in range(NB_GC_BINS + 1)][1:-1] + [1]
     
-    # Get the de novo bins
-    denovo_bins_indexes = binned_indexes(denovo_indexes, descriptors_df, gc_dict, bin_limits)
-    genomes_intermediate_bin = [g for g in gc_dict if gc_dict[g] >= bin_limits[1] and gc_dict[g] < bin_limits[2]]
-    indexes_intermediate_bin = descriptors_df[descriptors_df["genome"].isin(genomes_intermediate_bin)].index.tolist()
-    print(f"There are {len(genomes_intermediate_bin)} cds in the intermediate bin out of {len(descriptors_df.index)}")
+    # Get the different bin indexes
+    bin_indexes = get_bin_indexes(descriptors_df, gc_dict, bin_limits)
+    print([len(bin) for bin in bin_indexes])
+    
         
         
