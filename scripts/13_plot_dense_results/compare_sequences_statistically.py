@@ -120,6 +120,8 @@ def calculate_descriptors(descriptors, all_cdss, cds_names):
     "--bind", f"{programs_dir}:/ORFmine",
     container_path,
     "orfold", "-faa", container_faa_path, "-options", "HIT"], text=True, capture_output=True)
+    print(result.stderr)
+    print(result.stdout)
     # Fix the broken output
     result_file = os.path.join(orfold_output_dir, faa_basename + ".tab")
     subprocess.run(["sed", "-i", r"s/[[:space:]]\+/;/g", result_file])
