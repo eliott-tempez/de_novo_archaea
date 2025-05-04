@@ -68,6 +68,9 @@ def compare_medians(median_diff, random_diff, type1, type2, bin1, bin2):
     return results_df
 
 
+def calculate_pvalues(signif_results, descriptors):
+    print(signif_results[["type1", "type2", "bin1", "bin2"]].value_counts().reset_index(name='count'))
+    
 
 
 
@@ -115,7 +118,7 @@ if __name__ == "__main__":
         bin_indexes[type] = [list(set(indexes[type]) & set(bin)) for bin in bin_indexes_lst]
     
     # Number of iterations
-    n = 1
+    n = 10
     n_bins = len(bin_indexes["denovo"])
     n_to_sample = min([len(bin_indexes["denovo"][bin]) for bin in range(n_bins)])
     signif_columns = ["type1", "type2", "bin1", "bin2"] + descriptors
@@ -148,7 +151,7 @@ if __name__ == "__main__":
             # Add the results to the dataframe
             signif_results = pd.merge(signif_results, signif, how="outer")
             
-    print(signif_results, "\n")
+    pvalues = calculate_pvalues(signif_results, descriptors)
                 
 
         
