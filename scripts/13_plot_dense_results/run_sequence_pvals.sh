@@ -2,7 +2,7 @@
 
 #SBATCH -p common
 #SBATCH -J pval_descriptors
-#SBATCH --time=10-00
+#SBATCH --time=100-00
 #SBATCH --cpus-per-task=8
 #SBATCH --ntasks=1
 #SBATCH --mem=16gb
@@ -13,6 +13,8 @@ SCRIPTS=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/stage/M2_stage_I2BC/scripts
 DESCRIPTORS=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/pvals_descriptors/sequence_features_good_candidates_all.csv
 FA_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/complete_122/fasta_renamed
 OUT_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/pvals_descriptors
+OUTPUT_LOG=/home/eliott.tempez/pval_comparison_output.log
+ERROR_LOG=/home/eliott.tempez/pval_comparison_error.log
 
 
 # Set up a trap to clean up on exit or interruption
