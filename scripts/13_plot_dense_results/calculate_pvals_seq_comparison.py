@@ -138,7 +138,7 @@ if __name__ == "__main__":
     with open(f"bin_indexes_{n_bins}.csv", "w") as f:
         f.write("cds\tbin\n")
         for type in bin_indexes:
-            i = 1
+            i = -1
             for bins in bin_indexes[type]:
                 i += 1
                 for bin in bins:
