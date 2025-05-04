@@ -133,10 +133,20 @@ if __name__ == "__main__":
     bin_indexes = {}
     for type in indexes:
         bin_indexes[type] = [list(set(indexes[type]) & set(bin)) for bin in bin_indexes_lst]
+    # Print to file
+    n_bins = len(bin_indexes["denovo"])
+    with open(f"bin_indexes_{n_bins}.csv", "w") as f:
+        f.write("cds\tbin\n")
+        for type in bin_indexes:
+            i = 1
+            for bins in bin_indexes[type]:
+                i += 1
+                for bin in bins:
+                    cds_name = descriptors_df.iloc[bin]["cds"]
+                    f.write(f"{cds_name}\t{i}\n")
     
     # Number of iterations
     n = 1000000
-    n_bins = len(bin_indexes["denovo"])
     n_to_sample = min([len(bin_indexes["denovo"][bin]) for bin in range(n_bins)])
     signif_columns = ["type1", "type2", "bin1", "bin2"] + descriptors
     signif_results = pd.DataFrame(columns=signif_columns)
