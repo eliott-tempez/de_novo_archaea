@@ -46,7 +46,7 @@ def pool_cdss(df1, df2):
     # Pool the samples and get 2 random subsets
     pooled_df = pd.concat([df1, df2]).reset_index(drop=True)
     n = len(pooled_df)
-    sampled_indexes_1 = random.sample(range(n), n/2)
+    sampled_indexes_1 = random.sample(range(n), int(n/2))
     sampled_indexes_2 = [i for i in range(n) if i not in sampled_indexes_1]
     pooled_df_1 = pooled_df.iloc[sampled_indexes_1]
     pooled_df_2 = pooled_df.iloc[sampled_indexes_2]
@@ -94,7 +94,9 @@ if __name__ == "__main__":
     descriptors_file = "sequence_features_good_candidates_all.csv"
     descriptors_df = pd.read_csv(descriptors_file, sep="\t", header=0)
     descriptors = list(descriptors_df)
-    descriptors.remove("genome", "cds", "type")
+    descriptors.remove("genome")
+    descriptors.remove("type")
+    descriptors.remove("cds")
     
     # Get the indexes for each type of cds
     denovo_indexes = list(descriptors_df[descriptors_df["type"] == "denovo"].index)
@@ -110,6 +112,7 @@ if __name__ == "__main__":
     print([len(bin) for bin in bin_indexes])
     # Get the bin indexes for each type of cds
     denovo_bin_indexes = [list(set(denovo_indexes) & set(bin)) for bin in bin_indexes]
+    n_to_sample = min([len(bin) for bin in denovo_bin_indexes])
     trg_bin_indexes = [list(set(trg_indexes) & set(bin)) for bin in bin_indexes]
     cds_bin_indexes = [list(set(cds_indexes) & set(bin)) for bin in bin_indexes]
     
@@ -123,8 +126,7 @@ if __name__ == "__main__":
     for i in range(n):
         # For each bin combination
         for i_bin_denovo in range(n_bins):
-            sampled_denovo_indexes = denovo_bin_indexes[i_bin_denovo]
-            n_to_sample = len(sampled_denovo_indexes)
+            sampled_denovo_indexes = random.sample(denovo_bin_indexes[i_bin_denovo], n_to_sample)
             # Sample the trgs and de novo
             for i_bin_trg in range(n_bins):
                 sampled_trg_indexes = random.sample(trg_bin_indexes[i_bin_trg], n_to_sample)
