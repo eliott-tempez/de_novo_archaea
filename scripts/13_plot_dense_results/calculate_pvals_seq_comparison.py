@@ -58,14 +58,12 @@ def compare_medians(median_diff, random_diff, type1, type2, n1, n2, bin1, bin2):
     results = {}
     for descriptor in median_diff:
         if median_diff[descriptor] > random_diff[descriptor]:
-            median_diff[descriptor] = 1
+            results[descriptor] = 1
         else:
-            median_diff[descriptor] = 0
-        results[descriptor] = median_diff[descriptor]
+            results[descriptor] = 0
     # Create a dataframe with the results
     results_lst = [type1, type2, n1, n2, bin1, bin2] + list(results.values())
-    results_df = pd.DataFrame(results_lst, columns=["type1", "type2", "n1", "n2", "bin1", "bin2"] + list(results.keys()))
-    return results_df
+    results_df = pd.DataFrame([results_lst], columns=["type1", "type2", "n1", "n2", "bin1", "bin2"] + list(results.keys()))
 
 
 
