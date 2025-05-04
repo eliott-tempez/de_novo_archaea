@@ -5,6 +5,7 @@ import random
 import pandas as pd
 from Bio import SeqIO
 from Bio.SeqUtils import gc_fraction as GC
+from itertools import combinations
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from my_functions.paths import GENOMES_LIST, FA_DIR
@@ -53,7 +54,7 @@ def pool_cdss(df1, df2):
     return pooled_df_1, pooled_df_2
 
 
-def compare_medians(median_diff, random_diff, type1, type2, n1, n2, bin1, bin2):
+def compare_medians(median_diff, random_diff, type1, type2, bin1, bin2):
     # Compare the median differences
     results = {}
     for descriptor in median_diff:
@@ -62,8 +63,9 @@ def compare_medians(median_diff, random_diff, type1, type2, n1, n2, bin1, bin2):
         else:
             results[descriptor] = 0
     # Create a dataframe with the results
-    results_lst = [type1, type2, n1, n2, bin1, bin2] + list(results.values())
-    results_df = pd.DataFrame([results_lst], columns=["type1", "type2", "n1", "n2", "bin1", "bin2"] + list(results.keys()))
+    results_lst = [type1, type2, bin1, bin2] + list(results.values())
+    results_df = pd.DataFrame([results_lst], columns=["type1", "type2", "bin1", "bin2"] + list(results.keys()))
+    return results_df
 
 
 
@@ -97,32 +99,57 @@ if __name__ == "__main__":
     descriptors.remove("cds")
     
     # Get the indexes for each type of cds
-    denovo_indexes = list(descriptors_df[descriptors_df["type"] == "denovo"].index)
-    trg_indexes = list(descriptors_df[descriptors_df["type"] == "trg"].index)
-    cds_indexes = list(descriptors_df[descriptors_df["type"] == "cds"].index)
-    
+    indexes = {}
+    for type in ["denovo", "trg", "cds"]:
+        indexes[type] = list(descriptors_df[descriptors_df["type"] == type].index)
+
     # Get the bins ranges
     bin_size = (max_gc - min_gc) / NB_GC_BINS
     bin_limits = [0] + [i * bin_size + min_gc for i in range(NB_GC_BINS + 1)][1:-1] + [1]
     
     # Get the different bin indexes
     bin_indexes = get_bin_indexes(descriptors_df, gc_dict, bin_limits)
-    print([len(bin) for bin in bin_indexes])
     # Get the bin indexes for each type of cds
-    denovo_bin_indexes = [list(set(denovo_indexes) & set(bin)) for bin in bin_indexes]
-    n_to_sample = min([len(bin) for bin in denovo_bin_indexes])
-    trg_bin_indexes = [list(set(trg_indexes) & set(bin)) for bin in bin_indexes]
-    cds_bin_indexes = [list(set(cds_indexes) & set(bin)) for bin in bin_indexes]
+    bin_indexes = {}
+    for type in indexes:
+        bin_indexes[type] = [list(set(indexes[type]) & set(bin)) for bin in bin_indexes]
     
     # Number of iterations
     n = 1
-    n_bins = len(bin_indexes)
-    signif_columns = ["type1", "type2", "n1", "n2", "bin1", "bin2"] + descriptors
-    denovo_trg_signif_results = pd.DataFrame(columns=signif_columns)
-    denovo_cds_signif_results = pd.DataFrame(columns=signif_columns)
-    trg_cds_signif_results = pd.DataFrame(columns=signif_columns)
+    n_bins = len(bin_indexes["denovo"])
+    n_to_sample = min([len(bin_indexes["denovo"][bin]) for bin in range(n_bins)])
+    signif_columns = ["type1", "type2", "bin1", "bin2"] + descriptors
+    signif_results = pd.DataFrame(columns=signif_columns)
+
     for i in range(n):
-        # For each bin combination
+        # Sample each type for each bin
+        samples = {}
+        for type in bin_indexes:
+            for bin in range(n_bins):
+                key = (type, bin)
+                draw = random.sample(bin_indexes[type][bin], n_to_sample)
+                samples[key] = draw
+                
+    print(samples.keys())
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    """# For each bin combination
         for i_bin_denovo in range(n_bins):
             sampled_denovo_indexes = random.sample(denovo_bin_indexes[i_bin_denovo], n_to_sample)
             # Sample the trgs and de novo
@@ -149,16 +176,17 @@ if __name__ == "__main__":
                     trg_cds_random_diff = get_median_diff(trg_cds_pool_1, trg_cds_pool_2)
                     
                     # Compare medians
-                    denovo_trg_signif = compare_medians(denovo_trg_diff, denovo_trg_random_diff, "denovo", "trg", len(sampled_denovo_df), len(sampled_trg_df), i_bin_denovo, i_bin_trg)
-                    denovo_cds_signif = compare_medians(denovo_cds_diff, denovo_cds_random_diff, "denovo", "cds", len(sampled_denovo_df), len(sampled_cds_df), i_bin_denovo, i_bin_cds)
-                    trg_cds_signif = compare_medians(trg_cds_diff, trg_cds_random_diff, "trg", "cds", len(sampled_trg_df), len(sampled_cds_df), i_bin_trg, i_bin_cds)
+                    denovo_trg_signif = compare_medians(denovo_trg_diff, denovo_trg_random_diff, "denovo", "trg", i_bin_denovo, i_bin_trg)
+                    denovo_cds_signif = compare_medians(denovo_cds_diff, denovo_cds_random_diff, "denovo", "cds", i_bin_denovo, i_bin_cds)
+                    trg_cds_signif = compare_medians(trg_cds_diff, trg_cds_random_diff, "trg", "cds", i_bin_trg, i_bin_cds)
                     # Add the results to the dataframes
                     denovo_trg_signif_results = pd.merge(denovo_trg_signif_results, denovo_trg_signif, how="outer")
-                    print(denovo_trg_signif_results, "\n")
                     denovo_cds_signif_results = pd.merge(denovo_cds_signif_results, denovo_cds_signif, how="outer")
-                    print(denovo_cds_signif_results, "\n")
                     trg_cds_signif_results = pd.merge(trg_cds_signif_results, trg_cds_signif, how="outer")
-                    print(trg_cds_signif_results, "\n")
+                    
+    print(denovo_trg_signif_results, "\n")
+    print(denovo_cds_signif_results, "\n")
+    print(trg_cds_signif_results, "\n")"""
                     
                 
             
