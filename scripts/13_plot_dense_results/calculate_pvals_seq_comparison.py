@@ -113,7 +113,6 @@ if __name__ == "__main__":
     bin_indexes = {}
     for type in indexes:
         bin_indexes[type] = [list(set(indexes[type]) & set(bin)) for bin in bin_indexes_lst]
-    print(bin_indexes)
     
     # Number of iterations
     n = 1
@@ -131,72 +130,29 @@ if __name__ == "__main__":
                 draw = random.sample(bin_indexes[type][bin], n_to_sample)
                 samples[key] = draw
                 
-    print(samples.keys())
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-    """# For each bin combination
-        for i_bin_denovo in range(n_bins):
-            sampled_denovo_indexes = random.sample(denovo_bin_indexes[i_bin_denovo], n_to_sample)
-            # Sample the trgs and de novo
-            for i_bin_trg in range(n_bins):
-                sampled_trg_indexes = random.sample(trg_bin_indexes[i_bin_trg], n_to_sample)
-                for i_bin_cds in range(n_bins):
-                    sampled_cds_indexes = random.sample(cds_bin_indexes[i_bin_cds], n_to_sample)
-                    # Get the dfs
-                    sampled_denovo_df = descriptors_df.iloc[sampled_denovo_indexes]
-                    sampled_trg_df = descriptors_df.iloc[sampled_trg_indexes]
-                    sampled_cds_df = descriptors_df.iloc[sampled_cds_indexes]
-                    
-                    # Get the median differences
-                    denovo_trg_diff = get_median_diff(sampled_denovo_df, sampled_trg_df)
-                    denovo_cds_diff = get_median_diff(sampled_denovo_df, sampled_cds_df)
-                    trg_cds_diff = get_median_diff(sampled_trg_df, sampled_cds_df)
-                    
-                    # Pool samples and get the random median differences
-                    denovo_trg_pool_1, denovo_trg_pool_2 = pool_cdss(sampled_denovo_df, sampled_trg_df)
-                    denovo_cds_pool_1, denovo_cds_pool_2 = pool_cdss(sampled_denovo_df, sampled_cds_df)
-                    trg_cds_pool_1, trg_cds_pool_2 = pool_cdss(sampled_trg_df, sampled_cds_df)
-                    denovo_trg_random_diff = get_median_diff(denovo_trg_pool_1, denovo_trg_pool_2)
-                    denovo_cds_random_diff = get_median_diff(denovo_cds_pool_1, denovo_cds_pool_2)
-                    trg_cds_random_diff = get_median_diff(trg_cds_pool_1, trg_cds_pool_2)
-                    
-                    # Compare medians
-                    denovo_trg_signif = compare_medians(denovo_trg_diff, denovo_trg_random_diff, "denovo", "trg", i_bin_denovo, i_bin_trg)
-                    denovo_cds_signif = compare_medians(denovo_cds_diff, denovo_cds_random_diff, "denovo", "cds", i_bin_denovo, i_bin_cds)
-                    trg_cds_signif = compare_medians(trg_cds_diff, trg_cds_random_diff, "trg", "cds", i_bin_trg, i_bin_cds)
-                    # Add the results to the dataframes
-                    denovo_trg_signif_results = pd.merge(denovo_trg_signif_results, denovo_trg_signif, how="outer")
-                    denovo_cds_signif_results = pd.merge(denovo_cds_signif_results, denovo_cds_signif, how="outer")
-                    trg_cds_signif_results = pd.merge(trg_cds_signif_results, trg_cds_signif, how="outer")
-                    
-    print(denovo_trg_signif_results, "\n")
-    print(denovo_cds_signif_results, "\n")
-    print(trg_cds_signif_results, "\n")"""
-                    
+        # Iterate on each possible combination
+        for conf1, conf2 in combinations(samples.keys(), 2):
+            type1, bin1 = conf1
+            type2, bin2 = conf2
+            
+            # Get values
+            sampled_type1_df = descriptors_df.iloc[samples[conf1]]
+            sampled_type2_df = descriptors_df.iloc[samples[conf2]]
+            # Get the median differences
+            median_diff = get_median_diff(sampled_type1_df, sampled_type2_df)
+            # Pool samples and get the random median differences
+            pooled_df_1, pooled_df_2 = pool_cdss(sampled_type1_df, sampled_type2_df)
+            random_diff = get_median_diff(pooled_df_1, pooled_df_2)
+            # Compare medians
+            signif = compare_medians(median_diff, random_diff, type1, type2, bin1, bin2)
+            # Add the results to the dataframe
+            signif_results = pd.merge(signif_results, signif, how="outer")
+            
+    print(signif_results, "\n")
                 
-            
-            
-            
-    
-            
-            
+
         
+
         
     
         
