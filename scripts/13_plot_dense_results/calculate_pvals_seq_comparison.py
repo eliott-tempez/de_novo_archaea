@@ -69,7 +69,20 @@ def compare_medians(median_diff, random_diff, type1, type2, bin1, bin2):
 
 
 def calculate_pvalues(signif_results, descriptors):
-    print(signif_results[["type1", "type2", "bin1", "bin2"]].value_counts().reset_index(name='count'))
+    results = []
+    for keys, sub_df in signif_results.groupby(["type1", "type2", "bin1", "bin2"]):
+        # Get the number of 1s for each column
+        signif = sub_df[descriptors].sum()
+        # Get the number of samples
+        n_samples = len(sub_df)
+        # Get the pvalues
+        pvalues = [1 - (x / n_samples) for x in signif]
+        results.append(["type1", "type2", "bin1", "bin2"] + list(pvalues))
+    # Create a dataframe with the results
+    results_df = pd.DataFrame(results, columns=["type1", "type2", "bin1", "bin2"] + descriptors)
+    # Save the results
+    results_df.to_csv("pvalues.csv", sep="\t", index=False)
+    return results_df
     
 
 
