@@ -7,7 +7,6 @@ from Bio import SeqIO
 from Bio.SeqUtils import gc_fraction as GC
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 from my_functions.paths import GENOMES_LIST, FA_DIR
 
 
@@ -32,6 +31,41 @@ def get_bin_indexes(descriptors_df, gc_dict, bin_limits):
         bin_indexes = descriptors_df[descriptors_df["genome"].isin(genomes_in_bin)].index.tolist()
         binned_indexes.append(bin_indexes)
     return binned_indexes
+
+
+def get_median_diff(df1, df2):
+    # Get the median differences for each descriptor
+    median_diff = {}
+    for descriptor in df1.columns:
+        if descriptor not in ["genome", "cds", "type"]:
+            median_diff[descriptor] = abs(df1[descriptor].median() - df2[descriptor].median())
+    return median_diff
+
+
+def pool_cdss(df1, df2):
+    # Pool the samples and get 2 random subsets
+    pooled_df = pd.concat([df1, df2]).reset_index(drop=True)
+    n = len(pooled_df)
+    sampled_indexes_1 = random.sample(range(n), n/2)
+    sampled_indexes_2 = [i for i in range(n) if i not in sampled_indexes_1]
+    pooled_df_1 = pooled_df.iloc[sampled_indexes_1]
+    pooled_df_2 = pooled_df.iloc[sampled_indexes_2]
+    return pooled_df_1, pooled_df_2
+
+
+def compare_medians(median_diff, random_diff, type1, type2, n1, n2, bin1, bin2):
+    # Compare the median differences
+    results = {}
+    for descriptor in median_diff:
+        if median_diff[descriptor] > random_diff[descriptor]:
+            median_diff[descriptor] = 1
+        else:
+            median_diff[descriptor] = 0
+        results[descriptor] = median_diff[descriptor]
+    # Create a dataframe with the results
+    results_lst = [type1, type2, n1, n2, bin1, bin2] + list(results.values())
+    results_df = pd.DataFrame(results_lst, columns=["type1", "type2", "n1", "n2", "bin1", "bin2"] + list(results.keys()))
+    return results_df
 
 
 
@@ -59,6 +93,8 @@ if __name__ == "__main__":
     # Read descriptors 
     descriptors_file = "sequence_features_good_candidates_all.csv"
     descriptors_df = pd.read_csv(descriptors_file, sep="\t", header=0)
+    descriptors = list(descriptors_df)
+    descriptors.remove("genome", "cds", "type")
     
     # Get the indexes for each type of cds
     denovo_indexes = list(descriptors_df[descriptors_df["type"] == "denovo"].index)
@@ -78,20 +114,57 @@ if __name__ == "__main__":
     cds_bin_indexes = [list(set(cds_indexes) & set(bin)) for bin in bin_indexes]
     
     # Number of iterations
-    n = 10
+    n = 1
+    n_bins = len(bin_indexes)
+    signif_columns = ["type1", "type2", "n1", "n2", "bin1", "bin2"] + descriptors
+    denovo_trg_signif_results = pd.DataFrame(columns=signif_columns)
+    denovo_cds_signif_results = pd.DataFrame(columns=signif_columns)
+    trg_cds_signif_results = pd.DataFrame(columns=signif_columns)
     for i in range(n):
-        # For each bin
-        for i_bin in range(len(bin_indexes)):
-            sampled_denovo_indexes = denovo_bin_indexes[i_bin]
+        # For each bin combination
+        for i_bin_denovo in range(n_bins):
+            sampled_denovo_indexes = denovo_bin_indexes[i_bin_denovo]
             n_to_sample = len(sampled_denovo_indexes)
-            
             # Sample the trgs and de novo
-            sampled_trg_indexes = random.sample(trg_bin_indexes[i_bin], n_to_sample)
-            sampled_cds_indexes = random.sample(cds_bin_indexes[i_bin], n_to_sample)
-            sampled_denovo_df = descriptors_df.iloc[sampled_denovo_indexes]
-            sampled_trg_df = descriptors_df.iloc[sampled_trg_indexes]
-            sampled_cds_df = descriptors_df.iloc[sampled_cds_indexes]
+            for i_bin_trg in range(n_bins):
+                sampled_trg_indexes = random.sample(trg_bin_indexes[i_bin_trg], n_to_sample)
+                for i_bin_cds in range(n_bins):
+                    sampled_cds_indexes = random.sample(cds_bin_indexes[i_bin_cds], n_to_sample)
+                    # Get the dfs
+                    sampled_denovo_df = descriptors_df.iloc[sampled_denovo_indexes]
+                    sampled_trg_df = descriptors_df.iloc[sampled_trg_indexes]
+                    sampled_cds_df = descriptors_df.iloc[sampled_cds_indexes]
+                    
+                    # Get the median differences
+                    denovo_trg_diff = get_median_diff(sampled_denovo_df, sampled_trg_df)
+                    denovo_cds_diff = get_median_diff(sampled_denovo_df, sampled_cds_df)
+                    trg_cds_diff = get_median_diff(sampled_trg_df, sampled_cds_df)
+                    
+                    # Pool samples and get the random median differences
+                    denovo_trg_pool_1, denovo_trg_pool_2 = pool_cdss(sampled_denovo_df, sampled_trg_df)
+                    denovo_cds_pool_1, denovo_cds_pool_2 = pool_cdss(sampled_denovo_df, sampled_cds_df)
+                    trg_cds_pool_1, trg_cds_pool_2 = pool_cdss(sampled_trg_df, sampled_cds_df)
+                    denovo_trg_random_diff = get_median_diff(denovo_trg_pool_1, denovo_trg_pool_2)
+                    denovo_cds_random_diff = get_median_diff(denovo_cds_pool_1, denovo_cds_pool_2)
+                    trg_cds_random_diff = get_median_diff(trg_cds_pool_1, trg_cds_pool_2)
+                    
+                    # Compare medians
+                    denovo_trg_signif = compare_medians(denovo_trg_diff, denovo_trg_random_diff, "denovo", "trg", len(sampled_denovo_df), len(sampled_trg_df), i_bin_denovo, i_bin_trg)
+                    denovo_cds_signif = compare_medians(denovo_cds_diff, denovo_cds_random_diff, "denovo", "cds", len(sampled_denovo_df), len(sampled_cds_df), i_bin_denovo, i_bin_cds)
+                    trg_cds_signif = compare_medians(trg_cds_diff, trg_cds_random_diff, "trg", "cds", len(sampled_trg_df), len(sampled_cds_df), i_bin_trg, i_bin_cds)
+                    # Add the results to the dataframes
+                    denovo_trg_signif_results = pd.merge(denovo_trg_signif_results, denovo_trg_signif, how="outer")
+                    print(denovo_trg_signif_results, "\n")
+                    denovo_cds_signif_results = pd.merge(denovo_cds_signif_results, denovo_cds_signif, how="outer")
+                    print(denovo_cds_signif_results, "\n")
+                    trg_cds_signif_results = pd.merge(trg_cds_signif_results, trg_cds_signif, how="outer")
+                    print(trg_cds_signif_results, "\n")
+                    
+                
             
+            
+            
+    
             
             
         
