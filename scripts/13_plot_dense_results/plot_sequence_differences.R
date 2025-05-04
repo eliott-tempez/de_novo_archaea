@@ -15,11 +15,13 @@ ggsave <- function(..., bg = "white",
 }
 
 
-input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences/sequence_features_good_candidates_all.csv"
-pval_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences/pvalues.tsv"
-#input_file <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/13_plot_dense_results/sequences/sequence_features_good_candidates.csv"
-#pval_file <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/13_plot_dense_results/sequences/pvalues.tsv"
-out_folder <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences"
+#input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences/sequence_features_good_candidates_all.csv"
+#pval_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences/pvalues.tsv"
+#out_folder <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences"
+input_file <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/13_plot_dense_results/sequence_features_good_candidates_all.csv"
+pval_file <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/13_plot_dense_results/pvalues.tsv"
+out_folder <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/13_plot_dense_results/sequences/1_bin"
+
 data <- read.table(input_file, header = TRUE, sep = "\t")
 n_cds <- nrow(data[data$type == "cds", ])
 n_trg <- nrow(data[data$type == "trg", ])
@@ -171,7 +173,7 @@ ggplot(data_gc_inter, aes(x = type, y = value, fill = type)) +
   stat_pvalue_manual(get_pvals("gc_rate", data_gc_inter, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
   annotate("text", x = 3.3, y = max(data_gc_inter$value) * 1,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
-ggsave(paste0(out_folder, "/gc_content.png"))
+#ggsave(paste0(out_folder, "/gc_content.png"))
 
 
 
