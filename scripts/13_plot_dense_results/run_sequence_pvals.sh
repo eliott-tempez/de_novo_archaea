@@ -38,6 +38,7 @@ python 13_plot_dense_results/calculate_pvals_seq_comparison.py >> $OUTPUT_LOG
 
 # Get output
 cp pvalues.csv $OUT_DIR
+cp bin_indexes_*.csv $OUT_DIR
 # Clean up
 rm -rf $SCRATCH_DIR
 find /tmp -maxdepth 1 -name "*" -user eliott.tempez -exec rm -rf {} +
