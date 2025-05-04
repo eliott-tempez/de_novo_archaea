@@ -108,11 +108,12 @@ if __name__ == "__main__":
     bin_limits = [0] + [i * bin_size + min_gc for i in range(NB_GC_BINS + 1)][1:-1] + [1]
     
     # Get the different bin indexes
-    bin_indexes = get_bin_indexes(descriptors_df, gc_dict, bin_limits)
+    bin_indexes_lst = get_bin_indexes(descriptors_df, gc_dict, bin_limits)
     # Get the bin indexes for each type of cds
     bin_indexes = {}
     for type in indexes:
-        bin_indexes[type] = [list(set(indexes[type]) & set(bin)) for bin in bin_indexes]
+        bin_indexes[type] = [list(set(indexes[type]) & set(bin)) for bin in bin_indexes_lst]
+    print(bin_indexes)
     
     # Number of iterations
     n = 1
