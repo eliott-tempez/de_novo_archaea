@@ -135,13 +135,15 @@ if __name__ == "__main__":
         bin_indexes[type] = [list(set(indexes[type]) & set(bin)) for bin in bin_indexes_lst]
     
     # Number of iterations
-    n = 10
+    n = 1000000
     n_bins = len(bin_indexes["denovo"])
     n_to_sample = min([len(bin_indexes["denovo"][bin]) for bin in range(n_bins)])
     signif_columns = ["type1", "type2", "bin1", "bin2"] + descriptors
     signif_results = pd.DataFrame(columns=signif_columns)
 
     for i in range(n):
+        if i % 10000 == 0:
+            print(f"Iteration {i} / {n}...")
         # Sample each type for each bin
         samples = {}
         for type in bin_indexes:
@@ -169,6 +171,7 @@ if __name__ == "__main__":
             signif_results = pd.merge(signif_results, signif, how="outer")
             
     pvalues = calculate_pvalues(signif_results, descriptors)
+    print("\nDone!")
                 
 
         
