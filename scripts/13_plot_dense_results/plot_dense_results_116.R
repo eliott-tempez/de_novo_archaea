@@ -25,38 +25,51 @@ genera_dir <- paths$genera_dir
 dense_dir <- paths$dense_dir
 cds_dir <- paths$cds_dir
 genomes_list <- paths$genomes_list
-output_dir <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/"
+fa_dir <- paths$fa_dir
+output_dir <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/global_results"
 intergenic_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/10_analyse_intergenic/intergenic_lengths.tsv"
 
 
 # Read genomes list
 genomes <- scan(genomes_list, what = "", sep = " ")[1:116]
 # Get the info for each genome
-data <- data.frame(matrix(NA, nrow = length(genomes), ncol = 3))
+data <- data.frame(matrix(NA, nrow = length(genomes), ncol = 4))
 rownames(data) <- genomes
-colnames(data) <- c("n_denovo", "n_trg", "n_cds")
+colnames(data) <- c("n_denovo", "n_trg", "n_cds", "gc_perc")
 for (g in genomes) {
   # Filenames
   dense_file <- paste0(dense_dir, g, "/denovogenes.tsv")
   genera_file <- Sys.glob(paste0(genera_dir, g, "/*gene_age_summary.tsv"))[1]
   cds_file <- paste0(cds_dir, g, "_CDS.faa")
-  # Number of denovo
+  ## Number of denovo
   denovo <- read.table(dense_file, header = TRUE, sep = "\t")
   n_denovo <- nrow(denovo)
-  # Number of TRGs
+  ## Number of TRGs
   trgs <- read.table(genera_file, header = TRUE, sep = "\t", comment.char = "")
   n_trg <- sum(trgs[trgs$phylorank >= 7, 1])
-  # Number of CDS
+  ## Number of CDS
   lines_fasta <- readLines(cds_file)
   n_cds <- sum(grepl("^>", lines_fasta))
+  ## GC content
+  fa_file <- paste0(fa_dir, g, ".fa")
+  fasta <- readLines(fa_file)
+  # get rid of > lines
+  fasta <- fasta[!grepl(">", fasta)]
+  # Get the number of nucleotides
+  n_nucleotides <- sum(nchar(fasta))
+  # Get the GC content
+  n_gc <- sum(nchar(gsub("[^GCgc]", "", paste(fasta, collapse = ""))))
+  gc <- n_gc / n_nucleotides * 100
+
   # Populate the data
   data[g, "n_denovo"] <- n_denovo
   data[g, "n_trg"] <- n_trg
   data[g, "n_cds"] <- n_cds
+  data[g, "gc_perc"] <- gc
 }
 
 # Normalised de novo & trg number
-data$n_trg_norm <- data$n_trg / data$n_cds * 100
+#data$n_trg_norm <- data$n_trg / data$n_cds * 100
 
 # Get the species with the GCA identifier
 species_GCA <- genomes[which(grepl("GCA", rownames(data)))]
@@ -80,15 +93,15 @@ p <- gheatmap(p, data[, "n_denovo", drop = FALSE],
                       guide = guide_colorbar(order = 1))
 ## TRGs ##
 p <- p + new_scale_fill()
-p <- gheatmap(p, data[, "n_trg", drop = FALSE], offset = 2,
+p <- gheatmap(p, data[, "n_trg", drop = FALSE], offset = 1,
               width = .05, colnames = FALSE) +
   scale_fill_gradient(low = "white", high = "red", name = "TRGs (#)",
                       guide = guide_colorbar(order = 2), limits = c(0, max(data$n_trg)))
 ## TRGs normalised ##
 p <- p + new_scale_fill()
-p <- gheatmap(p, data[, "n_trg_norm", drop = FALSE], offset = 3,
+p <- gheatmap(p, data[, "gc_perc", drop = FALSE], offset = 2,
               width = .05, colnames = FALSE) +
-  scale_fill_gradient(low = "#009E73", high = "#6b00b2", name = "TRGs\nnormalised (%)",
+  scale_fill_gradient(low = "#009E73", high = "#6b00b2", name = "GC %",
                       guide = guide_colorbar(order = 3))
 
 # Add the title
