@@ -5,7 +5,8 @@ import random
 import pandas as pd
 from Bio import SeqIO
 from Bio.SeqUtils import gc_fraction as GC
-from itertools import combinations
+from multiprocessing import Pool, cpu_count
+
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from my_functions.paths import GENOMES_LIST, FA_DIR
@@ -87,6 +88,36 @@ def calculate_pvalues(signif_results, descriptors):
     # Save the results
     results_df.to_csv("pvalues.csv", sep="\t", index=False)
     return results_df
+
+
+def run_single_iteration(args):
+    i, n_to_sample, bin_indexes, descriptors_df, descriptors = args
+    from itertools import combinations
+
+    samples = {}
+    n_bins = len(bin_indexes["denovo"])
+
+    for type in bin_indexes:
+        for bin in range(n_bins):
+            key = (type, bin)
+            draw = random.sample(bin_indexes[type][bin], n_to_sample)
+            samples[key] = draw
+
+    iteration_results = pd.DataFrame(columns=["type1", "type2", "bin1", "bin2"] + descriptors)
+
+    for conf1, conf2 in combinations(samples.keys(), 2):
+        type1, bin1 = conf1
+        type2, bin2 = conf2
+
+        df1 = descriptors_df.iloc[samples[conf1]]
+        df2 = descriptors_df.iloc[samples[conf2]]
+        median_diff = get_median_diff(df1, df2)
+        pool1, pool2 = pool_cdss(df1, df2)
+        random_diff = get_median_diff(pool1, pool2)
+        result = compare_medians(median_diff, random_diff, type1, type2, bin1, bin2)
+        iteration_results = pd.concat([iteration_results, result], ignore_index=True)
+
+    return iteration_results
     
 
 
@@ -146,44 +177,36 @@ if __name__ == "__main__":
                     f.write(f"{cds_name}\t{i}\n")
     
     # Number of iterations
-    n = 1000000
+    n = 10
     n_to_sample = min([len(bin_indexes["denovo"][bin]) for bin in range(n_bins)])
     signif_columns = ["type1", "type2", "bin1", "bin2"] + descriptors
     signif_results = pd.DataFrame(columns=signif_columns)
 
-    for i in range(n):
-        if i % 10000 == 0:
-            print(f"Iteration {i} / {n}...")
-        # Sample each type for each bin
-        samples = {}
-        for type in bin_indexes:
-            for bin in range(n_bins):
-                key = (type, bin)
-                draw = random.sample(bin_indexes[type][bin], n_to_sample)
-                samples[key] = draw
-                
-        # Iterate on each possible combination
-        for conf1, conf2 in combinations(samples.keys(), 2):
-            type1, bin1 = conf1
-            type2, bin2 = conf2
-            
-            # Get values
-            sampled_type1_df = descriptors_df.iloc[samples[conf1]]
-            sampled_type2_df = descriptors_df.iloc[samples[conf2]]
-            # Get the median differences
-            median_diff = get_median_diff(sampled_type1_df, sampled_type2_df)
-            # Pool samples and get the random median differences
-            pooled_df_1, pooled_df_2 = pool_cdss(sampled_type1_df, sampled_type2_df)
-            random_diff = get_median_diff(pooled_df_1, pooled_df_2)
-            # Compare medians
-            signif = compare_medians(median_diff, random_diff, type1, type2, bin1, bin2)
-            # Add the results to the dataframe
-            signif_results = pd.merge(signif_results, signif, how="outer")
-            
+
+    # Prepare args for each process
+    iteration_args = [
+        (i, n_to_sample, bin_indexes, descriptors_df, descriptors)
+        for i in range(n)
+    ]
+
+    print("Running in parallel...")
+
+    # Initialize progress tracking
+    with Pool(cpu_count()) as pool:
+        results = []
+        for idx, result in enumerate(pool.imap(run_single_iteration, iteration_args), 1):
+            results.append(result)
+            if idx % (n // 10) == 0:  # Print progress every 10% of n
+                print(f"Processed {idx} out of {n} iterations ({(idx / n) * 100:.0f}%)")
+
+    # Combine all the results into one DataFrame
+    signif_results = pd.concat(results, ignore_index=True)
+
+    # Continue with p-value calculation
     pvalues = calculate_pvalues(signif_results, descriptors)
     print("\nDone!")
-                
 
+    
         
 
         
