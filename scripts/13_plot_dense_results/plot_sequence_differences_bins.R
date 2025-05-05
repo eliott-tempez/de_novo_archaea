@@ -31,7 +31,6 @@ out_folder <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense
 
 data <- read.table(input_file, header = TRUE, sep = "\t")
 pvals <- read.table(pval_file, header = TRUE, sep = "\t")
-pvals$p <- pvals$pval
 n_bins <- length(unique(pvals[c("bin1", "bin2")]))
 # Pivot to longer format
 descriptors <- setdiff(colnames(data), c("genome", "cds", "type"))
@@ -57,7 +56,7 @@ signif_label <- "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0
 ###################################################################
 
 # Get the y positions to print the p values
-get_y_positions <- function(data, local_pvals, fact) {
+get_y_positions <- function(data, local_pvals, fact, non_signif) {
 
 # Get different possibilities
 denovo_0 <- ((local_pvals$type1 == "denovo" & local_pvals$bin1 == "0") |
@@ -120,11 +119,20 @@ local_pvals <- local_pvals %>%
   # Add y position
   pos <- max(as.numeric(y_mat[, "whisker_top"])) + reference_val * fact
   for (i in 1:nrow(local_pvals)) {
-    if (local_pvals[i, "p"] <= 0.05) {
-      local_pvals[i, "y.position"] <- pos
-      pos <- pos + reference_val * fact
+    if (!non_signif) {
+      if (local_pvals[i, "p"] <= 0.05) {
+        local_pvals[i, "y.position"] <- pos
+        pos <- pos + reference_val * fact
+      } else {
+        local_pvals[i, "y.position"] <- NA
+      }
     } else {
-      local_pvals[i, "y.position"] <- NA
+      if (local_pvals[i, "p"] > 0.05) {
+        local_pvals[i, "y.position"] <- pos
+        pos <- pos + reference_val * fact
+      } else {
+        local_pvals[i, "y.position"] <- NA
+      }
     }
   }
   return(local_pvals)
@@ -132,25 +140,34 @@ local_pvals <- local_pvals %>%
 
 
 # Get the p-values in a matrix to print on the graph
-get_pvals <- function(desc, data, fact) {
+get_pvals <- function(desc, data, fact, non_signif = FALSE) {
+  # Remove blank row
+  data <- data[data$group != "blank", ]
   local_pvals <- pvals[pvals$feature == desc, c("type1", "type2", "bin1", "bin2", "p")]
   # Create combined x-axis groups
   local_pvals$group1 <- paste0(local_pvals$bin1, "_", local_pvals$type1)
   local_pvals$group2 <- paste0(local_pvals$bin2, "_", local_pvals$type2)
   # y position
-  local_pvals <- get_y_positions(data, local_pvals, fact)
+  local_pvals <- get_y_positions(data, local_pvals, fact, non_signif)
   # significance level
-  local_pvals$p.signif <- case_when(
+  if (non_signif) {
+    local_pvals$p.signif <- case_when(
+      local_pvals$p >= 0.05 ~ "ns",
+      TRUE ~ ""
+    )
+  } else {
+    local_pvals$p.signif <- case_when(
     local_pvals$p <= 0.00001 ~ "****",
     local_pvals$p <= 0.0001 ~ "***",
     local_pvals$p <= 0.001 ~ "**",
     local_pvals$p <= 0.05 ~ "*",
-    TRUE ~ ""
-  )
+    TRUE ~ "")
+  }
   print(local_pvals)
   return(local_pvals)
 }
 
+pvals$p <- pvals$pval
 
 
 
@@ -160,19 +177,27 @@ get_pvals <- function(desc, data, fact) {
 
 ###### Sequence length ######
 data_len <- data[data$feature == "length", ]
-data_len$type <- factor(data_len$type, levels = c("cds", "trg", "denovo"))
 data_len$group <- paste0(data_len$bin, "_", data_len$type)
+# Add a dummy level in the x-axis
+data_len$group <- as.character(data_len$group)
+data_len$group <- factor(data_len$group, levels = c("0_cds", "0_trg", "0_denovo", "blank", "1_cds", "1_trg", "1_denovo"))
+# Create a dummy row for the blank space
+dummy <- data_len[1, ]
+dummy$value <- NA
+dummy$group <- "blank"
+data_len <- rbind(data_len, dummy)
+
+# Get summary data
 data_len_summary <- data_len %>%
-  group_by(bin, type) %>%
+  filter(group != "blank") %>%  # skip the dummy in the summary
+  group_by(bin, type, group) %>%
   summarise(n = n(), .groups = "drop")
 
-ggplot(data_len, aes(x = bin, y = value, fill = type)) +
+# Plot
+ggplot(data_len, aes(x = group, y = value, fill = type)) +
   geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
   geom_text(data = data_len_summary,
-            aes(x = bin,
-                y = 65,
-                label = paste0("n = ", n),
-                group = type),
+            aes(x = group, y = 60, label = paste0("n = ", n), group = type),
             position = position_dodge(width = 0.75), vjust = -0.5, size = 4) +
   labs(title = "Sequence length distribution",
        x = "% GC (whole genome)",
@@ -182,39 +207,50 @@ ggplot(data_len, aes(x = bin, y = value, fill = type)) +
   coord_trans(y = "log10") +
   scale_y_continuous(breaks = c(50, 100, 500, 1000, 2000),
                      labels = c("50", "100", "500", "1000", "2000")) +
-  scale_x_discrete(labels = c("0" = bin_labels[1],
-                              "1" = bin_labels[2])) +
+  scale_x_discrete(labels = c("0_trg" = bin_labels[1],
+                              "1_trg" = bin_labels[2],
+                              "0_cds" = "", "0_denovo" = "",
+                              "1_cds" = "", "1_denovo" = "",
+                              "blank" = "")) +
   theme(axis.text.x = element_text(size = 16),
         axis.title.x = element_text(size = 14),
         axis.title.y = element_text(size = 14),
         axis.text.y = element_text(size = 12),
         plot.title = element_text(hjust = 0.5),
         legend.text = element_text(size = 12),
-        legend.title = element_blank())
-#  stat_pvalue_manual(get_pvals("length", data_len, 0.5),
-#                     label = "p.signif",
-#                     inherit.aes = FALSE,
-#                     hide.ns = TRUE) +
-#  annotate("text", x = 3.3, y = max(data_len$value) * 1,
-#           label = signif_label, hjust = 1, vjust = 1, 
-#           size = 3, color = "black")
+        legend.title = element_blank()) +
+  stat_pvalue_manual(get_pvals("length", data_len, .9, TRUE),
+                     label = "p.signif",
+                     inherit.aes = FALSE,
+                     hide.ns = FALSE)
 ggsave(paste0(out_folder, "/sequence_length.png"))
 
 
 
 ###### GC ratio ######
 data_gc <- data[data$feature == "gc_rate", ]
-data_gc$type <- factor(data_gc$type, levels = c("cds", "trg", "denovo"))
 data_gc$group <- paste0(data_gc$bin, "_", data_gc$type)
+# Add a dummy level in the x-axis
+data_gc$group <- as.character(data_gc$group)
+data_gc$group <- factor(data_gc$group, levels = c("0_cds", "0_trg", "0_denovo", "blank", "1_cds", "1_trg", "1_denovo"))
+# Create a dummy row for the blank space
+dummy <- data_gc[1, ]
+dummy$value <- NA
+dummy$group <- "blank"
+data_gc <- rbind(data_gc, dummy)
+
+# Get summary data
 data_gc_summary <- data_gc %>%
-  group_by(bin, type) %>%
+  filter(group != "blank") %>%  # skip the dummy in the summary
+  group_by(bin, type, group) %>%
   summarise(n = n(), .groups = "drop")
 
-ggplot(data_gc, aes(x = bin, y = value, fill = type)) +
+# Plot
+ggplot(data_gc, aes(x = group, y = value, fill = type)) +
   geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
   geom_text(data = data_gc_summary,
-            aes(x = bin,
-                y = 0.5,
+            aes(x = group,
+                y = 0.53,
                 label = paste0("n = ", n),
                 group = type),
             position = position_dodge(width = 0.75), vjust = -0.5, size = 4) +
@@ -223,39 +259,54 @@ ggplot(data_gc, aes(x = bin, y = value, fill = type)) +
        y = "GC ratio: sequence GC % / genome GC %") +
   scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c")) +
   theme_minimal() +
-  scale_x_discrete(labels = c("0" = bin_labels[1],
-                              "1" = bin_labels[2])) +
+  scale_x_discrete(labels = c("0_trg" = bin_labels[1],
+                              "1_trg" = bin_labels[2],
+                              "0_cds" = "", "0_denovo" = "",
+                              "1_cds" = "", "1_denovo" = "",
+                              "blank" = "")) +
+  scale_y_continuous(breaks = seq(0, 1.3, 0.2)) +
   theme(axis.text.x = element_text(size = 16),
         axis.title.x = element_text(size = 14),
         axis.title.y = element_text(size = 14),
         axis.text.y = element_text(size = 12),
         plot.title = element_text(hjust = 0.5),
         legend.text = element_text(size = 12),
-        legend.title = element_blank())
-#  stat_pvalue_manual(get_pvals("gc_rate", data_gc, 0.5),
-#                     label = "p.signif",
-#                     inherit.aes = FALSE,
-#                     hide.ns = TRUE) +
-#  annotate("text", x = 3.3, y = max(data_len$value) * 1,
-#           label = signif_label, hjust = 1, vjust = 1,
-#           size = 3, color = "black")
+        legend.title = element_blank()) +
+  stat_pvalue_manual(get_pvals("gc_rate", data_gc, 0.12, FALSE),
+                     label = "p.signif",
+                     inherit.aes = FALSE,
+                     hide.ns = TRUE) +
+  annotate("text", x = 4, y = 1.8,
+           label = signif_label, hjust = 1, vjust = 1,
+           size = 3, color = "black")
 ggsave(paste0(out_folder, "/gc_content.png"))
 
 
 
 ###### GC ratio (intergenic) ######
 data_gc_inter <- data[data$feature == "inter_gc_rate", ]
-data_gc_inter$type <- factor(data_gc_inter$type, levels = c("cds", "trg", "denovo"))
 data_gc_inter$group <- paste0(data_gc_inter$bin, "_", data_gc_inter$type)
+# Add a dummy level in the x-axis
+data_gc_inter$group <- as.character(data_gc_inter$group)
+data_gc_inter$group <- factor(data_gc_inter$group, levels = c("0_cds", "0_trg", "0_denovo", "blank", "1_cds", "1_trg", "1_denovo"))
+# Create a dummy row for the blank space
+dummy <- data_gc_inter[1, ]
+dummy$value <- NA
+dummy$group <- "blank"
+data_gc_inter <- rbind(data_gc_inter, dummy)
+
+# Get summary data
 data_gc_inter_summary <- data_gc_inter %>%
-  group_by(bin, type) %>%
+  filter(group != "blank") %>%  # skip the dummy in the summary
+  group_by(bin, type, group) %>%
   summarise(n = n(), .groups = "drop")
 
-ggplot(data_gc_inter, aes(x = bin, y = value, fill = type)) +
+# Plot
+ggplot(data_gc_inter, aes(x = group, y = value, fill = type)) +
   geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
   geom_text(data = data_gc_inter_summary,
-            aes(x = bin,
-                y = 0.6,
+            aes(x = group,
+                y = 0.62,
                 label = paste0("n = ", n),
                 group = type),
             position = position_dodge(width = 0.75), vjust = -0.5, size = 4) +
@@ -264,31 +315,56 @@ ggplot(data_gc_inter, aes(x = bin, y = value, fill = type)) +
        y = "GC ratio: sequence GC % / intergenic ORFs GC %") +
   scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c")) +
   theme_minimal() +
-  scale_x_discrete(labels = c("0" = bin_labels[1],
-                              "1" = bin_labels[2])) +
+  scale_x_discrete(labels = c("0_trg" = bin_labels[1],
+                              "1_trg" = bin_labels[2],
+                              "0_cds" = "", "0_denovo" = "",
+                              "1_cds" = "", "1_denovo" = "",
+                              "blank" = "")) +
+  scale_y_continuous(breaks = seq(0, 1.6, 0.2)) +
   theme(axis.text.x = element_text(size = 16),
         axis.title.x = element_text(size = 14),
         axis.title.y = element_text(size = 14),
         axis.text.y = element_text(size = 12),
         plot.title = element_text(hjust = 0.5),
         legend.text = element_text(size = 12),
-        legend.title = element_blank())
+        legend.title = element_blank()) +
+  stat_pvalue_manual(get_pvals("inter_gc_rate", data_gc_inter, .1, FALSE),
+                     label = "p.signif",
+                     inherit.aes = FALSE,
+                     hide.ns = TRUE) +
+  annotate("text", x = 4, y = 2,
+           label = signif_label, hjust = 1, vjust = 1,
+           size = 3, color = "black")
 ggsave(paste0(out_folder, "/gc_content_intergenic.png"))
 
 
 
 ###### Aromaticity ######
 data_aro <- data[data$feature == "aromaticity", ]
-data_aro$type <- factor(data_aro$type, levels = c("cds", "trg", "denovo"))
 data_aro$group <- paste0(data_aro$bin, "_", data_aro$type)
+# Add a dummy level in the x-axis
+data_aro$group <- as.character(data_aro$group)
+data_aro$group <- factor(data_aro$group, levels = c("0_cds", "0_trg", "0_denovo", "blank", "1_cds", "1_trg", "1_denovo"))
+# Create a dummy row for the blank space
+dummy <- data_aro[1, ]
+dummy$value <- NA
+dummy$group <- "blank"
+data_aro <- rbind(data_aro, dummy)
+
+# Get summary data
 data_aro_summary <- data_aro %>%
-  group_by(bin, type) %>%
+  filter(group != "blank") %>%  # skip the dummy in the summary
+  group_by(bin, type, group) %>%
   summarise(n = n(), .groups = "drop")
 
-ggplot(data_aro, aes(x = bin, y = value, fill = type)) +
+# Compute p-values
+pvals_aro <- get_pvals("aromaticity", data_aro, .1, FALSE)
+
+# Plot
+p <- ggplot(data_aro, aes(x = group, y = value, fill = type)) +
   geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
   geom_text(data = data_aro_summary,
-            aes(x = bin,
+            aes(x = group,
                 y = -0.02,
                 label = paste0("n = ", n),
                 group = type),
@@ -298,8 +374,12 @@ ggplot(data_aro, aes(x = bin, y = value, fill = type)) +
        y = "Aromaticity") +
   scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c")) +
   theme_minimal() +
-  scale_x_discrete(labels = c("0" = bin_labels[1],
-                              "1" = bin_labels[2])) +
+  scale_x_discrete(labels = c("0_trg" = bin_labels[1],
+                              "1_trg" = bin_labels[2],
+                              "0_cds" = "", "0_denovo" = "",
+                              "1_cds" = "", "1_denovo" = "",
+                              "blank" = "")) +
+  scale_y_continuous(breaks = seq(0, 0.25, 0.05)) +
   theme(axis.text.x = element_text(size = 16),
         axis.title.x = element_text(size = 14),
         axis.title.y = element_text(size = 14),
@@ -307,22 +387,48 @@ ggplot(data_aro, aes(x = bin, y = value, fill = type)) +
         plot.title = element_text(hjust = 0.5),
         legend.text = element_text(size = 12),
         legend.title = element_blank())
+
+# Add stat_pvalue_manual and annotate only if y.position column is not entirely NA
+if (!all(is.na(pvals_aro$y.position))) {
+  p <- p +
+    stat_pvalue_manual(pvals_aro,
+                       label = "p.signif",
+                       inherit.aes = FALSE,
+                       hide.ns = TRUE) +
+    annotate("text", x = 4, y = .27,
+             label = signif_label, hjust = 1, vjust = 1,
+             size = 3, color = "black")
+}
+
+# Print the plot
+p
 ggsave(paste0(out_folder, "/aromaticity.png"))
 
 
 
 ###### Instability index ######
 data_inst <- data[data$feature == "instability", ]
-data_inst$type <- factor(data_inst$type, levels = c("cds", "trg", "denovo"))
 data_inst$group <- paste0(data_inst$bin, "_", data_inst$type)
+# Add a dummy level in the x-axis
+data_inst$group <- as.character(data_inst$group)
+data_inst$group <- factor(data_inst$group, levels = c("0_cds", "0_trg", "0_denovo", "blank", "1_cds", "1_trg", "1_denovo"))
+# Create a dummy row for the blank space
+dummy <- data_inst[1, ]
+dummy$value <- NA
+dummy$group <- "blank"
+data_inst <- rbind(data_inst, dummy)
+
+# Get summary data
 data_inst_summary <- data_inst %>%
-  group_by(bin, type) %>%
+  filter(group != "blank") %>%  # skip the dummy in the summary
+  group_by(bin, type, group) %>%
   summarise(n = n(), .groups = "drop")
 
-ggplot(data_inst, aes(x = bin, y = value, fill = type)) +
+# Plot
+ggplot(data_inst, aes(x = group, y = value, fill = type)) +
   geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
   geom_text(data = data_inst_summary,
-            aes(x = bin,
+            aes(x = group,
                 y = -13,
                 label = paste0("n = ", n),
                 group = type),
@@ -332,31 +438,53 @@ ggplot(data_inst, aes(x = bin, y = value, fill = type)) +
        y = "Instability index") +
   scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c")) +
   theme_minimal() +
-  scale_x_discrete(labels = c("0" = bin_labels[1],
-                              "1" = bin_labels[2])) +
+  scale_x_discrete(labels = c("0_trg" = bin_labels[1],
+                              "1_trg" = bin_labels[2],
+                              "0_cds" = "", "0_denovo" = "",
+                              "1_cds" = "", "1_denovo" = "",
+                              "blank" = "")) +
+  scale_y_continuous(breaks = seq(0, 75, 25)) +
   theme(axis.text.x = element_text(size = 16),
         axis.title.x = element_text(size = 14),
         axis.title.y = element_text(size = 14),
         axis.text.y = element_text(size = 12),
         plot.title = element_text(hjust = 0.5),
         legend.text = element_text(size = 12),
-        legend.title = element_blank())
+        legend.title = element_blank()) +
+  stat_pvalue_manual(get_pvals("instability", data_inst, .1, FALSE),
+                     label = "p.signif",
+                     inherit.aes = FALSE,
+                     hide.ns = TRUE) +
+  annotate("text", x = 4, y = 140,
+           label = signif_label, hjust = 1, vjust = 1,
+           size = 3, color = "black")
 ggsave(paste0(out_folder, "/instability_index.png"))
 
 
 
 ###### Flexibility #######
 data_flex <- data[data$feature == "mean_flexibility", ]
-data_flex$type <- factor(data_flex$type, levels = c("cds", "trg", "denovo"))
 data_flex$group <- paste0(data_flex$bin, "_", data_flex$type)
+# Add a dummy level in the x-axis
+data_flex$group <- as.character(data_flex$group)
+data_flex$group <- factor(data_flex$group, levels = c("0_cds", "0_trg", "0_denovo", "blank", "1_cds", "1_trg", "1_denovo"))
+# Create a dummy row for the blank space
+dummy <- data_flex[1, ]
+dummy$value <- NA
+dummy$group <- "blank"
+data_flex <- rbind(data_flex, dummy)
+
+# Get summary data
 data_flex_summary <- data_flex %>%
-  group_by(bin, type) %>%
+  filter(group != "blank") %>%  # skip the dummy in the summary
+  group_by(bin, type, group) %>%
   summarise(n = n(), .groups = "drop")
 
-ggplot(data_flex, aes(x = bin, y = value, fill = type)) +
+# Plot
+ggplot(data_flex, aes(x = group, y = value, fill = type)) +
   geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
   geom_text(data = data_flex_summary,
-            aes(x = bin,
+            aes(x = group,
                 y = 0.95,
                 label = paste0("n = ", n),
                 group = type),
@@ -366,31 +494,53 @@ ggplot(data_flex, aes(x = bin, y = value, fill = type)) +
        y = "Mean flexibility") +
   scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c")) +
   theme_minimal() +
-  scale_x_discrete(labels = c("0" = bin_labels[1],
-                              "1" = bin_labels[2])) +
+  scale_x_discrete(labels = c("0_trg" = bin_labels[1],
+                              "1_trg" = bin_labels[2],
+                              "0_cds" = "", "0_denovo" = "",
+                              "1_cds" = "", "1_denovo" = "",
+                              "blank" = "")) +
+  scale_y_continuous(breaks = seq(0.96, 1.04, 0.02)) +
   theme(axis.text.x = element_text(size = 16),
         axis.title.x = element_text(size = 14),
         axis.title.y = element_text(size = 14),
         axis.text.y = element_text(size = 12),
         plot.title = element_text(hjust = 0.5),
         legend.text = element_text(size = 12),
-        legend.title = element_blank())
+        legend.title = element_blank()) +
+  stat_pvalue_manual(get_pvals("mean_flexibility", data_flex, .1, FALSE),
+                     label = "p.signif",
+                     inherit.aes = FALSE,
+                     hide.ns = TRUE) +
+  annotate("text", x = 4, y = 1.06,
+           label = signif_label, hjust = 1, vjust = 1,
+           size = 3, color = "black")
 ggsave(paste0(out_folder, "/mean_flexibility.png"))
 
 
 
 ###### Hydropathy ######
 data_hydro <- data[data$feature == "hydropathy", ]
-data_hydro$type <- factor(data_hydro$type, levels = c("cds", "trg", "denovo"))
 data_hydro$group <- paste0(data_hydro$bin, "_", data_hydro$type)
+# Add a dummy level in the x-axis
+data_hydro$group <- as.character(data_hydro$group)
+data_hydro$group <- factor(data_hydro$group, levels = c("0_cds", "0_trg", "0_denovo", "blank", "1_cds", "1_trg", "1_denovo"))
+# Create a dummy row for the blank space
+dummy <- data_hydro[1, ]
+dummy$value <- NA
+dummy$group <- "blank"
+data_hydro <- rbind(data_hydro, dummy)
+
+# Get summary data
 data_hydro_summary <- data_hydro %>%
-  group_by(bin, type) %>%
+  filter(group != "blank") %>%  # skip the dummy in the summary
+  group_by(bin, type, group) %>%
   summarise(n = n(), .groups = "drop")
 
-ggplot(data_hydro, aes(x = bin, y = value, fill = type)) +
+# Plot
+ggplot(data_hydro, aes(x = group, y = value, fill = type)) +
   geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
   geom_text(data = data_hydro_summary,
-            aes(x = bin,
+            aes(x = group,
                 y = -1.9,
                 label = paste0("n = ", n),
                 group = type),
@@ -400,30 +550,52 @@ ggplot(data_hydro, aes(x = bin, y = value, fill = type)) +
        y = "Hydropathy") +
   scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c")) +
   theme_minimal() +
-  scale_x_discrete(labels = c("0" = bin_labels[1],
-                              "1" = bin_labels[2])) +
+  scale_x_discrete(labels = c("0_trg" = bin_labels[1],
+                              "1_trg" = bin_labels[2],
+                              "0_cds" = "", "0_denovo" = "",
+                              "1_cds" = "", "1_denovo" = "",
+                              "blank" = "")) +
+  scale_y_continuous(breaks = seq(-2, 2, 1)) +
   theme(axis.text.x = element_text(size = 16),
         axis.title.x = element_text(size = 14),
         axis.title.y = element_text(size = 14),
         axis.text.y = element_text(size = 12),
         plot.title = element_text(hjust = 0.5),
         legend.text = element_text(size = 12),
-        legend.title = element_blank())
+        legend.title = element_blank()) +
+  stat_pvalue_manual(get_pvals("hydropathy", data_hydro, .1, FALSE),
+                     label = "p.signif",
+                     inherit.aes = FALSE,
+                     hide.ns = TRUE) +
+  annotate("text", x = 4, y = 3.5,
+           label = signif_label, hjust = 1, vjust = 1,
+           size = 3, color = "black")
 ggsave(paste0(out_folder, "/hydrophobicity.png"))
 
 
 ####### HCA ######
 data_hca <- data[data$feature == "hca", ]
-data_hca$type <- factor(data_hca$type, levels = c("cds", "trg", "denovo"))
 data_hca$group <- paste0(data_hca$bin, "_", data_hca$type)
+# Add a dummy level in the x-axis
+data_hca$group <- as.character(data_hca$group)
+data_hca$group <- factor(data_hca$group, levels = c("0_cds", "0_trg", "0_denovo", "blank", "1_cds", "1_trg", "1_denovo"))
+# Create a dummy row for the blank space
+dummy <- data_hca[1, ]
+dummy$value <- NA
+dummy$group <- "blank"
+data_hca <- rbind(data_hca, dummy)
+
+# Get summary data
 data_hca_summary <- data_hca %>%
-  group_by(bin, type) %>%
+  filter(group != "blank") %>%  # skip the dummy in the summary
+  group_by(bin, type, group) %>%
   summarise(n = n(), .groups = "drop")
 
-ggplot(data_hca, aes(x = bin, y = value, fill = type)) +
+# Plot
+ggplot(data_hca, aes(x = group, y = value, fill = type)) +
   geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
   geom_text(data = data_hca_summary,
-            aes(x = bin,
+            aes(x = group,
                 y = -11,
                 label = paste0("n = ", n),
                 group = type),
@@ -433,15 +605,26 @@ ggplot(data_hca, aes(x = bin, y = value, fill = type)) +
        y = "HCA") +
   scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c")) +
   theme_minimal() +
-  scale_x_discrete(labels = c("0" = bin_labels[1],
-                              "1" = bin_labels[2])) +
+  scale_x_discrete(labels = c("0_trg" = bin_labels[1],
+                              "1_trg" = bin_labels[2],
+                              "0_cds" = "", "0_denovo" = "",
+                              "1_cds" = "", "1_denovo" = "",
+                              "blank" = "")) +
+  scale_y_continuous(breaks = seq(-10, 2, 4)) +
   theme(axis.text.x = element_text(size = 16),
         axis.title.x = element_text(size = 14),
         axis.title.y = element_text(size = 14),
         axis.text.y = element_text(size = 12),
         plot.title = element_text(hjust = 0.5),
         legend.text = element_text(size = 12),
-        legend.title = element_blank())
+        legend.title = element_blank()) +
+  stat_pvalue_manual(get_pvals("hca", data_hca, .1, FALSE),
+                     label = "p.signif",
+                     inherit.aes = FALSE,
+                     hide.ns = TRUE) +
+  annotate("text", x = 4, y = 17,
+           label = signif_label, hjust = 1, vjust = 1,
+           size = 3, color = "black")
 ggsave(paste0(out_folder, "/hca.png"))
 
 
@@ -464,34 +647,62 @@ for (i in seq_along(aa_types)) {
   aa_plots <- c()
   for (aa in aa_type) {
     data_aa <- data[data$feature == paste0(aa, "_use"), ]
-    data_aa$type <- factor(data_aa$type, levels = c("cds", "trg", "denovo"))
     data_aa$group <- paste0(data_aa$bin, "_", data_aa$type)
-    data_aa_summary <- data_aa %>%
-      group_by(bin, type) %>%
-      summarise(n = n(), .groups = "drop")
+    # Add a dummy level in the x-axis
+    data_aa$group <- as.character(data_aa$group)
+    data_aa$group <- factor(data_aa$group, levels = c("0_cds", "0_trg", "0_denovo", "blank", "1_cds", "1_trg", "1_denovo"))
+    # Create a dummy row for the blank space
+    dummy <- data_aa[1, ]
+    dummy$value <- NA
+    dummy$group <- "blank"
+    data_aa <- rbind(data_aa, dummy)
 
-    p <- ggplot(data_aa, aes(x = bin, y = value, fill = type)) +
+    # Get summary data
+    data_aa_summary <- data_aa %>%
+      filter(group != "blank") %>%  # skip the dummy in the summary
+      group_by(bin, type, group) %>%
+      summarise(n = n(), .groups = "drop")
+    
+    # Compute pvals 
+    pval_aa <- get_pvals(paste0(aa, "_use"), data_aa, .3, FALSE)
+
+    # Plot
+    p <- ggplot(data_aa, aes(x = group, y = value, fill = type)) +
       geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
       labs(title = aa,
            x = "",
            y = "") +
       scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c")) +
       theme_minimal() +
-      scale_x_discrete(labels = c("0" = bin_labels[1],
-                                  "1" = bin_labels[2])) +
+      scale_x_discrete(labels = c("0_trg" = bin_labels[1],
+                                  "1_trg" = bin_labels[2],
+                                  "0_cds" = "", "0_denovo" = "",
+                                  "1_cds" = "", "1_denovo" = "",
+                                  "blank" = "")) +
+      scale_y_continuous(breaks = seq(0, 26, 4)) +
       theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 18),
-            axis.text.y = element_text(size = 16), legend.position = "none")
+            axis.text.y = element_text(size = 16), legend.position = "none",
+            axis.text.x = element_text(size = 14)) +
+      theme(panel.border = element_rect(colour = "#ada9a9", fill = NA, size = 1))
+
+      if (!all(is.na(pval_aa$y.position))) {
+        p <- p + stat_pvalue_manual(get_pvals(paste0(aa, "_use"), data_aa, .1, FALSE),
+                          label = "p.signif",
+                          inherit.aes = FALSE,
+                          hide.ns = TRUE)
+      }
 
     # Add to the list of plots
     aa_plots <- c(aa_plots, list(p))
   }
-  fig <- ggarrange(plotlist = aa_plots)
+  fig <- ggarrange(plotlist = aa_plots, common.legend = TRUE, legend = "right")
   annotate_figure(fig, bottom = text_grob("% GC (whole genome)\n", size = 14),
                   left = text_grob("% use", rot = 90, size = 14),
                   top = text_grob(paste("Amino-acid distribution:",
-                                        aa_type_name),
-                                  size = 18))
-  ggsave(paste0(out_folder, "/", aa_type_name, "_use.png"))
+                                        aa_type_name, "\n"),
+                                  size = 18),
+                  right = text_grob(paste0("\n", signif_label), rot = 90, size = 10))
+  ggsave(paste0(out_folder, "/aa_", aa_type_name, "_use.png"))
 }
 
 
