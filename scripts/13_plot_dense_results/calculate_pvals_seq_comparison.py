@@ -12,7 +12,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from my_functions.paths import GENOMES_LIST, FA_DIR
 
 
-NB_GC_BINS = 2
+NB_GC_BINS = 3
 
 
 def get_species_gc_content(genome):
@@ -167,14 +167,14 @@ if __name__ == "__main__":
     # Print to file
     n_bins = len(bin_indexes["denovo"])
     with open(f"bin_indexes_{n_bins}.csv", "w") as f:
-        f.write("cds\tbin\n")
+        f.write("cds bin\n")
         for type in bin_indexes:
             i = -1
             for bins in bin_indexes[type]:
                 i += 1
                 for bin in bins:
                     cds_name = descriptors_df.iloc[bin]["cds"]
-                    f.write(f"{cds_name}\t{i}\n")
+                    f.write(f"{cds_name} {i}\n")
     
     # Number of iterations
     n = 100000
