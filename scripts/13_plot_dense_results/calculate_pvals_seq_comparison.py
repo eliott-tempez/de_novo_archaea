@@ -177,7 +177,7 @@ if __name__ == "__main__":
                     f.write(f"{cds_name}\t{i}\n")
     
     # Number of iterations
-    n = 10
+    n = 100000
     n_to_sample = min([len(bin_indexes["denovo"][bin]) for bin in range(n_bins)])
     signif_columns = ["type1", "type2", "bin1", "bin2"] + descriptors
     signif_results = pd.DataFrame(columns=signif_columns)
