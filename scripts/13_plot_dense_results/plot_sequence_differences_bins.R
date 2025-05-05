@@ -13,6 +13,7 @@ library(grid)
 # User-defined parameters
 n_bins <- 3
 plot_pvals <- FALSE
+save_plots <- FALSE
 
 
 # Files
@@ -229,6 +230,81 @@ get_pvals <- function(desc, data, fact, non_signif = FALSE) {
 }
 
 
+# Get the x-axis labels
+get_x_labels <- function(data) {
+  x_labels <- c()
+  groups <- unique(data$group)
+  for (i in seq_along(groups)) {
+    group <- as.character(levels(groups)[i])
+    if (grepl("trg", group)) {
+      n <- as.numeric(strsplit(group, "_")[[1]][1])
+      x_labels <- c(x_labels, bin_labels[as.numeric(strsplit(group, "_")[[1]][1]) + 1])
+    } else {
+      x_labels <- c(x_labels, "")
+    }
+  }
+  return(x_labels)
+}
+
+
+
+# Get the plot
+get_plot <- function(data, data_len_summary, feature, title, print_pval = NA, scale_y = NA, n_y_pos = NA) {
+  labels_x_scale <- get_x_labels(data)
+
+  p <- ggplot(data, aes(x = group, y = value, fill = type)) +
+    geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
+    labs(title = title,
+         x = "% GC (whole genome)",
+         y = "Value") +
+    scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c")) +
+    theme_minimal() +
+    scale_x_discrete(labels = labels_x_scale) +
+    theme(axis.text.x = element_text(size = 16),
+          axis.title.x = element_text(size = 14),
+          axis.title.y = element_text(size = 14),
+          axis.text.y = element_text(size = 12),
+          plot.title = element_text(hjust = 0.5),
+          legend.text = element_text(size = 12),
+          legend.title = element_blank())
+
+  if (!is.na(scale_y)) {
+    p <- p + scale_y_continuous(breaks = scale_y)
+  }
+
+  if (!is.na(n_y_pos)) {
+    p <- p +
+      geom_text(data = data_len_summary,
+                aes(x = group,
+                    y = n_y_pos,
+                    label = paste0("n = ", n),
+                    group = type),
+                position = position_dodge(width = 0.75), 
+                vjust = -0.5, size = 4)
+  }
+
+  if (!is.na(print_pval)) {
+    pval_factor <- print_pval[1]
+    only_ns <- print_pval[2]
+    y_annotation <- print_pval[3]
+
+    pvals_local <- get_pvals(feature, data, pval_factor, only_ns)
+
+    if (!all(is.na(pvals_local$y.position))) {
+      p <- p +
+        stat_pvalue_manual(pvals_local,
+                           label = "p.signif",
+                           inherit.aes = FALSE,
+                           hide.ns = !only_ns) +
+        annotate("text", x = 4, y = y_annotation,
+                 label = signif_label, hjust = 1, vjust = 1,
+                 size = 3, color = "black")
+    }
+  }
+  return(p)
+}
+
+
 
 
 
@@ -241,6 +317,12 @@ data_len <- add_dummy_rows(data, "length", n_bins)
 data_len_summary <- get_ncds_conditions(data_len, n_bins)
 
 # Plot
+p <- get_plot(data_len, data_len_summary, "length", "Sequence length distribution", n_y_pos = -10)
+
+
+
+
+
 ggplot(data_len, aes(x = group, y = value, fill = type)) +
   geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
   geom_text(data = data_len_summary,
