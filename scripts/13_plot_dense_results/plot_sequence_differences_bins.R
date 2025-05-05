@@ -19,13 +19,15 @@ ggsave <- function(..., bg = "white",
 }
 
 
-#input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences/sequence_features_good_candidates_all.csv"
-#pval_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences/pvalues_2_bins.tsv"
-#out_folder <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences"
-input_file <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/13_plot_dense_results/sequence_features_good_candidates_all.csv"
-pval_file <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/13_plot_dense_results/pvalues_2_bins.tsv"
-out_folder <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/13_plot_dense_results/sequences/2_bins"
-bins_file <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/13_plot_dense_results/sequences/2_bins/bin_indexes_2.csv"
+input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences/sequence_features_good_candidates_all.csv"
+pval_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences/2_bins/pvalues_2_bins.tsv"
+bins_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences/2_bins/bin_indexes_2.csv"
+out_folder <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences/2_bins"
+#input_file <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/13_plot_dense_results/sequence_features_good_candidates_all.csv"
+#pval_file <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/13_plot_dense_results/pvalues_2_bins.tsv"
+#bins_file <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/13_plot_dense_results/sequences/2_bins/bin_indexes_2.csv"
+#out_folder <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/13_plot_dense_results/sequences/2_bins"
+
 
 data <- read.table(input_file, header = TRUE, sep = "\t")
 pvals <- read.table(pval_file, header = TRUE, sep = "\t")
@@ -168,7 +170,7 @@ ggplot(data_len, aes(x = bin, y = value, fill = type)) +
   geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
   geom_text(data = data_len_summary,
             aes(x = bin,
-                y = 69,
+                y = 65,
                 label = paste0("n = ", n),
                 group = type),
             position = position_dodge(width = 0.75), vjust = -0.5, size = 4) +
@@ -196,7 +198,7 @@ ggplot(data_len, aes(x = bin, y = value, fill = type)) +
 #  annotate("text", x = 3.3, y = max(data_len$value) * 1,
 #           label = signif_label, hjust = 1, vjust = 1, 
 #           size = 3, color = "black")
-ggsave(paste0(out_folder, "/sequence_length.png"))
+#ggsave(paste0(out_folder, "/sequence_length.png"))
 
 
 
@@ -230,7 +232,14 @@ ggplot(data_gc, aes(x = bin, y = value, fill = type)) +
         plot.title = element_text(hjust = 0.5),
         legend.text = element_text(size = 12),
         legend.title = element_blank())
-ggsave(paste0(out_folder, "/gc_content.png"))
+#  stat_pvalue_manual(get_pvals("gc_rate", data_gc, 0.5),
+#                     label = "p.signif",
+#                     inherit.aes = FALSE,
+#                     hide.ns = TRUE) +
+#  annotate("text", x = 3.3, y = max(data_len$value) * 1,
+#           label = signif_label, hjust = 1, vjust = 1,
+#           size = 3, color = "black")
+#ggsave(paste0(out_folder, "/gc_content.png"))
 
 
 
@@ -264,7 +273,7 @@ ggplot(data_gc_inter, aes(x = bin, y = value, fill = type)) +
         plot.title = element_text(hjust = 0.5),
         legend.text = element_text(size = 12),
         legend.title = element_blank())
-ggsave(paste0(out_folder, "/gc_content_intergenic.png"))
+#ggsave(paste0(out_folder, "/gc_content_intergenic.png"))
 
 
 
@@ -298,7 +307,7 @@ ggplot(data_aro, aes(x = bin, y = value, fill = type)) +
         plot.title = element_text(hjust = 0.5),
         legend.text = element_text(size = 12),
         legend.title = element_blank())
-ggsave(paste0(out_folder, "/aromaticity.png"))
+#ggsave(paste0(out_folder, "/aromaticity.png"))
 
 
 
@@ -332,7 +341,7 @@ ggplot(data_inst, aes(x = bin, y = value, fill = type)) +
         plot.title = element_text(hjust = 0.5),
         legend.text = element_text(size = 12),
         legend.title = element_blank())
-ggsave(paste0(out_folder, "/instability_index.png"))
+#ggsave(paste0(out_folder, "/instability_index.png"))
 
 
 
@@ -366,7 +375,7 @@ ggplot(data_flex, aes(x = bin, y = value, fill = type)) +
         plot.title = element_text(hjust = 0.5),
         legend.text = element_text(size = 12),
         legend.title = element_blank())
-ggsave(paste0(out_folder, "/mean_flexibility.png"))
+#ggsave(paste0(out_folder, "/mean_flexibility.png"))
 
 
 
@@ -400,7 +409,7 @@ ggplot(data_hydro, aes(x = bin, y = value, fill = type)) +
         plot.title = element_text(hjust = 0.5),
         legend.text = element_text(size = 12),
         legend.title = element_blank())
-ggsave(paste0(out_folder, "/hydrophobicity.png"))
+#ggsave(paste0(out_folder, "/hydrophobicity.png"))
 
 
 ####### HCA ######
@@ -433,7 +442,7 @@ ggplot(data_hca, aes(x = bin, y = value, fill = type)) +
         plot.title = element_text(hjust = 0.5),
         legend.text = element_text(size = 12),
         legend.title = element_blank())
-ggsave(paste0(out_folder, "/hca.png"))
+#ggsave(paste0(out_folder, "/hca.png"))
 
 
 
