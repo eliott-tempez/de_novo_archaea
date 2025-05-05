@@ -46,7 +46,7 @@ data$bin <- as.character(data$bin)
 min_gc <- 39.4
 max_gc <- 56.4
 bin_limits <- seq(min_gc, max_gc, length.out = n_bins + 1)
-bin_labels <- c(paste0(min_gc, " - 45.0%"), paste0("50.0 - ", max_gc, " %"))
+bin_labels <- paste0(round(bin_limits[-length(bin_limits)], 1), " - ", round(bin_limits[-1], 1), " %")
 signif_label <- "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05"
 
 
@@ -198,7 +198,7 @@ ggplot(data_len, aes(x = bin, y = value, fill = type)) +
 #  annotate("text", x = 3.3, y = max(data_len$value) * 1,
 #           label = signif_label, hjust = 1, vjust = 1, 
 #           size = 3, color = "black")
-#ggsave(paste0(out_folder, "/sequence_length.png"))
+ggsave(paste0(out_folder, "/sequence_length.png"))
 
 
 
@@ -239,7 +239,7 @@ ggplot(data_gc, aes(x = bin, y = value, fill = type)) +
 #  annotate("text", x = 3.3, y = max(data_len$value) * 1,
 #           label = signif_label, hjust = 1, vjust = 1,
 #           size = 3, color = "black")
-#ggsave(paste0(out_folder, "/gc_content.png"))
+ggsave(paste0(out_folder, "/gc_content.png"))
 
 
 
@@ -273,7 +273,7 @@ ggplot(data_gc_inter, aes(x = bin, y = value, fill = type)) +
         plot.title = element_text(hjust = 0.5),
         legend.text = element_text(size = 12),
         legend.title = element_blank())
-#ggsave(paste0(out_folder, "/gc_content_intergenic.png"))
+ggsave(paste0(out_folder, "/gc_content_intergenic.png"))
 
 
 
@@ -307,7 +307,7 @@ ggplot(data_aro, aes(x = bin, y = value, fill = type)) +
         plot.title = element_text(hjust = 0.5),
         legend.text = element_text(size = 12),
         legend.title = element_blank())
-#ggsave(paste0(out_folder, "/aromaticity.png"))
+ggsave(paste0(out_folder, "/aromaticity.png"))
 
 
 
@@ -341,7 +341,7 @@ ggplot(data_inst, aes(x = bin, y = value, fill = type)) +
         plot.title = element_text(hjust = 0.5),
         legend.text = element_text(size = 12),
         legend.title = element_blank())
-#ggsave(paste0(out_folder, "/instability_index.png"))
+ggsave(paste0(out_folder, "/instability_index.png"))
 
 
 
@@ -375,7 +375,7 @@ ggplot(data_flex, aes(x = bin, y = value, fill = type)) +
         plot.title = element_text(hjust = 0.5),
         legend.text = element_text(size = 12),
         legend.title = element_blank())
-#ggsave(paste0(out_folder, "/mean_flexibility.png"))
+ggsave(paste0(out_folder, "/mean_flexibility.png"))
 
 
 
@@ -409,7 +409,7 @@ ggplot(data_hydro, aes(x = bin, y = value, fill = type)) +
         plot.title = element_text(hjust = 0.5),
         legend.text = element_text(size = 12),
         legend.title = element_blank())
-#ggsave(paste0(out_folder, "/hydrophobicity.png"))
+ggsave(paste0(out_folder, "/hydrophobicity.png"))
 
 
 ####### HCA ######
@@ -442,38 +442,58 @@ ggplot(data_hca, aes(x = bin, y = value, fill = type)) +
         plot.title = element_text(hjust = 0.5),
         legend.text = element_text(size = 12),
         legend.title = element_blank())
-#ggsave(paste0(out_folder, "/hca.png"))
+ggsave(paste0(out_folder, "/hca.png"))
 
 
 
 ###### AA use ######
-aa_use <- unique(data$feature)[endsWith(unique(data$feature), "_use")]
-aa_plots <- c()
-for (aa in aa_use) {
-  data_aa <- data[data$feature == aa, ]
-  data_aa$type <- factor(data_aa$type, levels = c("cds", "trg", "denovo"))
-  data_aa$group <- paste0(data_aa$bin, "_", data_aa$type)
-  data_aa_summary <- data_aa %>%
-    group_by(bin, type) %>%
-    summarise(n = n(), .groups = "drop")
+polar_aa <- c("S", "T", "N", "Q")
+hydrophobic_aa <- c("V", "I", "L", "M", "F", "W", "Y")
+positive_aa <- c("K", "R", "H")
+negative_aa <- c("D", "E")
+pg_aa <- c("G", "P")
+a_aa <- c("A")
+c_aa <- c("C")
+aa_types <- list(polar_aa, hydrophobic_aa, positive_aa, negative_aa, pg_aa, a_aa, c_aa)
+aa_types_names <- c("polar", "hydrophobic", "positive", "negative", "proline-glycine", "alanine", "cysteine")
 
-  p <- ggplot(data_aa, aes(x = bin, y = value, fill = type)) +
-    geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
-    labs(title = gsub("_use", "", aa),
-         x = "",
-         y = "") +
-    scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c")) +
-    theme_minimal() +
-    scale_x_discrete(labels = c("0" = bin_labels[1],
-                                "1" = bin_labels[2])) +
-    theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 18),
-          axis.text.y = element_text(size = 16), legend.position = "none")
-  aa_plots <- c(aa_plots, list(p))
+## Plot ##
+for (i in seq_along(aa_types)) {
+  aa_type <- aa_types[[i]]
+  aa_type_name <- aa_types_names[[i]]
+  aa_plots <- c()
+  for (aa in aa_type) {
+    data_aa <- data[data$feature == paste0(aa, "_use"), ]
+    data_aa$type <- factor(data_aa$type, levels = c("cds", "trg", "denovo"))
+    data_aa$group <- paste0(data_aa$bin, "_", data_aa$type)
+    data_aa_summary <- data_aa %>%
+      group_by(bin, type) %>%
+      summarise(n = n(), .groups = "drop")
+
+    p <- ggplot(data_aa, aes(x = bin, y = value, fill = type)) +
+      geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
+      labs(title = aa,
+           x = "",
+           y = "") +
+      scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c")) +
+      theme_minimal() +
+      scale_x_discrete(labels = c("0" = bin_labels[1],
+                                  "1" = bin_labels[2])) +
+      theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 18),
+            axis.text.y = element_text(size = 16), legend.position = "none")
+
+    # Add to the list of plots
+    aa_plots <- c(aa_plots, list(p))
+  }
+  fig <- ggarrange(plotlist = aa_plots)
+  annotate_figure(fig, bottom = text_grob("% GC (whole genome)\n", size = 14),
+                  left = text_grob("% use", rot = 90, size = 14),
+                  top = text_grob(paste("Amino-acid distribution:",
+                                        aa_type_name),
+                                  size = 18))
+  ggsave(paste0(out_folder, "/", aa_type_name, "_use.png"))
 }
 
-fig <- ggarrange(plotlist = aa_plots, ncol = 5, nrow = 4)
-annotate_figure(fig, bottom = text_grob("Sequence type\n", size = 14),
-                left = text_grob("Amino-acid use (%)", rot = 90, size = 14),
-                right = text_grob("****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05\n", size = 8, rot = -90), 
-                top = text_grob("Amino-acid use distribution", size = 18))
-ggsave(paste0(out_folder, "/aa_use.png"), width = 1200, height = 1200)
+
+
+
