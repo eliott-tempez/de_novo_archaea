@@ -26,7 +26,7 @@ dense_dir <- paths$dense_dir
 cds_dir <- paths$cds_dir
 genomes_list <- paths$genomes_list
 fa_dir <- paths$fa_dir
-output_dir <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/global_results"
+output_dir <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/global_results/"
 intergenic_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/10_analyse_intergenic/intergenic_lengths.tsv"
 
 
@@ -105,7 +105,7 @@ p <- gheatmap(p, data[, "gc_perc", drop = FALSE], offset = 2,
                       guide = guide_colorbar(order = 3))
 
 # Add the title
-p <- p + ggtitle("Number of de novo genes and TRGs for each genome") +
+p <- p + ggtitle("Number of de novo genes,TRGs anf GC rate for each genome") +
   theme(plot.title = element_text(hjust = 0.5, vjust = -10))
 p
 
