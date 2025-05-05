@@ -2,40 +2,42 @@
 ############################## IMPORT #############################
 ###################################################################
 
+# Librairies
 library(ggplot2)
 library(tidyr)
 library(ggpubr)
 library(dplyr)
 library(grid)
 
-ggsave <- function(..., bg = "white",
-                   width = 1000, height = 1000,
-                   units = "px", dpi = 100) {
-  ggplot2::ggsave(..., bg = bg,
-                  width = width,
-                  height = height,
-                  units = units,
-                  dpi = dpi)
-}
+
+# User-defined parameters
+n_bins <- 3
+plot_pvals <- FALSE
 
 
+# Files
 input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences/sequence_features_good_candidates_all.csv"
-pval_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences/2_bins/pvalues_2_bins.tsv"
-bins_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences/2_bins/bin_indexes_2.csv"
-out_folder <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences/2_bins"
+out_folder <- paste0("/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences/", n_bins, "_bins/")
+pval_fils <- paste0(out_folder, "pvalues_", n_bins, "_bins.tsv")
+bins_file <- paste0(out_folder, "bin_indexes_", n_bins, ".csv")
 #input_file <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/13_plot_dense_results/sequence_features_good_candidates_all.csv"
 #pval_file <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/13_plot_dense_results/pvalues_2_bins.tsv"
 #bins_file <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/13_plot_dense_results/sequences/2_bins/bin_indexes_2.csv"
 #out_folder <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/13_plot_dense_results/sequences/2_bins"
 
 
+# Read data
 data <- read.table(input_file, header = TRUE, sep = "\t")
-pvals <- read.table(pval_file, header = TRUE, sep = "\t")
-n_bins <- length(unique(pvals[c("bin1", "bin2")]))
+if (plot_pvals) {
+  pvals <- read.table(pval_file, header = TRUE, sep = "\t")
+}
 # Pivot to longer format
 descriptors <- setdiff(colnames(data), c("genome", "cds", "type"))
 data <- pivot_longer(data, cols = all_of(descriptors), names_to = "feature", values_to = "value")
-pvals <- pivot_longer(pvals, cols = all_of(descriptors), names_to = "feature", values_to = "pval")
+if (plot_pvals) {
+  pvals <- pivot_longer(pvals, cols = all_of(descriptors), names_to = "feature", values_to = "pval")
+  pvals$p <- pvals$pval
+}
 # Add the bins to the data
 bins <- read.table(bins_file, header = TRUE, sep = " ")
 data <- data %>%
@@ -55,9 +57,68 @@ signif_label <- "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0
 ############################ FUNCTIONS ############################
 ###################################################################
 
+# Save a plot
+ggsave <- function(..., bg = "white",
+                   width = 1000, height = 1000,
+                   units = "px", dpi = 100) {
+  ggplot2::ggsave(..., bg = bg,
+                  width = width,
+                  height = height,
+                  units = units,
+                  dpi = dpi)
+}
+
+
+
+add_dummy_rows <- function(data, feature, n_bins) {
+  # Filter the data
+  data_local <- data[data$feature == feature, ]
+  # Add unique groups
+  data_local$group <- paste0(data_local$bin, "_", data_local$type)
+  # Create dummy rows for blank spaces on the x axis
+  n_dummy <- (n_bins - 1)
+  data_levels <- c("0_cds", "0_trg", "0_denovo")
+  for (i in 1:n_dummy) {
+    blank <- paste0(i - 1, "_blank")
+    cds <- paste0(i, "_cds")
+    trg <- paste0(i, "_trg")
+    denovo <- paste0(i, "_denovo")
+    data_levels <- c(data_levels, blank, cds, trg, denovo)
+  }
+  data_local$group <- as.character(data_local$group)
+  data_local$group <- factor(data_local$group, levels = data_levels)
+  for (i in 1:n_dummy) {
+    dummy <- data_local[1, ]
+    dummy$value <- NA
+    dummy$group <- paste0(i - 1, "_blank")
+    data_local <- rbind(data_local, dummy)
+  }
+  return(data_local)
+}
+
+
+
+# Get the number of CDS for each condition
+get_ncds_conditions <- function(data, n_bins) {
+  # Get the names of the dummy rows
+  dummy_rows <- c()
+  for (i in 1:(n_bins - 1)) {
+    dummy_rows <- c(dummy_rows, paste0(i - 1, "_blank"))
+  }
+  # Get the data
+  data_len_summary <- data %>%
+    filter(!(group %in% dummy_rows)) %>%
+    group_by(bin, type, group) %>%
+    summarise(n = n(), .groups = "drop")
+  return(data_len_summary)
+}
+
+
+
+
+
 # Get the y positions to print the p values
 get_y_positions <- function(data, local_pvals, fact, non_signif) {
-
 # Get different possibilities
 denovo_0 <- ((local_pvals$type1 == "denovo" & local_pvals$bin1 == "0") |
                (local_pvals$type2 == "denovo" & local_pvals$bin2 == "0"))
@@ -167,7 +228,7 @@ get_pvals <- function(desc, data, fact, non_signif = FALSE) {
   return(local_pvals)
 }
 
-pvals$p <- pvals$pval
+
 
 
 
@@ -176,22 +237,8 @@ pvals$p <- pvals$pval
 ###################################################################
 
 ###### Sequence length ######
-data_len <- data[data$feature == "length", ]
-data_len$group <- paste0(data_len$bin, "_", data_len$type)
-# Add a dummy level in the x-axis
-data_len$group <- as.character(data_len$group)
-data_len$group <- factor(data_len$group, levels = c("0_cds", "0_trg", "0_denovo", "blank", "1_cds", "1_trg", "1_denovo"))
-# Create a dummy row for the blank space
-dummy <- data_len[1, ]
-dummy$value <- NA
-dummy$group <- "blank"
-data_len <- rbind(data_len, dummy)
-
-# Get summary data
-data_len_summary <- data_len %>%
-  filter(group != "blank") %>%  # skip the dummy in the summary
-  group_by(bin, type, group) %>%
-  summarise(n = n(), .groups = "drop")
+data_len <- add_dummy_rows(data, "length", n_bins)
+data_len_summary <- get_ncds_conditions(data_len, n_bins)
 
 # Plot
 ggplot(data_len, aes(x = group, y = value, fill = type)) +
@@ -218,7 +265,7 @@ ggplot(data_len, aes(x = group, y = value, fill = type)) +
         axis.text.y = element_text(size = 12),
         plot.title = element_text(hjust = 0.5),
         legend.text = element_text(size = 12),
-        legend.title = element_blank()) +
+        legend.title = element_blank()) 
   stat_pvalue_manual(get_pvals("length", data_len, .9, TRUE),
                      label = "p.signif",
                      inherit.aes = FALSE,
