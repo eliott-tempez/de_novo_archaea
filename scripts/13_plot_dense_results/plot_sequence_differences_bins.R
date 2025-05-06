@@ -11,7 +11,7 @@ library(grid)
 
 
 # User-defined parameters
-n_bins <- 3
+n_bins <- 2
 plot_pvals <- FALSE
 save_plots <- TRUE
 
@@ -338,9 +338,9 @@ data_len_summary <- get_ncds_conditions(data_len, n_bins)
 
 # Pvals
 if (plot_pvals) {
-  pval_factor <- 0.9
+  pval_factor <- 0.1
   only_ns <- TRUE
-  y_annotation <- 2500
+  y_annotation <- 3000
   pval_vect <- c(pval_factor, only_ns, y_annotation)
 } else {
   pval_vect <- c(NA, NA, NA)
@@ -351,7 +351,7 @@ p <- get_plot(data_len,
               data_len_summary,
               "length",
               "Sequence length distribution",
-              n_y_pos = -10,
+              n_y_pos = -50,
               print_pval = pval_vect,
               scale_y = c(50, 100, 500, 1000, 2000))
 p
@@ -463,7 +463,7 @@ data_inst_summary <- get_ncds_conditions(data_inst, n_bins)
 
 # Pvals
 if (plot_pvals) {
-  pval_factor <- 0.1
+  pval_factor <- 0.06
   only_ns <- FALSE
   y_annotation <- 140
   pval_vect <- c(pval_factor, only_ns, y_annotation)
@@ -476,7 +476,7 @@ p <- get_plot(data_inst,
               data_inst_summary,
               "instability",
               "Instability index",
-              n_y_pos = -13,
+              n_y_pos = -15,
               print_pval = pval_vect,
               scale_y = seq(0, 75, 25))
 p
@@ -494,7 +494,7 @@ data_flex_summary <- get_ncds_conditions(data_flex, n_bins)
 
 # Pvals
 if (plot_pvals) {
-  pval_factor <- 0.1
+  pval_factor <- 0.05
   only_ns <- FALSE
   y_annotation <- 1.06
   pval_vect <- c(pval_factor, only_ns, y_annotation)
@@ -525,7 +525,7 @@ data_hyd_summary <- get_ncds_conditions(data_hyd, n_bins)
 
 # Pvals
 if (plot_pvals) {
-  pval_factor <- 0.1
+  pval_factor <- 0.05
   only_ns <- FALSE
   y_annotation <- 3.5
   pval_vect <- c(pval_factor, only_ns, y_annotation)
@@ -538,7 +538,7 @@ p <- get_plot(data_hyd,
               data_hyd_summary,
               "hydropathy",
               "Hydrophobicity",
-              n_y_pos = -1.9,
+              n_y_pos = -2,
               print_pval = pval_vect,
               scale_y = seq(-2, 2, 1))
 p
@@ -557,7 +557,7 @@ data_hca_summary <- get_ncds_conditions(data_hca, n_bins)
 # Pvals
 if (plot_pvals) {
   pval_factor <- 0.1
-  only_ns <- FALSE
+  only_ns <- TRUE
   y_annotation <- 17
   pval_vect <- c(pval_factor, only_ns, y_annotation)
 } else {
@@ -625,13 +625,13 @@ for (i in seq_along(aa_types)) {
   }
 
   fig <- ggarrange(plotlist = aa_plots, common.legend = TRUE, legend = "right")
-  annotate_figure(fig, bottom = text_grob("% GC (whole genome)\n", size = 14),
+  fig <- annotate_figure(fig, bottom = text_grob("% GC (whole genome)\n", size = 14),
                   left = text_grob("% use", rot = 90, size = 14),
                   top = text_grob(paste("Amino-acid distribution:",
                                         aa_type_name, "\n"),
                                   size = 18),
                   right = text_grob(paste0("\n", signif_label), rot = 90, size = 10))
-  fig
+  print(fig)
 
   # Save the plot
   if (save_plots) {
