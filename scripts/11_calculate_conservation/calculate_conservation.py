@@ -234,7 +234,8 @@ def run_blast(query_sequences, db_faa_file, blast_type, keep_homologs, db):
         # Keep only the matches in the right CDS
         result = result[result.apply(lambda row: db.get(row ["qseqid"]) == row ["sseqid"], axis=1)]
     # Keep only the best hit for each query
-    result = result[result["qcov"] >= 50]
+    if blast_type != "tblastx":
+        result = result[result["qcov"] >= 50]
     result = result.sort_values("evalue").drop_duplicates("qseqid")
     # Keep homolog sequences
     if keep_homologs:
@@ -454,6 +455,7 @@ if __name__ == "__main__":
         focal_intergenic_names = random.sample(focal_intergenic_names, 1000)
     focal_intergenic = {k: focal_intergenic[k] for k in focal_intergenic_names}
     print(f"Extracted {len(focal_intergenic)} intergenic sequences for the focal species {FOCAL_SPECIES}\n")
+    
     # Calculate the intergenic conservation and add to dataframe
     conservation_df, _ = process_conservation_parallel(FOCAL_SPECIES, conservation_df, "n_intergenic", focal_intergenic)
     print("\n\n")
