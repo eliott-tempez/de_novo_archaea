@@ -53,7 +53,7 @@ def get_denovo_info(genome):
         while "gS" not in cell:
             i -= 1
             cell = matches.iloc[0, i]
-        denovo_dict[denovo]["ancestor_sp_1"] = matches.columns[i]
+        denovo_dict[denovo]["ancestor_sp"] = matches.columns[i]
 
         if OUTGROUP_NUMBER == 2:
             ancester_int = int(cell[2:])
@@ -65,21 +65,20 @@ def get_denovo_info(genome):
                     n_outgroup = int(cell[2:])
                     if n_outgroup < ancester_int:
                         is_other_outgroup = True
-            denovo_dict[denovo]["ancestor_sp_2"] = matches.columns[i]
+            denovo_dict[denovo]["ancestor_sp"] = matches.columns[i]
 
         elif OUTGROUP_NUMBER > 2 or OUTGROUP_NUMBER == 0:
             print(f" NUM_OUTGROUPS > 2 is not implemented yet (0 impossible)")
     
     ## Loci of the noncoding match
-    ancestor_name = f"ancestor_sp_{OUTGROUP_NUMBER}"
-    unique_ancestors = set(denovo_dict[denovo][ancestor_name] for denovo in denovo_dict)
+    unique_ancestors = set(denovo_dict[denovo]["ancestor_sp"] for denovo in denovo_dict)
     # Get the tblastn result for each ancestor
     for ancestor in unique_ancestors:
         tblastn_result_file = f"{DENSE_DIR}{genome}/blast_out/TRG_multielongated_tblastn_{ancestor}_genome.out"
         tblastn_df = pd.read_csv(tblastn_result_file, sep="\t", header=None, comment="#")
         tblastn_df.columns = ["qseqid", "sseqid", "pident", "length", "mismatch", "gapopen", "qstart", "qend", "sstart", "send", "evalue", "bitscore", "qlength", "qcov", "sframe"]
         for denovo in denovo_dict:
-            if denovo_dict[denovo][ancestor_name] == ancestor:
+            if denovo_dict[denovo]["ancestor_sp"] == ancestor:
                 tblastn_df_denov = tblastn_df[tblastn_df["qseqid"] == f"{denovo}_elongated"].reset_index(drop=True)
                 # Sort by qcov then evalue
                 tblastn_df_denov = tblastn_df_denov[tblastn_df_denov["qcov"] >= 50]
@@ -133,7 +132,7 @@ def get_sequence_from_loci(genome, contig, start, end):
 
 
 def run_blast(query_file_name, subject_file_name, output_file_name):
-    cmd = f'tblastn -query {query_file_name} -subject {subject_file_name} -out {output_file_name} -outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qlen qcovs sframe"'
+    cmd = f'tblastn -query {query_file_name} -subject {subject_file_name} -word_size 2 -out {output_file_name} -outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qlen qcovs sframe"'
     try:
         subprocess.run(cmd, shell=True, check=True)
     except subprocess.CalledProcessError as e:
@@ -228,17 +227,16 @@ def get_ancestor_seq_in_frame(seq, start, end, start_match, end_match, strand):
 
 
 def get_nc_origin(genome, denovo_dict):
-    ancestor_name = f"ancestor_sp_{OUTGROUP_NUMBER}"
     origin_frames = {}
     for denovo in denovo_dict:
         origin_frames[denovo] = {}
-        seq_ancestor_match = get_sequence_from_loci(denovo_dict[denovo][ancestor_name], denovo_dict[denovo]["loci"][0], denovo_dict[denovo]["loci"][1], denovo_dict[denovo]["loci"][2])
+        seq_ancestor_match = get_sequence_from_loci(denovo_dict[denovo]["ancestor_sp"], denovo_dict[denovo]["loci"][0], denovo_dict[denovo]["loci"][1], denovo_dict[denovo]["loci"][2])
         if seq_ancestor_match is None:
-            print(f"Could not find the sequence for {denovo} ({genome}) in {denovo_dict[denovo][ancestor_name]}")
+            print(f"Could not find the sequence for {denovo} ({genome}) in {denovo_dict[denovo]["ancestor_sp"]}")
             continue
 
         # Get all the CDss in the ancestor genome
-        ancestor_cdss = get_CDS_info(denovo_dict[denovo][ancestor_name])
+        ancestor_cdss = get_CDS_info(denovo_dict[denovo]["ancestor_sp"])
         contig_match, start_match, end_match, strand_match = denovo_dict[denovo]["loci"]
         # Keep the CDSs that contain the de novo gene
         de_novo_is_on_plus = strand_match == "+"
@@ -275,9 +273,13 @@ def get_nc_origin(genome, denovo_dict):
             else:
                 if strand == "-" and contig == contig_match:
                     if any(start <= i < end for i in all_loci):
+
+                        
+
                         n_different_genes += 1
                         different_genes.append(cds_name)
                         loci_in_gene += [i for i in all_loci if start <= i < end]
+
                         # Get the frame
                         # Query protein sequence
                         qstart = denovo_dict[denovo]["qstart"]
@@ -317,6 +319,7 @@ if __name__ == "__main__":
     results_list = []
     n_done = 0
 
+
     for genome in genomes:
         denovo_dict[genome] = get_denovo_info(genome)
         # Keep only the genomes with de novo genes
@@ -330,8 +333,7 @@ if __name__ == "__main__":
     
         # Store in pandas dataframe
         for denovo in origin_frames[genome]:
-            ancestor_name = f"ancestor_sp_{OUTGROUP_NUMBER}"
-            outgroup = denovo_dict[genome][denovo][ancestor_name]
+            outgroup = denovo_dict[genome][denovo]["ancestor_sp"]
             noncoding_match_contig, noncoding_match_start, noncoding_match_end, noncoding_match_strand = denovo_dict[genome][denovo]["loci"]
             intergenic = origin_frames[genome][denovo]["intergenic"] if "intergenic" in origin_frames[genome][denovo] else 0
             f0 = origin_frames[genome][denovo]["f+0"] if "f+0" in origin_frames[genome][denovo] else 0
