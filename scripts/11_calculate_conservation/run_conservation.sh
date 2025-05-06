@@ -7,7 +7,7 @@
 #SBATCH --ntasks=1
 #SBATCH --mem=16gb
 #SBATCH -o /home/eliott.tempez/conservation_calculations_1.log
-#SBATCH -e /home/eliott.tempez/conservation_calculations_1.log
+#SBATCH -e /home/eliott.tempez/conservation_calculations_1_error.log
 
 SCRIPTS=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/stage/M2_stage_I2BC/scripts
 GENERA_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/genera/out
@@ -16,7 +16,7 @@ FA_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/complete_122/fasta_
 GBK_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/complete_122/reannotated_gbk_75
 CDS_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/dense/GCA_000007305@Pyrococcus_furiosus_DSM_3638/CDS
 OUTPUT_LOG=/home/eliott.tempez/conservation_calculations_1.log
-ERROR_LOG=/home/eliott.tempez/conservation_calculations_1.log
+ERROR_LOG=/home/eliott.tempez/conservation_calculations_1_error.log
 OUT_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/conservation
 
 # Set up a trap to clean up on exit or interruption
