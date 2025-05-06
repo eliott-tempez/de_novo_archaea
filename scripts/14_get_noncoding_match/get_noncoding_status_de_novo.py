@@ -13,7 +13,7 @@ from Bio.Seq import Seq
 
 from my_functions.paths import DENSE_DIR, GENOMES_LIST, CDS_DIR, GFF_DIR, FA_DIR
 OUT_FOLDER = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/"
-
+OUTGROUP_NUMBER = 2
 
 
 def get_denovo_info(genome):
@@ -53,17 +53,33 @@ def get_denovo_info(genome):
         while "gS" not in cell:
             i -= 1
             cell = matches.iloc[0, i]
-        denovo_dict[denovo]["ancestor_sp"] = matches.columns[i]
+        denovo_dict[denovo]["ancestor_sp_1"] = matches.columns[i]
+
+        if OUTGROUP_NUMBER == 2:
+            ancester_int = int(cell[2:])
+            is_other_outgroup = False
+            while not is_other_outgroup:
+                i -= 1
+                cell = matches.iloc[0, i]
+                if "gS" in cell:
+                    n_outgroup = int(cell[2:])
+                    if n_outgroup < ancester_int:
+                        is_other_outgroup = True
+            denovo_dict[denovo]["ancestor_sp_2"] = matches.columns[i]
+
+        elif OUTGROUP_NUMBER > 2 or OUTGROUP_NUMBER == 0:
+            print(f" NUM_OUTGROUPS > 2 is not implemented yet (0 impossible)")
     
     ## Loci of the noncoding match
-    unique_ancestors = set(denovo_dict[denovo]["ancestor_sp"] for denovo in denovo_dict)
+    ancestor_name = f"ancestor_sp_{OUTGROUP_NUMBER}"
+    unique_ancestors = set(denovo_dict[denovo][ancestor_name] for denovo in denovo_dict)
     # Get the tblastn result for each ancestor
     for ancestor in unique_ancestors:
         tblastn_result_file = f"{DENSE_DIR}{genome}/blast_out/TRG_multielongated_tblastn_{ancestor}_genome.out"
         tblastn_df = pd.read_csv(tblastn_result_file, sep="\t", header=None, comment="#")
         tblastn_df.columns = ["qseqid", "sseqid", "pident", "length", "mismatch", "gapopen", "qstart", "qend", "sstart", "send", "evalue", "bitscore", "qlength", "qcov", "sframe"]
         for denovo in denovo_dict:
-            if denovo_dict[denovo]["ancestor_sp"] == ancestor:
+            if denovo_dict[denovo][ancestor_name] == ancestor:
                 tblastn_df_denov = tblastn_df[tblastn_df["qseqid"] == f"{denovo}_elongated"].reset_index(drop=True)
                 # Sort by qcov then evalue
                 tblastn_df_denov = tblastn_df_denov[tblastn_df_denov["qcov"] >= 50]
@@ -212,16 +228,17 @@ def get_ancestor_seq_in_frame(seq, start, end, start_match, end_match, strand):
 
 
 def get_nc_origin(genome, denovo_dict):
+    ancestor_name = f"ancestor_sp_{OUTGROUP_NUMBER}"
     origin_frames = {}
     for denovo in denovo_dict:
         origin_frames[denovo] = {}
-        seq_ancestor_match = get_sequence_from_loci(denovo_dict[denovo]["ancestor_sp"], denovo_dict[denovo]["loci"][0], denovo_dict[denovo]["loci"][1], denovo_dict[denovo]["loci"][2])
+        seq_ancestor_match = get_sequence_from_loci(denovo_dict[denovo][ancestor_name], denovo_dict[denovo]["loci"][0], denovo_dict[denovo]["loci"][1], denovo_dict[denovo]["loci"][2])
         if seq_ancestor_match is None:
-            print(f"Could not find the sequence for {denovo} ({genome}) in {denovo_dict[denovo]['ancestor_sp']}")
+            print(f"Could not find the sequence for {denovo} ({genome}) in {denovo_dict[denovo][ancestor_name]}")
             continue
 
         # Get all the CDss in the ancestor genome
-        ancestor_cdss = get_CDS_info(denovo_dict[denovo]["ancestor_sp"])
+        ancestor_cdss = get_CDS_info(denovo_dict[denovo][ancestor_name])
         contig_match, start_match, end_match, strand_match = denovo_dict[denovo]["loci"]
         # Keep the CDSs that contain the de novo gene
         de_novo_is_on_plus = strand_match == "+"
@@ -313,7 +330,8 @@ if __name__ == "__main__":
     
         # Store in pandas dataframe
         for denovo in origin_frames[genome]:
-            outgroup = denovo_dict[genome][denovo]["ancestor_sp"]
+            ancestor_name = f"ancestor_sp_{OUTGROUP_NUMBER}"
+            outgroup = denovo_dict[genome][denovo][ancestor_name]
             noncoding_match_contig, noncoding_match_start, noncoding_match_end, noncoding_match_strand = denovo_dict[genome][denovo]["loci"]
             intergenic = origin_frames[genome][denovo]["intergenic"] if "intergenic" in origin_frames[genome][denovo] else 0
             f0 = origin_frames[genome][denovo]["f+0"] if "f+0" in origin_frames[genome][denovo] else 0
@@ -330,7 +348,11 @@ if __name__ == "__main__":
     print(f"{n_denovo} de novo genes found in total")
     results = pd.DataFrame(results_list, columns=["genome", "denovo_gene", "outgroup", "noncoding_match_contig", "noncoding_match_start", "noncoding_match_end", "noncoding_match_strand", "intergenic", "f+0", "f+1", "f+2", "n_genes", "gene_matches"])
     # Save to file
-    results.to_csv(os.path.join(OUT_FOLDER, "denovo_noncoding_status.tsv"), sep="\t", index=False)
+    if OUTGROUP_NUMBER == 2:
+        file_name = "denovo_noncoding_status_outgroup_2.tsv"
+    else:
+        file_name = "denovo_noncoding_status.tsv"
+    results.to_csv(os.path.join(OUT_FOLDER, file_name), sep="\t", index=False)
 
         
 
