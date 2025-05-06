@@ -105,7 +105,7 @@ p <- gheatmap(p, data[, "gc_perc", drop = FALSE], offset = 2,
                       guide = guide_colorbar(order = 3))
 
 # Add the title
-p <- p + ggtitle("Number of de novo genes,TRGs anf GC rate for each genome") +
+p <- p + ggtitle("Number of de novo genes,TRGs and GC rate for each genome") +
   theme(plot.title = element_text(hjust = 0.5, vjust = -10))
 p
 
