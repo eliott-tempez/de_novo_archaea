@@ -32,7 +32,7 @@ cp -r $SCRIPTS/* .
 mkdir -p genera/
 cp -r $GENERA_DIR/* genera/
 mkdir -p dense/
-rsync -a --exclude 'archive*/' --include '*/' --include 'blast_out/**' --include '*/' --include '*/[^/]*.tsv' --exclude '*' $DENSE_DIR .
+rsync -a --exclude 'archive*/' --include '*/' --exclude '*/*/*' --include '*.tsv' --exclude '*' $DENSE_DIR/ dense/
 mkdir -p cds/
 cp -r $CDS_DIR/* cds/
 mkdir -p fa/
