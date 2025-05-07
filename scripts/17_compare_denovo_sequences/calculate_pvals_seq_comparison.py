@@ -201,7 +201,6 @@ if __name__ == "__main__":
 
     # Combine all the results into one DataFrame
     signif_results = pd.concat(results, ignore_index=True)
-    print(signif_results)
 
     # Continue with p-value calculation
     pvalues = calculate_pvalues(signif_results, descriptors)
