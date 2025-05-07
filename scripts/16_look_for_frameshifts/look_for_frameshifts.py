@@ -10,6 +10,7 @@ from my_functions.genomic_functions import extract_denovo_info, get_sequence_fro
 
 from my_functions.paths import GENOMES_LIST
 GOOD_CANDIDATES_FILE = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/good_candidates.txt"
+OUTGROUP_NUMBER = 1
 
 
 def get_extended_matched_seq(genome, contig, start, end, strand, missing_cter, missing_nter):
@@ -69,7 +70,7 @@ def is_significant(alignment):
         return False
     aln_len = alignment["length"]
     aln_pval = alignment["pval"]
-    if aln_len >= 5 and aln_pval <= 10e-2:
+    if aln_len >= 5 and aln_pval <= 1e-2:
         return True
     return False
 
@@ -155,6 +156,7 @@ def recursively_align(query_seq, subject_seq_nu, start_pos_query_l, end_pos_quer
     # For all segment combinations
     best_pval = 1
     best_psim = 0
+    best_length = 0
     for i in range(len(start_pos_query_l)):
         start_pos_query = start_pos_query_l[i]
         end_pos_query = end_pos_query_l[i]
@@ -185,6 +187,14 @@ def recursively_align(query_seq, subject_seq_nu, start_pos_query_l, end_pos_quer
                         best_aln.update({"frame": frame})
                         best_start_pos_query = start_pos_query
                         best_start_pos_subject = start_pos_subject
+                    # If we have the same similarity, chose the match with the highest length
+                    elif psim == best_psim:
+                        if aln["length"] > best_length:
+                            best_length = aln["length"]
+                            best_aln = aln
+                            best_aln.update({"frame": frame})
+                            best_start_pos_query = start_pos_query
+                            best_start_pos_subject = start_pos_subject
     # Check the best alignment is qualitative
     if is_significant(best_aln):
         # Replace the relative positions by absolute ones
@@ -370,7 +380,7 @@ if __name__ == "__main__":
     # Get the denovo info
     denovo_dict = {}
     for genome in genomes:
-        new_denovo = extract_denovo_info(genome)
+        new_denovo = extract_denovo_info(genome, OUTGROUP_NUMBER)
 
         # For each denovo gene
         for denovo in new_denovo:
@@ -412,7 +422,7 @@ if __name__ == "__main__":
     dict_interest["HPMEPLIM_01176_gene_mRNA"] = denovo_dict["HPMEPLIM_01176_gene_mRNA"]
     denovo_dict = dict_interest
     #--------------------------------------------------------------"""
-
+    print(f"OUTGROUP {OUTGROUP_NUMBER}\n\n\n")
     
     # Get the list of good denovo candidates
     good_candidates = read_good_candidates()
@@ -431,17 +441,30 @@ if __name__ == "__main__":
 
         frameshifts = look_for_frameshifts_within(denovo_seq, qstart, qend, match_seq, 0, len(match_seq))
 
-        # Print all cases of frameshifts or altframes
         frames = [aln["frame"] for aln in frameshifts]
+        # For all frameshifts / altframes
         if len(frameshifts) > 1 or set(frames) != {0}:
+            max_qcov = 0
+            # Print the results
             print(f"{denovo}\n\n")
-            for d in frameshifts:
-                print([f"{key}: {value}" for key, value in d.items() if key != "raw"])
-            print()
             for aln in frameshifts:
+                # Print the alignment info
+                print(f"Query: {denovo_seq} (length {len(denovo_seq)})")
+                print("Alignment infos:")
+                print([f"{key}: {value}" for key, value in aln.items() if key != "raw\n"])
+                # Get the maximum qcov
+                qstart = aln["qstart"]
+                qend = aln["qend"]
+                query_len = len(denovo_seq)
+                qcov_aln = (qend - qstart) / query_len * 100
+                if qcov_aln > max_qcov:
+                    max_qcov = qcov_aln
+                print()
+                # Print the alignment raw
                 print(aln["raw"])
+            print(f"\n\nThe maximum qcov is {max_qcov}%\n")
             print("\n\n\n\n")
-            print("_______________________________________________________________\n")
+            print("______________________________________________________________________________\n\n\n")
         
 
 
