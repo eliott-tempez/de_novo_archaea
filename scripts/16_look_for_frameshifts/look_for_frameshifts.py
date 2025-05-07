@@ -9,6 +9,7 @@ from my_functions.genomic_functions import extract_denovo_info, get_sequence_fro
 
 
 from my_functions.paths import GENOMES_LIST
+GOOD_CANDIDATES_FILE = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/good_candidates.txt"
 
 
 def get_extended_matched_seq(genome, contig, start, end, strand, missing_cter, missing_nter):
@@ -339,6 +340,26 @@ def print_results(denovo, all_matches_recursive, all_matches_blast, qcov_rec, qc
         print(match["raw"])
 
 
+def read_good_candidates():
+    good_candidates = []
+    with open(GOOD_CANDIDATES_FILE, "r") as f:
+        for line in f:
+            line = line.strip()
+            if line and not line.startswith("#"):
+                good_candidates.append(line)
+    return good_candidates
+
+
+def look_for_frameshifts_within(denovo_seq, qstart, qend, extended_match_seq, sstart, send):
+    matches = []
+    recursively_align(denovo_seq, extended_match_seq, [qstart], [qend], [sstart], [send], matches)
+    return(matches)
+
+
+
+
+
+
 
 
 if __name__ == "__main__":
@@ -373,10 +394,12 @@ if __name__ == "__main__":
             missing_nter = new_denovo[denovo]["qstart"]
             # Get the extended match sequence in outgroup
             match_seq_extended, extended_start, extended_end = get_extended_matched_seq(outgroup, contig, start, end, strand, missing_cter, missing_nter)
+            match_seq = get_sequence_from_loci(outgroup, contig, start, end, strand)
             # Add the info to the dict
             new_denovo[denovo]["extended_match_seq"] = match_seq_extended
             new_denovo[denovo]["extended_start"] = extended_start
             new_denovo[denovo]["extended_end"] = extended_end
+            new_denovo[denovo]["match_seq"] = match_seq
 
 
         # Add to global dict
@@ -391,7 +414,46 @@ if __name__ == "__main__":
     #--------------------------------------------------------------"""
 
     
+    # Get the list of good denovo candidates
+    good_candidates = read_good_candidates()
+
+    # Iterate over the "bad" denovo candidates
     for denovo in denovo_dict:
+        if denovo in good_candidates:
+            continue
+
+        # Look for frameshifts within the match
+        denovo_seq = denovo_dict[denovo]["sequence"]
+        qstart = denovo_dict[denovo]["qstart"]
+        qend = denovo_dict[denovo]["qend"]
+        extended_match_seq = denovo_dict[denovo]["extended_match_seq"]
+        match_seq = denovo_dict[denovo]["match_seq"]
+
+        frameshifts = look_for_frameshifts_within(denovo_seq, qstart, qend, match_seq, 0, len(match_seq))
+
+        # Print all cases of frameshifts or altframes
+        frames = [aln["frame"] for aln in frameshifts]
+        if len(frameshifts) > 1 or set(frames) != {0}:
+            print(f"{denovo}\n\n")
+            for d in frameshifts:
+                print([f"{key}: {value}" for key, value in d.items() if key != "raw"])
+            print()
+            for aln in frameshifts:
+                print(aln["raw"])
+            print("\n\n\n\n")
+            print("_______________________________________________________________\n")
+        
+
+
+
+
+
+
+
+
+
+
+    """for denovo in denovo_dict:
         extended_match_seq = denovo_dict[denovo]["extended_match_seq"]
         extended_start = denovo_dict[denovo]["extended_start"]
         extended_end = denovo_dict[denovo]["extended_end"]
@@ -426,4 +488,4 @@ if __name__ == "__main__":
         print(f"With water & recursion: found {len(all_matches_recursive)-1} significant alignments\n")
         print(f"With tblastn: found {len(all_matches_blast)-1} significant alignments\n\n\n")
         print_results(denovo, all_matches_recursive, all_matches_blast, total_qcov_rec, total_qcov_blast, real_scale=True)
-        print(f"\n\n{"_" * 300}\n\n")
+        print(f"\n\n{"_" * 300}\n\n")"""
