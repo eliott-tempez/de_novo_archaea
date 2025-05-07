@@ -1,0 +1,130 @@
+AJGPKGBP_00419_gene_mRNA
+
+
+['pval: 0.0', 'psim: 51.66666666666667', 'length: 60', 'qstart: 38', 'qend: 96', 'sstart: 29', 'send: 194', 'frame: 2']
+['pval: 0.03', 'psim: 62.5', 'length: 8', 'qstart: 148', 'qend: 156', 'sstart: 0', 'send: 24', 'frame: 0']
+
+#=======================================
+#
+# Aligned_sequences: 2
+# 1: query
+# 2: subject
+# Matrix: EBLOSUM62
+# Gap_penalty: 10.0
+# Extend_penalty: 0.5
+#
+# Length: 60
+# Identity:      26/60 (43.3%)
+# Similarity:    31/60 (51.7%)
+# Gaps:           7/60 (11.7%)
+# Score: 81.5
+# 
+#
+#=======================================
+
+query             32 FNSPRVLLQQGVFCPVPLMGF-NGCFSI-KPFCRKPPLGPPIPPPSSGRR     79
+                     ||||:||||||..    |:.| ||...: |.|.:||.:|....|.....|
+subject           10 FNSPKVLLQQGGL----LLRFPNGVVPVYKTFLQKPLIGSFTSPRDGSGR     55
+
+query             80 GVNTARKRIT     89
+                     | ....||||
+subject           56 G-ERRNKRIT     64
+
+
+#---------------------------------------
+#---------------------------------------
+#=======================================
+#
+# Aligned_sequences: 2
+# 1: query
+# 2: subject
+# Matrix: EBLOSUM62
+# Gap_penalty: 10.0
+# Extend_penalty: 0.5
+#
+# Length: 8
+# Identity:       5/8 (62.5%)
+# Similarity:     5/8 (62.5%)
+# Gaps:           0/8 ( 0.0%)
+# Score: 23.0
+# 
+#
+#=======================================
+
+query             53 GLFRTKLH     60
+                     ||.||..|
+subject            1 GLSRTLYH      8
+
+
+#---------------------------------------
+#---------------------------------------
+
+
+
+
+
+_______________________________________________________________
+
+GDFJICBN_01274_gene_mRNA
+
+
+['pval: 0.0', 'psim: 100.0', 'length: 8', 'qstart: 21', 'qend: 29', 'sstart: 52', 'send: 76', 'frame: 1']
+['pval: 0.0', 'psim: 93.75', 'length: 16', 'qstart: 0', 'qend: 16', 'sstart: 0', 'send: 48', 'frame: 0']
+
+#=======================================
+#
+# Aligned_sequences: 2
+# 1: query
+# 2: subject
+# Matrix: EBLOSUM62
+# Gap_penalty: 10.0
+# Extend_penalty: 0.5
+#
+# Length: 8
+# Identity:       8/8 (100.0%)
+# Similarity:     8/8 (100.0%)
+# Gaps:           0/8 ( 0.0%)
+# Score: 45.0
+# 
+#
+#=======================================
+
+query             22 EKFYFYKI     29
+                     ||||||||
+subject           18 EKFYFYKI     25
+
+
+#---------------------------------------
+#---------------------------------------
+#=======================================
+#
+# Aligned_sequences: 2
+# 1: query
+# 2: subject
+# Matrix: EBLOSUM62
+# Gap_penalty: 10.0
+# Extend_penalty: 0.5
+#
+# Length: 16
+# Identity:      14/16 (87.5%)
+# Similarity:    15/16 (93.8%)
+# Gaps:           0/16 ( 0.0%)
+# Score: 73.0
+# 
+#
+#=======================================
+
+query              1 MSDDGNRVAAELMRKP     16
+                     :.||||||||||||||
+subject            1 LPDDGNRVAAELMRKP     16
+
+
+#---------------------------------------
+#---------------------------------------
+
+
+
+
+
+_______________________________________________________________
+
