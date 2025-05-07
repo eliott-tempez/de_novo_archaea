@@ -12,19 +12,19 @@ library(grid)
 
 # User-defined parameters
 n_bins <- 2
-plot_pvals <- FALSE
-save_plots <- TRUE
+plot_pvals <- TRUE
+save_plots <- FALSE
 
 
 # Files
-input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences/sequence_features_good_candidates_all.csv"
-out_folder <- paste0("/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences/", n_bins, "_bins/")
+input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/sequence_features_good_candidates_all.csv"
+out_folder <- paste0("/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/", n_bins, "_bins/")
 pval_file <- paste0(out_folder, "pvalues_", n_bins, "_bins.tsv")
 bins_file <- paste0(out_folder, "bin_indexes_", n_bins, ".csv")
-#input_file <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/13_plot_dense_results/sequence_features_good_candidates_all.csv"
-#pval_file <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/13_plot_dense_results/pvalues_2_bins.tsv"
-#bins_file <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/13_plot_dense_results/sequences/2_bins/bin_indexes_2.csv"
-#out_folder <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/13_plot_dense_results/sequences/2_bins"
+#input_file <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/17_compare_denovo_sequences/features_good_candidates_all.csv"
+#pval_file <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/17_compare_denovo_sequences/pvalues_2_bins.tsv"
+#bins_file <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/17_compare_denovo_sequences/sequences/2_bins/bin_indexes_2.csv"
+#out_folder <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/17_compare_denovo_sequences/sequences/2_bins"
 
 
 # Read data
@@ -369,9 +369,9 @@ data_gc_summary <- get_ncds_conditions(data_gc, n_bins)
 
 # Pvals
 if (plot_pvals) {
-  pval_factor <- 0.12
+  pval_factor <- 0.08
   only_ns <- FALSE
-  y_annotation <- 1.8
+  y_annotation <- 1.5
   pval_vect <- c(pval_factor, only_ns, y_annotation)
 } else {
   pval_vect <- c(NA, NA, NA)
@@ -400,9 +400,9 @@ data_gc_inter_summary <- get_ncds_conditions(data_gc_inter, n_bins)
 
 # Pvals
 if (plot_pvals) {
-  pval_factor <- 0.1
+  pval_factor <- 0.06
   only_ns <- FALSE
-  y_annotation <- 2
+  y_annotation <- 1.8
   pval_vect <- c(pval_factor, only_ns, y_annotation)
 } else {
   pval_vect <- c(NA, NA, NA)
@@ -465,7 +465,7 @@ data_inst_summary <- get_ncds_conditions(data_inst, n_bins)
 if (plot_pvals) {
   pval_factor <- 0.06
   only_ns <- FALSE
-  y_annotation <- 140
+  y_annotation <- 120
   pval_vect <- c(pval_factor, only_ns, y_annotation)
 } else {
   pval_vect <- c(NA, NA, NA)
@@ -496,7 +496,7 @@ data_flex_summary <- get_ncds_conditions(data_flex, n_bins)
 if (plot_pvals) {
   pval_factor <- 0.05
   only_ns <- FALSE
-  y_annotation <- 1.06
+  y_annotation <- 1.05
   pval_vect <- c(pval_factor, only_ns, y_annotation)
 } else {
   pval_vect <- c(NA, NA, NA)
@@ -527,7 +527,7 @@ data_hyd_summary <- get_ncds_conditions(data_hyd, n_bins)
 if (plot_pvals) {
   pval_factor <- 0.05
   only_ns <- FALSE
-  y_annotation <- 3.5
+  y_annotation <- 3
   pval_vect <- c(pval_factor, only_ns, y_annotation)
 } else {
   pval_vect <- c(NA, NA, NA)
@@ -558,7 +558,7 @@ data_hca_summary <- get_ncds_conditions(data_hca, n_bins)
 if (plot_pvals) {
   pval_factor <- 0.1
   only_ns <- TRUE
-  y_annotation <- 17
+  y_annotation <- 8
   pval_vect <- c(pval_factor, only_ns, y_annotation)
 } else {
   pval_vect <- c(NA, NA, NA)
