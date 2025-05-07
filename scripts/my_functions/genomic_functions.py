@@ -127,7 +127,7 @@ def extract_iorfs(genome, threshold=60):
 
 
 
-def extract_denovo_info(genome):
+def extract_denovo_info(genome, outgroup_num=1):
     """Extract info for all de novo genes for one genome"""
     denovo_dict = {}
 
@@ -194,6 +194,19 @@ def extract_denovo_info(genome):
             i -= 1
             cell = matches.iloc[0, i]
         denovo_dict[denovo]["ancestor_sp"] = matches.columns[i]
+
+        if outgroup_num == 2:
+            ancester_int = int(cell[2:])
+            is_other_outgroup = False
+            while not is_other_outgroup:
+                i -= 1
+                cell = matches.iloc[0, i]
+                if "gS" in cell:
+                    n_outgroup = int(cell[2:])
+                    if n_outgroup < ancester_int:
+                        is_other_outgroup = True
+            denovo_dict[denovo]["ancestor_sp"] = matches.columns[i]
+
 
     ## Loci of the noncoding match
     unique_ancestors = set(denovo_dict[denovo]["ancestor_sp"] for denovo in denovo_dict)
