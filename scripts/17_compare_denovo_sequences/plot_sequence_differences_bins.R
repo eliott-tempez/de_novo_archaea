@@ -581,6 +581,67 @@ if (save_plots) {
 
 
 
+###### Intrinsic disorder (IUpred) ######
+data_disord <- add_dummy_rows(data, "disord", n_bins)
+data_disord_summary <- get_ncds_conditions(data_disord, n_bins)
+
+# Pvals
+if (plot_pvals) {
+  pval_factor <- 0.1
+  only_ns <- FALSE
+  y_annotation <- 0.1
+  pval_vect <- c(pval_factor, only_ns, y_annotation)
+} else {
+  pval_vect <- c(NA, NA, NA)
+}
+
+# Plot
+p <- get_plot(data_disord,
+              data_disord_summary,
+              "disord",
+              "Intrinsic disorder (IUPred)",
+              n_y_pos = -0.005,
+              print_pval = pval_vect,
+              scale_y = seq(0, 1, 0.2))
+p
+
+# Save the plot
+if (save_plots) {
+  ggsave(paste0(out_folder, "/intrinsic_disorder.png"), plot = p)
+}
+
+
+
+###### Aggregation (tango) ######
+data_agg <- add_dummy_rows(data, "aggreg", n_bins)
+data_agg_summary <- get_ncds_conditions(data_agg, n_bins)
+
+# Pvals
+if (plot_pvals) {
+  pval_factor <- 0.1
+  only_ns <- FALSE
+  y_annotation <- 0.5
+  pval_vect <- c(pval_factor, only_ns, y_annotation)
+} else {
+  pval_vect <- c(NA, NA, NA)
+}
+
+# Plot
+p <- get_plot(data_agg,
+              data_agg_summary,
+              "aggreg",
+              "Aggregation (Tango)",
+              n_y_pos = -0.0001,
+              print_pval = pval_vect,
+              scale_y = seq(0, 1, 0.2))
+p
+
+# Save the plot
+if (save_plots) {
+  ggsave(paste0(out_folder, "/aggregation.png"), plot = p)
+}
+
+
 
 ###### AA use ######
 polar_aa <- c("S", "T", "N", "Q")
