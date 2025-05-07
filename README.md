@@ -33,3 +33,5 @@ Ce stage a été effectué de Janvier 2025 à Juillet 2025 au sein de l'Institut
 - Visualisation des résultats de Dense (`13_plot_dense_results`)
 - Récupération de l'origine des gènes de novo dans le noncodant du patch outgroup (`14_get_noncoding_match`)
 - Etude des gènes de novo "ratés" à cause d'une rupture de synténie (`15_explore_synteny_mismatches`)
+- Recherche de frameshifts au sein des gènes de novo (`16_look_for_frameshifts`)
+- Comparaison des séquences des gènes de novo aux autres CDS par le biais de plusieurs descripteurs (`17_compare_denovo_sequences`)
