@@ -15,9 +15,19 @@ import matplotlib.pyplot as plt
 
 
 from my_functions.paths import *
-ORIGIN_FILE = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/denovo_noncoding_status.tsv"
 OUT_FOLDER = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/"
 SEPARATE_ORIGINS = True
+OUTGROUP_NUMBER = 2
+
+
+
+if OUTGROUP_NUMBER == 1:
+    ORIGIN_FILE = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/denovo_noncoding_status.tsv"
+elif OUTGROUP_NUMBER == 2:
+    ORIGIN_FILE = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/denovo_noncoding_status_outgroup_2.tsv"
+else:
+    print("OUTGROUP_NUMBER must be 1 or 2")
+
 
 
 
@@ -59,6 +69,22 @@ def get_denovo_info(genome):
             i -= 1
             cell = matches.iloc[0, i]
         denovo_dict[denovo]["ancestor_sp"] = matches.columns[i]
+        
+        if OUTGROUP_NUMBER == 2:
+            ancester_int = int(cell[2:])
+            is_other_outgroup = False
+            while not is_other_outgroup:
+                i -= 1
+                cell = matches.iloc[0, i]
+                if "gS" in cell:
+                    n_outgroup = int(cell[2:])
+                    if n_outgroup < ancester_int:
+                        is_other_outgroup = True
+            denovo_dict[denovo]["ancestor_sp"] = matches.columns[i]
+
+        elif OUTGROUP_NUMBER > 2:
+            print(f" NUM_OUTGROUPS > 2 is not implemented yet")
+
 
     ## Loci of the noncoding match
     unique_ancestors = set(denovo_dict[denovo]["ancestor_sp"] for denovo in denovo_dict)
@@ -296,7 +322,7 @@ if __name__ == "__main__":
     # Export good candidates
     good_candidates = low_qcov_genes_intergenic + low_orf_cov_genes_intergenic + low_qcov_genes_rest + low_orf_cov_genes_rest
     good_candidates = list(set(good_candidates))
-    with open(os.path.join(OUT_FOLDER, "good_candidates.txt"), "w") as f:
+    with open(os.path.join(OUT_FOLDER, f"good_candidates_outgroup_{OUTGROUP_NUMBER}.txt"), "w") as f:
         for candidate in good_candidates:
             f.write(f"{candidate}\n")
 
