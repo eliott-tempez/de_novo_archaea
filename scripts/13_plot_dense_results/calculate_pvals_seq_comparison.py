@@ -12,7 +12,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from my_functions.paths import GENOMES_LIST, FA_DIR
 
 
-NB_GC_BINS = 3
+NB_GC_BINS = 2
 
 
 def get_species_gc_content(genome):
@@ -201,6 +201,7 @@ if __name__ == "__main__":
 
     # Combine all the results into one DataFrame
     signif_results = pd.concat(results, ignore_index=True)
+    print(signif_results)
 
     # Continue with p-value calculation
     pvalues = calculate_pvalues(signif_results, descriptors)
