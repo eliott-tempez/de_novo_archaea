@@ -173,6 +173,12 @@ if __name__ == "__main__":
 
     if GOOD_CANDIDATES_ONLY:
         denovo_names = extract_denovo_names(genome, True)
+    
+    #--------------------------------
+    for name in denovo_names:
+        if name not in all_cdss:
+            denovo_names.remove(name)
+    #--------------------------------
 
     # Drop duplicates
     cds_names = list(set(cds_names) - set(trg_names))
@@ -190,7 +196,7 @@ if __name__ == "__main__":
 
     # Extract all hcas
     print(all_cds_names)
-    print(all_cds)
+    print([all_cdss[cds]] for cds in all_cds_names)
     all_hcas = get_hcas(all_cds_names, all_cdss)
     print("HCAs:")
     print(all_hcas)
