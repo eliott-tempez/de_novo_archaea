@@ -139,6 +139,8 @@ if __name__ == "__main__":
     with open(GENOMES_LIST, "r") as f:
         genomes = f.readline().split()
     genomes = [re.sub('"', '', g) for g in genomes]
+    genomes = ["GCA_000517445@Thermococcus_paralvinellae_ES1", "Thermococcus_sp_AMTc09"]
+    
     denovo_names, trg_names, cds_names = [], [], []
     all_cdss = {}
     all_values = []
@@ -147,8 +149,10 @@ if __name__ == "__main__":
     # Extract the cds info
     print("Extracting all CDSs...\n")
     for genome in genomes:
+        print(genome)
         # Get the species gc content
         genome_gc = get_species_gc_content(genome)
+        print(f"GC content: {genome_gc}\n")
         intergenic_gc = get_species_iorf_gc(genome)
 
         # Extract de novo names
@@ -173,10 +177,10 @@ if __name__ == "__main__":
     cds_names = list(set(cds_names) - set(trg_names))
     trg_names = list(set(trg_names) - set(denovo_names))
 
-    """# Sample
+    # Sample
     cds_names = random.sample(cds_names, 10)
     trg_names = random.sample(trg_names, 10)
-    denovo_names = random.sample(denovo_names, 10)"""
+    denovo_names = random.sample(denovo_names, 10)
 
     # Calculate descriptors for all cdss
     all_cds_names = denovo_names + trg_names + cds_names
@@ -185,6 +189,8 @@ if __name__ == "__main__":
 
     # Extract all hcas
     all_hcas = get_hcas(all_cds_names, all_cdss)
+    print("HCAs:")
+    print(all_hcas)
 
     results = []
     for cds in all_cds_names:
