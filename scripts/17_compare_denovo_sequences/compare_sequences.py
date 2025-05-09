@@ -175,9 +175,13 @@ if __name__ == "__main__":
         denovo_names = extract_denovo_names(genome, True)
     
     #--------------------------------
+    denovo_names_update = []
+    print(denovo_names)
     for name in denovo_names:
-        if name not in all_cdss:
-            denovo_names.remove(name)
+        if name in all_cdss:
+            denovo_names_update.append(name)
+    denovo_names = denovo_names_update
+    print(denovo_names)
     #--------------------------------
 
     # Drop duplicates
@@ -187,7 +191,7 @@ if __name__ == "__main__":
     # Sample
     cds_names = random.sample(cds_names, 5)
     trg_names = random.sample(trg_names, 5)
-    denovo_names = random.sample(denovo_names, 5)
+    #denovo_names = random.sample(denovo_names, 5)
 
     # Calculate descriptors for all cdss
     all_cds_names = denovo_names + trg_names + cds_names
@@ -203,6 +207,7 @@ if __name__ == "__main__":
 
     results = []
     for cds in all_cds_names:
+        print(cds)
         i += 1
         genome = all_cdss[cds]["genome"]
         # Extract GC rate
@@ -224,6 +229,7 @@ if __name__ == "__main__":
         length = len(nuc_seq)
         # Extract hca, disorder and aggregation
         hca, disord, aggreg = get_orfold_descript(all_hcas, cds)
+        print(hca, disord, aggreg)
         result = [genome, cds, gc_rate, aromaticity, instability, mean_flexibility, hydropathy, length, hca, disord, aggreg, inter_gc_rate]
 
         # Extract aa use
