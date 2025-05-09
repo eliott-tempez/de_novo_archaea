@@ -1,7 +1,7 @@
 #! /bin/sh
 
 #SBATCH -p common
-#SBATCH -J pval_descriptors
+#SBATCH -J run_descriptors
 #SBATCH --time=10-00
 #SBATCH --cpus-per-task=32
 #SBATCH --ntasks=1
