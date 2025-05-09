@@ -701,3 +701,46 @@ for (i in seq_along(aa_types)) {
 }
 
 
+
+
+###### Raw GC content ######
+if (n_bins == 2) {
+  plot_pvals <- FALSE
+  data_gc <- add_dummy_rows(data, "gc_species", n_bins)
+  data_gc_summary <- get_ncds_conditions(data_gc, n_bins)
+  pval_vect <- c(NA, NA, NA)
+  # Plot
+  p <- get_plot(data_gc,
+                data_gc_summary,
+                "gc_species",
+                "GC content (whole genome)",
+                n_y_pos = 0.5,
+                print_pval = pval_vect,
+                scale_y = seq(0, 1, 0.2))
+  p
+
+  # Save the plot
+  if (save_plots) {
+    ggsave(paste0(out_folder, "/gc_species.png"), plot = p)
+  }
+
+
+
+  data_gc_inter <- add_dummy_rows(data, "inter_gc_species", n_bins)
+  data_gc_inter_summary <- get_ncds_conditions(data_gc_inter, n_bins)
+  pval_vect <- c(NA, NA, NA)
+  # Plot
+  p <- get_plot(data_gc_inter,
+                data_gc_inter_summary,
+                "inter_gc_species",
+                "GC content (iORF)",
+                n_y_pos = 0.5,
+                print_pval = pval_vect,
+                scale_y = seq(0, 1, 0.2))
+  p
+
+  # Save the plot
+  if (save_plots) {
+    ggsave(paste0(out_folder, "/gc_intergenic_species.png"), plot = p)
+  }
+}
