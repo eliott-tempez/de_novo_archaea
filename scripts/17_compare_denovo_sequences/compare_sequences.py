@@ -152,8 +152,9 @@ if __name__ == "__main__":
         print(genome)
         # Get the species gc content
         genome_gc = get_species_gc_content(genome)
-        print(f"GC content: {genome_gc}\n")
+        print(f"GC content: {genome_gc}")
         intergenic_gc = get_species_iorf_gc(genome)
+        print(f"Intergenic GC content: {intergenic_gc}\n")
 
         # Extract de novo names
         if not GOOD_CANDIDATES_ONLY:
@@ -178,9 +179,9 @@ if __name__ == "__main__":
     trg_names = list(set(trg_names) - set(denovo_names))
 
     # Sample
-    cds_names = random.sample(cds_names, 10)
-    trg_names = random.sample(trg_names, 10)
-    denovo_names = random.sample(denovo_names, 10)
+    cds_names = random.sample(cds_names, 5)
+    trg_names = random.sample(trg_names, 5)
+    denovo_names = random.sample(denovo_names, 5)
 
     # Calculate descriptors for all cdss
     all_cds_names = denovo_names + trg_names + cds_names
@@ -188,6 +189,8 @@ if __name__ == "__main__":
     i = 0
 
     # Extract all hcas
+    print(all_cds_names)
+    print(all_cds)
     all_hcas = get_hcas(all_cds_names, all_cdss)
     print("HCAs:")
     print(all_hcas)
