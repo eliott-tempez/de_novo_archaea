@@ -127,6 +127,7 @@ if __name__ == "__main__":
     with open(GENOMES_LIST, "r") as f:
         genomes = f.readline().split()
     genomes = [re.sub('"', '', g) for g in genomes]
+    genomes = ["GCA_000517445@Thermococcus_paralvinellae_ES1", "Thermococcus_sp_AMTc09"]
     
     # Extract gc content
     gc_dict = {}
@@ -135,6 +136,8 @@ if __name__ == "__main__":
     for genome in genomes:
         # Get the species gc content
         genome_gc = get_species_gc_content(genome)
+        print(genome)
+        print(genome_gc, "\n")
         gc_dict[genome] = genome_gc
         if genome_gc < min_gc:
             min_gc = genome_gc
