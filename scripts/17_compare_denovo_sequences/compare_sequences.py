@@ -139,8 +139,6 @@ if __name__ == "__main__":
     with open(GENOMES_LIST, "r") as f:
         genomes = f.readline().split()
     genomes = [re.sub('"', '', g) for g in genomes]
-    genomes = ["GCA_000517445@Thermococcus_paralvinellae_ES1", "Thermococcus_sp_AMTc09"]
-    
     denovo_names, trg_names, cds_names = [], [], []
     all_cdss = {}
     all_values = []
@@ -149,12 +147,9 @@ if __name__ == "__main__":
     # Extract the cds info
     print("Extracting all CDSs...\n")
     for genome in genomes:
-        print(genome)
         # Get the species gc content
         genome_gc = get_species_gc_content(genome)
-        print(f"GC content: {genome_gc}")
         intergenic_gc = get_species_iorf_gc(genome)
-        print(f"Intergenic GC content: {intergenic_gc}\n")
 
         # Extract de novo names
         if not GOOD_CANDIDATES_ONLY:
@@ -173,25 +168,15 @@ if __name__ == "__main__":
 
     if GOOD_CANDIDATES_ONLY:
         denovo_names = extract_denovo_names(genome, True)
-    
-    #--------------------------------
-    denovo_names_update = []
-    print(denovo_names)
-    for name in denovo_names:
-        if name in all_cdss:
-            denovo_names_update.append(name)
-    denovo_names = denovo_names_update
-    print(denovo_names)
-    #--------------------------------
 
     # Drop duplicates
     cds_names = list(set(cds_names) - set(trg_names))
     trg_names = list(set(trg_names) - set(denovo_names))
 
-    # Sample
-    cds_names = random.sample(cds_names, 5)
-    trg_names = random.sample(trg_names, 5)
-    #denovo_names = random.sample(denovo_names, 5)
+    """# Sample
+    cds_names = random.sample(cds_names, 10)
+    trg_names = random.sample(trg_names, 10)
+    denovo_names = random.sample(denovo_names, 10)"""
 
     # Calculate descriptors for all cdss
     all_cds_names = denovo_names + trg_names + cds_names
@@ -199,15 +184,10 @@ if __name__ == "__main__":
     i = 0
 
     # Extract all hcas
-    print(all_cds_names)
-    print([all_cdss[cds]] for cds in all_cds_names)
     all_hcas = get_hcas(all_cds_names, all_cdss)
-    print("HCAs:")
-    print(all_hcas)
 
     results = []
     for cds in all_cds_names:
-        print(cds)
         i += 1
         genome = all_cdss[cds]["genome"]
         # Extract GC rate
@@ -229,7 +209,6 @@ if __name__ == "__main__":
         length = len(nuc_seq)
         # Extract hca, disorder and aggregation
         hca, disord, aggreg = get_orfold_descript(all_hcas, cds)
-        print(hca, disord, aggreg)
         result = [genome, cds, gc_rate, aromaticity, instability, mean_flexibility, hydropathy, length, hca, disord, aggreg, inter_gc_rate]
 
         # Extract aa use
