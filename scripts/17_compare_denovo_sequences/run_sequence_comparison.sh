@@ -55,7 +55,7 @@ mkdir -p out/
 echo "Environment created" >> $OUTPUT_LOG
 
 # Launch program
-python python 17_compare_denovo_sequences/compare_sequences.py >> $OUTPUT_LOG
+python 17_compare_denovo_sequences/compare_sequences.py >> $OUTPUT_LOG
 
 # Get output 
 cp -f out/* $OUT_DIR
