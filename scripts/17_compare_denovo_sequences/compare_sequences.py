@@ -209,7 +209,7 @@ if __name__ == "__main__":
         length = len(nuc_seq)
         # Extract hca, disorder and aggregation
         hca, disord, aggreg = get_orfold_descript(all_hcas, cds)
-        result = [genome, cds, gc_rate, aromaticity, instability, mean_flexibility, hydropathy, length, hca, disord, aggreg, inter_gc_rate]
+        result = [genome, cds, gc_rate, aromaticity, instability, mean_flexibility, hydropathy, length, hca, disord, aggreg, inter_gc_rate, gc_species, inter_gc_species]
 
         # Extract aa use
         aa_use = analysis.amino_acids_percent
@@ -234,5 +234,5 @@ if __name__ == "__main__":
     print("\nDone!")
 
     # Save the results
-    df = pd.DataFrame(results, columns=["genome", "cds", "gc_rate", "aromaticity", "instability", "mean_flexibility", "hydropathy", "length", "hca", "disord", "aggreg", "inter_gc_rate"] + [f"{a}_use" for a in list(sorted_aa_use.keys())] + ["type"])
+    df = pd.DataFrame(results, columns=["genome", "cds", "gc_rate", "aromaticity", "instability", "mean_flexibility", "hydropathy", "length", "hca", "disord", "aggreg", "inter_gc_rate", "gc_species", "inter_gc_species"] + [f"{a}_use" for a in list(sorted_aa_use.keys())] + ["type"])
     df.to_csv(os.path.join(OUT_DIR, "sequence_features_good_candidates_all.csv"), sep="\t", index=False)
