@@ -1,27 +1,54 @@
 #! /bin/sh
-#PBS -N dense_yeast_2
-#PBS -q bim
-#PBS -l ncpus=32 -l host=node04 -l mem=128gb -l walltime=240:00:00
-#PBS -o /home/eliott.tempez/dense_yeast_output.log
-#PBS -e /home/eliott.tempez/dense_yeast_error.log
+#!/bin/bash
+#SBATCH --job-name=dense_yeast
+#SBATCH --partition=bim
+#SBATCH --nodelist=node04
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=16
+#SBATCH --mem=64gb
+#SBATCH --time=200:00:00
+#SBATCH --output=/home/eliott.tempez/dense_yeast_output.log
+#SBATCH --error=/home/eliott.tempez/dense_yeast_error.log
+
+# Log files
+LOG_FILE="/home/eliott.tempez/dense_yeast_output.log"
+ERROR_FILE="/home/eliott.tempez/dense_yeast_error.log"
 
 # Set up environment
-echo "Activating conda environment" >> /home/eliott.tempez/dense_yeast_output.log
+echo "Creating environment" >> $LOG_FILE
 source /home/eliott.tempez/miniconda/bin/activate dense
 
-# Run DENSE
+
+# Copy data to node
+DENSE_GENOMES_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/yeast_data/dense_initial/
+PARAMS=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/stage/M2_stage_I2BC/scripts/1_dense_yeast/params_yeast.config
+TREE=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/yeast_data/dense_initial/Saccharomyces_species.nwk
+TAXIDS=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/yeast_data/dense_initial/taxids.tsv
+DENSE=/home/eliott.tempez/dense
+
+mkdir -p /datas/ELIOTT/
 cd /datas/ELIOTT/
-echo "Running Nextflow" >> /home/eliott.tempez/dense_yeast_output.log
-nextflow run /home/eliott.tempez/dense -profile singularity -c /home/eliott.tempez/params_yeast.config >> /home/eliott.tempez/dense_yeast_output.log 2>> /home/eliott.tempez/dense_yeast_error.log
+mkdir -p dense_genomes
+cp -r $DENSE_GENOMES_DIR/* dense_genomes/
+cp $TREE .
+cp $TAXIDS .
+mkdir -p dense/
+cp -r $DENSE/* dense/
+cp $PARAMS .
+
+
+# Run DENSE
+echo "Running Nextflow" >> $LOG_FILE
+nextflow run ./dense -profile singularity -c params_yeast.config >> $LOG_FILE 2>> $ERROR_FILE
 EXIT_CODE=$?
 
 # Check exit code
 if [ $EXIT_CODE -ne 0 ]; then
-    echo "Nextflow run failed with exit code $EXIT_CODE" >> /home/eliott.tempez/dense_yeast_error.log
+    echo "Nextflow run failed with exit code $EXIT_CODE" >> $ERROR_FILE
     exit $EXIT_CODE
 fi
 
+
 # Deactivate conda environment
-echo "Deactivating conda environment" >> /home/eliott.tempez/dense_yeast_output.log
 conda deactivate
-echo "Job completed successfully" >> /home/eliott.tempez/dense_yeast_output.log
+echo "Job completed successfully" >> $LOG_FILE
