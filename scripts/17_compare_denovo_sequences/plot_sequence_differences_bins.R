@@ -36,7 +36,7 @@ if (plot_pvals) {
 descriptors <- setdiff(colnames(data), c("genome", "cds", "type"))
 data <- pivot_longer(data, cols = all_of(descriptors), names_to = "feature", values_to = "value")
 if (plot_pvals) {
-  pvals <- pivot_longer(pvals, cols = all_of(descriptors), names_to = "feature", values_to = "pval")
+  pvals <- pivot_longer(pvals, cols = all_of(setdiff(descriptors, c("gc_species", "inter_gc_species"))), names_to = "feature", values_to = "pval")
   pvals$p <- pvals$pval
 }
 # Add the bins to the data
@@ -714,9 +714,9 @@ if (n_bins == 2) {
                 data_gc_summary,
                 "gc_species",
                 "GC content (whole genome)",
-                n_y_pos = 0.5,
+                n_y_pos = 0.38,
                 print_pval = pval_vect,
-                scale_y = seq(0, 1, 0.2))
+                scale_y = seq(0, 1, 0.05))
   p
 
   # Save the plot
@@ -734,9 +734,9 @@ if (n_bins == 2) {
                 data_gc_inter_summary,
                 "inter_gc_species",
                 "GC content (iORF)",
-                n_y_pos = 0.5,
+                n_y_pos = 0.32,
                 print_pval = pval_vect,
-                scale_y = seq(0, 1, 0.2))
+                scale_y = seq(0, 1, 0.05))
   p
 
   # Save the plot
