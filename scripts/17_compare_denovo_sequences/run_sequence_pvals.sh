@@ -12,6 +12,7 @@
 SCRIPTS=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/stage/M2_stage_I2BC/scripts
 DESCRIPTORS=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/pvals_descriptors/sequence_features_good_candidates_all.csv
 FA_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/complete_122/fasta_renamed
+DENSE_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/dense
 OUT_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/pvals_descriptors
 OUTPUT_LOG=/home/eliott.tempez/pval_comparison_output_2.log
 ERROR_LOG=/home/eliott.tempez/pval_comparison_error_2.log
@@ -31,13 +32,15 @@ cp -r $SCRIPTS/* .
 cp $DESCRIPTORS .
 mkdir -p fa/
 cp -r $FA_DIR/* fa/
+mkdir -p dense/
+rsync -a --exclude 'archive*/' --include '*/' --exclude '*/*/*' --include '*.tsv' --exclude '*' $DENSE_DIR/ dense/
 echo "Environment created" >> $OUTPUT_LOG
 
 # Run script
 python 13_plot_dense_results/calculate_pvals_seq_comparison.py >> $OUTPUT_LOG
 
 # Get output
-cp pvalues.csv $OUT_DIR
+cp pvalues*.csv $OUT_DIR
 cp bin_indexes_*.csv $OUT_DIR
 # Clean up
 rm -rf $SCRATCH_DIR
