@@ -209,6 +209,11 @@ if __name__ == "__main__":
                 intergenic_denovo.append(denovo)
     
 
+    # Print the de novo names in a file
+    with open(OUT_FOLDER + "all_denovo.txt", "w") as f:
+        for denovo in denovo_dict:
+            f.write(f"{denovo}\n")
+
     # Get the genes with a qcov < 70
     low_qcov_genes_intergenic = [denovo for denovo in intergenic_denovo if denovo_dict[denovo]["qcov"] < 70]
     low_qcov_genes_rest = [denovo for denovo in denovo_dict if denovo not in intergenic_denovo and denovo_dict[denovo]["qcov"] < 70]
