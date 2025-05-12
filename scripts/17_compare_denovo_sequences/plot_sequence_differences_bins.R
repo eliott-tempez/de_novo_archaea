@@ -562,7 +562,7 @@ data_hca_summary <- get_ncds_conditions(data_hca, n_bins)
 if (plot_pvals) {
   pval_factor <- 0.1
   only_ns <- TRUE
-  y_annotation <- 8
+  y_annotation <- 11
   pval_vect <- c(pval_factor, only_ns, y_annotation)
 } else {
   pval_vect <- c(NA, NA, NA)
@@ -575,7 +575,9 @@ p <- get_plot(data_hca,
               "HCA",
               n_y_pos = -11,
               print_pval = pval_vect,
-              scale_y = seq(-10, 2, 4))
+              scale_y = seq(-10, 10, 4))
+# Add ylim
+p <- p + ylim(-11, 14)
 p
 
 # Save the plot
