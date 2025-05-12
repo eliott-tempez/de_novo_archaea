@@ -123,10 +123,9 @@ if __name__ == "__main__":
     
     
     # Number of iterations
-    n = 1
+    n = 100000
     n_to_sample = min([len(good_indexes), len(bad_indexes)])
-    signif_columns = descriptors
-    signif_results = pd.DataFrame(columns=signif_columns)
+    signif_results = pd.DataFrame(columns=descriptors)
 
 
     for i in range(n):
@@ -135,24 +134,17 @@ if __name__ == "__main__":
         bad_sample = random.sample(bad_indexes, n_to_sample)
         good_df = descriptors_df.iloc[good_sample]
         bad_df = descriptors_df.iloc[bad_sample]
-        print(good_df, bad_df)
         # Get the median difference
         median_diff = get_median_diff(good_df, bad_df)
-        print(median_diff)
 
         # Pool the data and get the median diff
         pool1, pool2 = pool_cdss(good_df, bad_df)
-        print(pool1, pool2)
         random_diff = get_median_diff(pool1, pool2)
-        print(random_diff)
 
         # Compare the medians
         result = compare_medians(median_diff, random_diff)
-        print(result)
         signif_results = pd.concat([signif_results, result], ignore_index=True)
 
     # Calculate p-values and save to file
     pvalues = calculate_pvalues(signif_results, descriptors)
     print("\nDone!")
-    print(signif_results)
-    print(pvalues)
