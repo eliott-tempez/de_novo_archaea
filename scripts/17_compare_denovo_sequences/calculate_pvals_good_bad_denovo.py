@@ -2,6 +2,7 @@ import os
 import sys
 import re
 import random
+from concurrent.futures import ProcessPoolExecutor
 import pandas as pd
 from multiprocessing import Pool, cpu_count
 
@@ -81,6 +82,26 @@ def calculate_pvalues(signif_results, descriptors):
     return results_df
 
 
+def process_iteration(good_indexes, bad_indexes, descriptors_df, descriptors):
+    # Sample the data
+    n_to_sample = min([len(good_indexes), len(bad_indexes)])
+    good_sample = random.sample(good_indexes, n_to_sample)
+    bad_sample = random.sample(bad_indexes, n_to_sample)
+    good_df = descriptors_df.iloc[good_sample]
+    bad_df = descriptors_df.iloc[bad_sample]
+    
+    # Get the median difference
+    median_diff = get_median_diff(good_df, bad_df)
+
+    # Pool the data and get the median diff
+    pool1, pool2 = pool_cdss(good_df, bad_df)
+    random_diff = get_median_diff(pool1, pool2)
+
+    # Compare the medians
+    result = compare_medians(median_diff, random_diff)
+    return result
+
+
 
 if __name__ == "__main__":
     # Get the list of genomes
@@ -127,23 +148,24 @@ if __name__ == "__main__":
     n_to_sample = min([len(good_indexes), len(bad_indexes)])
     signif_results = pd.DataFrame(columns=descriptors)
 
+    # Use ProcessPoolExecutor for parallel processing
+    with ProcessPoolExecutor() as executor:
+        # Submit tasks to the executor
+        futures = [executor.submit(process_iteration, good_indexes, bad_indexes, descriptors_df, descriptors) for _ in range(n)]
 
-    for i in range(n):
-        # Sample the data
-        good_sample = random.sample(good_indexes, n_to_sample)
-        bad_sample = random.sample(bad_indexes, n_to_sample)
-        good_df = descriptors_df.iloc[good_sample]
-        bad_df = descriptors_df.iloc[bad_sample]
-        # Get the median difference
-        median_diff = get_median_diff(good_df, bad_df)
+        # Track progress
+        completed = 0
+        progress_step = n // 10  # 10% of total iterations
+        
+        # Collect results as they complete
+        for future in futures:
+            result = future.result()
+            signif_results = pd.concat([signif_results, result], ignore_index=True)
+            completed += 1
 
-        # Pool the data and get the median diff
-        pool1, pool2 = pool_cdss(good_df, bad_df)
-        random_diff = get_median_diff(pool1, pool2)
-
-        # Compare the medians
-        result = compare_medians(median_diff, random_diff)
-        signif_results = pd.concat([signif_results, result], ignore_index=True)
+            # Print progress every 10%
+            if completed % progress_step == 0:
+                print(f"Progress: {completed}/{n} iterations completed ({(completed / n) * 100:.0f}%)")
 
     # Calculate p-values and save to file
     pvalues = calculate_pvalues(signif_results, descriptors)
