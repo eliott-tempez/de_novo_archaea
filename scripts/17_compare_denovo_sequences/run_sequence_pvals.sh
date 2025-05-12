@@ -10,6 +10,7 @@
 #SBATCH -e /home/eliott.tempez/pval_comparison_error_2.log
 
 SCRIPTS=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/stage/M2_stage_I2BC/scripts
+GOOD_CANDIDATES=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/stage/M2_stage_I2BC/results/14_get_noncoding_match/good_candidates.txt
 DESCRIPTORS=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/pvals_descriptors/sequence_features_good_candidates_all.csv
 FA_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/complete_122/fasta_renamed
 DENSE_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/dense
@@ -34,6 +35,7 @@ mkdir -p fa/
 cp -r $FA_DIR/* fa/
 mkdir -p dense/
 rsync -a --exclude 'archive*/' --include '*/' --exclude '*/*/*' --include '*.tsv' --exclude '*' $DENSE_DIR/ dense/
+cp $GOOD_CANDIDATES .
 echo "Environment created" >> $OUTPUT_LOG
 
 # Run script
