@@ -149,6 +149,7 @@ if __name__ == "__main__":
     signif_results = pd.DataFrame(columns=descriptors)
 
     # Use ProcessPoolExecutor for parallel processing
+    print("Starting parallel processing...")
     with ProcessPoolExecutor() as executor:
         # Submit tasks to the executor
         futures = [executor.submit(process_iteration, good_indexes, bad_indexes, descriptors_df, descriptors) for _ in range(n)]
