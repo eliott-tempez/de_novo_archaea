@@ -125,3 +125,81 @@ ______________________________________________________________________________
 
 
 
+OUTGROUP 2
+
+
+
+HKFOCBLP_00051_gene_mRNA
+
+
+Query: MIFKFSNFSTEKYMYFEYVIHFGERFEEIAGYPLNPLCSSELFCMYAKGTDARGNY* (length 57)
+Alignment infos:
+['pval: 0.0', 'psim: 100.0', 'length: 12', 'qstart: 3', 'qend: 15', 'sstart: 2', 'send: 38', 'raw: #=======================================\n#\n# Aligned_sequences: 2\n# 1: query\n# 2: subject\n# Matrix: EBLOSUM62\n# Gap_penalty: 10.0\n# Extend_penalty: 0.5\n#\n# Length: 12\n# Identity:      11/12 (91.7%)\n# Similarity:    12/12 (100.0%)\n# Gaps:           0/12 ( 0.0%)\n# Score: 61.0\n# \n#\n#=======================================\n\nquery              2 KFSNFSTEKYMY     13\n                     ||||||||||:|\nsubject            1 KFSNFSTEKYIY     12\n\n\n#---------------------------------------\n#---------------------------------------', 'frame: 2']
+
+#=======================================
+#
+# Aligned_sequences: 2
+# 1: query
+# 2: subject
+# Matrix: EBLOSUM62
+# Gap_penalty: 10.0
+# Extend_penalty: 0.5
+#
+# Length: 12
+# Identity:      11/12 (91.7%)
+# Similarity:    12/12 (100.0%)
+# Gaps:           0/12 ( 0.0%)
+# Score: 61.0
+# 
+#
+#=======================================
+
+query              2 KFSNFSTEKYMY     13
+                     ||||||||||:|
+subject            1 KFSNFSTEKYIY     12
+
+
+#---------------------------------------
+#---------------------------------------
+Query: MIFKFSNFSTEKYMYFEYVIHFGERFEEIAGYPLNPLCSSELFCMYAKGTDARGNY* (length 57)
+Alignment infos:
+['pval: 0.0', 'psim: 82.92682926829268', 'length: 41', 'qstart: 15', 'qend: 56', 'sstart: 39', 'send: 162', 'raw: #=======================================\n#\n# Aligned_sequences: 2\n# 1: query\n# 2: subject\n# Matrix: EBLOSUM62\n# Gap_penalty: 10.0\n# Extend_penalty: 0.5\n#\n# Length: 41\n# Identity:      30/41 (73.2%)\n# Similarity:    34/41 (82.9%)\n# Gaps:           0/41 ( 0.0%)\n# Score: 161.0\n# \n#\n#=======================================\n\nquery              1 FEYVIHFGERFEEIAGYPLNPLCSSELFCMYAKGTDARGNY     41\n                     |:.|.||||.||:.:|..|||||||||||||||||||.|:|\nsubject            2 FKCVTHFGEIFEKTSGCTLNPLCSSELFCMYAKGTDAGGDY     42\n\n\n#---------------------------------------\n#---------------------------------------', 'frame: 0']
+
+#=======================================
+#
+# Aligned_sequences: 2
+# 1: query
+# 2: subject
+# Matrix: EBLOSUM62
+# Gap_penalty: 10.0
+# Extend_penalty: 0.5
+#
+# Length: 41
+# Identity:      30/41 (73.2%)
+# Similarity:    34/41 (82.9%)
+# Gaps:           0/41 ( 0.0%)
+# Score: 161.0
+# 
+#
+#=======================================
+
+query              1 FEYVIHFGERFEEIAGYPLNPLCSSELFCMYAKGTDARGNY     41
+                     |:.|.||||.||:.:|..|||||||||||||||||||.|:|
+subject            2 FKCVTHFGEIFEKTSGCTLNPLCSSELFCMYAKGTDAGGDY     42
+
+
+#---------------------------------------
+#---------------------------------------
+
+
+The maximum qcov is 71.9298245614035%
+
+
+
+
+
+
+______________________________________________________________________________
+
+
+

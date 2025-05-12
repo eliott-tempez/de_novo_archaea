@@ -10,7 +10,7 @@ from my_functions.genomic_functions import extract_denovo_info, get_sequence_fro
 
 from my_functions.paths import GENOMES_LIST
 GOOD_CANDIDATES_FILE = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/good_candidates.txt"
-OUTGROUP_NUMBER = 1
+OUTGROUP_NUMBER = 2
 
 
 def get_extended_matched_seq(genome, contig, start, end, strand, missing_cter, missing_nter):
