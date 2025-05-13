@@ -8,7 +8,7 @@ import tempfile
 import random
 import pandas as pd
 from Bio import SeqIO
-from Bio.SeqUtils import gc_fraction as GC
+from Bio.SeqUtils import GC
 from Bio.SeqUtils.ProtParam import ProteinAnalysis
 
 
@@ -104,11 +104,8 @@ def get_hcas(cds_names, all_cdss):
         faa_file_path, "-o", result_file_path,
     ])
     # Keep only useful lines and columns
-    subprocess.run(["grep", r"^>", result_file_path, "|",
-                    "sed", r"s/^>//", "|",
-                    "awk", r"{print $1, $NF}", ">",
-                    "tmp", "&&", "mv", "tmp", result_file_path
-    ])
+    command = f"grep '^>' {result_file_path} | sed 's/^>//' | awk '{{print $1, $NF}}' > tmp && mv tmp {result_file_path}"
+    subprocess.run([command])
 
     # Read the result file
     hca_df = pd.read_csv(result_file_path, sep="\t", header=None)
