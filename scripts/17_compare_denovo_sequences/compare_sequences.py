@@ -94,43 +94,37 @@ def get_hcas(cds_names, all_cdss):
         for cds in cds_names:
             faa.write(f">{cds}\n{all_cdss[cds]['sequence']}\n")
         faa_file_path = faa.name
-    # Get the temp file directory
-    faa_dir = os.path.dirname(faa_file_path)
-    faa_basename = os.path.basename(faa_file_path)
-    # Full container path to the temp file (inside the container)
-    container_faa_path = f"/tmpdata/{faa_basename}"
-    # Create output dir
-    orfold_output_dir = os.path.join(current_dir, "orfold")
-    os.makedirs(orfold_output_dir, exist_ok=True)
-    # Get programs dir
-    programs_dir = os.path.join(current_dir, "softwares")
+    # Create empty temp result file
+    with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix="tab") as result:
+        result_file_path = result.name
 
-    # Run ORFold
-    container_path = "orfmine_latest.sif"
-    # Bind both the fasta temp dir and the output dir
+    # Run pyHCA
     result = subprocess.run([
-    "singularity", "exec",
-    "--bind", f"{faa_dir}:/database/tmpdata",
-    "--bind", f"{orfold_output_dir}:/workdir/orfold",
-    "--bind", f"{programs_dir}:/ORFmine/orfold_v1/orfold/softwares/",
-    container_path,
-    "orfold", "-faa", container_faa_path, "-options", "HIT"], text=True, capture_output=True)
-    # Fix the broken output
-    result_file = os.path.join(orfold_output_dir, faa_basename + ".tab")
-    subprocess.run(["sed", "-i", r"s/[[:space:]]\+/;/g", result_file])
-    orfold_result = pd.read_csv(result_file, sep=";", header=0)
-    # Delete temp file
-    os.remove(faa_file_path)
-    os.remove(result_file)
-    return orfold_result
+        "hcatk", "segment", "-i",
+        faa_file_path, "-o", result_file_path,
+    ])
+    # Keep only useful lines and columns
+    subprocess.run(["grep", r"^>", result_file_path, "|",
+                    "sed", r"s/^>//", "|",
+                    "awk", r"{print $1, $NF}", ">",
+                    "tmp", "&&", "mv", "tmp", result_file_path
+    ])
+
+    # Read the result file
+    hca_df = pd.read_csv(result_file_path, sep="\t", header=None)
+    hca_df.columns = ["Seq_ID", "HCA"]
+
+    return hca_df
 
 
 def get_orfold_descript(all_hcas, cds_name):
     orfold_line = all_hcas[all_hcas["Seq_ID"] == cds]
     hca = orfold_line["HCA"].values[0]
-    disord = orfold_line["Disord"].values[0]
-    aggreg = orfold_line["Aggreg"].values[0]
+    #disord = orfold_line["Disord"].values[0]
+    #aggreg = orfold_line["Aggreg"].values[0]
+    disord, aggreg = 0, 0
     return hca, disord, aggreg
+
 
 
 
@@ -173,10 +167,10 @@ if __name__ == "__main__":
     cds_names = list(set(cds_names) - set(trg_names))
     trg_names = list(set(trg_names) - set(denovo_names))
 
-    """# Sample
-    cds_names = random.sample(cds_names, 10)
-    trg_names = random.sample(trg_names, 10)
-    denovo_names = random.sample(denovo_names, 10)"""
+    # Sample
+    cds_names = random.sample(cds_names, 2)
+    trg_names = random.sample(trg_names, 2)
+    denovo_names = random.sample(denovo_names, 2)
 
     # Calculate descriptors for all cdss
     all_cds_names = denovo_names + trg_names + cds_names
@@ -185,6 +179,7 @@ if __name__ == "__main__":
 
     # Extract all hcas
     all_hcas = get_hcas(all_cds_names, all_cdss)
+    print(all_hcas)
 
     results = []
     for cds in all_cds_names:
@@ -208,7 +203,9 @@ if __name__ == "__main__":
         # Extract sequence length
         length = len(nuc_seq)
         # Extract hca, disorder and aggregation
-        hca, disord, aggreg = get_orfold_descript(all_hcas, cds)
+        #hca, disord, aggreg = get_orfold_descript(all_hcas, cds)
+        hca = get_orfold_descript(all_hcas, cds)
+        print(cds, hca)
         result = [genome, cds, gc_rate, aromaticity, instability, mean_flexibility, hydropathy, length, hca, disord, aggreg, inter_gc_rate, gc_species, inter_gc_species]
 
         # Extract aa use
