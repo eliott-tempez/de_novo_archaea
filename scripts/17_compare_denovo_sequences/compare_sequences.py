@@ -103,12 +103,18 @@ def get_hcas(cds_names, all_cdss):
         "hcatk", "segment", "-i",
         faa_file_path, "-o", result_file_path,
     ])
+    with open(result_file_path, "r") as f:
+        content = f.read()
+        print(f"pyHCA output:\n{content}\n")
     # Keep only useful lines and columns
     command = f"grep '^>' {result_file_path} | sed 's/^>//' | awk '{{print $1, $NF}}' > tmp && mv tmp {result_file_path}"
     subprocess.run([command])
+    with open(result_file_path, "r") as f:
+        content = f.read()
+        print(f"pyHCA output after modification:\n{content}\n")
 
     # Read the result file
-    hca_df = pd.read_csv(result_file_path, sep="\t", header=None)
+    hca_df = pd.read_csv(result_file_path, sep=" ", header=None)
     hca_df.columns = ["Seq_ID", "HCA"]
 
     return hca_df
