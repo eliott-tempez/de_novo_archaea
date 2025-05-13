@@ -103,9 +103,6 @@ def get_hcas(cds_names, all_cdss):
         "hcatk", "segment", "-i",
         faa_file_path, "-o", result_file_path,
     ])
-    with open(result_file_path, "r") as f:
-        content = f.read()
-        print(f"pyHCA output:\n{content}\n")
     # Keep only useful lines and columns
     result_lines = []
     with open(result_file_path, "r") as f:
@@ -118,6 +115,10 @@ def get_hcas(cds_names, all_cdss):
 
     # Read the result file
     hca_df = pd.DataFrame(result_lines, columns=["Seq_ID", "HCA"])
+
+    # Remove the temp files
+    os.remove(faa_file_path)
+    os.remove(result_file_path)
 
     return hca_df
 
@@ -173,9 +174,9 @@ if __name__ == "__main__":
     trg_names = list(set(trg_names) - set(denovo_names))
 
     # Sample
-    cds_names = random.sample(cds_names, 2)
+    """cds_names = random.sample(cds_names, 2)
     trg_names = random.sample(trg_names, 2)
-    denovo_names = random.sample(denovo_names, 2)
+    denovo_names = random.sample(denovo_names, 2)"""
 
     # Calculate descriptors for all cdss
     all_cds_names = denovo_names + trg_names + cds_names
@@ -184,7 +185,6 @@ if __name__ == "__main__":
 
     # Extract all hcas
     all_hcas = get_hcas(all_cds_names, all_cdss)
-    print(all_hcas)
 
     results = []
     for cds in all_cds_names:
@@ -208,9 +208,7 @@ if __name__ == "__main__":
         # Extract sequence length
         length = len(nuc_seq)
         # Extract hca, disorder and aggregation
-        #hca, disord, aggreg = get_orfold_descript(all_hcas, cds)
-        hca = get_orfold_descript(all_hcas, cds)
-        print(cds, hca)
+        hca, disord, aggreg = get_orfold_descript(all_hcas, cds)
         result = [genome, cds, gc_rate, aromaticity, instability, mean_flexibility, hydropathy, length, hca, disord, aggreg, inter_gc_rate, gc_species, inter_gc_species]
 
         # Extract aa use
