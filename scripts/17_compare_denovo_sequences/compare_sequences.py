@@ -87,8 +87,7 @@ def get_species_iorf_gc(genome):
 
 
 def get_hcas(cds_names, all_cdss):
-    current_dir = os.getcwd()
-    # Get the fold potential
+    #### HCA ####
     # Create temp fasta file
     with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix="faa") as faa:
         for cds in cds_names:
@@ -121,6 +120,63 @@ def get_hcas(cds_names, all_cdss):
     os.remove(result_file_path)
 
     return hca_df
+
+
+def calculate_proportion_of_seq_disordered(iupred_scores):
+    count_seg_tmp = 0
+    count_agg_seg = 0
+    for i,pos in enumerate(iupred_scores):
+        if pos > 0.5:
+            count_seg_tmp += 1 
+        elif pos <= 0.5 and count_seg_tmp >=5:
+            count_agg_seg = count_agg_seg + count_seg_tmp
+            count_seg_tmp = 0
+        elif pos <= 0.5 and count_seg_tmp <5:
+            count_seg_tmp = 0 
+            continue
+        
+        if i == len(iupred_scores) -1:
+            if count_seg_tmp >=5:
+                count_agg_seg = count_agg_seg + count_seg_tmp
+            else:
+                continue
+    return(round(count_agg_seg/len(iupred_scores),3)) 
+
+
+def get_iupred(cds, all_cdss):
+    aa_seq = str(all_cdss[cds]["sequence"].translate(table=11))
+    # Create temp fasta file
+    with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix="faa") as faa:
+        faa.write(f">{cds}\n{aa_seq}\n")
+        faa_file_path = faa.name
+    # Create empty temp result file
+    with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix="tab") as result:
+        result_file_path = result.name
+
+    # Run iupred
+    result = subprocess.run([
+        "python", "iupred2a.py", "-a", faa_file_path, "short", ">", result_file_path
+    ])
+    with open(result_file_path, "r") as f:
+        content = f.read()
+        print(content)
+    # Get the score
+    iupred_scores = []
+    with open(result_file_path, "r") as f:
+        for line in f:
+            if not line.startswith("#"):
+                args = line.strip().split("\t")
+                if len(args) > 1:
+                    iupred_scores.append(float(args[2]))
+    print(iupred_scores)
+    disord = calculate_proportion_of_seq_disordered(iupred_scores)
+    print(disord)
+
+    # Remove the temp files
+    os.remove(faa_file_path)
+    os.remove(result_file_path)
+    return disord
+    
 
 
 def get_orfold_descript(all_hcas, cds_name):
@@ -174,9 +230,9 @@ if __name__ == "__main__":
     trg_names = list(set(trg_names) - set(denovo_names))
 
     # Sample
-    """cds_names = random.sample(cds_names, 2)
-    trg_names = random.sample(trg_names, 2)
-    denovo_names = random.sample(denovo_names, 2)"""
+    cds_names = random.sample(cds_names, 1)
+    trg_names = random.sample(trg_names, 1)
+    denovo_names = random.sample(denovo_names, 1)
 
     # Calculate descriptors for all cdss
     all_cds_names = denovo_names + trg_names + cds_names
@@ -209,6 +265,7 @@ if __name__ == "__main__":
         length = len(nuc_seq)
         # Extract hca, disorder and aggregation
         hca, disord, aggreg = get_orfold_descript(all_hcas, cds)
+        disord = get_iupred(cds, all_cdss)
         result = [genome, cds, gc_rate, aromaticity, instability, mean_flexibility, hydropathy, length, hca, disord, aggreg, inter_gc_rate, gc_species, inter_gc_species]
 
         # Extract aa use
