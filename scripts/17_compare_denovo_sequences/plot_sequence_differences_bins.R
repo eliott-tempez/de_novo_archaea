@@ -338,6 +338,8 @@ get_plot <- function(data, data_len_summary, feature, title, print_pval = c(NA),
 
 ###### Sequence length ######
 data_len <- add_dummy_rows(data, "length", n_bins)
+# Use aa length
+data_len$value <- data_len$value / 3
 data_len_summary <- get_ncds_conditions(data_len, n_bins)
 
 # Pvals
@@ -354,7 +356,7 @@ if (plot_pvals) {
 p <- get_plot(data_len,
               data_len_summary,
               "length",
-              "Sequence length distribution",
+              "Sequence length distribution (aa)",
               n_y_pos = -50,
               print_pval = pval_vect,
               scale_y = c(50, 100, 500, 1000, 2000))
