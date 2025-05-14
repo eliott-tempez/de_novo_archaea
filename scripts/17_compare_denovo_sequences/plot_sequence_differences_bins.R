@@ -12,7 +12,7 @@ library(grid)
 
 # User-defined parameters
 n_bins <- 2
-plot_pvals <- TRUE
+plot_pvals <- FALSE
 save_plots <- FALSE
 
 
@@ -379,7 +379,7 @@ p <- get_plot(data_len,
               "Sequence length distribution (aa)",
               n_y_pos = -50,
               print_pval = pval_vect,
-              scale_y = c(50, 100, 500, 1000, 2000))
+              scale_y = seq(0, 1000, 100))
 p
 
 # Save the plot
@@ -584,7 +584,7 @@ if (save_plots) {
 
 ###### HCA ######
 data_hca <- add_dummy_rows(data, "hca", n_bins)
-data_hce$type <- factor(data_hca$type, levels = c("cds", "trg", "denovo", "iorf"))
+data_hca$type <- factor(data_hca$type, levels = c("cds", "trg", "denovo", "iorf"))
 data_hca_summary <- get_ncds_conditions(data_hca, n_bins)
 
 # Pvals
@@ -696,7 +696,7 @@ for (i in seq_along(aa_types)) {
   aa_type <- aa_types[[i]]
   aa_name <- paste0(aa_type, "_use")
   aa_type_name <- aa_types_names[[i]]
-  data[data$feature %in% aa_type, "feature"] <- aa_type_name
+  data[data$feature %in% aa_name, "feature"] <- aa_type_name
   data_aa <- add_dummy_rows(data, aa_type_name, n_bins)
   data_aa$type <- factor(data_aa$type, levels = c("cds", "trg", "denovo", "iorf"))
   data_aa_summary <- get_ncds_conditions(data_aa, n_bins)
@@ -719,9 +719,8 @@ for (i in seq_along(aa_types)) {
                 paste0(aa_type_name, " amino-acid use (",
                        paste(aa_type, collapse = ", "), ")"),
                 n_y_pos = min(data_aa$value, na.rm = TRUE) - 0.05,
-                print_pval = pval_vect,
-                scale_y = seq(0, 1, 0.2))
-  p
+                print_pval = pval_vect)
+  print(p)
 
   # Save the plot
   if (save_plots) {
@@ -747,7 +746,7 @@ if (n_bins == 2) {
                 n_y_pos = 0.38,
                 print_pval = pval_vect,
                 scale_y = seq(0, 1, 0.05))
-  p
+  print(p)
 
   # Save the plot
   if (save_plots) {
@@ -768,7 +767,7 @@ if (n_bins == 2) {
                 n_y_pos = 0.32,
                 print_pval = pval_vect,
                 scale_y = seq(0, 1, 0.05))
-  p
+  print(p)
 
   # Save the plot
   if (save_plots) {
