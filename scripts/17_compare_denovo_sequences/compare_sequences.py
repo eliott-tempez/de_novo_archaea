@@ -123,6 +123,7 @@ def get_hcas(cds_names, all_cdss):
 
 
 def calculate_proportion_of_seq_disordered(iupred_scores):
+    # Imported from ORFmine's ORFold
     count_seg_tmp = 0
     count_agg_seg = 0
     for i,pos in enumerate(iupred_scores):
@@ -154,12 +155,10 @@ def get_iupred(cds, all_cdss):
         result_file_path = result.name
 
     # Run iupred
-    result = subprocess.run([
-        "python", "iupred2a.py", "-a", faa_file_path, "short", ">", result_file_path
-    ])
-    with open(result_file_path, "r") as f:
-        content = f.read()
-        print(content)
+    with open(result_file_path, "w") as result_file:
+        result = subprocess.run([
+            "python", "iupred2a.py", "-a", faa_file_path, "short"
+        ], stdout=result_file)
     # Get the score
     iupred_scores = []
     with open(result_file_path, "r") as f:
@@ -168,9 +167,7 @@ def get_iupred(cds, all_cdss):
                 args = line.strip().split("\t")
                 if len(args) > 1:
                     iupred_scores.append(float(args[2]))
-    print(iupred_scores)
     disord = calculate_proportion_of_seq_disordered(iupred_scores)
-    print(disord)
 
     # Remove the temp files
     os.remove(faa_file_path)
@@ -179,13 +176,20 @@ def get_iupred(cds, all_cdss):
     
 
 
-def get_orfold_descript(all_hcas, cds_name):
-    orfold_line = all_hcas[all_hcas["Seq_ID"] == cds]
+def get_hca(all_hcas, cds_name):
+    orfold_line = all_hcas[all_hcas["Seq_ID"] == cds_name]
     hca = orfold_line["HCA"].values[0]
-    #disord = orfold_line["Disord"].values[0]
-    #aggreg = orfold_line["Aggreg"].values[0]
-    disord, aggreg = 0, 0
-    return hca, disord, aggreg
+    return hca
+
+
+def get_tango(cds, all_cds):
+    current_dir = os.getcwd()
+    tango_path = os.path.join(current_dir, "tango_x86_64_release")
+    aa_seq = re.sub(r"[\*]", "", str(all_cdss[cds]["sequence"].translate(table=11)))
+    args = f'ct="N" nt="N" ph="7.4" te="298" io="0.1" seq="{aa_seq}"'
+    result = subprocess.run(f"{tango_path} {args}", capture_output=True, text=True)
+    print(result.stderr)
+    print(result.stdout)
 
 
 
@@ -264,8 +268,9 @@ if __name__ == "__main__":
         # Extract sequence length
         length = len(nuc_seq)
         # Extract hca, disorder and aggregation
-        hca, disord, aggreg = get_orfold_descript(all_hcas, cds)
+        hca = get_hca(all_hcas, cds)
         disord = get_iupred(cds, all_cdss)
+        aggreg = 0
         result = [genome, cds, gc_rate, aromaticity, instability, mean_flexibility, hydropathy, length, hca, disord, aggreg, inter_gc_rate, gc_species, inter_gc_species]
 
         # Extract aa use
