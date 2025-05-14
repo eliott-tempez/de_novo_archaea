@@ -8,6 +8,7 @@ import tempfile
 import random
 import pandas as pd
 from Bio import SeqIO
+from Bio.Seq import Seq
 from Bio.SeqUtils import GC
 from Bio.SeqUtils.ProtParam import ProteinAnalysis
 
@@ -84,7 +85,7 @@ def get_species_iorf_gc(genome):
     for i, segment in enumerate(iorfs):
         seq = str(segment)
         concat_seq += seq
-        iorfs_dict[f"{genome}_iorf_{i}"] = {"sequence": seq}
+        iorfs_dict[f"{genome}_iorf_{i}"] = {"sequence": Seq(seq)}
     return iorfs_dict, GC(concat_seq)
 
 
@@ -93,7 +94,7 @@ def get_hcas(cds_names, all_cdss):
     # Create temp fasta file
     with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix="faa") as faa:
         for cds in cds_names:
-            faa.write(f">{cds}\n{all_cdss[cds]['sequence']}\n")
+            faa.write(f">{cds}\n{all_cdss[cds]['sequence'].translate(table=11)}\n")
         faa_file_path = faa.name
     # Create empty temp result file
     with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix="tab") as result:
@@ -111,7 +112,7 @@ def get_hcas(cds_names, all_cdss):
             if line.startswith(">"):
                 args = line[1:].strip().split()
                 cds_name = args[0]
-                hca = args[-1]
+                hca = float(args[-1])
                 result_lines.append([cds_name, hca])
 
     # Read the result file
@@ -254,7 +255,6 @@ if __name__ == "__main__":
         # Get the species gc content
         genome_gc = get_species_gc_content(genome)
         iorfs_dict, intergenic_gc = get_species_iorf_gc(genome)
-
         # Extract de novo names
         if not GOOD_CANDIDATES_ONLY:
             denovo_names += extract_denovo_names(genome)
@@ -306,7 +306,7 @@ if __name__ == "__main__":
         gc_rate = gc_seq / gc_species
         inter_gc_rate = gc_seq / inter_gc_species
         # Extract protein info
-        prot_seq = re.sub(r"[\*X]", "", str(nuc_seq.translate()))
+        prot_seq = re.sub(r"[\*X]", "", str(nuc_seq.translate(table=11)))
         analysis = ProteinAnalysis(prot_seq)
         aromaticity = analysis.aromaticity()
         instability = analysis.instability_index()
@@ -342,7 +342,6 @@ if __name__ == "__main__":
             print(f"{i}/{n} cds analysed...")
         
         results.append(result)
-        print(cds, result)
 
     print("\nDone!")
 
