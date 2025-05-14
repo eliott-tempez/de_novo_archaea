@@ -85,13 +85,14 @@ add_dummy_rows <- function(data, feature, n_bins) {
   data_local$group <- paste0(data_local$bin, "_", data_local$type)
   # Create dummy rows for blank spaces on the x axis
   n_dummy <- (n_bins - 1)
-  data_levels <- c("0_cds", "0_trg", "0_denovo")
+  data_levels <- c("0_cds", "0_trg", "0_denovo", "0_iorf")
   for (i in 1:n_dummy) {
     blank <- paste0(i - 1, "_blank")
     cds <- paste0(i, "_cds")
     trg <- paste0(i, "_trg")
     denovo <- paste0(i, "_denovo")
-    data_levels <- c(data_levels, blank, cds, trg, denovo)
+    iorf <- paste0(i, "_iorf")
+    data_levels <- c(data_levels, blank, cds, trg, denovo, iorf)
   }
   data_local$group <- as.character(data_local$group)
   data_local$group <- factor(data_local$group, levels = data_levels)
@@ -140,6 +141,10 @@ cds_0 <- ((local_pvals$type1 == "cds" & local_pvals$bin1 == "0") |
             (local_pvals$type2 == "cds" & local_pvals$bin2 == "0"))
 cds_1 <- ((local_pvals$type1 == "cds" & local_pvals$bin1 == "1") |
             (local_pvals$type2 == "cds" & local_pvals$bin2 == "1"))
+iorf_0 <- ((local_pvals$type1 == "iorf" & local_pvals$bin1 == "0") |
+             (local_pvals$type2 == "iorf" & local_pvals$bin2 == "0"))
+iorf_1 <- ((local_pvals$type1 == "iorf" & local_pvals$bin1 == "1") |
+             (local_pvals$type2 == "iorf" & local_pvals$bin2 == "1"))
 # Order rows
 local_pvals <- local_pvals %>%
   mutate(order = case_when(
@@ -160,15 +165,28 @@ local_pvals <- local_pvals %>%
     trg_0 & denovo_0 ~ 15,
     cds_1 & trg_1 ~ 16,
     trg_1 & denovo_1 ~ 17,
-    TRUE ~ 18
+    iorf_0 & trg_1 ~ 18,
+    iorf_1 & trg_0 ~ 19,
+    iorf_0 & denovo_1 ~ 20,
+    iorf_1 & denovo_0 ~ 21,
+    iorf_0 & cds_1 ~ 22,
+    iorf_1 & cds_0 ~ 23,
+    iorf_0 & trg_0 ~ 24,
+    iorf_1 & trg_1 ~ 25,
+    iorf_0 & cds_0 ~ 26,
+    iorf_1 & cds_1 ~ 27,
+    iorf_0 & denovo_0 ~ 28,
+    iorf_1 & denovo_1 ~ 29,
+    iorf_0 & iorf_1 ~ 30,
+    TRUE ~ 31
   )) %>%
   arrange(order)
 
   # Get the top of the whisker and the p-val for each type
-  types <- c("denovo", "trg", "cds")
+  types <- c("denovo", "trg", "cds", "iorf")
   whisker_tops <- c()
   min_whisker_base <- max(data$value, na.rm = TRUE)
-  y_mat <- matrix(NA, nrow = 6, ncol = 3)
+  y_mat <- matrix(NA, nrow = 8, ncol = 3)
   colnames(y_mat) <- c("type", "bin", "whisker_top")
   i <- 0
   for (type in types) {
@@ -266,7 +284,8 @@ get_plot <- function(data, data_len_summary, feature, title, print_pval = c(NA),
     labs(title = "",
          x = "% GC (whole genome)",
          y = title) +
-    scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c")) +
+    scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c", "#693fb6"),
+                      breaks = c("cds", "trg", "denovo", "iorf")) +
     theme_minimal() +
     scale_x_discrete(labels = labels_x_scale) +
     theme(axis.text.x = element_text(size = 16),
@@ -338,6 +357,7 @@ get_plot <- function(data, data_len_summary, feature, title, print_pval = c(NA),
 
 ###### Sequence length ######
 data_len <- add_dummy_rows(data, "length", n_bins)
+data_len$type <- factor(data_len$type, levels = c("cds", "trg", "denovo", "iorf"))
 # Use aa length
 data_len$value <- data_len$value / 3
 data_len_summary <- get_ncds_conditions(data_len, n_bins)
@@ -371,6 +391,7 @@ if (save_plots) {
 
 ###### GC ratio ######
 data_gc <- add_dummy_rows(data, "gc_rate", n_bins)
+data_gc$type <- factor(data_gc$type, levels = c("cds", "trg", "denovo", "iorf"))
 data_gc_summary <- get_ncds_conditions(data_gc, n_bins)
 
 # Pvals
@@ -402,6 +423,7 @@ if (save_plots) {
 
 ###### GC ratio (intergenic) ######
 data_gc_inter <- add_dummy_rows(data, "inter_gc_rate", n_bins)
+data_gc_inter$type <- factor(data_gc_inter$type, levels = c("cds", "trg", "denovo", "iorf"))
 data_gc_inter_summary <- get_ncds_conditions(data_gc_inter, n_bins)
 
 # Pvals
@@ -433,6 +455,7 @@ if (save_plots) {
 
 ###### Aromaticity ######
 data_aro <- add_dummy_rows(data, "aromaticity", n_bins)
+data_aro$type <- factor(data_aro$type, levels = c("cds", "trg", "denovo", "iorf"))
 data_aro_summary <- get_ncds_conditions(data_aro, n_bins)
 
 # Pvals
@@ -465,6 +488,7 @@ if (save_plots) {
 
 ###### Instability index ######
 data_inst <- add_dummy_rows(data, "instability", n_bins)
+data_inst$type <- factor(data_inst$type, levels = c("cds", "trg", "denovo", "iorf"))
 data_inst_summary <- get_ncds_conditions(data_inst, n_bins)
 
 # Pvals
@@ -496,6 +520,7 @@ if (save_plots) {
 
 ###### Flexibility #######
 data_flex <- add_dummy_rows(data, "mean_flexibility", n_bins)
+data_flex$type <- factor(data_flex$type, levels = c("cds", "trg", "denovo", "iorf"))
 data_flex_summary <- get_ncds_conditions(data_flex, n_bins)
 
 # Pvals
@@ -527,6 +552,7 @@ if (save_plots) {
 
 ###### Hydrophobicity ######
 data_hyd <- add_dummy_rows(data, "hydropathy", n_bins)
+data_hyd$type <- factor(data_hyd$type, levels = c("cds", "trg", "denovo", "iorf"))
 data_hyd_summary <- get_ncds_conditions(data_hyd, n_bins)
 
 # Pvals
@@ -558,6 +584,7 @@ if (save_plots) {
 
 ###### HCA ######
 data_hca <- add_dummy_rows(data, "hca", n_bins)
+data_hce$type <- factor(data_hca$type, levels = c("cds", "trg", "denovo", "iorf"))
 data_hca_summary <- get_ncds_conditions(data_hca, n_bins)
 
 # Pvals
@@ -591,6 +618,7 @@ if (save_plots) {
 
 ###### Intrinsic disorder (IUpred) ######
 data_disord <- add_dummy_rows(data, "disord", n_bins)
+data_disord$type <- factor(data_disord$type, levels = c("cds", "trg", "denovo", "iorf"))
 data_disord_summary <- get_ncds_conditions(data_disord, n_bins)
 
 # Pvals
@@ -622,6 +650,7 @@ if (save_plots) {
 
 ###### Aggregation (tango) ######
 data_agg <- add_dummy_rows(data, "aggreg", n_bins)
+data_agg$type <- factor(data_agg$type, levels = c("cds", "trg", "denovo", "iorf"))
 data_agg_summary <- get_ncds_conditions(data_agg, n_bins)
 
 # Pvals
