@@ -31,16 +31,14 @@ source /home/eliott.tempez/miniconda3/bin/activate descriptors
 module load singularity
 
 SCRATCH_DIR=/scratchlocal/$USER/$SLURM_JOBID
-SOFTWARE_PATH=$SCRATCH_DIR/softwares
 mkdir -p $SCRATCH_DIR
-mkdir -p $SOFTWARE_PATH
 cd $SCRATCH_DIR
 cp -r $SCRIPTS/* .
 cp $GOOD_CANDIDATES .
 cp $CONTAINER .
 # Softwares
-cp -r $IUPRED_DIR/* $SOFTWARE_PATH
-cp $TANGO $SOFTWARE_PATH
+cp -r $IUPRED_DIR/* .
+cp $TANGO .
 mkdir -p genera/
 cp -r $GENERA_DIR/* genera/
 mkdir -p dense/
