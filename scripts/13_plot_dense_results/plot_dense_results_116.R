@@ -26,16 +26,19 @@ dense_dir <- paths$dense_dir
 cds_dir <- paths$cds_dir
 genomes_list <- paths$genomes_list
 fa_dir <- paths$fa_dir
-output_dir <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/global_results/"
+output_dir <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/"
 intergenic_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/10_analyse_intergenic/intergenic_lengths.tsv"
+good_candidates <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/good_candidates.txt"
 
 
 # Read genomes list
 genomes <- scan(genomes_list, what = "", sep = " ")[1:116]
+# Read list of good denovo
+good_candidates <- scan(good_candidates, what = "", sep = "\n")
 # Get the info for each genome
-data <- data.frame(matrix(NA, nrow = length(genomes), ncol = 4))
+data <- data.frame(matrix(NA, nrow = length(genomes), ncol = 5))
 rownames(data) <- genomes
-colnames(data) <- c("n_denovo", "n_trg", "n_cds", "gc_perc")
+colnames(data) <- c("n_denovo", "n_trg", "n_cds", "gc_perc", "n_good_candidates")
 for (g in genomes) {
   # Filenames
   dense_file <- paste0(dense_dir, g, "/denovogenes.tsv")
@@ -43,7 +46,10 @@ for (g in genomes) {
   cds_file <- paste0(cds_dir, g, "_CDS.faa")
   ## Number of denovo
   denovo <- read.table(dense_file, header = TRUE, sep = "\t")
+  denovo_names <- denovo$CDS
   n_denovo <- nrow(denovo)
+  # Good candidates
+  n_good_candidates <- sum(denovo_names %in% good_candidates)
   ## Number of TRGs
   trgs <- read.table(genera_file, header = TRUE, sep = "\t", comment.char = "")
   n_trg <- sum(trgs[trgs$phylorank >= 7, 1])
@@ -66,8 +72,9 @@ for (g in genomes) {
   data[g, "n_trg"] <- n_trg
   data[g, "n_cds"] <- n_cds
   data[g, "gc_perc"] <- gc
+  data[g, "n_good_candidates"] <- n_good_candidates
 }
-
+data$n_bad_candidates <- data$n_denovo - data$n_good_candidates
 # Normalised de novo & trg number
 #data$n_trg_norm <- data$n_trg / data$n_cds * 100
 
@@ -110,6 +117,37 @@ p <- p + ggtitle("Number of de novo genes,TRGs and GC rate for each genome") +
 p
 
 ggsave(paste0(output_dir, "denovo_trg_116.png"))
+
+
+
+########## Good / bad denovo genes ##########
+# Read the tree
+tree <- read.tree(tree_file)
+# Plot the tree
+p <- ggtree(tree, layout = "circular", branch.length = "none")
+# Add the heatmaps
+## Good denovo ##
+p <- p + new_scale_fill()
+p <- gheatmap(p, data[, "n_good_candidates", drop = FALSE],
+              width = .05, colnames = FALSE) +
+  scale_fill_gradient(low = "white", high = "#179207", name = "No integrity\n('good' candidates)",
+                      guide = guide_colorbar(order = 1))
+
+## Bad denovo ##
+p <- p + new_scale_fill()
+p <- gheatmap(p, data[, "n_bad_candidates", drop = FALSE], offset = 1,
+              width = .05, colnames = FALSE) +
+  scale_fill_gradient(low = "white", high = "#0059ff", name = "Integrity\n('bad' candidates)",
+                      guide = guide_colorbar(order = 2), limits = c(0, max(data$n_bad_candidates)))
+
+# Add the title
+p <- p + ggtitle("Integrity of the non-coding matches in the 2\n furthest outgroups for the de novo genes\n(threshold = 70% qcov)") +
+  theme(plot.title = element_text(hjust = 0.5, vjust = -10))
+p
+
+ggsave(paste0(output_dir, "denovo_good_bad.png"))
+
+
 
 
 
@@ -188,10 +226,6 @@ ggplot(intergenic, aes(x = mean_intergenic_length)) +
        y = "Number of genomes") +
   theme(plot.title = element_text(hjust = 0.5, vjust = -10))
 ggsave(paste0(output_dir, "intergenic_distribution_116.png"))
-
-
-
-
 
 
 
