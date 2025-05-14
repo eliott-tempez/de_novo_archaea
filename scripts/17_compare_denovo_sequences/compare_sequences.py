@@ -135,13 +135,33 @@ def calculate_proportion_of_seq_disordered(iupred_scores):
         elif pos <= 0.5 and count_seg_tmp <5:
             count_seg_tmp = 0 
             continue
-        
         if i == len(iupred_scores) -1:
             if count_seg_tmp >=5:
                 count_agg_seg = count_agg_seg + count_seg_tmp
             else:
                 continue
     return(round(count_agg_seg/len(iupred_scores),3)) 
+
+
+def calculate_proportion_of_seq_aggregable(b_aggregation):
+    # Imported from ORFmine's ORFold
+    count_seg_tmp = 0
+    count_agg_seg = 0
+    for i,pos in enumerate(b_aggregation):
+        if pos > 5.0:
+            count_seg_tmp += 1 
+        elif pos <= 5.0 and count_seg_tmp >=5:
+            count_agg_seg = count_agg_seg + count_seg_tmp
+            count_seg_tmp = 0
+        elif pos <= 5.0 and count_seg_tmp <5:
+            count_seg_tmp = 0 
+            continue
+        if i == len(b_aggregation) -1:
+            if count_seg_tmp >=5:
+                count_agg_seg = count_agg_seg + count_seg_tmp
+            else:
+                continue
+    return(round(count_agg_seg/len(b_aggregation),3))
 
 
 def get_iupred(cds, all_cdss):
@@ -182,14 +202,36 @@ def get_hca(all_hcas, cds_name):
     return hca
 
 
-def get_tango(cds, all_cds):
+def get_tango(cds, all_cdss):
+    # Paths
+    output_prefix = "tango_results"
     current_dir = os.getcwd()
     tango_path = os.path.join(current_dir, "tango_x86_64_release")
+    # Command arguments
     aa_seq = re.sub(r"[\*]", "", str(all_cdss[cds]["sequence"].translate(table=11)))
     args = f'ct="N" nt="N" ph="7.4" te="298" io="0.1" seq="{aa_seq}"'
-    result = subprocess.run(f"{tango_path} {args}", capture_output=True, text=True)
-    print(result.stderr)
-    print(result.stdout)
+    # Run Tango
+    result = subprocess.run(f"{tango_path} {output_prefix} {args}", capture_output=True, text=True, shell=True)
+    # Extract the score
+    aggreg_scores = []
+    with open(f"{output_prefix}.txt", "r") as f:
+        for line in f:
+            # Remove all blankspaces
+            line = re.sub(r"\s+", " ", line)
+            line_lst = line.strip().split()
+            # read values
+            b_aggreg = line_lst[5]
+            # Keep only if floats
+            try:
+                b_aggreg = float(b_aggreg)
+                aggreg_scores.append(b_aggreg)
+            except ValueError:
+                continue
+    aggreg = calculate_proportion_of_seq_aggregable(aggreg_scores)
+    # Remove the temp file
+    os.remove(f"{output_prefix}.txt")
+    return aggreg
+
 
 
 
@@ -270,7 +312,8 @@ if __name__ == "__main__":
         # Extract hca, disorder and aggregation
         hca = get_hca(all_hcas, cds)
         disord = get_iupred(cds, all_cdss)
-        aggreg = 0
+        aggreg = get_tango(cds, all_cdss)
+        print(f"cds: {cds}, hca: {hca}, disord: {disord}, aggreg: {aggreg}")
         result = [genome, cds, gc_rate, aromaticity, instability, mean_flexibility, hydropathy, length, hca, disord, aggreg, inter_gc_rate, gc_species, inter_gc_species]
 
         # Extract aa use
