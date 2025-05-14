@@ -694,46 +694,38 @@ aa_types_names <- c("polar", "hydrophobic", "positive", "negative", "proline-gly
 ## Plot ##
 for (i in seq_along(aa_types)) {
   aa_type <- aa_types[[i]]
+  aa_name <- paste0(aa_type, "_use")
   aa_type_name <- aa_types_names[[i]]
-  aa_plots <- c()
-  for (aa in aa_type) {
-    # Get the data
-    data_aa <- add_dummy_rows(data, paste0(aa, "_use"), n_bins)
-    data_aa_summary <- get_ncds_conditions(data_aa, n_bins)
-
-    # Pvals
-    if (plot_pvals) {
-      pval_factor <- 0.2
-      only_ns <- FALSE
-      y_annotation <- NA
-      pval_vect <- c(pval_factor, only_ns, y_annotation)
-    } else {
-      pval_vect <- c(NA, NA, NA)
-    }
-
-    # Plot
-    p <- get_plot(data_aa,
-                  data_aa_summary,
-                  paste0(aa, "_use"),
-                  "",
-                  print_pval = pval_vect)
+  data[data$feature %in% aa_type, "feature"] <- aa_type_name
+  data_aa <- add_dummy_rows(data, aa_type_name, n_bins)
+  data_aa$type <- factor(data_aa$type, levels = c("cds", "trg", "denovo", "iorf"))
+  data_aa_summary <- get_ncds_conditions(data_aa, n_bins)
 
 
-    aa_plots <- c(aa_plots, list(p))
+  # Pvals
+  if (plot_pvals) {
+    pval_factor <- 0.1
+    only_ns <- FALSE
+    y_annotation <- 0.5
+    pval_vect <- c(pval_factor, only_ns, y_annotation)
+  } else {
+    pval_vect <- c(NA, NA, NA)
   }
 
-  fig <- ggarrange(plotlist = aa_plots, common.legend = TRUE, legend = "right")
-  fig <- annotate_figure(fig, bottom = text_grob("% GC (whole genome)\n", size = 14),
-                  left = text_grob("% use", rot = 90, size = 14),
-                  top = text_grob(paste("Amino-acid distribution:",
-                                        aa_type_name, "\n"),
-                                  size = 18),
-                  right = text_grob(paste0("\n", signif_label), rot = 90, size = 10))
-  print(fig)
+  # Plot
+  p <- get_plot(data_aa,
+                data_aa_summary,
+                aa_type_name,
+                paste0(aa_type_name, " amino-acid use (",
+                       paste(aa_type, collapse = ", "), ")"),
+                n_y_pos = min(data_aa$value, na.rm = TRUE) - 0.05,
+                print_pval = pval_vect,
+                scale_y = seq(0, 1, 0.2))
+  p
 
   # Save the plot
   if (save_plots) {
-    ggsave(paste0(out_folder, "/aa_", aa_type_name, "_use.png"), plot = fig)
+    ggsave(paste0(out_folder, "/aa_", aa_type_name, "_use.png"), plot = p)
   }
 }
 
@@ -744,6 +736,7 @@ for (i in seq_along(aa_types)) {
 if (n_bins == 2) {
   plot_pvals <- FALSE
   data_gc <- add_dummy_rows(data, "gc_species", n_bins)
+  data_gc$type <- factor(data_gc$type, levels = c("cds", "trg", "denovo", "iorf"))
   data_gc_summary <- get_ncds_conditions(data_gc, n_bins)
   pval_vect <- c(NA, NA, NA)
   # Plot
@@ -764,6 +757,7 @@ if (n_bins == 2) {
 
 
   data_gc_inter <- add_dummy_rows(data, "inter_gc_species", n_bins)
+  data_gc_inter$type <- factor(data_gc_inter$type, levels = c("cds", "trg", "denovo", "iorf"))
   data_gc_inter_summary <- get_ncds_conditions(data_gc_inter, n_bins)
   pval_vect <- c(NA, NA, NA)
   # Plot
