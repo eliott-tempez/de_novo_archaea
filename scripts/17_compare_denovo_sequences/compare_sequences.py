@@ -276,9 +276,9 @@ if __name__ == "__main__":
     trg_names = list(set(trg_names) - set(denovo_names))
 
     # Sample
-    cds_names = random.sample(cds_names, 1)
+    """cds_names = random.sample(cds_names, 1)
     trg_names = random.sample(trg_names, 1)
-    denovo_names = random.sample(denovo_names, 1)
+    denovo_names = random.sample(denovo_names, 1)"""
 
     # Calculate descriptors for all cdss
     all_cds_names = denovo_names + trg_names + cds_names
@@ -313,7 +313,6 @@ if __name__ == "__main__":
         hca = get_hca(all_hcas, cds)
         disord = get_iupred(cds, all_cdss)
         aggreg = get_tango(cds, all_cdss)
-        print(f"cds: {cds}, hca: {hca}, disord: {disord}, aggreg: {aggreg}")
         result = [genome, cds, gc_rate, aromaticity, instability, mean_flexibility, hydropathy, length, hca, disord, aggreg, inter_gc_rate, gc_species, inter_gc_species]
 
         # Extract aa use
