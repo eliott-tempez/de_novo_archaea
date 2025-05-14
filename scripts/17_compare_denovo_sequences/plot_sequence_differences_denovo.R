@@ -173,6 +173,8 @@ get_plot <- function(data, data_summary, feature, title, print_pval = c(NA), sca
 
 ###### Sequence length ######
 data_len <- data[data$feature == "length", ]
+# Use aa length
+data_len$value <- data_len$value / 3
 data_summary <- get_ncds_conditions(data_len)
 data_len$type <- factor(data_len$type, levels = c("bad", "good"))
 
@@ -187,7 +189,7 @@ pval_vect <- c(pval_pos, only_ns, y_annotation)
 p <- get_plot(data_len,
               data_summary,
               "length",
-              "Sequence length distribution (nt)",
+              "Sequence length distribution (aa)",
               n_y_pos = 20,
               print_pval = pval_vect,
               scale_y = seq(0, 600, 100))
