@@ -79,11 +79,13 @@ def get_species_gc_content(genome):
 
 def get_species_iorf_gc(genome):
     iorfs = extract_iorfs(genome)
+    iorfs_dict = {}
     concat_seq = ""
-    for segment in iorfs:
+    for i, segment in enumerate(iorfs):
         seq = str(segment)
         concat_seq += seq
-    return GC(concat_seq)
+        iorfs_dict[f"{genome}_iorf_{i}"] = {"sequence": seq}
+    return iorfs_dict, GC(concat_seq)
 
 
 def get_hcas(cds_names, all_cdss):
@@ -241,7 +243,7 @@ if __name__ == "__main__":
     with open(GENOMES_LIST, "r") as f:
         genomes = f.readline().split()
     genomes = [re.sub('"', '', g) for g in genomes]
-    denovo_names, trg_names, cds_names = [], [], []
+    denovo_names, trg_names, cds_names, iorf_names = [], [], [], []
     all_cdss = {}
     all_values = []
 
@@ -251,7 +253,7 @@ if __name__ == "__main__":
     for genome in genomes:
         # Get the species gc content
         genome_gc = get_species_gc_content(genome)
-        intergenic_gc = get_species_iorf_gc(genome)
+        iorfs_dict, intergenic_gc = get_species_iorf_gc(genome)
 
         # Extract de novo names
         if not GOOD_CANDIDATES_ONLY:
@@ -260,6 +262,9 @@ if __name__ == "__main__":
         trg_names += extract_trg_names(genome, TRG_RANK)
         # Extract info for all CDSs
         all_cds_gen = extract_cds_sequences(genome)
+        # Extract info for iorfs
+        iorf_names += iorfs_dict.keys()
+        all_cds_gen.update(iorfs_dict)
         # Add the genome name
         for cds in all_cds_gen:
             all_cds_gen[cds]["genome"] = genome
@@ -272,16 +277,17 @@ if __name__ == "__main__":
         denovo_names = extract_denovo_names(genome, True)
 
     # Drop duplicates
-    cds_names = list(set(cds_names) - set(trg_names))
+    cds_names = list(set(cds_names) - set(trg_names) - set(iorf_names))
     trg_names = list(set(trg_names) - set(denovo_names))
 
     # Sample
-    """cds_names = random.sample(cds_names, 1)
+    cds_names = random.sample(cds_names, 1)
     trg_names = random.sample(trg_names, 1)
-    denovo_names = random.sample(denovo_names, 1)"""
+    denovo_names = random.sample(denovo_names, 1)
+    iorf_names = random.sample(iorf_names, 1)
 
     # Calculate descriptors for all cdss
-    all_cds_names = denovo_names + trg_names + cds_names
+    all_cds_names = denovo_names + trg_names + cds_names + iorf_names
     n = len(all_cdss)
     i = 0
 
@@ -329,11 +335,14 @@ if __name__ == "__main__":
             result.append("trg")
         elif cds in denovo_names:
             result.append("denovo")
+        elif cds in iorf_names:
+            result.append("iorf")
         
         if i % round(n/20) == 0:
             print(f"{i}/{n} cds analysed...")
         
         results.append(result)
+        print(cds, result)
 
     print("\nDone!")
 
