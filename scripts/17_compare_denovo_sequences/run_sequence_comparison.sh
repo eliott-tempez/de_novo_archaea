@@ -3,11 +3,11 @@
 #SBATCH -p common
 #SBATCH -J run_descriptors
 #SBATCH --time=10-00
-#SBATCH --cpus-per-task=32
+#SBATCH --cpus-per-task=16
 #SBATCH --ntasks=1
-#SBATCH --mem=64gb
-#SBATCH -o /home/eliott.tempez/pval_comparison_output.log
-#SBATCH -e /home/eliott.tempez/pval_comparison_error.log
+#SBATCH --mem=50gb
+#SBATCH -o /home/eliott.tempez/comparison_output.log
+#SBATCH -e /home/eliott.tempez/comparison_error.log
 
 SCRIPTS=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/stage/M2_stage_I2BC/scripts
 GOOD_CANDIDATES=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/stage/M2_stage_I2BC/results/14_get_noncoding_match/good_candidates.txt
@@ -19,8 +19,8 @@ DENSE_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/dense
 FA_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/complete_122/fasta_renamed
 CDS_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/dense/GCA_000007305@Pyrococcus_furiosus_DSM_3638/CDS
 GFF_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/complete_122/reannotated_gff_75
-OUTPUT_LOG=/home/eliott.tempez/pval_comparison_output.log
-ERROR_LOG=/home/eliott.tempez/pval_comparison_error.log
+OUTPUT_LOG=/home/eliott.tempez/comparison_output.log
+ERROR_LOG=/home/eliott.tempez/comparison_error.log
 OUT_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/pvals_descriptors
 
 # Set up a trap to clean up on exit or interruption
