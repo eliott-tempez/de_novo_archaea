@@ -85,7 +85,7 @@ def get_end_frame(start_frame):
         return -1
 
 
-def extract_iorfs(genome, threshold=75):
+def extract_iorfs(genome, threshold=60):
     """Extract all iORFS longer than a certain length from a given genome"""
     iorfs = []
     stops = ["TAA", "TAG", "TGA"]
