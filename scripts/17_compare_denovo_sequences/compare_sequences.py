@@ -217,19 +217,25 @@ def get_tango(cds, all_cdss):
     result = subprocess.run(f"{tango_path} {output_prefix} {args}", capture_output=True, text=True, shell=True)
     # Extract the score
     aggreg_scores = []
-    with open(f"{output_prefix}.txt", "r") as f:
-        for line in f:
-            # Remove all blankspaces
-            line = re.sub(r"\s+", " ", line)
-            line_lst = line.strip().split()
-            # read values
-            b_aggreg = line_lst[5]
-            # Keep only if floats
-            try:
-                b_aggreg = float(b_aggreg)
-                aggreg_scores.append(b_aggreg)
-            except ValueError:
-                continue
+    try:
+        with open(f"{output_prefix}.txt", "r") as f:
+            for line in f:
+                # Remove all blankspaces
+                line = re.sub(r"\s+", " ", line)
+                line_lst = line.strip().split()
+                # read values
+                b_aggreg = line_lst[5]
+                # Keep only if floats
+                try:
+                    b_aggreg = float(b_aggreg)
+                    aggreg_scores.append(b_aggreg)
+                except ValueError:
+                    continue
+    except FileNotFoundError:
+        print(cds)
+        raise FileNotFoundError(f"No file {output_prefix}.txt")
+    
+
     aggreg = calculate_proportion_of_seq_aggregable(aggreg_scores)
     # Remove the temp file
     os.remove(f"{output_prefix}.txt")
