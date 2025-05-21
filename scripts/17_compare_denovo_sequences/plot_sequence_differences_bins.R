@@ -11,8 +11,8 @@ library(grid)
 
 
 # User-defined parameters
-n_bins <- 2
-plot_pvals <- FALSE
+n_bins <- 1
+plot_pvals <- TRUE
 save_plots <- FALSE
 
 
@@ -41,7 +41,7 @@ if (plot_pvals) {
   pvals$p <- pvals$pval
 }
 # Add the bins to the data
-bins <- read.table(bins_file, header = TRUE, sep = " ")
+bins <- read.table(bins_file, header = TRUE, sep = "")
 data <- data %>%
   left_join(bins, by = c("cds"))
 data$bin <- as.character(data$bin)
@@ -86,13 +86,15 @@ add_dummy_rows <- function(data, feature, n_bins) {
   # Create dummy rows for blank spaces on the x axis
   n_dummy <- (n_bins - 1)
   data_levels <- c("0_cds", "0_trg", "0_denovo", "0_iorf")
-  for (i in 1:n_dummy) {
-    blank <- paste0(i - 1, "_blank")
-    cds <- paste0(i, "_cds")
-    trg <- paste0(i, "_trg")
-    denovo <- paste0(i, "_denovo")
-    iorf <- paste0(i, "_iorf")
-    data_levels <- c(data_levels, blank, cds, trg, denovo, iorf)
+  if (n_dummy > 0) {
+    for (i in 1:n_dummy) {
+      blank <- paste0(i - 1, "_blank")
+      cds <- paste0(i, "_cds")
+      trg <- paste0(i, "_trg")
+      denovo <- paste0(i, "_denovo")
+      iorf <- paste0(i, "_iorf")
+      data_levels <- c(data_levels, blank, cds, trg, denovo, iorf)
+    }
   }
   data_local$group <- as.character(data_local$group)
   data_local$group <- factor(data_local$group, levels = data_levels)
@@ -185,12 +187,13 @@ local_pvals <- local_pvals %>%
   # Get the top of the whisker and the p-val for each type
   types <- c("denovo", "trg", "cds", "iorf")
   whisker_tops <- c()
+  print(head(data))
   min_whisker_base <- max(data$value, na.rm = TRUE)
   y_mat <- matrix(NA, nrow = 8, ncol = 3)
   colnames(y_mat) <- c("type", "bin", "whisker_top")
   i <- 0
   for (type in types) {
-    for (bin in c("0", "1")) {
+    for (bin in as.character(unique(data$bin))) {
       i <- i + 1
       all_val <- as.numeric(as.vector(data[data$type == type & data$bin == bin, "value"])$value)
       # Remove NA values

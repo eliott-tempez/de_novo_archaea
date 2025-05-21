@@ -15,21 +15,17 @@ ggsave <- function(..., bg = "white",
 }
 
 
-#input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences/sequence_features_good_candidates_all.csv"
-#pval_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences/pvalues.tsv"
-#out_folder <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/sequences"
-input_file <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/13_plot_dense_results/sequence_features_good_candidates_all.csv"
-pval_file <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/13_plot_dense_results/pvalues.tsv"
-out_folder <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/13_plot_dense_results/sequences/1_bin"
+input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/sequence_features_good_candidates_all.csv"
+pval_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/1_bins/pvalues_1_bins.tsv"
+out_folder <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/1_bins/"
 
 data <- read.table(input_file, header = TRUE, sep = "\t")
 n_cds <- nrow(data[data$type == "cds", ])
 n_trg <- nrow(data[data$type == "trg", ])
 n_denovo <- nrow(data[data$type == "denovo", ])
+n_iorf <- nrow(data[data$type == "iorf", ])
 # Import pvalues
 pvals <- read.table(pval_file, header = TRUE, sep = "\t")
-# Fix colnames
-colnames(pvals) <- c("group1", "group2", "feature", "p")
 
 
 
@@ -38,15 +34,18 @@ get_y_positions <- function(data, local_pvals, fact) {
   # Order rows
   local_pvals <- local_pvals %>%
     mutate(order = case_when(
-      group1 == "trg" & group2 == "cds" ~ 1,
-      group1 == "denovo" & group2 == "trg" ~ 2,
-      group1 == "denovo" & group2 == "cds" ~ 3,
-      TRUE ~ 4
+      (group1 == "trg" & group2 == "cds") | (group1 == "cds" & group2 == "trg") ~ 1,
+      (group1 == "trg" & group2 == "denovo") | (group1 == "denovo" & group2 == "trg") ~ 2,
+      (group1 == "denovo" & group2 == "iorf") | (group1 == "iorf" & group2 == "denovo") ~ 3,
+      (group1 == "cds" & group2 == "denovo") | (group1 == "denovo" & group2 == "cds") ~ 4,
+      (group1 == "trg" & group2 == "iorf") | (group1 == "iorf" & group2 == "trg") ~ 5,
+      (group1 == "cds" & group2 == "iorf") | (group1 == "iorf" & group2 == "cds") ~ 6,
+      TRUE ~ 7
     )) %>%
     arrange(order) %>%
     select(-order)
   # Get the top of the whisker and the p-val for each type
-  types <- c("denovo", "trg", "cds")
+  types <- c("denovo", "trg", "cds", "iorf")
   whisker_tops <- c()
   min_whisker_base <- max(data$value)
   for (type in types) {
@@ -62,7 +61,7 @@ get_y_positions <- function(data, local_pvals, fact) {
   y_mat <- cbind("type" = types, "whisker_top" = whisker_tops)
   # Add y position
   pos <- max(as.numeric(y_mat[, "whisker_top"])) + reference_val * fact
-  for (i in 1:3) {
+  for (i in 1:6) {
     if (local_pvals[i, "p"] <= 0.05) {
       local_pvals[i, "y.position"] <- pos
       pos <- pos + reference_val * fact
@@ -87,6 +86,7 @@ get_pvals <- function(desc, data, fact) {
     local_pvals$p <= 0.05 ~ "*",
     TRUE ~ ""
   )
+  print(local_pvals)
   return(local_pvals)
 }
 
@@ -94,17 +94,20 @@ get_pvals <- function(desc, data, fact) {
 # Pivot to longer
 descriptors <- setdiff(colnames(data), c("genome", "cds", "type"))
 data <- pivot_longer(data, cols = all_of(descriptors), names_to = "feature", values_to = "value")
+pvals <- pivot_longer(pvals, cols = all_of(descriptors), names_to = "feature", values_to = "p")
+colnames(pvals) <- c("group1", "group2", "bin1", "bin2", "feature", "p")
 
 
 ##### Sequence length #####
 data_len <- data[data$feature == "length", ]
-data_len$type <- factor(data_len$type, levels = c("cds", "trg", "denovo"))
+data_len$value <- data_len$value / 3
+data_len$type <- factor(data_len$type, levels = c("cds", "trg", "denovo", "iorf"))
 ggplot(data_len, aes(x = type, y = value, fill = type)) +
   geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
   labs(title = "Sequence length distribution",
        x = "Sequence type",
-       y = "Length (bp)") +
-  scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c")) +
+       y = "Length (aa)") +
+  scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c", "#693fb6")) +
   theme_minimal() +
   theme(legend.position = "none",
         axis.text.x = element_text(size = 16),
@@ -117,9 +120,10 @@ ggplot(data_len, aes(x = type, y = value, fill = type)) +
                      labels = c("50", "100", "500", "1000", "2000")) +
   scale_x_discrete(labels = c("cds" = paste0("cds\n(n = ", n_cds, ")"),
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
-                              "denovo" = paste0("denovo\n(n = ", n_denovo, ")"))) +
-  stat_pvalue_manual(get_pvals("length", data_len, 0.5), label = "p.signif", inherit.aes = FALSE, hide.ns = TRUE) +
-  annotate("text", x = 3.3, y = max(data_len$value) * 1,
+                              "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
+                              "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
+  stat_pvalue_manual(get_pvals("length", data_len, 0.6), label = "p.signif", inherit.aes = FALSE, hide.ns = TRUE) +
+  annotate("text", x = 3.3, y = 4500,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
 #ggsave(paste0(out_folder, "/sequence_length.png"))
 
@@ -127,13 +131,13 @@ ggplot(data_len, aes(x = type, y = value, fill = type)) +
 
 ##### GC content #####
 data_gc <- data[data$feature == "gc_rate", ]
-data_gc$type <- factor(data_gc$type, levels = c("cds", "trg", "denovo"))
+data_gc$type <- factor(data_gc$type, levels = c("cds", "trg", "denovo", "iorf"))
 ggplot(data_gc, aes(x = type, y = value, fill = type)) +
   geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
   labs(title = "GC ratio distribution",
        x = "Sequence type",
        y = "GC ratio: sequence GC % / genome GC %") +
-  scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c")) +
+  scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c", "#693fb6")) +
   theme_minimal() +
   theme(legend.position = "none",
         axis.text.x = element_text(size = 16),
@@ -143,7 +147,8 @@ ggplot(data_gc, aes(x = type, y = value, fill = type)) +
         plot.title = element_text(hjust = 0.5)) +
   scale_x_discrete(labels = c("cds" = paste0("cds\n(n = ", n_cds, ")"),
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
-                              "denovo" = paste0("denovo\n(n = ", n_denovo, ")"))) +
+                              "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
+                              "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
   stat_pvalue_manual(get_pvals("gc_rate", data_gc, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
   annotate("text", x = 3.3, y = max(data_gc$value) * 1,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
@@ -153,13 +158,13 @@ ggplot(data_gc, aes(x = type, y = value, fill = type)) +
 
 ##### GC content (intergenic) #####
 data_gc_inter <- data[data$feature == "inter_gc_rate", ]
-data_gc_inter$type <- factor(data_gc_inter$type, levels = c("cds", "trg", "denovo"))
+data_gc_inter$type <- factor(data_gc_inter$type, levels = c("cds", "trg", "denovo", "iorf"))
 ggplot(data_gc_inter, aes(x = type, y = value, fill = type)) +
   geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
   labs(title = "GC ratio distribution (intergenic)",
        x = "Sequence type",
        y = "GC ratio: sequence GC % / intergenic ORFs GC %") +
-  scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c")) +
+  scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c", "#693fb6")) +
   theme_minimal() +
   theme(legend.position = "none",
         axis.text.x = element_text(size = 16),
@@ -169,7 +174,8 @@ ggplot(data_gc_inter, aes(x = type, y = value, fill = type)) +
         plot.title = element_text(hjust = 0.5)) +
   scale_x_discrete(labels = c("cds" = paste0("cds\n(n = ", n_cds, ")"),
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
-                              "denovo" = paste0("denovo\n(n = ", n_denovo, ")"))) +
+                              "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
+                              "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
   stat_pvalue_manual(get_pvals("gc_rate", data_gc_inter, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
   annotate("text", x = 3.3, y = max(data_gc_inter$value) * 1,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
@@ -179,13 +185,13 @@ ggplot(data_gc_inter, aes(x = type, y = value, fill = type)) +
 
 ##### Aromaticity #####
 data_aro <- data[data$feature == "aromaticity", ]
-data_aro$type <- factor(data_aro$type, levels = c("cds", "trg", "denovo"))
+data_aro$type <- factor(data_aro$type, levels = c("cds", "trg", "denovo", "iorf"))
 ggplot(data_aro, aes(x = type, y = value, fill = type)) +
   geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
   labs(title = "Aromaticity distribution",
        x = "Sequence type",
        y = "Aromaticity") +
-  scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c")) +
+  scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c", "#693fb6")) +
   theme_minimal() +
   theme(legend.position = "none",
         axis.text.x = element_text(size = 16),
@@ -195,7 +201,8 @@ ggplot(data_aro, aes(x = type, y = value, fill = type)) +
         plot.title = element_text(hjust = 0.5)) +
   scale_x_discrete(labels = c("cds" = paste0("cds\n(n = ", n_cds, ")"),
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
-                              "denovo" = paste0("denovo\n(n = ", n_denovo, ")"))) +
+                              "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
+                              "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
   stat_pvalue_manual(get_pvals("aromaticity", data_aro, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") + 
   annotate("text", x = 3.3, y = max(data_aro$value) * .65,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
@@ -205,13 +212,13 @@ ggplot(data_aro, aes(x = type, y = value, fill = type)) +
 
 ##### Instability index #####
 data_inst <- data[data$feature == "instability", ]
-data_inst$type <- factor(data_inst$type, levels = c("cds", "trg", "denovo"))
+data_inst$type <- factor(data_inst$type, levels = c("cds", "trg", "denovo", "iorf"))
 ggplot(data_inst, aes(x = type, y = value, fill = type)) +
   geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
   labs(title = "Instability index distribution",
        x = "Sequence type",
        y = "Instability index") +
-  scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c")) +
+  scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c", "#693fb6")) +
   theme_minimal() +
   theme(legend.position = "none",
         axis.text.x = element_text(size = 16),
@@ -221,7 +228,8 @@ ggplot(data_inst, aes(x = type, y = value, fill = type)) +
         plot.title = element_text(hjust = 0.5)) +
   scale_x_discrete(labels = c("cds" = paste0("cds\n(n = ", n_cds, ")"),
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
-                              "denovo" = paste0("denovo\n(n = ", n_denovo, ")"))) +
+                              "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
+                              "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
   stat_pvalue_manual(get_pvals("instability", data_inst, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
   annotate("text", x = 3.3, y = max(data_inst$value) * .65,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
@@ -231,13 +239,13 @@ ggplot(data_inst, aes(x = type, y = value, fill = type)) +
 
 ##### Flexibility #####
 data_flex <- data[data$feature == "mean_flexibility", ]
-data_flex$type <- factor(data_flex$type, levels = c("cds", "trg", "denovo"))
+data_flex$type <- factor(data_flex$type, levels = c("cds", "trg", "denovo", "iorf"))
 ggplot(data_flex, aes(x = type, y = value, fill = type)) +
   geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
   labs(title = "Mean flexibility distribution",
        x = "Sequence type",
        y = "Mean flexibility") +
-  scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c")) +
+  scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c", "#693fb6")) +
   theme_minimal() +
   theme(legend.position = "none",
         axis.text.x = element_text(size = 16),
@@ -247,7 +255,8 @@ ggplot(data_flex, aes(x = type, y = value, fill = type)) +
         plot.title = element_text(hjust = 0.5)) +
   scale_x_discrete(labels = c("cds" = paste0("cds\n(n = ", n_cds, ")"),
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
-                              "denovo" = paste0("denovo\n(n = ", n_denovo, ")"))) +
+                              "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
+                              "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
   stat_pvalue_manual(get_pvals("mean_flexibility", data_flex, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
   annotate("text", x = 3.3, y = max(data_flex$value) * 1.01,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
@@ -257,13 +266,13 @@ ggplot(data_flex, aes(x = type, y = value, fill = type)) +
 
 ##### Hydrophobicity #####
 data_hydro <- data[data$feature == "hydropathy", ]
-data_hydro$type <- factor(data_hydro$type, levels = c("cds", "trg", "denovo"))
+data_hydro$type <- factor(data_hydro$type, levels = c("cds", "trg", "denovo", "iorf"))
 ggplot(data_hydro, aes(x = type, y = value, fill = type)) +
   geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
   labs(title = "Mean hydrophobicity distribution",
        x = "Sequence type",
        y = "Mean hydrophobicity") +
-  scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c")) +
+  scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c", "#693fb6")) +
   theme_minimal() +
   theme(legend.position = "none",
         axis.text.x = element_text(size = 16),
@@ -273,7 +282,8 @@ ggplot(data_hydro, aes(x = type, y = value, fill = type)) +
         plot.title = element_text(hjust = 0.5)) +
   scale_x_discrete(labels = c("cds" = paste0("cds\n(n = ", n_cds, ")"),
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
-                              "denovo" = paste0("denovo\n(n = ", n_denovo, ")"))) +
+                              "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
+                              "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
   stat_pvalue_manual(get_pvals("hydropathy", data_hydro, 0.2), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
   annotate("text", x = 3.3, y = max(data_hydro$value) * .9,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
@@ -283,13 +293,13 @@ ggplot(data_hydro, aes(x = type, y = value, fill = type)) +
 
 ##### HCA #####
 data_hca <- data[data$feature == "hca", ]
-data_hca$type <- factor(data_hca$type, levels = c("cds", "trg", "denovo"))
+data_hca$type <- factor(data_hca$type, levels = c("cds", "trg", "denovo", "iorf"))
 ggplot(data_hca, aes(x = type, y = value, fill = type)) +
   geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
   labs(title = "HCA distribution",
        x = "Sequence type",
        y = "HCA") +
-  scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c")) +
+  scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c", "#693fb6")) +
   theme_minimal() +
   theme(legend.position = "none",
         axis.text.x = element_text(size = 16),
@@ -299,7 +309,8 @@ ggplot(data_hca, aes(x = type, y = value, fill = type)) +
         plot.title = element_text(hjust = 0.5)) +
   scale_x_discrete(labels = c("cds" = paste0("cds\n(n = ", n_cds, ")"),
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
-                              "denovo" = paste0("denovo\n(n = ", n_denovo, ")"))) +
+                              "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
+                              "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
   stat_pvalue_manual(get_pvals("hca", data_hca, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
   annotate("text", x = 3.3, y = max(data_hca$value) * .95,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
@@ -307,18 +318,132 @@ ggplot(data_hca, aes(x = type, y = value, fill = type)) +
 
 
 
+
+###### Intrinsic disorder (IUpred) ######
+data_disord <- data[data$feature == "disord", ]
+data_disord$type <- factor(data_disord$type, levels = c("cds", "trg", "denovo", "iorf"))
+ggplot(data_disord, aes(x = type, y = value, fill = type)) +
+  geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
+  labs(title = "Intrinsic disorder distribution (IUPred)",
+       x = "Sequence type",
+       y = "Intrinsic disorder") +
+  scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c", "#693fb6")) +
+  theme_minimal() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(size = 16),
+        axis.title.x = element_text(size = 14),
+        axis.title.y = element_text(size = 14),
+        axis.text.y = element_text(size = 12),
+        plot.title = element_text(hjust = 0.5)) +
+  scale_x_discrete(labels = c("cds" = paste0("cds\n(n = ", n_cds, ")"),
+                              "trg" = paste0("trg\n(n = ", n_trg, ")"),
+                              "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
+                              "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
+  stat_pvalue_manual(get_pvals("disord", data_disord, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
+  annotate("text", x = 3.3, y = max(data_disord$value) * .95,
+           label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
+#ggsave(paste0(out_folder, "/intrinsic_disorder.png"))
+
+
+
+
+###### Aggregation (tango) ######
+data_agg <- data[data$feature == "aggreg", ]
+data_agg$type <- factor(data_agg$type, levels = c("cds", "trg", "denovo", "iorf"))
+ggplot(data_agg, aes(x = type, y = value, fill = type)) +
+  geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
+  labs(title = "Aggregation distribution (Tango)",
+       x = "Sequence type",
+       y = "Aggregation") +
+  scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c", "#693fb6")) +
+  theme_minimal() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(size = 16),
+        axis.title.x = element_text(size = 14),
+        axis.title.y = element_text(size = 14),
+        axis.text.y = element_text(size = 12),
+        plot.title = element_text(hjust = 0.5)) +
+  scale_x_discrete(labels = c("cds" = paste0("cds\n(n = ", n_cds, ")"),
+                              "trg" = paste0("trg\n(n = ", n_trg, ")"),
+                              "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
+                              "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
+  stat_pvalue_manual(get_pvals("aggreg", data_agg, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
+  annotate("text", x = 3.3, y = max(data_agg$value) * .95,
+           label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
+#ggsave(paste0(out_folder, "/aggregation.png"))
+
+
+
+
 ##### AA use #####
+polar_aa <- c("S", "T", "N", "Q")
+hydrophobic_aa <- c("V", "I", "L", "M", "F", "W", "Y")
+positive_aa <- c("K", "R", "H")
+negative_aa <- c("D", "E")
+pg_aa <- c("G", "P")
+a_aa <- c("A")
+c_aa <- c("C")
+aa_types <- list(polar_aa, hydrophobic_aa, positive_aa, negative_aa, pg_aa, a_aa, c_aa)
+aa_types_names <- c("polar", "hydrophobic", "positive", "negative", "proline-glycine", "alanine", "cysteine")
+
+
+# Plot
+for (i in seq_along(aa_types)) {
+  aa_type <- aa_types[[i]]
+  aa_name <- paste0(aa_type, "_use")
+  aa_type_name <- aa_types_names[[i]]
+  data[data$feature %in% aa_name, "feature"] <- aa_type_name
+
+  data_aa <- data[data$feature == aa_type_name, ]
+  data_aa$type <- factor(data_aa$type, levels = c("cds", "trg", "denovo", "iorf"))
+
+  p <- ggplot(data_aa, aes(x = type, y = value, fill = type)) +
+    geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
+    labs(title = paste0(aa_type_name, " use distribution"),
+         x = "",
+         y = "") +
+    scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c", "#693fb6")) +
+    theme_minimal() +
+    theme(legend.position = "none",
+          plot.title = element_text(hjust = 0.5, face = "bold", size = 18),
+          axis.text.y = element_text(size = 16))
+    print(p)
+
+    #ggsave(paste0(out_folder, "/", aa_type_name, "_use.png"))
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 aa_use <- unique(data$feature)[endsWith(unique(data$feature), "_use")]
 aa_plots <- c()
 for (aa in aa_use) {
   data_aa <- data[data$feature == aa, ]
-  data_aa$type <- factor(data_aa$type, levels = c("cds", "trg", "denovo"))
+  data_aa$type <- factor(data_aa$type, levels = c("cds", "trg", "denovo", "iorf"))
   p <- ggplot(data_aa, aes(x = type, y = value, fill = type)) +
     geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
     labs(title = gsub("_use", "", aa),
          x = "",
          y = "") +
-    scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c")) +
+    scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c", "#693fb6")) +
     theme_minimal() +
     theme(legend.position = "none",
           plot.title = element_text(hjust = 0.5, face = "bold", size = 18),
