@@ -16,7 +16,6 @@ from Bio.SeqUtils.ProtParam import ProteinAnalysis
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 OUT_DIR = "out/"
 from my_functions.paths import DENSE_DIR, GENERA_DIR, GENOMES_LIST, CDS_DIR, FA_DIR
-from my_functions.genomic_functions import extract_iorfs
 TRG_RANK = 7.0
 GOOD_CANDIDATES_ONLY = True
 
@@ -79,13 +78,24 @@ def get_species_gc_content(genome):
 
 
 def get_species_iorf_gc(genome):
-    iorfs = extract_iorfs(genome)
     iorfs_dict = {}
     concat_seq = ""
+
+    # Get iorfs from file
+    with open("iorfs.txt", "r") as f:
+        for line in f:
+            if line.startswith(f">{genome}"):
+                iorfs_str = f.readline().strip()
+                break
+    iorfs = iorfs_str.split()
+
     for i, segment in enumerate(iorfs):
+        # Get the GC %
         seq = str(segment)
         concat_seq += seq
+        # Add the iorfs to the dict
         iorfs_dict[f"{genome}_iorf_{i}"] = {"sequence": Seq(seq)}
+    
     return iorfs_dict, GC(concat_seq)
 
 
@@ -287,10 +297,10 @@ if __name__ == "__main__":
     trg_names = list(set(trg_names) - set(denovo_names))
 
     # Sample
-    """cds_names = random.sample(cds_names, 1)
-    trg_names = random.sample(trg_names, 1)
-    denovo_names = random.sample(denovo_names, 1)
-    iorf_names = random.sample(iorf_names, 1)"""
+    """cds_names = random.sample(cds_names, 1000)
+    trg_names = random.sample(trg_names, 1000)
+    denovo_names = random.sample(denovo_names, 1000)
+    iorf_names = random.sample(iorf_names, 1000)"""
 
     # Calculate descriptors for all cdss
     all_cds_names = denovo_names + trg_names + cds_names + iorf_names
