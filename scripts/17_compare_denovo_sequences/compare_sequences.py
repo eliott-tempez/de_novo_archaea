@@ -252,6 +252,26 @@ def get_tango(cds, all_cdss):
     return aggreg
 
 
+def get_common_aa_use(aa_use):
+    # Types of aa
+    polar_aa = ["S", "T", "N", "Q"]
+    hydrophobic_aa = ["V", "I", "L", "M", "F", "W", "Y"]
+    positive_aa = ["K", "R", "H"]
+    negative_aa = ["D", "E"]
+    proline_glycine_aa = ["P", "G"]
+    alanine_aa = ["A"]
+    cysteine_aa = ["C"]
+    # Calculate the proportion of each type of aa
+    polar_use = sum([aa_use[aa] for aa in polar_aa if aa in aa_use])
+    hydrophobic_use = sum([aa_use[aa] for aa in hydrophobic_aa if aa in aa_use])
+    positive_use = sum([aa_use[aa] for aa in positive_aa if aa in aa_use])
+    negative_use = sum([aa_use[aa] for aa in negative_aa if aa in aa_use])
+    proline_glycine_use = sum([aa_use[aa] for aa in proline_glycine_aa if aa in aa_use])
+    alanine_use = sum([aa_use[aa] for aa in alanine_aa if aa in aa_use])
+    cysteine_use = sum([aa_use[aa] for aa in cysteine_aa if aa in aa_use])
+    return [polar_use, hydrophobic_use, positive_use, negative_use, proline_glycine_use, alanine_use, cysteine_use]
+
+
 
 
 
@@ -343,6 +363,8 @@ if __name__ == "__main__":
         sorted_aa_use = {key: value for key, value in sorted(aa_use.items())}
         for aa in sorted_aa_use:
             result.append(aa_use[aa])
+        # Add the aa use of same type
+        result += get_common_aa_use(sorted_aa_use)
 
         # Add the type of cds
         if cds in cds_names:
@@ -362,5 +384,5 @@ if __name__ == "__main__":
     print("\nDone!")
 
     # Save the results
-    df = pd.DataFrame(results, columns=["genome", "cds", "gc_rate", "aromaticity", "instability", "mean_flexibility", "hydropathy", "length", "hca", "disord", "aggreg", "inter_gc_rate", "gc_species", "inter_gc_species"] + [f"{a}_use" for a in list(sorted_aa_use.keys())] + ["type"])
+    df = pd.DataFrame(results, columns=["genome", "cds", "gc_rate", "aromaticity", "instability", "mean_flexibility", "hydropathy", "length", "hca", "disord", "aggreg", "inter_gc_rate", "gc_species", "inter_gc_species"] + [f"{a}_use" for a in list(sorted_aa_use.keys())] + ["polar_use", "hydrophobic_use", "positive_use", "negative_use", "proline-glycine_use", "alanine_use", "cysteine_use"] + ["type"])
     df.to_csv(os.path.join(OUT_DIR, "sequence_features_good_candidates_all.csv"), sep="\t", index=False)
