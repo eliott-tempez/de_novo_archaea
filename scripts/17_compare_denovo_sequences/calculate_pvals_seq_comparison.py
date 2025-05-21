@@ -151,7 +151,7 @@ if __name__ == "__main__":
     
     # Get the indexes for each type of cds
     indexes = {}
-    for type in ["denovo", "trg", "cds"]:
+    for type in ["denovo", "trg", "cds", "iorf"]:
         indexes[type] = list(descriptors_df[descriptors_df["type"] == type].index)
 
     # Get the bins ranges
