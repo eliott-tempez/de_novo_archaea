@@ -7,6 +7,7 @@ import subprocess
 import tempfile
 import random
 import pandas as pd
+import numpy as np
 from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqUtils import GC
@@ -242,10 +243,8 @@ def get_tango(cds, all_cdss):
                 except ValueError:
                     continue
     except FileNotFoundError:
-        print(cds)
-        raise FileNotFoundError(f"No file {output_prefix}.txt")
+        return np.nan
     
-
     aggreg = calculate_proportion_of_seq_aggregable(aggreg_scores)
     # Remove the temp file
     os.remove(f"{output_prefix}.txt")
