@@ -4,7 +4,7 @@ import re
 import random
 import pandas as pd
 from Bio import SeqIO
-from Bio.SeqUtils import gc_fraction as GC
+from Bio.SeqUtils import GC
 from multiprocessing import Pool, cpu_count
 
 
