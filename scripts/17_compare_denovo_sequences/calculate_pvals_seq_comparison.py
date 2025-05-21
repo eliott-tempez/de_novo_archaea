@@ -156,7 +156,7 @@ if __name__ == "__main__":
 
     # Get the bins ranges
     bin_size = (max_gc - min_gc) / NB_GC_BINS
-    bin_limits = [0] + [i * bin_size + min_gc for i in range(NB_GC_BINS + 1)][1:-1] + [1]
+    bin_limits = [0] + [i * bin_size + min_gc for i in range(NB_GC_BINS + 1)][1:-1] + [100]
     
     # Get the different bin indexes
     bin_indexes_lst = get_bin_indexes(descriptors_df, gc_dict, bin_limits)
