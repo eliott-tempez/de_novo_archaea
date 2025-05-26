@@ -346,7 +346,7 @@ if __name__ == "__main__":
         aromaticity = analysis.aromaticity()
         instability = analysis.instability_index()
         flexibility = analysis.flexibility()
-        mean_flexibility = sum(flexibility) / len(flexibility)
+        mean_flexibility = (sum(flexibility) / len(flexibility)) if len(flexibility) != 0 else np.nan
         hydropathy = analysis.gravy()
         # Extract sequence length
         length = len(nuc_seq)
