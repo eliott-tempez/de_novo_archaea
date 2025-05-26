@@ -130,7 +130,7 @@ if __name__ == "__main__":
     
     # Extract gc content
     gc_dict = {}
-    min_gc = 1
+    min_gc = 100
     max_gc = 0
     for genome in genomes:
         # Get the species gc content
