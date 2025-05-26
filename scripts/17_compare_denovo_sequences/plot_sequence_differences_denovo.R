@@ -56,6 +56,15 @@ ggsave <- function(..., bg = "white",
 }
 
 
+get_ncds_conditions <- function(data) {
+  # Get the data
+  data_len_summary <- data %>%
+    group_by(type) %>%
+    summarise(n = n(), .groups = "drop")
+  return(data_len_summary)
+}
+
+
 
 # Get the p-values in a matrix to print on the graph
 get_pvals <- function(desc, data, fact, non_signif = FALSE) {
@@ -75,12 +84,7 @@ get_pvals <- function(desc, data, fact, non_signif = FALSE) {
       TRUE ~ ""
     )
   } else {
-    local_pvals$p.signif <- case_when(
-    local_pvals$p <= 0.00001 ~ "****",
-    local_pvals$p <= 0.0001 ~ "***",
-    local_pvals$p <= 0.001 ~ "**",
-    local_pvals$p <= 0.05 ~ "*",
-    TRUE ~ "")
+    local_pvals$p.signif <- paste0("p = ", round(local_pvals$p, 5))
   }
   print(local_pvals)
   return(local_pvals)
@@ -96,9 +100,9 @@ get_plot <- function(data, data_summary, feature, title, print_pval = c(NA), sca
     labs(title = "",
          x = "Type of de novo gene",
          y = title) +
-    scale_fill_manual(values = c("#7b7cdf", "#6f4eac")) +
+    scale_fill_manual(values = c("#4f535a", "#179207")) +
     theme_minimal() +
-    scale_x_discrete(labels = c("Non-selected", "Selected")) +
+    scale_x_discrete(labels = c("Integrity", "No integrity")) +
     theme(axis.text.x = element_text(size = 16),
           axis.title.x = element_text(size = 14),
           axis.title.y = element_text(size = 14),
@@ -151,10 +155,7 @@ get_plot <- function(data, data_summary, feature, title, print_pval = c(NA), sca
                            label = "p.signif",
                            inherit.aes = FALSE,
                            hide.ns = !only_ns,
-                           tip.length = 0.01) +
-        annotate("text", x = 1.5, y = y_annotation,
-                 label = signif_label, hjust = 1, vjust = 1,
-                 size = 3, color = "black")
+                           tip.length = 0.01)
     }
   }
   return(p)
@@ -180,9 +181,9 @@ data_len$type <- factor(data_len$type, levels = c("bad", "good"))
 
 
 # Pvals
-pval_pos <- 650
+pval_pos <- 210
 only_ns <- FALSE
-y_annotation <- 700
+y_annotation <- 400
 pval_vect <- c(pval_pos, only_ns, y_annotation)
 
 # Plot
@@ -190,9 +191,9 @@ p <- get_plot(data_len,
               data_summary,
               "length",
               "Sequence length distribution (aa)",
-              n_y_pos = 20,
+              n_y_pos = 5,
               print_pval = pval_vect,
-              scale_y = seq(0, 600, 100))
+              scale_y = seq(0, 300, 50))
 p
 
 # Save the plot
