@@ -5,7 +5,7 @@ import glob
 import re
 import subprocess
 import tempfile
-import random
+import multiprocessing
 import pandas as pd
 import numpy as np
 from Bio import SeqIO
@@ -14,6 +14,7 @@ from Bio.SeqUtils import GC
 from Bio.SeqUtils.ProtParam import ProteinAnalysis
 
 
+SORTED_AA = ["A", "C", "D", "E", "F", "G", "H", "I", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "V", "W", "Y"]
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 OUT_DIR = "out/"
 from my_functions.paths import DENSE_DIR, GENERA_DIR, GENOMES_LIST, CDS_DIR, FA_DIR
@@ -271,6 +272,52 @@ def get_common_aa_use(aa_use):
     return [polar_use, hydrophobic_use, positive_use, negative_use, proline_glycine_use, alanine_use, cysteine_use]
 
 
+def process_cds(cds):
+    genome = all_cdss[cds]["genome"]
+    # Extract nucleotide sequence and calculate GC-related measures
+    nuc_seq = all_cdss[cds]["sequence"]
+    gc_seq = GC(nuc_seq)
+    gc_species = all_cdss[cds]["gen_gc"]
+    inter_gc_species = all_cdss[cds]["intergenic_gc"]
+    gc_rate = gc_seq / gc_species
+    inter_gc_rate = gc_seq / inter_gc_species
+    # Translate nucleotide to protein sequence and remove stop/unknowns
+    prot_seq = re.sub(r"[\*X]", "", str(nuc_seq.translate(table=11)))
+    # Analyse protein properties
+    analysis = ProteinAnalysis(prot_seq)
+    aromaticity = analysis.aromaticity()
+    instability = analysis.instability_index()
+    flexibility = analysis.flexibility()
+    mean_flexibility = (sum(flexibility) / len(flexibility)) if len(flexibility) != 0 else np.nan
+    hydropathy = analysis.gravy()
+    # Get sequence length
+    length = len(nuc_seq)
+    # HCA score from precomputed DataFrame
+    hca = get_hca(all_hcas, cds)
+    # Calculate disorder and aggregation
+    disord = get_iupred(cds, all_cdss)
+    aggreg = get_tango(cds, all_cdss)
+    # Collect the basic result values
+    result = [genome, cds, gc_rate, aromaticity, instability, mean_flexibility, hydropathy, length, hca, disord, aggreg, inter_gc_rate, gc_species, inter_gc_species]
+    # Amino acid usage
+    aa_use = analysis.amino_acids_percent
+    sorted_aa_use = {key: value for key, value in sorted(aa_use.items())}
+    for aa in sorted_aa_use:
+        result.append(aa_use[aa])
+    # Amino acid group proportions (e.g. polar, hydrophobic)
+    result += get_common_aa_use(sorted_aa_use)
+    # Annotate type of CDS (cds, trg, denovo, iorf)
+    if cds in cds_names:
+        result.append("cds")
+    elif cds in trg_names:
+        result.append("trg")
+    elif cds in denovo_names:
+        result.append("denovo")
+    elif cds in iorf_names:
+        result.append("iorf")
+    return result
+
+
 
 
 
@@ -316,10 +363,10 @@ if __name__ == "__main__":
     trg_names = list(set(trg_names) - set(denovo_names))
 
     # Sample
-    """cds_names = random.sample(cds_names, 1000)
-    trg_names = random.sample(trg_names, 1000)
-    denovo_names = random.sample(denovo_names, 1000)
-    iorf_names = random.sample(iorf_names, 1000)"""
+    """cds_names = random.sample(cds_names, 10)
+    trg_names = random.sample(trg_names, 10)
+    denovo_names = random.sample(denovo_names, 10)
+    iorf_names = random.sample(iorf_names, 10)"""
 
     # Calculate descriptors for all cdss
     all_cds_names = denovo_names + trg_names + cds_names + iorf_names
@@ -330,58 +377,15 @@ if __name__ == "__main__":
     all_hcas = get_hcas(all_cds_names, all_cdss)
 
     results = []
-    for cds in all_cds_names:
-        i += 1
-        genome = all_cdss[cds]["genome"]
-        # Extract GC rate
-        nuc_seq = all_cdss[cds]["sequence"]
-        gc_seq = GC(nuc_seq)
-        gc_species = all_cdss[cds]["gen_gc"]
-        inter_gc_species = all_cdss[cds]["intergenic_gc"]
-        gc_rate = gc_seq / gc_species
-        inter_gc_rate = gc_seq / inter_gc_species
-        # Extract protein info
-        prot_seq = re.sub(r"[\*X]", "", str(nuc_seq.translate(table=11)))
-        analysis = ProteinAnalysis(prot_seq)
-        aromaticity = analysis.aromaticity()
-        instability = analysis.instability_index()
-        flexibility = analysis.flexibility()
-        mean_flexibility = (sum(flexibility) / len(flexibility)) if len(flexibility) != 0 else np.nan
-        hydropathy = analysis.gravy()
-        # Extract sequence length
-        length = len(nuc_seq)
-        # Extract hca, disorder and aggregation
-        hca = get_hca(all_hcas, cds)
-        disord = get_iupred(cds, all_cdss)
-        aggreg = get_tango(cds, all_cdss)
-        result = [genome, cds, gc_rate, aromaticity, instability, mean_flexibility, hydropathy, length, hca, disord, aggreg, inter_gc_rate, gc_species, inter_gc_species]
-
-        # Extract aa use
-        aa_use = analysis.amino_acids_percent
-        # Sort dict alphabetically
-        sorted_aa_use = {key: value for key, value in sorted(aa_use.items())}
-        for aa in sorted_aa_use:
-            result.append(aa_use[aa])
-        # Add the aa use of same type
-        result += get_common_aa_use(sorted_aa_use)
-
-        # Add the type of cds
-        if cds in cds_names:
-            result.append("cds")
-        elif cds in trg_names:
-            result.append("trg")
-        elif cds in denovo_names:
-            result.append("denovo")
-        elif cds in iorf_names:
-            result.append("iorf")
-        
-        if i % round(n/20) == 0:
-            print(f"{i}/{n} cds analysed...")
-        
-        results.append(result)
+    print("Starting parallel processing...\n")
+    with multiprocessing.Pool(processes=multiprocessing.cpu_count()) as pool:
+        for idx, result in enumerate(pool.imap(process_cds, all_cds_names), start=1):
+            results.append(result)
+            if idx % (n // 10) == 0:  # Print progress every 10% of total sequences
+                print(f"{idx}/{n} sequences analysed")
 
     print("\nDone!")
 
     # Save the results
-    df = pd.DataFrame(results, columns=["genome", "cds", "gc_rate", "aromaticity", "instability", "mean_flexibility", "hydropathy", "length", "hca", "disord", "aggreg", "inter_gc_rate", "gc_species", "inter_gc_species"] + [f"{a}_use" for a in list(sorted_aa_use.keys())] + ["polar_use", "hydrophobic_use", "positive_use", "negative_use", "proline-glycine_use", "alanine_use", "cysteine_use"] + ["type"])
+    df = pd.DataFrame(results, columns=["genome", "cds", "gc_rate", "aromaticity", "instability", "mean_flexibility", "hydropathy", "length", "hca", "disord", "aggreg", "inter_gc_rate", "gc_species", "inter_gc_species"] + [f"{a}_use" for a in SORTED_AA] + ["polar_use", "hydrophobic_use", "positive_use", "negative_use", "proline-glycine_use", "alanine_use", "cysteine_use"] + ["type"])
     df.to_csv(os.path.join(OUT_DIR, "sequence_features_good_candidates_all.csv"), sep="\t", index=False)
