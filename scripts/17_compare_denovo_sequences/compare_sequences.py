@@ -5,6 +5,7 @@ import glob
 import re
 import subprocess
 import tempfile
+import random
 import multiprocessing
 import pandas as pd
 import numpy as np
@@ -219,7 +220,7 @@ def get_hca(all_hcas, cds_name):
 
 def get_tango(cds, all_cdss):
     # Paths
-    output_prefix = "tango_results"
+    output_prefix = f"tango_results_{cds}"
     current_dir = os.getcwd()
     tango_path = os.path.join(current_dir, "tango_x86_64_release")
     # Command arguments
@@ -229,26 +230,29 @@ def get_tango(cds, all_cdss):
     result = subprocess.run(f"{tango_path} {output_prefix} {args}", capture_output=True, text=True, shell=True)
     # Extract the score
     aggreg_scores = []
-    try:
-        with open(f"{output_prefix}.txt", "r") as f:
-            for line in f:
-                # Remove all blankspaces
-                line = re.sub(r"\s+", " ", line)
-                line_lst = line.strip().split()
-                # read values
-                b_aggreg = line_lst[5]
-                # Keep only if floats
-                try:
-                    b_aggreg = float(b_aggreg)
-                    aggreg_scores.append(b_aggreg)
-                except ValueError:
-                    continue
-    except FileNotFoundError:
+
+    if not os.path.exists(f"{output_prefix}.txt"):
         return np.nan
-    
-    aggreg = calculate_proportion_of_seq_aggregable(aggreg_scores)
+    with open(f"{output_prefix}.txt", "r") as f:
+        content = f.read()
+        print(content)
+    with open(f"{output_prefix}.txt", "r") as f:
+        for line in f:
+            # Remove all blankspaces
+            line = re.sub(r"\s+", " ", line)
+            line_lst = line.strip().split()
+            # read values
+            b_aggreg = line_lst[5]
+            # Keep only if floats
+            try:
+                b_aggreg = float(b_aggreg)
+                aggreg_scores.append(b_aggreg)
+            except ValueError:
+                continue
     # Remove the temp file
     os.remove(f"{output_prefix}.txt")
+    # Calculate the proportion of aggregable sequences
+    aggreg = calculate_proportion_of_seq_aggregable(aggreg_scores)
     return aggreg
 
 
