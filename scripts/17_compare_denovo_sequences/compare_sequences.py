@@ -234,9 +234,6 @@ def get_tango(cds, all_cdss):
     if not os.path.exists(f"{output_prefix}.txt"):
         return np.nan
     with open(f"{output_prefix}.txt", "r") as f:
-        content = f.read()
-        print(content)
-    with open(f"{output_prefix}.txt", "r") as f:
         for line in f:
             # Remove all blankspaces
             line = re.sub(r"\s+", " ", line)
