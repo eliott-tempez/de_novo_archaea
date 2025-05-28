@@ -44,11 +44,12 @@ for (descriptor in descriptors) {
 
   # Create the plot
   p <- ggplot(data_local, aes(x = factor(genome), y = .data[[descriptor]])) +
-    geom_violin(alpha = 0.5) +
-    geom_jitter(aes(color = cds), alpha = 0.5, width = 0.2)
+    geom_violin() +
+    geom_jitter(aes(color = cds), alpha = 0.5, width = 0.2) +
+    geom_violin(alpha = 0, color = "black") # Re-add the violin layer to ensure it is above the points
 
   print(p)
 
   # Save the plot
-  ggplot(paste0(out_folder, descriptor, ".png"), plot = p)
+  ggsave(paste0(out_folder, descriptor, ".png"))
 }
