@@ -220,14 +220,15 @@ def get_hca(all_hcas, cds_name):
 
 def get_tango(cds, all_cdss):
     # Paths
-    output_prefix = f"tango_results_{cds}"
+    genome = all_cdss[cds]["genome"]
+    output_prefix = f"tango_results_{cds}_{genome}"
     current_dir = os.getcwd()
     tango_path = os.path.join(current_dir, "tango_x86_64_release")
     # Command arguments
     aa_seq = re.sub(r"[\*]", "", str(all_cdss[cds]["sequence"].translate(table=11)))
     args = f'ct="N" nt="N" ph="7.4" te="298" io="0.1" seq="{aa_seq}"'
     # Run Tango
-    result = subprocess.run(f"{tango_path} {output_prefix} {args}", capture_output=True, text=True, shell=True)
+    result = subprocess.run(f"{tango_path} {output_prefix} {args}", capture_output=True, text=True, shell=True, errors="replace")
     # Extract the score
     aggreg_scores = []
 
@@ -364,10 +365,10 @@ if __name__ == "__main__":
     trg_names = list(set(trg_names) - set(denovo_names))
 
     # Sample
-    """cds_names = random.sample(cds_names, 10)
-    trg_names = random.sample(trg_names, 10)
-    denovo_names = random.sample(denovo_names, 10)
-    iorf_names = random.sample(iorf_names, 10)"""
+    cds_names = random.sample(cds_names, 5000)
+    trg_names = random.sample(trg_names, 5000)
+    #denovo_names = random.sample(denovo_names, 10)
+    iorf_names = random.sample(iorf_names, 5000)
 
     # Calculate descriptors for all cdss
     all_cds_names = denovo_names + trg_names + cds_names + iorf_names
