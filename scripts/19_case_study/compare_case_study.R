@@ -36,8 +36,17 @@ denovo <- scan(good_candidates_file, what = "", sep = "\n")
 for (descriptor in descriptors) {
   # Extract the data
   data_local <- data[, c("genome", "cds", descriptor)]
+  # Remove the iorfs
+  data_local <- data_local[!grepl("iorf", data_local$cds), ]
   # Add the genome
   data_local$genome <- ifelse(data_local$genome == focal_genome, "Focal genome", "Other genomes")
+  # Keep only 5* the focal genome for the other genomes
+  data_focal <- data_local[data_local$genome == "Focal genome", ]
+  n_focal <- nrow(data_focal)
+  data_other <- data_local[data_local$genome == "Other genomes", ]
+  n_other <- max(5 * n_focal, nrow(data_other))
+  data_other <- data_other[sample(1:nrow(data_other), n_other), ]
+  data_local <- rbind(data_focal, data_other)
   # Add the denovo
   data_local$cds <- ifelse(data_local$cds %in% denovo, "Denovo (no integrity)", "Non-denovo / integrity")
 
