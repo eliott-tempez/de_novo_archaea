@@ -10,10 +10,10 @@ from multiprocessing import Pool, cpu_count
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from my_functions.paths import GENOMES_LIST, FA_DIR
-INCLUDE = ["aggreg"] # Descriptors to run the test on
+INCLUDE = "all" # Descriptors to run the test on
 
 
-NB_GC_BINS = 2
+NB_GC_BINS = 1
 
 
 def get_species_gc_content(genome):
