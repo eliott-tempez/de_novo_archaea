@@ -10,6 +10,7 @@ from multiprocessing import Pool, cpu_count
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from my_functions.paths import GENOMES_LIST, FA_DIR
+INCLUDE = ["aggreg"] # Descriptors to run the test on
 
 
 NB_GC_BINS = 2
@@ -144,10 +145,17 @@ if __name__ == "__main__":
     # Read descriptors 
     descriptors_file = "sequence_features_good_candidates_all.csv"
     descriptors_df = pd.read_csv(descriptors_file, sep="\t", header=0)
-    descriptors = list(descriptors_df)
-    descriptors.remove("genome")
-    descriptors.remove("type")
-    descriptors.remove("cds")
+    if INCLUDE == "all":
+        descriptors = list(descriptors_df)
+        descriptors.remove("genome")
+        descriptors.remove("type")
+        descriptors.remove("cds")
+    else:
+        descriptors = INCLUDE
+        # Check if all descriptors are in the dataframe
+        for descriptor in descriptors:
+            if descriptor not in descriptors_df.columns:
+                raise ValueError(f"Descriptor {descriptor} not found in {descriptors_file}")
     
     # Get the indexes for each type of cds
     indexes = {}
