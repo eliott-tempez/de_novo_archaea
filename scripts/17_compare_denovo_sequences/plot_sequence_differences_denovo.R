@@ -112,20 +112,6 @@ get_plot <- function(data, data_summary, feature, title, print_pval = c(NA), sca
           legend.title = element_blank(),
           legend.position = "none")
 
-  if (grepl("_use", feature)) {
-    aa <- strsplit(feature, "_")[[1]][1]
-    p <- p + labs(title = aa)
-    p <- p +
-      theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 18),
-            axis.text.y = element_text(size = 16),
-            legend.position = "none",
-            axis.text.x = element_text(size = 8),
-            axis.title.x = element_text(size = 0))
-    p <- p +
-      theme(panel.border = element_rect(colour = "#ada9a9",
-                                        fill = NA, linewidth = 1))
-  }
-
 
   if (!all(is.na(scale_y))) {
     p <- p + scale_y_continuous(breaks = scale_y)
@@ -245,9 +231,9 @@ p <- get_plot(data_gc_inter,
               data_summary,
               "inter_gc_rate",
               "GC ratio: sequence GC % / iORF GC %",
-              n_y_pos = 0.62,
+              n_y_pos = 0.58,
               print_pval = pval_vect,
-              scale_y = seq(0.1, 1.5, 0.2))
+              scale_y = seq(0, 1.5, 0.1))
 p
 
 # Save the plot
@@ -386,7 +372,7 @@ p <- get_plot(data_hca,
               "HCA index",
               n_y_pos = -11,
               print_pval = pval_vect,
-              scale_y = seq(-10, 2, 4))
+              scale_y = seq(-10, 10, 4))
 p
 
 # Save the plot
@@ -412,9 +398,9 @@ p <- get_plot(data_iupred,
               data_summary,
               "disord",
               "Intrinsic disorder (IUPred)",
-              n_y_pos = -0.005,
+              n_y_pos = -0.05,
               print_pval = pval_vect,
-              scale_y = seq(0, 0.1, 0.05))
+              scale_y = seq(0, 1, 0.2))
 p
 
 # Save the plot
@@ -455,7 +441,7 @@ if (save_plots) {
 
 ###### GC % ######
 data_gc_species <- data[data$feature == "gc_species", ]
-data_gc_species$value <- data_gc_species$value * 100
+data_gc_species$value <- data_gc_species$value / 100
 data_gc_species$type <- factor(data_gc_species$type, levels = c("bad", "good"))
 
 # Pvals
@@ -469,9 +455,9 @@ p <- get_plot(data_gc_species,
               data_summary,
               "gc_species",
               "GC % in the species",
-              n_y_pos = 38,
+              n_y_pos = 0.35,
               print_pval = pval_vect,
-              scale_y = seq(0, 100, 5))
+              scale_y = seq(0, 1, 0.05))
 p
 
 # Save the plot
@@ -484,7 +470,7 @@ if (save_plots) {
 
 ###### iORF GC % ######
 data_gc_iORF <- data[data$feature == "inter_gc_species", ]
-data_gc_iORF$value <- data_gc_iORF$value * 100
+data_gc_iORF$value <- data_gc_iORF$value / 100
 data_gc_iORF$type <- factor(data_gc_iORF$type, levels = c("bad", "good"))
 
 # Pvals
@@ -498,9 +484,9 @@ p <- get_plot(data_gc_iORF,
               data_summary,
               "inter_gc_species",
               "iORF GC % in the species",
-              n_y_pos = 33,
+              n_y_pos = 0.35,
               print_pval = pval_vect,
-              scale_y = seq(0, 100, 5))
+              scale_y = seq(0,1, 0.05))
 p
 
 # Save the plot
@@ -513,55 +499,156 @@ if (save_plots) {
 
 
 ###### AA use ######
-polar_aa <- c("S", "T", "N", "Q")
-hydrophobic_aa <- c("V", "I", "L", "M", "F", "W", "Y")
-positive_aa <- c("K", "R", "H")
-negative_aa <- c("D", "E")
-pg_aa <- c("G", "P")
-a_aa <- c("A")
-c_aa <- c("C")
-aa_types <- list(polar_aa, hydrophobic_aa, positive_aa, negative_aa, pg_aa, a_aa, c_aa)
-aa_types_names <- c("polar", "hydrophobic", "positive", "negative", "proline-glycine", "alanine", "cysteine")
+### polar ###
+data_polar <- data[data$feature == "polar_use", ]
+data_polar$type <- factor(data_polar$type, levels = c("bad", "good"))
+# Pvals
+pval_pos <- 0.5
+only_ns <- FALSE
+y_annotation <- 0.55
+pval_vect <- c(pval_pos, only_ns, y_annotation)
+# Plot
+p <- get_plot(data_polar,
+              data_summary,
+              "polar_use",
+              "Polar AA distribution (S, T, N, Q)",
+              n_y_pos = 0.07,
+              print_pval = pval_vect,
+              scale_y = seq(0, 1, 0.1))
+p
+# Save the plot
+if (save_plots) {
+  ggsave(paste0(out_folder, "/aa_polar_use.png"), plot = p)
+}
 
-## Plot ##
-for (i in seq_along(aa_types)) {
-  aa_type <- aa_types[[i]]
-  aa_type_name <- aa_types_names[[i]]
-  aa_plots <- c()
-  for (aa in aa_type) {
-    # Get the data
-    data_aa <- data[data$feature == paste0(aa, "_use"), ]
-    data_aa$type <- factor(data_aa$type, levels = c("bad", "good"))
-    max_val <- max(data_aa$value, na.rm = TRUE)
+### hydrophobic ###
+data_hydrophobic <- data[data$feature == "hydrophobic_use", ]
+data_hydrophobic$type <- factor(data_hydrophobic$type, levels = c("bad", "good"))
+# Pvals
+pval_pos <- 0.5
+only_ns <- FALSE
+y_annotation <- 0.55
+pval_vect <- c(pval_pos, only_ns, y_annotation)
+# Plot
+p <- get_plot(data_hydrophobic,
+              data_summary,
+              "hydrophobic_use",
+              "Hydrophobic AA distribution (M, Y, V, L, I, F, W)",
+              n_y_pos = 0.07,
+              print_pval = pval_vect,
+              scale_y = seq(0, 1, 0.1))
+p
+# Save the plot
+if (save_plots) {
+  ggsave(paste0(out_folder, "/aa_hydrophobic_use.png"), plot = p)
+}
 
-    # Pvals
-    pval_pos <- max_val + 1
-    only_ns <- FALSE
-    y_annotation <- max_val + 2
-    pval_vect <- c(pval_pos, only_ns, y_annotation)
+### positive ###
+data_positive <- data[data$feature == "positive_use", ]
+data_positive$type <- factor(data_positive$type, levels = c("bad", "good"))
+# Pvals
+pval_pos <- 0.5
+only_ns <- FALSE
+y_annotation <- 0.55
+pval_vect <- c(pval_pos, only_ns, y_annotation)
+# Plot
+p <- get_plot(data_positive,
+              data_summary,
+              "positive_use",
+              "Positive AA distribution (K, R, H)",
+              n_y_pos = -0.03,
+              print_pval = pval_vect,
+              scale_y = seq(0, 1, 0.1))
+p
+# Save the plot
+if (save_plots) {
+  ggsave(paste0(out_folder, "/aa_positive_use.png"), plot = p)
+}
 
-    # Plot
-    p <- get_plot(data_aa,
-                  data_summary,
-                  paste0(aa, "_use"),
-                  "",
-                  print_pval = pval_vect)
+### negative ###
+data_negative <- data[data$feature == "negative_use", ]
+data_negative$type <- factor(data_negative$type, levels = c("bad", "good"))
+# Pvals
+pval_pos <- 0.5
+only_ns <- FALSE
+y_annotation <- 0.55
+pval_vect <- c(pval_pos, only_ns, y_annotation)
+# Plot
+p <- get_plot(data_negative,
+              data_summary,
+              "negative_use",
+              "Negative AA distribution (D, E)",
+              n_y_pos = -0.03,
+              print_pval = pval_vect,
+              scale_y = seq(0, 1, 0.1))
+p
+# Save the plot
+if (save_plots) {
+  ggsave(paste0(out_folder, "/aa_negative_use.png"), plot = p)
+}
 
+### proline glycine ### 
+data_proline_glycine <- data[data$feature == "proline.glycine_use", ]
+data_proline_glycine$type <- factor(data_proline_glycine$type, levels = c("bad", "good"))
+# Pvals
+pval_pos <- 0.5
+only_ns <- FALSE
+y_annotation <- 0.55
+pval_vect <- c(pval_pos, only_ns, y_annotation)
+# Plot
+p <- get_plot(data_proline_glycine,
+              data_summary,
+              "proline.glycine_use",
+              "Proline and glycine AA distribution",
+              n_y_pos = -0.03,
+              print_pval = pval_vect,
+              scale_y = seq(0, 1, 0.1))
+p
+# Save the plot
+if (save_plots) {
+  ggsave(paste0(out_folder, "/aa_proline-glycine_use.png"), plot = p)
+}
 
-    aa_plots <- c(aa_plots, list(p))
-  }
+### cysteine ###
+data_cysteine <- data[data$feature == "cysteine_use", ]
+data_cysteine$type <- factor(data_cysteine$type, levels = c("bad", "good"))
+# Pvals
+pval_pos <- 0.5
+only_ns <- FALSE
+y_annotation <- 0.55
+pval_vect <- c(pval_pos, only_ns, y_annotation)
+# Plot
+p <- get_plot(data_cysteine,
+              data_summary,
+              "cysteine_use",
+              "Cysteine AA distribution",
+              n_y_pos = -0.005,
+              print_pval = pval_vect,
+              scale_y = seq(0, 1, 0.01))
+p
+# Save the plot
+if (save_plots) {
+  ggsave(paste0(out_folder, "/aa_cysteine_use.png"), plot = p)
+}
 
-  fig <- ggarrange(plotlist = aa_plots, common.legend = FALSE)
-  fig <- annotate_figure(fig, bottom = text_grob("% GC (whole genome)\n", size = 14),
-                  left = text_grob("% use", rot = 90, size = 14),
-                  top = text_grob(paste("Amino-acid distribution:",
-                                        aa_type_name, "\n"),
-                                  size = 18),
-                  right = text_grob(paste0("\n", signif_label), rot = 90, size = 10))
-  print(fig)
-
-  # Save the plot
-  if (save_plots) {
-    ggsave(paste0(out_folder, "/aa_", aa_type_name, "_use.png"), plot = fig)
-  }
+### alanine ###
+data_alanine <- data[data$feature == "alanine_use", ]
+data_alanine$type <- factor(data_alanine$type, levels = c("bad", "good"))
+# Pvals
+pval_pos <- 0.5
+only_ns <- FALSE
+y_annotation <- 0.55
+pval_vect <- c(pval_pos, only_ns, y_annotation)
+# Plot
+p <- get_plot(data_alanine,
+              data_summary,
+              "alanine_use",
+              "Alanine AA distribution",
+              n_y_pos = -0.01,
+              print_pval = pval_vect,
+              scale_y = seq(0, 1, 0.05))
+p
+# Save the plot
+if (save_plots) {
+  ggsave(paste0(out_folder, "/aa_alanine_use.png"), plot = p)
 }
