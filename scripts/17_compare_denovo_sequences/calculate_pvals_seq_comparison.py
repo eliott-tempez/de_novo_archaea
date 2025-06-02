@@ -87,7 +87,7 @@ def calculate_pvalues(signif_results, descriptors):
     # Create a dataframe with the results
     results_df = pd.DataFrame(results, columns=["type1", "type2", "bin1", "bin2"] + descriptors)
     # Save the results
-    results_df.to_csv("pvalues.csv", sep="\t", index=False)
+    results_df.to_csv(f"pvalues_{NB_GC_BINS}_bins.csv", sep="\t", index=False)
     return results_df
 
 
