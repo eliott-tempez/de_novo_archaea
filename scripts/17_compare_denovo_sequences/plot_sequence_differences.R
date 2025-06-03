@@ -19,7 +19,18 @@ input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_de
 pval_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/1_bins/pvalues_1_bins.tsv"
 out_folder <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/1_bins/"
 
+
+only_denovo_genomes <- FALSE
+if (only_denovo_genomes) {
+  out_folder <- paste0(out_folder, "only_denovo_genomes/")
+}
+
+
 data <- read.table(input_file, header = TRUE, sep = "\t")
+# Keep only the denovo genomes
+if (only_denovo_genomes) {
+  data <- data[data$genome %in% unique(data[data$type == "denovo", "genome"]), ]
+}
 n_cds <- nrow(data[data$type == "cds", ])
 n_trg <- nrow(data[data$type == "trg", ])
 n_denovo <- nrow(data[data$type == "denovo", ])
@@ -75,6 +86,8 @@ get_y_positions <- function(data, local_pvals, fact) {
 
 # Get the p-values in a matrix to print on the graph
 get_pvals <- function(desc, data, fact) {
+  # Remove NAs
+  data <- data[!is.na(data$value), ]
   local_pvals <- pvals[pvals$feature == desc, c("group1", "group2", "p")]
   # y position
   local_pvals <- get_y_positions(data, local_pvals, fact)
@@ -93,6 +106,16 @@ get_pvals <- function(desc, data, fact) {
 
 # Pivot to longer
 descriptors <- setdiff(colnames(data), c("genome", "cds", "type"))
+# Add fake pvals if missing for some descriptors
+missing_pvals <- setdiff(descriptors, setdiff(colnames(pvals), c("type1", "type2", "bin1", "bin2")))
+if (length(missing_pvals) > 0) {
+  print(paste0("There are ", length(missing_pvals), " missing p-values"))
+  for (desc in missing_pvals) {
+    for (desc in missing_pvals) {
+        pvals[, desc] <- 1
+    }
+  }
+}
 data <- pivot_longer(data, cols = all_of(descriptors), names_to = "feature", values_to = "value")
 pvals <- pivot_longer(pvals, cols = all_of(descriptors), names_to = "feature", values_to = "p")
 colnames(pvals) <- c("group1", "group2", "bin1", "bin2", "feature", "p")
@@ -104,7 +127,7 @@ data_len$value <- data_len$value / 3
 data_len$type <- factor(data_len$type, levels = c("cds", "trg", "denovo", "iorf"))
 ggplot(data_len, aes(x = type, y = value, fill = type)) +
   geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
-  labs(title = "Sequence length distribution",
+  labs(title = "Sequence length distribution (aa)",
        x = "Sequence type",
        y = "Length (aa)") +
   scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c", "#693fb6")) +
@@ -115,21 +138,19 @@ ggplot(data_len, aes(x = type, y = value, fill = type)) +
         axis.title.y = element_text(size = 14),
         axis.text.y = element_text(size = 12),
         plot.title = element_text(hjust = 0.5)) +
-  coord_trans(y = "log10") +
-  scale_y_continuous(breaks = c(50, 100, 500, 1000, 2000),
-                     labels = c("50", "100", "500", "1000", "2000")) +
   scale_x_discrete(labels = c("cds" = paste0("cds\n(n = ", n_cds, ")"),
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
                               "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
                               "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
-  stat_pvalue_manual(get_pvals("length", data_len, 0.6), label = "p.signif", inherit.aes = FALSE, hide.ns = TRUE) +
-  annotate("text", x = 3.3, y = 4500,
+  scale_y_continuous(breaks = seq(0, 800, 200)) +
+  stat_pvalue_manual(get_pvals("length", data_len, 0.15), label = "p.signif", inherit.aes = FALSE, hide.ns = TRUE, tip.length = 0.005) +
+  annotate("text", x = 3.3, y = 1700,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
-#ggsave(paste0(out_folder, "/sequence_length.png"))
+ggsave(paste0(out_folder, "/sequence_length.png"))
 
 
 
-##### GC content #####
+##### GC rate #####
 data_gc <- data[data$feature == "gc_rate", ]
 data_gc$type <- factor(data_gc$type, levels = c("cds", "trg", "denovo", "iorf"))
 ggplot(data_gc, aes(x = type, y = value, fill = type)) +
@@ -152,11 +173,11 @@ ggplot(data_gc, aes(x = type, y = value, fill = type)) +
   stat_pvalue_manual(get_pvals("gc_rate", data_gc, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
   annotate("text", x = 3.3, y = max(data_gc$value) * 1,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
-#ggsave(paste0(out_folder, "/gc_content.png"))
+ggsave(paste0(out_folder, "/gc_content.png"))
 
 
 
-##### GC content (intergenic) #####
+##### GC rate (intergenic) #####
 data_gc_inter <- data[data$feature == "inter_gc_rate", ]
 data_gc_inter$type <- factor(data_gc_inter$type, levels = c("cds", "trg", "denovo", "iorf"))
 ggplot(data_gc_inter, aes(x = type, y = value, fill = type)) +
@@ -179,7 +200,7 @@ ggplot(data_gc_inter, aes(x = type, y = value, fill = type)) +
   stat_pvalue_manual(get_pvals("gc_rate", data_gc_inter, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
   annotate("text", x = 3.3, y = max(data_gc_inter$value) * 1,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
-#ggsave(paste0(out_folder, "/gc_content.png"))
+ggsave(paste0(out_folder, "/gc_content.png"))
 
 
 
@@ -203,10 +224,10 @@ ggplot(data_aro, aes(x = type, y = value, fill = type)) +
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
                               "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
                               "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
-  stat_pvalue_manual(get_pvals("aromaticity", data_aro, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") + 
-  annotate("text", x = 3.3, y = max(data_aro$value) * .65,
+  stat_pvalue_manual(get_pvals("aromaticity", data_aro, 0.07), label = "p.signif", inherit.aes = FALSE, hide.ns = "p", tip.length = 0.005) + 
+  annotate("text", x = 3.3, y = 0.35,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
-#ggsave(paste0(out_folder, "/aromaticity.png"))
+ggsave(paste0(out_folder, "/aromaticity.png"))
 
 
 
@@ -230,10 +251,11 @@ ggplot(data_inst, aes(x = type, y = value, fill = type)) +
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
                               "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
                               "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
-  stat_pvalue_manual(get_pvals("instability", data_inst, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
-  annotate("text", x = 3.3, y = max(data_inst$value) * .65,
-           label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
-#ggsave(paste0(out_folder, "/instability_index.png"))
+  stat_pvalue_manual(get_pvals("instability", data_inst, 0.07), label = "p.signif", inherit.aes = FALSE, hide.ns = "p", tip.length = 0.005) +
+  annotate("text", x = 3.3, y = 100,
+           label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black") +
+  scale_y_continuous(breaks = seq(0, 100, 25))
+ggsave(paste0(out_folder, "/instability_index.png"))
 
 
 
@@ -257,10 +279,10 @@ ggplot(data_flex, aes(x = type, y = value, fill = type)) +
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
                               "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
                               "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
-  stat_pvalue_manual(get_pvals("mean_flexibility", data_flex, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
+  stat_pvalue_manual(get_pvals("mean_flexibility", data_flex, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p", tip.length = 0.005) +
   annotate("text", x = 3.3, y = max(data_flex$value) * 1.01,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
-#ggsave(paste0(out_folder, "/mean_flexibility.png"))
+ggsave(paste0(out_folder, "/mean_flexibility.png"))
 
 
 
@@ -284,10 +306,10 @@ ggplot(data_hydro, aes(x = type, y = value, fill = type)) +
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
                               "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
                               "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
-  stat_pvalue_manual(get_pvals("hydropathy", data_hydro, 0.2), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
+  stat_pvalue_manual(get_pvals("hydropathy", data_hydro, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
   annotate("text", x = 3.3, y = max(data_hydro$value) * .9,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
-#ggsave(paste0(out_folder, "/hydrophobicity.png"))
+ggsave(paste0(out_folder, "/hydrophobicity.png"))
 
 
 
@@ -311,10 +333,10 @@ ggplot(data_hca, aes(x = type, y = value, fill = type)) +
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
                               "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
                               "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
-  stat_pvalue_manual(get_pvals("hca", data_hca, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
-  annotate("text", x = 3.3, y = max(data_hca$value) * .95,
+  stat_pvalue_manual(get_pvals("hca", data_hca, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p", tip.length = 0.005) +
+  annotate("text", x = 3.3, y = 20,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
-#ggsave(paste0(out_folder, "/hca.png"))
+ggsave(paste0(out_folder, "/hca.png"))
 
 
 
@@ -342,7 +364,7 @@ ggplot(data_disord, aes(x = type, y = value, fill = type)) +
   stat_pvalue_manual(get_pvals("disord", data_disord, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
   annotate("text", x = 3.3, y = max(data_disord$value) * .95,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
-#ggsave(paste0(out_folder, "/intrinsic_disorder.png"))
+ggsave(paste0(out_folder, "/intrinsic_disorder.png"))
 
 
 
@@ -370,90 +392,183 @@ ggplot(data_agg, aes(x = type, y = value, fill = type)) +
   stat_pvalue_manual(get_pvals("aggreg", data_agg, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
   annotate("text", x = 3.3, y = max(data_agg$value) * .95,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
-#ggsave(paste0(out_folder, "/aggregation.png"))
+ggsave(paste0(out_folder, "/aggregation.png"))
 
 
 
 
 ##### AA use #####
-polar_aa <- c("S", "T", "N", "Q")
-hydrophobic_aa <- c("V", "I", "L", "M", "F", "W", "Y")
-positive_aa <- c("K", "R", "H")
-negative_aa <- c("D", "E")
-pg_aa <- c("G", "P")
-a_aa <- c("A")
-c_aa <- c("C")
-aa_types <- list(polar_aa, hydrophobic_aa, positive_aa, negative_aa, pg_aa, a_aa, c_aa)
-aa_types_names <- c("polar", "hydrophobic", "positive", "negative", "proline-glycine", "alanine", "cysteine")
+### Polar ###
+data_polar <- data[data$feature == "polar_use", ]
+data_polar$type <- factor(data_polar$type, levels = c("cds", "trg", "denovo", "iorf"))
+ggplot(data_polar, aes(x = type, y = value, fill = type)) +
+  geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
+  labs(title = "Polar AA use distribution (S, T, N, Q)",
+       x = "Sequence type",
+       y = "Polar AA use") +
+  scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c", "#693fb6")) +
+  theme_minimal() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(size = 16),
+        axis.title.x = element_text(size = 14),
+        axis.title.y = element_text(size = 14),
+        axis.text.y = element_text(size = 12),
+        plot.title = element_text(hjust = 0.5)) +
+  scale_x_discrete(labels = c("cds" = paste0("cds\n(n = ", n_cds, ")"),
+                              "trg" = paste0("trg\n(n = ", n_trg, ")"),
+                              "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
+                              "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
+  stat_pvalue_manual(get_pvals("polar_use", data_polar, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
+  annotate("text", x = 3.3, y = max(data_polar$value) * .95,
+           label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
+ggsave(paste0(out_folder, "/aa_polar_use.png"))
 
+### hydrophobic ###
+data_hydro_use <- data[data$feature == "hydrophobic_use", ]
+data_hydro_use$type <- factor(data_hydro_use$type, levels = c("cds", "trg", "denovo", "iorf"))
+ggplot(data_hydro_use, aes(x = type, y = value, fill = type)) +
+  geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
+  labs(title = "Hydrophobic AA use distribution (M, Y, V, L, I, F, W)",
+       x = "Sequence type",
+       y = "Hydrophobic AA use") +
+  scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c", "#693fb6")) +
+  theme_minimal() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(size = 16),
+        axis.title.x = element_text(size = 14),
+        axis.title.y = element_text(size = 14),
+        axis.text.y = element_text(size = 12),
+        plot.title = element_text(hjust = 0.5)) +
+  scale_x_discrete(labels = c("cds" = paste0("cds\n(n = ", n_cds, ")"),
+                              "trg" = paste0("trg\n(n = ", n_trg, ")"),
+                              "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
+                              "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
+  stat_pvalue_manual(get_pvals("hydrophobic_use", data_hydro_use, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
+  annotate("text", x = 3.3, y = max(data_hydro_use$value) * .95,
+           label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
+ggsave(paste0(out_folder, "/aa_hydrophobic_use.png"))
 
-# Plot
-for (i in seq_along(aa_types)) {
-  aa_type <- aa_types[[i]]
-  aa_name <- paste0(aa_type, "_use")
-  aa_type_name <- aa_types_names[[i]]
-  data[data$feature %in% aa_name, "feature"] <- aa_type_name
+### positive ###
+data_pos <- data[data$feature == "positive_use", ]
+data_pos$type <- factor(data_pos$type, levels = c("cds", "trg", "denovo", "iorf"))
+ggplot(data_pos, aes(x = type, y = value, fill = type)) +
+  geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
+  labs(title = "Positive AA use distribution (K, R, H)",
+       x = "Sequence type",
+       y = "Positive AA use") +
+  scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c", "#693fb6")) +
+  theme_minimal() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(size = 16),
+        axis.title.x = element_text(size = 14),
+        axis.title.y = element_text(size = 14),
+        axis.text.y = element_text(size = 12),
+        plot.title = element_text(hjust = 0.5)) +
+  scale_x_discrete(labels = c("cds" = paste0("cds\n(n = ", n_cds, ")"),
+                              "trg" = paste0("trg\n(n = ", n_trg, ")"),
+                              "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
+                              "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
+  stat_pvalue_manual(get_pvals("positive_use", data_pos, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
+  annotate("text", x = 3.3, y = max(data_pos$value) * .95,
+           label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
+ggsave(paste0(out_folder, "/aa_positive_use.png"))
 
-  data_aa <- data[data$feature == aa_type_name, ]
-  data_aa$type <- factor(data_aa$type, levels = c("cds", "trg", "denovo", "iorf"))
+### negative ###
+data_neg <- data[data$feature == "negative_use", ]
+data_neg$type <- factor(data_neg$type, levels = c("cds", "trg", "denovo", "iorf"))
+ggplot(data_neg, aes(x = type, y = value, fill = type)) +
+  geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
+  labs(title = "Negative AA use distribution (D, E)",
+       x = "Sequence type",
+       y = "Negative AA use") +
+  scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c", "#693fb6")) +
+  theme_minimal() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(size = 16),
+        axis.title.x = element_text(size = 14),
+        axis.title.y = element_text(size = 14),
+        axis.text.y = element_text(size = 12),
+        plot.title = element_text(hjust = 0.5)) +
+  scale_x_discrete(labels = c("cds" = paste0("cds\n(n = ", n_cds, ")"),
+                              "trg" = paste0("trg\n(n = ", n_trg, ")"),
+                              "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
+                              "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
+  stat_pvalue_manual(get_pvals("negative_use", data_neg, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
+  annotate("text", x = 3.3, y = max(data_neg$value) * .95,
+           label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
+ggsave(paste0(out_folder, "/aa_negative_use.png"))
 
-  p <- ggplot(data_aa, aes(x = type, y = value, fill = type)) +
-    geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
-    labs(title = paste0(aa_type_name, " use distribution"),
-         x = "",
-         y = "") +
-    scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c", "#693fb6")) +
-    theme_minimal() +
-    theme(legend.position = "none",
-          plot.title = element_text(hjust = 0.5, face = "bold", size = 18),
-          axis.text.y = element_text(size = 16))
-    print(p)
+### Proline glycine ###
+data_pro_gly <- data[data$feature == "proline.glycine_use", ]
+data_pro_gly$type <- factor(data_pro_gly$type, levels = c("cds", "trg", "denovo", "iorf"))
+ggplot(data_pro_gly, aes(x = type, y = value, fill = type)) +
+  geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
+  labs(title = "Proline and glycine use distribution",
+       x = "Sequence type",
+       y = "Proline and glycine AA use") +
+  scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c", "#693fb6")) +
+  theme_minimal() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(size = 16),
+        axis.title.x = element_text(size = 14),
+        axis.title.y = element_text(size = 14),
+        axis.text.y = element_text(size = 12),
+        plot.title = element_text(hjust = 0.5)) +
+  scale_x_discrete(labels = c("cds" = paste0("cds\n(n = ", n_cds, ")"),
+                              "trg" = paste0("trg\n(n = ", n_trg, ")"),
+                              "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
+                              "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
+  stat_pvalue_manual(get_pvals("proline.glycine_use", data_pro_gly, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
+  annotate("text", x = 3.3, y = max(data_pro_gly$value) * .95,
+           label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
+ggsave(paste0(out_folder, "/aa_proline_glycine_use.png"))
 
-    #ggsave(paste0(out_folder, "/", aa_type_name, "_use.png"))
-}
+### Cysteine ###
+data_cys <- data[data$feature == "cysteine_use", ]
+data_cys$type <- factor(data_cys$type, levels = c("cds", "trg", "denovo", "iorf"))
+ggplot(data_cys, aes(x = type, y = value, fill = type)) +
+  geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
+  labs(title = "Cysteine use distribution",
+       x = "Sequence type",
+       y = "Cysteine AA use") +
+  scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c", "#693fb6")) +
+  theme_minimal() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(size = 16),
+        axis.title.x = element_text(size = 14),
+        axis.title.y = element_text(size = 14),
+        axis.text.y = element_text(size = 12),
+        plot.title = element_text(hjust = 0.5)) +
+  scale_x_discrete(labels = c("cds" = paste0("cds\n(n = ", n_cds, ")"),
+                              "trg" = paste0("trg\n(n = ", n_trg, ")"),
+                              "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
+                              "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
+  stat_pvalue_manual(get_pvals("cysteine_use", data_cys, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
+  annotate("text", x = 3.3, y = max(data_cys$value) * .95,
+           label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
+ggsave(paste0(out_folder, "/aa_cysteine_use.png"))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-aa_use <- unique(data$feature)[endsWith(unique(data$feature), "_use")]
-aa_plots <- c()
-for (aa in aa_use) {
-  data_aa <- data[data$feature == aa, ]
-  data_aa$type <- factor(data_aa$type, levels = c("cds", "trg", "denovo", "iorf"))
-  p <- ggplot(data_aa, aes(x = type, y = value, fill = type)) +
-    geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
-    labs(title = gsub("_use", "", aa),
-         x = "",
-         y = "") +
-    scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c", "#693fb6")) +
-    theme_minimal() +
-    theme(legend.position = "none",
-          plot.title = element_text(hjust = 0.5, face = "bold", size = 18),
-          axis.text.y = element_text(size = 16)) +
-    stat_pvalue_manual(get_pvals(aa, data_aa, 0.2), label = "p.signif", inherit.aes = FALSE, hide.ns = "p")
-  aa_plots <- c(aa_plots, list(p))
-}
-fig <- ggarrange(plotlist = aa_plots, ncol = 5, nrow = 4)
-annotate_figure(fig, bottom = text_grob("Sequence type\n", size = 14),
-                left = text_grob("Amino-acid use (%)", rot = 90, size = 14),
-                right = text_grob("****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05\n", size = 8, rot = -90), 
-                top = text_grob("Amino-acid use distribution", size = 18))
-#ggsave(paste0(out_folder, "/aa_use.png"), width = 1200, height = 1200)
+### Alanine ###
+data_ala <- data[data$feature == "alanine_use", ]
+data_ala$type <- factor(data_ala$type, levels = c("cds", "trg", "denovo", "iorf"))
+ggplot(data_ala, aes(x = type, y = value, fill = type)) +
+  geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
+  labs(title = "Alanine use distribution",
+       x = "Sequence type",
+       y = "Alanine AA use") +
+  scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c", "#693fb6")) +
+  theme_minimal() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(size = 16),
+        axis.title.x = element_text(size = 14),
+        axis.title.y = element_text(size = 14),
+        axis.text.y = element_text(size = 12),
+        plot.title = element_text(hjust = 0.5)) +
+  scale_x_discrete(labels = c("cds" = paste0("cds\n(n = ", n_cds, ")"),
+                              "trg" = paste0("trg\n(n = ", n_trg, ")"),
+                              "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
+                              "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
+  stat_pvalue_manual(get_pvals("alanine_use", data_ala, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
+  annotate("text", x = 3.3, y = max(data_ala$value) * .95,
+           label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
+ggsave(paste0(out_folder, "/aa_alanine_use.png"))
