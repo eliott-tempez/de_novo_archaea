@@ -1,0 +1,2 @@
+gene_id	focal_genome	nc_genome	nc_match_contig	nc_match_strand	nc_match_start	nc_match_end	n_overlapping_genes	overlapping_genes	f0	f1	f2	intergenic	outgroup_nb
+BCEBDJIJ_00768_gene_mRNA	GCA_000007305@Pyrococcus_furiosus_DSM_3638	Thermococcus_fumicolans_ST557	14021	-	1452989	1453211	0		0	0	0	222	3
