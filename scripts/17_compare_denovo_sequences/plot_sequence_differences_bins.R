@@ -12,8 +12,9 @@ library(grid)
 
 # User-defined parameters
 n_bins <- 2
-plot_pvals <- TRUE
+plot_pvals <- FALSE
 save_plots <- TRUE
+only_denovo_genomes <- TRUE
 
 
 # Files
@@ -22,6 +23,9 @@ good_candidates_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_
 out_folder <- paste0("/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/", n_bins, "_bins/")
 pval_file <- paste0(out_folder, "pvalues_", n_bins, "_bins.tsv")
 bins_file <- paste0(out_folder, "bin_indexes_", n_bins, ".csv")
+if (only_denovo_genomes) {
+  out_folder <- paste0(out_folder, "only_denovo_genomes/")
+}
 #input_file <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/17_compare_denovo_sequences/features_good_candidates_all.csv"
 #pval_file <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/17_compare_denovo_sequences/pvalues_2_bins.tsv"
 #bins_file <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/17_compare_denovo_sequences/sequences/2_bins/bin_indexes_2.csv"
@@ -32,6 +36,9 @@ bins_file <- paste0(out_folder, "bin_indexes_", n_bins, ".csv")
 data <- read.table(input_file, header = TRUE, sep = "\t")
 if (plot_pvals) {
   pvals <- read.table(pval_file, header = TRUE, sep = "\t")
+}
+if (only_denovo_genomes) {
+  data <- data[data$genome %in% unique(data[data$type == "denovo", "genome"]), ]
 }
 # Pivot to longer format
 descriptors <- setdiff(colnames(data), c("genome", "cds", "type"))
@@ -45,7 +52,7 @@ if (plot_pvals) {
 bins <- read.table(bins_file, header = TRUE, sep = "")
 bins <- bins %>%
   left_join((data[c("cds", "genome")]), by = "cds")
-if (length(unique(bins$genome)) != 116) {
+if (length(unique(bins$genome)) != 116 && !only_denovo_genomes) {
   stop("The bins file should contain all 116 genomes.")
 }
 # Get the bins per genome
