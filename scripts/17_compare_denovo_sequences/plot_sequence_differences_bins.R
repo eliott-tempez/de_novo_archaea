@@ -13,7 +13,7 @@ library(grid)
 # User-defined parameters
 n_bins <- 2
 plot_pvals <- TRUE
-save_plots <- FALSE
+save_plots <- TRUE
 
 
 # Files
