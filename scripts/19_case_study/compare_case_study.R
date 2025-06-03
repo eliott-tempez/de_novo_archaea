@@ -32,7 +32,7 @@ descriptors <- setdiff(colnames(data), c("genome", "cds", "type"))
 denovo <- scan(good_candidates_file, what = "", sep = "\n")
 
 
-# Make violin plot for each descriptor
+# Make plot for each descriptor
 for (descriptor in descriptors) {
   # Extract the data
   data_local <- data[, c("genome", "cds", descriptor)]
@@ -40,22 +40,21 @@ for (descriptor in descriptors) {
   data_local <- data_local[!grepl("iorf", data_local$cds), ]
   # Add the genome
   data_local$genome <- ifelse(data_local$genome == focal_genome, "Focal genome", "Other genomes")
-  # Keep only 5* the focal genome for the other genomes
-  data_focal <- data_local[data_local$genome == "Focal genome", ]
-  n_focal <- nrow(data_focal)
-  data_other <- data_local[data_local$genome == "Other genomes", ]
-  n_other <- max(5 * n_focal, nrow(data_other))
-  data_other <- data_other[sample(1:nrow(data_other), n_other), ]
-  data_local <- rbind(data_focal, data_other)
-  # Add the denovo
-  data_local$cds <- ifelse(data_local$cds %in% denovo, "Denovo (no integrity)", "Non-denovo / integrity")
+  # Focal genome median
+  focal_median <- median(data_local[data_local$genome == "Focal genome", descriptor], na.rm = TRUE)
 
 
   # Create the plot
-  p <- ggplot(data_local, aes(x = factor(genome), y = .data[[descriptor]])) +
-    geom_violin() +
-    geom_jitter(aes(color = cds), alpha = 0.5, width = 0.2) +
-    geom_violin(alpha = 0, color = "black") # Re-add the violin layer to ensure it is above the points
+  p <- ggplot(data_local, aes(y = .data[[descriptor]])) +
+    geom_boxplot(outliers = FALSE, width = 0.5, fill = "#8a8888") +
+    xlim(c(-0.5, 0.5)) +
+    geom_hline(aes(yintercept = focal_median, color = "Case study\ngenome median"), linetype = "dashed") +
+    labs(color = "") +
+    scale_color_manual(values = c("Case study\ngenome median" = "red")) +
+    theme_minimal() +
+    theme(axis.text.x = element_blank(), axis.ticks.x = element_blank()) +
+    ggtitle("Feature distribution for all CDSs in the\ngenomes containing denovo genes")
+    
 
   print(p)
 
