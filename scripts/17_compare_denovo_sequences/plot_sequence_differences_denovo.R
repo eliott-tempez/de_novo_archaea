@@ -84,7 +84,14 @@ get_pvals <- function(desc, data, fact, non_signif = FALSE) {
       TRUE ~ ""
     )
   } else {
-    local_pvals$p.signif <- paste0("p = ", round(local_pvals$p, 5))
+    ast <- case_when(
+      local_pvals$p <= 1e-5 ~ "****",
+      local_pvals$p <= 1e-4 ~ "***",
+      local_pvals$p <= 1e-3 ~ "**",
+      local_pvals$p <= 0.05 ~ "*",
+      TRUE ~ "ns"
+    )
+    local_pvals$p.signif <- paste0(ast, "\np = ", round(local_pvals$p, 5))
   }
   print(local_pvals)
   return(local_pvals)
