@@ -15,9 +15,19 @@ ggsave <- function(..., bg = "white",
 }
 
 
-input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/sequence_features_good_candidates_all.csv"
-pval_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/1_bins/pvalues_1_bins.tsv"
-out_folder <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/1_bins/"
+home <- TRUE
+
+
+if (home) {
+  input_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/17_compare_denovo_sequences/sequence_features_good_candidates_all.csv"
+  pval_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/17_compare_denovo_sequences/1_bins/pvalues_1_bins.tsv"
+  out_folder <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/17_compare_denovo_sequences/1_bins/"
+} else {
+  input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/sequence_features_good_candidates_all.csv"
+  pval_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/1_bins/pvalues_1_bins.tsv"
+  out_folder <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/1_bins/"
+}
+
 
 
 only_denovo_genomes <- FALSE
@@ -143,8 +153,8 @@ ggplot(data_len, aes(x = type, y = value, fill = type)) +
                               "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
                               "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
   scale_y_continuous(breaks = seq(0, 800, 200)) +
-  stat_pvalue_manual(get_pvals("length", data_len, 0.15), label = "p.signif", inherit.aes = FALSE, hide.ns = TRUE, tip.length = 0.005) +
-  annotate("text", x = 3.3, y = 1700,
+  stat_pvalue_manual(get_pvals("length", data_len, 0.08), label = "p.signif", inherit.aes = FALSE, hide.ns = TRUE, tip.length = 0.001) +
+  annotate("text", x = 2.5, y = 1150,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
 ggsave(paste0(out_folder, "/sequence_length.png"))
 
@@ -170,8 +180,9 @@ ggplot(data_gc, aes(x = type, y = value, fill = type)) +
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
                               "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
                               "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
-  stat_pvalue_manual(get_pvals("gc_rate", data_gc, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
-  annotate("text", x = 3.3, y = max(data_gc$value) * 1,
+  scale_y_continuous(breaks = seq(0, 1.25, 0.25)) +
+  stat_pvalue_manual(get_pvals("gc_rate", data_gc, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p", tip.length = 0.005) +
+  annotate("text", x = 2.5, y = 1.65,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
 ggsave(paste0(out_folder, "/gc_content.png"))
 
@@ -197,10 +208,11 @@ ggplot(data_gc_inter, aes(x = type, y = value, fill = type)) +
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
                               "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
                               "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
-  stat_pvalue_manual(get_pvals("gc_rate", data_gc_inter, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
-  annotate("text", x = 3.3, y = max(data_gc_inter$value) * 1,
+  scale_y_continuous(breaks = seq(0, 1.4, 0.2)) +
+  stat_pvalue_manual(get_pvals("gc_rate", data_gc_inter, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p", tip.length = 0.005) +
+  annotate("text", x = 2.5, y = 1.8,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
-ggsave(paste0(out_folder, "/gc_content.png"))
+ggsave(paste0(out_folder, "/gc_content_intergenic.png"))
 
 
 
@@ -224,8 +236,9 @@ ggplot(data_aro, aes(x = type, y = value, fill = type)) +
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
                               "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
                               "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
-  stat_pvalue_manual(get_pvals("aromaticity", data_aro, 0.07), label = "p.signif", inherit.aes = FALSE, hide.ns = "p", tip.length = 0.005) + 
-  annotate("text", x = 3.3, y = 0.35,
+  scale_y_continuous(breaks = seq(0, 0.25, 0.05)) +
+  stat_pvalue_manual(get_pvals("aromaticity", data_aro, 0.01), label = "p.signif", inherit.aes = FALSE, hide.ns = "p", tip.length = 0.005) + 
+  annotate("text", x = 2.5, y = 0.3,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
 ggsave(paste0(out_folder, "/aromaticity.png"))
 
@@ -252,9 +265,9 @@ ggplot(data_inst, aes(x = type, y = value, fill = type)) +
                               "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
                               "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
   stat_pvalue_manual(get_pvals("instability", data_inst, 0.07), label = "p.signif", inherit.aes = FALSE, hide.ns = "p", tip.length = 0.005) +
-  annotate("text", x = 3.3, y = 100,
+  annotate("text", x = 2.5, y = 180,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black") +
-  scale_y_continuous(breaks = seq(0, 100, 25))
+  scale_y_continuous(breaks = seq(0, 125, 25))
 ggsave(paste0(out_folder, "/instability_index.png"))
 
 
@@ -280,7 +293,8 @@ ggplot(data_flex, aes(x = type, y = value, fill = type)) +
                               "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
                               "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
   stat_pvalue_manual(get_pvals("mean_flexibility", data_flex, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p", tip.length = 0.005) +
-  annotate("text", x = 3.3, y = max(data_flex$value) * 1.01,
+  scale_y_continuous(breaks = seq(0.940, 1.040, 0.02)) +
+  annotate("text", x = 2.5, y = 1.05,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
 ggsave(paste0(out_folder, "/mean_flexibility.png"))
 
@@ -307,7 +321,7 @@ ggplot(data_hydro, aes(x = type, y = value, fill = type)) +
                               "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
                               "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
   stat_pvalue_manual(get_pvals("hydropathy", data_hydro, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
-  annotate("text", x = 3.3, y = max(data_hydro$value) * .9,
+  annotate("text", x = 2.5, y = 2.2,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
 ggsave(paste0(out_folder, "/hydrophobicity.png"))
 
@@ -333,8 +347,9 @@ ggplot(data_hca, aes(x = type, y = value, fill = type)) +
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
                               "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
                               "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
-  stat_pvalue_manual(get_pvals("hca", data_hca, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p", tip.length = 0.005) +
-  annotate("text", x = 3.3, y = 20,
+  scale_y_continuous(breaks = seq(-10, 10, 5)) +
+  stat_pvalue_manual(get_pvals("hca", data_hca, 0.08), label = "p.signif", inherit.aes = FALSE, hide.ns = "p", tip.length = 0.005) +
+  annotate("text", x = 2.5, y = 18,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
 ggsave(paste0(out_folder, "/hca.png"))
 
@@ -361,8 +376,9 @@ ggplot(data_disord, aes(x = type, y = value, fill = type)) +
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
                               "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
                               "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
-  stat_pvalue_manual(get_pvals("disord", data_disord, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
-  annotate("text", x = 3.3, y = max(data_disord$value) * .95,
+  scale_y_continuous(breaks = seq(0, 1, 0.25)) +
+  stat_pvalue_manual(get_pvals("disord", data_disord, 0.08), label = "p.signif", inherit.aes = FALSE, hide.ns = "p", tip.length = 0.005) +
+  annotate("text", x = 2.5, y = 1.5,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
 ggsave(paste0(out_folder, "/intrinsic_disorder.png"))
 
@@ -389,8 +405,9 @@ ggplot(data_agg, aes(x = type, y = value, fill = type)) +
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
                               "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
                               "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
-  stat_pvalue_manual(get_pvals("aggreg", data_agg, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
-  annotate("text", x = 3.3, y = max(data_agg$value) * .95,
+  scale_y_continuous(breaks = seq(0, 0.9, 0.3)) +
+  stat_pvalue_manual(get_pvals("aggreg", data_agg, 0.08), label = "p.signif", inherit.aes = FALSE, hide.ns = "p", tip.length = 0.005) +
+  annotate("text", x = 2.5, y = 1.1,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
 ggsave(paste0(out_folder, "/aggregation.png"))
 
@@ -418,8 +435,9 @@ ggplot(data_polar, aes(x = type, y = value, fill = type)) +
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
                               "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
                               "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
-  stat_pvalue_manual(get_pvals("polar_use", data_polar, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
-  annotate("text", x = 3.3, y = max(data_polar$value) * .95,
+  scale_y_continuous(breaks = seq(0, 0.5, 0.25)) +
+  stat_pvalue_manual(get_pvals("polar_use", data_polar, 0.08), label = "p.signif", inherit.aes = FALSE, hide.ns = "p", tip.length = 0.005) +
+  annotate("text", x = 2.5, y = 0.68,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
 ggsave(paste0(out_folder, "/aa_polar_use.png"))
 
@@ -443,8 +461,9 @@ ggplot(data_hydro_use, aes(x = type, y = value, fill = type)) +
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
                               "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
                               "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
-  stat_pvalue_manual(get_pvals("hydrophobic_use", data_hydro_use, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
-  annotate("text", x = 3.3, y = max(data_hydro_use$value) * .95,
+  stat_pvalue_manual(get_pvals("hydrophobic_use", data_hydro_use, 0.08), label = "p.signif", inherit.aes = FALSE, hide.ns = "p", tip.length = 0.005) +
+  scale_y_continuous(breaks = seq(0, 0.75, 0.25)) +
+  annotate("text", x = 2.5, y = 0.95,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
 ggsave(paste0(out_folder, "/aa_hydrophobic_use.png"))
 
@@ -468,8 +487,9 @@ ggplot(data_pos, aes(x = type, y = value, fill = type)) +
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
                               "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
                               "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
-  stat_pvalue_manual(get_pvals("positive_use", data_pos, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
-  annotate("text", x = 3.3, y = max(data_pos$value) * .95,
+  scale_y_continuous(breaks = seq(0, 0.4, 0.1)) +
+  stat_pvalue_manual(get_pvals("positive_use", data_pos, 0.08), label = "p.signif", inherit.aes = FALSE, hide.ns = "p", tip.length = 0.005) +
+  annotate("text", x = 2.5, y = 0.48,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
 ggsave(paste0(out_folder, "/aa_positive_use.png"))
 
@@ -493,8 +513,9 @@ ggplot(data_neg, aes(x = type, y = value, fill = type)) +
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
                               "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
                               "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
-  stat_pvalue_manual(get_pvals("negative_use", data_neg, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
-  annotate("text", x = 3.3, y = max(data_neg$value) * .95,
+  scale_y_continuous(breaks = seq(0, 0.3, 0.1)) +
+  stat_pvalue_manual(get_pvals("negative_use", data_neg, 0.09), label = "p.signif", inherit.aes = FALSE, hide.ns = "p", tip.length = 0.005) +
+  annotate("text", x = 2.5, y = 0.47,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
 ggsave(paste0(out_folder, "/aa_negative_use.png"))
 
@@ -518,8 +539,9 @@ ggplot(data_pro_gly, aes(x = type, y = value, fill = type)) +
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
                               "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
                               "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
+  scale_y_continuous(breaks = seq(0, 0.3, 0.1)) +
   stat_pvalue_manual(get_pvals("proline.glycine_use", data_pro_gly, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
-  annotate("text", x = 3.3, y = max(data_pro_gly$value) * .95,
+  annotate("text", x = 2.5, y = 0.3,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
 ggsave(paste0(out_folder, "/aa_proline_glycine_use.png"))
 
@@ -544,7 +566,7 @@ ggplot(data_cys, aes(x = type, y = value, fill = type)) +
                               "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
                               "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
   stat_pvalue_manual(get_pvals("cysteine_use", data_cys, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
-  annotate("text", x = 3.3, y = max(data_cys$value) * .95,
+  annotate("text", x = 2.5, y = 0.1,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
 ggsave(paste0(out_folder, "/aa_cysteine_use.png"))
 
@@ -568,7 +590,65 @@ ggplot(data_ala, aes(x = type, y = value, fill = type)) +
                               "trg" = paste0("trg\n(n = ", n_trg, ")"),
                               "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
                               "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
-  stat_pvalue_manual(get_pvals("alanine_use", data_ala, 0.1), label = "p.signif", inherit.aes = FALSE, hide.ns = "p") +
-  annotate("text", x = 3.3, y = max(data_ala$value) * .95,
+  scale_y_continuous(breaks = seq(0, 0.2, 0.05)) +
+  stat_pvalue_manual(get_pvals("alanine_use", data_ala, 0.08), label = "p.signif", inherit.aes = FALSE, hide.ns = "p", tip.length = 0.005) +
+  annotate("text", x = 2.5, y = 0.21,
            label = "****: p <= 1e-5    ***: p <= 1e-4    **: p <= 1e-3    *: p <= 0.05", hjust = 1, vjust = 1, size = 3, color = "black")
 ggsave(paste0(out_folder, "/aa_alanine_use.png"))
+
+
+
+##### GC % ######
+# Get the summary of the number of genomes
+n_gen_cds <- nrow(unique(data[data$type == "cds", "genome"]))
+n_gen_trg <- nrow(unique(data[data$type == "trg", "genome"]))
+n_gen_denovo <- nrow(unique(data[data$type == "denovo", "genome"]))
+n_gen_iorf <- nrow(unique(data[data$type == "iorf", "genome"]))
+
+### Species gc ###
+data_gc_species <- data[data$feature == "gc_species", ]
+# Keep only one row per unique couple genome and type
+data_gc_species <- data_gc_species[!duplicated(data_gc_species[, c("genome", "type")]), ]
+data_gc_species$type <- factor(data_gc_species$type, levels = c("cds", "trg", "denovo", "iorf"))
+ggplot(data_gc_species, aes(x = type, y = value, fill = type)) +
+  geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
+  labs(title = "GC % distribution (species)",
+       x = "Sequence type",
+       y = "GC %") +
+  scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c", "#693fb6")) +
+  theme_minimal() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(size = 16),
+        axis.title.x = element_text(size = 14),
+        axis.title.y = element_text(size = 14),
+        axis.text.y = element_text(size = 12),
+        plot.title = element_text(hjust = 0.5)) +
+  scale_x_discrete(labels = c("cds" = paste0("cds\n(n genomes = ", n_gen_cds, ")"),
+                              "trg" = paste0("trg\n(n genomes = ", n_gen_trg, ")"),
+                              "denovo" = paste0("denovo\n(n genomes = ", n_gen_denovo, ")"),
+                              "iorf" = paste0("iorf\n(n genomes = ", n_gen_iorf, ")")))
+ggsave(paste0(out_folder, "/gc_species.png"))
+
+
+### Intergenic gc ###
+data_gc_inter <- data[data$feature == "inter_gc_species", ]
+data_gc_inter <- data_gc_inter[!duplicated(data_gc_inter[, c("genome", "type")]), ]
+data_gc_inter$type <- factor(data_gc_inter$type, levels = c("cds", "trg", "denovo", "iorf"))
+ggplot(data_gc_inter, aes(x = type, y = value, fill = type)) +
+  geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
+  labs(title = "GC % distribution (intergenic)",
+       x = "Sequence type",
+       y = "GC %") +
+  scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c", "#693fb6")) +
+  theme_minimal() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(size = 16),
+        axis.title.x = element_text(size = 14),
+        axis.title.y = element_text(size = 14),
+        axis.text.y = element_text(size = 12),
+        plot.title = element_text(hjust = 0.5)) +
+  scale_x_discrete(labels = c("cds" = paste0("cds\n(n genomes = ", n_gen_cds, ")"),
+                              "trg" = paste0("trg\n(n genomes = ", n_gen_trg, ")"),
+                              "denovo" = paste0("denovo\n(n genomes = ", n_gen_denovo, ")"),
+                              "iorf" = paste0("iorf\n(n genomes = ", n_gen_iorf, ")")))
+ggsave(paste0(out_folder, "/gc_species_intergenic.png"))
