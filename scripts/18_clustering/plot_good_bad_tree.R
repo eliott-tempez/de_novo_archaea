@@ -93,6 +93,8 @@ n_good <- sum(data$n_good_candidates)
 n_bad <- sum(data$n_bad_candidates)
 
 
+# Read the tree
+tree <- read.tree(tree_file)
 
 # Extract the clusters
 cluster_df <- read.table(cluster_file, header = FALSE, sep = "\t")
@@ -112,9 +114,6 @@ cluster_lcas <- cluster_df %>%
   filter(!is.na(lca_node))
 
 
-
-# Read the tree
-tree <- read.tree(tree_file)
 # Plot the tree
 p <- ggtree(tree, layout = "circular", branch.length = "none")
 tree_data <- p$data
