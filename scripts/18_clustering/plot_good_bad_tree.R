@@ -3,6 +3,7 @@ library(ggtree)
 library(ape)
 library(ggnewscale)
 library(yaml)
+library(dplyr)
 ggsave <- function(..., bg = "white",
                    width = 1000, height = 1000,
                    units = "px", dpi = 100) {
@@ -156,7 +157,7 @@ p <- p + ggtitle("Integrity of the denovo NC matches\nand location of the cluste
 
 # Add the points
 p <- p + geom_point(data = cluster_lcas_summary,
-                    aes(x = x, y = y, size = count),
+                    aes(x = x, y = y),
                     inherit.aes = FALSE, fill = "#c51515", shape = 21,
                     color = "black", stroke = 0.5) +
   scale_size(range = c(1.5, 4),
