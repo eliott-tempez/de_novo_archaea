@@ -22,7 +22,7 @@ OUTGROUP_NUMBER = 2
 
 
 if OUTGROUP_NUMBER == 1:
-    ORIGIN_FILE = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/denovo_noncoding_status.tsv"
+    ORIGIN_FILE = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/denovo_noncoding_status_outgroup_1.tsv"
 elif OUTGROUP_NUMBER == 2:
     ORIGIN_FILE = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/denovo_noncoding_status_outgroup_2.tsv"
 else:
@@ -220,6 +220,7 @@ if __name__ == "__main__":
     print(f"\nOut of the {n_denovo} de novo genes, there are {n_denovo_intergenic} coming from an intergenic area and {n_denovo - n_denovo_intergenic} coming either from an altframe or a mix of the 2.\n")
     print(f"For the intergenic ones, {len(low_qcov_genes_intergenic)} have a qcov < 70%.")
     print(f"For the rest, {len(low_qcov_genes_rest)} have a qcov < 70%.")
+    print(low_qcov_genes_intergenic + low_qcov_genes_rest)
 
     show_plots = input("\nDo you want to see the plots? (y/n) ")
     if show_plots == "y":
@@ -276,6 +277,7 @@ if __name__ == "__main__":
     print(f"\n\n\n\nFor the matches with a query coverage > 70%, we extracted the longuest ORF and calculated its coverage of the query (the de novo gene sequence)")
     print(f"\nFor the intergenic genes, {len(low_orf_cov_genes_intergenic)}/{n_denovo_intergenic - len(low_qcov_genes_intergenic)} have a longuest ORF coverage < 70%.")
     print(f"For the rest, {len(low_orf_cov_genes_rest)}/{(n_denovo - n_denovo_intergenic) - len(low_qcov_genes_rest)} have a longuest ORF coverage < 70%.")
+    print(low_orf_cov_genes_intergenic + low_orf_cov_genes_rest)
 
     show_plots = input("\nDo you want to see the plots? (y/n) ")
     if show_plots == "y":
