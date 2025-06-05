@@ -72,10 +72,7 @@ get_pvals <- function(desc, data, fact, non_signif = FALSE) {
   local_pvals$group1 <- "good"
   local_pvals$group2 <- "bad"
   # y position
-  local_pvals$y.position <- NA
-  if (local_pvals$p < 0.05) {
-    local_pvals$y.position <- fact
-  }
+  local_pvals$y.position <- fact
   
   # significance level
   if (non_signif) {
@@ -110,12 +107,12 @@ get_plot <- function(data, data_summary, feature, title, print_pval = c(NA), sca
     scale_fill_manual(values = c("#4f535a", "#179207")) +
     theme_minimal() +
     scale_x_discrete(labels = c("Integrity", "No integrity")) +
-    theme(axis.text.x = element_text(size = 16),
-          axis.title.x = element_text(size = 14),
-          axis.title.y = element_text(size = 14),
-          axis.text.y = element_text(size = 12),
+    theme(axis.text.x = element_text(size = 20),
+          axis.title.x = element_text(size = 20),
+          axis.title.y = element_text(size = 20),
+          axis.text.y = element_text(size = 16),
           plot.title = element_text(hjust = 0.5),
-          legend.text = element_text(size = 12),
+          legend.text = element_text(size = 16),
           legend.title = element_blank(),
           legend.position = "none")
 
@@ -147,8 +144,9 @@ get_plot <- function(data, data_summary, feature, title, print_pval = c(NA), sca
         stat_pvalue_manual(pvals_local,
                            label = "p.signif",
                            inherit.aes = FALSE,
-                           hide.ns = !only_ns,
-                           tip.length = 0.01)
+                           hide.ns = FALSE,
+                           tip.length = 0.01,
+                           label.size = 5)
     }
   }
   return(p)
@@ -201,8 +199,8 @@ data_gc <- data[data$feature == "gc_rate", ]
 data_gc$type <- factor(data_gc$type, levels = c("bad", "good"))
 
 # Pvals
-pval_pos <- 0.5
-only_ns <- FALSE
+pval_pos <- 1.25
+only_ns <- TRUE
 y_annotation <- 0.55
 pval_vect <- c(pval_pos, only_ns, y_annotation)
 
@@ -228,8 +226,8 @@ data_gc_inter <- data[data$feature == "inter_gc_rate", ]
 data_gc_inter$type <- factor(data_gc_inter$type, levels = c("bad", "good"))
 
 # Pvals
-pval_pos <- 0.5
-only_ns <- FALSE
+pval_pos <- 1.3
+only_ns <- TRUE
 y_annotation <- 0.55
 pval_vect <- c(pval_pos, only_ns, y_annotation)
 
@@ -255,8 +253,8 @@ data_arom <- data[data$feature == "aromaticity", ]
 data_arom$type <- factor(data_arom$type, levels = c("bad", "good"))
 
 # Pvals
-pval_pos <- 0.5
-only_ns <- FALSE
+pval_pos <- 0.26
+only_ns <- TRUE
 y_annotation <- 0.55
 pval_vect <- c(pval_pos, only_ns, y_annotation)
 
@@ -283,8 +281,8 @@ data_instab <- data[data$feature == "instability", ]
 data_instab$type <- factor(data_instab$type, levels = c("bad", "good"))
 
 # Pvals
-pval_pos <- 0.5
-only_ns <- FALSE
+pval_pos <- 95
+only_ns <- TRUE
 y_annotation <- 0.55
 pval_vect <- c(pval_pos, only_ns, y_annotation)
 
@@ -311,8 +309,8 @@ data_flex <- data[data$feature == "mean_flexibility", ]
 data_flex$type <- factor(data_flex$type, levels = c("bad", "good"))
 
 # Pvals
-pval_pos <- 0.5
-only_ns <- FALSE
+pval_pos <- 1.04
+only_ns <- TRUE
 y_annotation <- 1.05
 pval_vect <- c(pval_pos, only_ns, y_annotation)
 
@@ -339,8 +337,8 @@ data_hydrop <- data[data$feature == "hydropathy", ]
 data_hydrop$type <- factor(data_hydrop$type, levels = c("bad", "good"))
 
 # Pvals
-pval_pos <- 3
-only_ns <- FALSE
+pval_pos <- 1.7
+only_ns <- TRUE
 y_annotation <- 3
 pval_vect <- c(pval_pos, only_ns, y_annotation)
 
@@ -367,8 +365,8 @@ data_hca <- data[data$feature == "hca", ]
 data_hca$type <- factor(data_hca$type, levels = c("bad", "good"))
 
 # Pvals
-pval_pos <- 8
-only_ns <- FALSE
+pval_pos <- 11
+only_ns <- TRUE
 y_annotation <- 8.5
 pval_vect <- c(pval_pos, only_ns, y_annotation)
 
@@ -395,8 +393,8 @@ data_iupred <- data[data$feature == "disord", ]
 data_iupred$type <- factor(data_iupred$type, levels = c("bad", "good"))
 
 # Pvals
-pval_pos <- 0.1
-only_ns <- FALSE
+pval_pos <- 0.9
+only_ns <- TRUE
 y_annotation <- 0.1
 pval_vect <- c(pval_pos, only_ns, y_annotation)
 
@@ -423,8 +421,8 @@ data_tango <- data[data$feature == "aggreg", ]
 data_tango$type <- factor(data_tango$type, levels = c("bad", "good"))
 
 # Pvals
-pval_pos <- 0.5
-only_ns <- FALSE
+pval_pos <- 0.7
+only_ns <- TRUE
 y_annotation <- 0.55
 pval_vect <- c(pval_pos, only_ns, y_annotation)
 
@@ -510,8 +508,8 @@ if (save_plots) {
 data_polar <- data[data$feature == "polar_use", ]
 data_polar$type <- factor(data_polar$type, levels = c("bad", "good"))
 # Pvals
-pval_pos <- 0.5
-only_ns <- FALSE
+pval_pos <- 0.37
+only_ns <- TRUE
 y_annotation <- 0.55
 pval_vect <- c(pval_pos, only_ns, y_annotation)
 # Plot
@@ -532,8 +530,8 @@ if (save_plots) {
 data_hydrophobic <- data[data$feature == "hydrophobic_use", ]
 data_hydrophobic$type <- factor(data_hydrophobic$type, levels = c("bad", "good"))
 # Pvals
-pval_pos <- 0.5
-only_ns <- FALSE
+pval_pos <- 0.63
+only_ns <- TRUE
 y_annotation <- 0.55
 pval_vect <- c(pval_pos, only_ns, y_annotation)
 # Plot
@@ -554,8 +552,8 @@ if (save_plots) {
 data_positive <- data[data$feature == "positive_use", ]
 data_positive$type <- factor(data_positive$type, levels = c("bad", "good"))
 # Pvals
-pval_pos <- 0.5
-only_ns <- FALSE
+pval_pos <- 0.36
+only_ns <- TRUE
 y_annotation <- 0.55
 pval_vect <- c(pval_pos, only_ns, y_annotation)
 # Plot
@@ -576,8 +574,8 @@ if (save_plots) {
 data_negative <- data[data$feature == "negative_use", ]
 data_negative$type <- factor(data_negative$type, levels = c("bad", "good"))
 # Pvals
-pval_pos <- 0.5
-only_ns <- FALSE
+pval_pos <- 0.28
+only_ns <- TRUE
 y_annotation <- 0.55
 pval_vect <- c(pval_pos, only_ns, y_annotation)
 # Plot
@@ -598,8 +596,8 @@ if (save_plots) {
 data_proline_glycine <- data[data$feature == "proline.glycine_use", ]
 data_proline_glycine$type <- factor(data_proline_glycine$type, levels = c("bad", "good"))
 # Pvals
-pval_pos <- 0.5
-only_ns <- FALSE
+pval_pos <- 0.26
+only_ns <- TRUE
 y_annotation <- 0.55
 pval_vect <- c(pval_pos, only_ns, y_annotation)
 # Plot
@@ -620,8 +618,8 @@ if (save_plots) {
 data_cysteine <- data[data$feature == "cysteine_use", ]
 data_cysteine$type <- factor(data_cysteine$type, levels = c("bad", "good"))
 # Pvals
-pval_pos <- 0.5
-only_ns <- FALSE
+pval_pos <- 0.045
+only_ns <- TRUE
 y_annotation <- 0.55
 pval_vect <- c(pval_pos, only_ns, y_annotation)
 # Plot
@@ -642,8 +640,8 @@ if (save_plots) {
 data_alanine <- data[data$feature == "alanine_use", ]
 data_alanine$type <- factor(data_alanine$type, levels = c("bad", "good"))
 # Pvals
-pval_pos <- 0.5
-only_ns <- FALSE
+pval_pos <- 0.17
+only_ns <- TRUE
 y_annotation <- 0.55
 pval_vect <- c(pval_pos, only_ns, y_annotation)
 # Plot
