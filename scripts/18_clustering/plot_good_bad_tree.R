@@ -130,6 +130,7 @@ cluster_lcas_summary <- cluster_lcas_coords %>%
     label = first(label),
     .groups = "drop"
   )
+cluster_lcas_summary$uni_group <- as.factor("cluster LCAs")
 
 
 
@@ -156,13 +157,12 @@ p <- p + ggtitle("Integrity of the denovo NC matches\nand location of the cluste
   theme(plot.title = element_text(hjust = 0.5, vjust = -10))
 
 # Add the points
+p <- p + new_scale_fill()
 p <- p + geom_point(data = cluster_lcas_summary,
-                    aes(x = x, y = y),
-                    inherit.aes = FALSE, fill = "#c51515", shape = 21,
-                    color = "black", stroke = 0.5) +
-  scale_size(range = c(1.5, 4),
-             name = paste0("Cluster LCA position\n(n =", nrow(cluster_lcas_coords), ")")) +
-  theme(legend.position = "right")
+          aes(x = x, y = y, fill = uni_group),
+          inherit.aes = FALSE, shape = 21,
+          color = "black", stroke = 0.5) +
+  scale_fill_manual(values = "#c51515", name = "")
 p
 
 ggsave(paste0(output_dir, "denovo_good_bad.png"))
