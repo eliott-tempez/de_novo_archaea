@@ -4,6 +4,7 @@ library(ape)
 library(ggnewscale)
 library(yaml)
 library(dplyr)
+library(phangorn)
 ggsave <- function(..., bg = "white",
                    width = 1000, height = 1000,
                    units = "px", dpi = 100) {
@@ -165,3 +166,40 @@ p <- p + geom_point(data = cluster_lcas_summary,
 p
 
 ggsave(paste0(output_dir, "denovo_good_bad.png"))
+
+
+
+
+## Dotplot
+# Get number of unique species
+species_in_cluster_nb <- cluster_df %>%
+  group_by(cluster) %>%
+  summarise(n_species_denovo = n_distinct(genome), .groups = "drop")
+# Add the lca node
+species_in_cluster_nb <- species_in_cluster_nb %>%
+  left_join(cluster_lcas, by = "cluster") %>%
+  select(cluster, n_species_denovo, lca_node)
+# Get the number of species below the node
+species_in_cluster_nb <- species_in_cluster_nb %>%
+  rowwise() %>%
+  mutate(n_species_below = length(Descendants(tree, lca_node, type = "tips")[[1]])) %>%
+  ungroup()
+# Calculate the coverage
+species_in_cluster_nb <- species_in_cluster_nb %>%
+  mutate(coverage = n_species_denovo / n_species_below)
+
+# Plot
+ggplot(species_in_cluster_nb, aes(x = n_species_denovo, y = coverage)) +
+  geom_jitter(fill = "#8261dd", alpha = 0.5, color = "#4c3099", size = 4, width = 0.1, height = 0.02) +
+  labs(title = "Number of de novo and coverage for each cluster",
+       x = "number of species with a denovo gene",
+       y = "Cluster coverage (# denovo / # leaves)") +
+  scale_y_continuous(breaks = seq(0, 1, 0.25)) +
+  scale_x_continuous(breaks = seq(0, max(species_in_cluster_nb$n_species_denovo), 1)) +
+  theme(
+    plot.title = element_text(size = 20),
+    axis.title = element_text(size = 16),
+    axis.text = element_text(size = 14)
+  )
+
+ggsave(paste0(output_dir, "denovo_coverage.png"))
