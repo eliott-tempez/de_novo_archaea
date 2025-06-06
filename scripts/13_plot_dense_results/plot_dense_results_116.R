@@ -3,6 +3,7 @@ library(ggtree)
 library(ape)
 library(ggnewscale)
 library(yaml)
+library(ggpubr)
 ggsave <- function(..., bg = "white",
                    width = 1000, height = 1000,
                    units = "px", dpi = 100) {
@@ -116,36 +117,8 @@ p <- p + ggtitle("Number of de novo genes,TRGs and GC rate for each genome") +
   theme(plot.title = element_text(hjust = 0.5, vjust = -10))
 p
 
-ggsave(paste0(output_dir, "denovo_trg_116.png"))
+#ggsave(paste0(output_dir, "denovo_trg_116.png"))
 
-
-
-########## Good / bad denovo genes ##########
-# Read the tree
-tree <- read.tree(tree_file)
-# Plot the tree
-p <- ggtree(tree, layout = "circular", branch.length = "none")
-# Add the heatmaps
-## Good denovo ##
-p <- p + new_scale_fill()
-p <- gheatmap(p, data[, "n_good_candidates", drop = FALSE],
-              width = .05, colnames = FALSE) +
-  scale_fill_gradient(low = "white", high = "#179207", name = "No integrity\n('good' candidates)",
-                      guide = guide_colorbar(order = 1))
-
-## Bad denovo ##
-p <- p + new_scale_fill()
-p <- gheatmap(p, data[, "n_bad_candidates", drop = FALSE], offset = 1,
-              width = .05, colnames = FALSE) +
-  scale_fill_gradient(low = "white", high = "#0059ff", name = "Integrity\n('bad' candidates)",
-                      guide = guide_colorbar(order = 2), limits = c(0, max(data$n_bad_candidates)))
-
-# Add the title
-p <- p + ggtitle("Integrity of the non-coding matches in the 2\n furthest outgroups for the de novo genes\n(threshold = 70% qcov)") +
-  theme(plot.title = element_text(hjust = 0.5, vjust = -10))
-p
-
-ggsave(paste0(output_dir, "denovo_good_bad.png"))
 
 
 ########## Distribution of de novo genes ##########
@@ -155,7 +128,7 @@ ggplot(data, aes(x = n_denovo)) +
        x = "Number of de novo genes",
        y = "Number of genomes") +
   theme(plot.title = element_text(hjust = 0.5, vjust = -10))
-ggsave(paste0(output_dir, "denovo_distribution_116.png"))
+#ggsave(paste0(output_dir, "denovo_distribution_116.png"))
 
 
 
@@ -167,6 +140,30 @@ ggplot(intergenic, aes(x = mean_intergenic_length)) +
        x = "Mean intergenic length (bp)",
        y = "Number of genomes") +
   theme(plot.title = element_text(hjust = 0.5, vjust = -10))
-ggsave(paste0(output_dir, "intergenic_distribution_116.png"))
+#ggsave(paste0(output_dir, "intergenic_distribution_116.png"))
 
 
+
+
+########## De novo / TRG correlation ##########
+p <- ggplot(data, aes(x = n_trg, y = n_denovo)) +
+  geom_point(color = "#8261dd") +
+  geom_smooth(method = "lm", color = "black") +
+  labs(title = "Correlation between the number of de novo genes and TRGs",
+       x = "Number of TRGs",
+       y = "Number of de novo genes") +
+  theme(plot.title = element_text(hjust = 0.5, vjust = -10))
+
+
+# Non parametric correlation
+#cor.test(data$n_trg, data$n_denovo, method = "pearson")
+spcor <- cor.test(data$n_trg, data$n_denovo, method = "spearman")
+kecor <- cor.test(data$n_trg, data$n_denovo, method = "kendall")
+# Write the results on the plot
+p <- p + annotate("text", x = 0.8 * max(data$n_trg), y = 0.9 * max(data$n_denovo),
+                  label = paste0("Spearman's rho: ", round(spcor$estimate, 2), " (p = ", round(spcor$p.value, 3), ")\n",
+                                 "Kendall's tau: ", round(kecor$estimate, 2), " (p = ", round(kecor$p.value, 3), ")"),
+                  size = 4, color = "black") +
+    ylim(0, max(data$n_denovo) * 1.1)
+p
+ggsave(paste0(output_dir, "denovo_trg_correlation_116.png"))
