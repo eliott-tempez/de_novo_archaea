@@ -16,7 +16,7 @@ ggsave <- function(..., bg = "white",
 
 
 home <- FALSE
-use_violins <- FALSE
+use_violins <- TRUE
 print_pval_labels <- FALSE
 
 
@@ -47,6 +47,22 @@ n_cds <- nrow(data[data$type == "cds", ])
 n_trg <- nrow(data[data$type == "trg", ])
 n_denovo <- nrow(data[data$type == "denovo", ])
 n_iorf <- nrow(data[data$type == "iorf", ])
+# Sample 5000 sequences for cds, trg and iorf
+if (n_cds > 5000) {
+  data <- data[data$type != "cds" |
+                 (data$type == "cds" &
+                    seq_len(nrow(data[data$type == "cds", ])) %in% sample(n_cds, 5000)), ]
+}
+if (n_trg > 5000) {
+  data <- data[data$type != "trg" |
+                 (data$type == "trg" &
+                    seq_len(nrow(data[data$type == "trg", ])) %in% sample(n_trg, 5000)), ]
+}
+if (n_iorf > 5000) {
+  data <- data[data$type != "iorf" |
+                 (data$type == "iorf" &
+                    seq_len(nrow(data[data$type == "iorf", ])) %in% sample(n_iorf, 5000)), ]
+}
 # Import pvalues
 pvals <- read.table(pval_file, header = TRUE, sep = "\t")
 
@@ -139,8 +155,9 @@ plot_data <- function(data_local,
                       factor, tip_length,
                       pval_ypos = NA) {
 
+  factor <- 0.05
   boxplot_width <- ifelse(use_violins, 0.2, 0.8)
-  boxplot_alpha <- ifelse(use_violins, 0.7, 1)
+  boxplot_alpha <- ifelse(use_violins, 0.8, 1)
   pvals_local <- get_pvals(data_local$feature[1], data_local, factor)
   plot_pvals <- !all(is.na(pvals_local$y.position))
 
@@ -151,29 +168,25 @@ plot_data <- function(data_local,
   p <- ggplot(data_local, aes(x = type, y = value, fill = type))
 
   if (use_violins) {
-    p <- p + geom_violin(data = data_sans_outliers, na.rm = TRUE, colour = "#2c2c2c", scale = "width", alpha = 0.7)
+    p <- p + geom_violin(data = data_sans_outliers, na.rm = TRUE, colour = "#2c2c2c", scale = "width", alpha = 0.8)
   }
 
   p <- p + geom_boxplot(data = data_local, na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE, width = boxplot_width, alpha = boxplot_alpha) +
-    labs(title = title,
-         x = "Sequence type",
+    labs(title = "",
+         x = "",
          y = y_axis) +
     scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c", "#693fb6")) +
     theme_minimal() +
     theme(legend.position = "none",
-          axis.text.x = element_text(size = 16),
-          axis.title.x = element_text(size = 14),
-          axis.title.y = element_text(size = 14),
-          axis.text.y = element_text(size = 12),
-          plot.title = element_text(hjust = 0.5)) +
-    scale_x_discrete(labels = c("cds" = paste0("cds\n(n = ", n_cds, ")"),
-                                "trg" = paste0("trg\n(n = ", n_trg, ")"),
-                                "denovo" = paste0("denovo\n(n = ", n_denovo, ")"),
-                                "iorf" = paste0("iorf\n(n = ", n_iorf, ")"))) +
+            axis.text.x = element_text(size = 22, angle = 90),
+          axis.title.y = element_text(size = 22),
+          axis.text.y = element_text(size = 20)) +
+    scale_x_discrete(labels = c("cds", "trg",
+                                "denovo", "iorf")) +
     scale_y_continuous(breaks = y_scale)
 
   if (plot_pvals) {
-    p <- p + stat_pvalue_manual(pvals_local, label = "p.signif", inherit.aes = FALSE, hide.ns = TRUE, tip.length = tip_length, size = 5)
+    p <- p + stat_pvalue_manual(pvals_local, label = "p.signif", inherit.aes = FALSE, hide.ns = TRUE, tip.length = 0, size = 8)
   }
 
   if (print_pval_labels) {
@@ -224,10 +237,8 @@ data_len$type <- factor(data_len$type, levels = c("cds", "trg", "denovo", "iorf"
 
 p <- plot_data(data_len,
                title = "Sequence length distribution (aa)",
-               y_axis = "Length (aa)",
-               y_scale = seq(0, 800, 200),
-               factor = 0.05,
-               tip_length = 0.002)
+               y_axis = "Length (residues)",
+               y_scale = seq(0, 800, 200))
 p
 
 if (!use_violins) {
@@ -436,7 +447,7 @@ data_polar$type <- factor(data_polar$type, levels = c("cds", "trg", "denovo", "i
 
 p <- plot_data(data_polar,
           title = "Polar AA use distribution (S, T, N, Q)",
-          y_axis = "Polar AA use",
+          y_axis = "Polar AA use (S, T, N, Q)",
           y_scale = seq(0, 0.5, 0.25),
           factor = 0.05,
           tip_length = 0.005,
@@ -455,7 +466,7 @@ data_hydro_use$type <- factor(data_hydro_use$type, levels = c("cds", "trg", "den
 
 p <- plot_data(data_hydro_use,
   title = "Hydrophobic AA use distribution (M, Y, V, L, I, F, W)",
-  y_axis = "Hydrophobic AA use",
+  y_axis = "Hydrophobic AA use (M, Y, V, L, I, F, W)",
   y_scale = seq(0, 0.75, 0.25),
   factor = 0.08,
   tip_length = 0.005,
@@ -475,7 +486,7 @@ data_pos$type <- factor(data_pos$type, levels = c("cds", "trg", "denovo", "iorf"
 
 p <- plot_data(data_pos,
   title = "Positive AA use distribution (K, R, H)",
-  y_axis = "Positive AA use",
+  y_axis = "Positive AA use (K, R, H)",
   y_scale = seq(0, 0.4, 0.1),
   factor = 0.05,
   tip_length = 0.005,
@@ -495,7 +506,7 @@ data_neg$type <- factor(data_neg$type, levels = c("cds", "trg", "denovo", "iorf"
 
 p <- plot_data(data_neg,
   title = "Negative AA use distribution (D, E)",
-  y_axis = "Negative AA use",
+  y_axis = "Negative AA use (D, E)",
   y_scale = seq(0, 0.3, 0.1),
   factor = 0.05,
   tip_length = 0.005,
