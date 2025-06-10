@@ -146,24 +146,24 @@ ggplot(intergenic, aes(x = mean_intergenic_length)) +
 
 
 ########## De novo / TRG correlation ##########
-p <- ggplot(data, aes(x = n_trg, y = n_denovo)) +
+p <- ggplot(data, aes(x = n_denovo, y = n_trg)) +
   geom_point(color = "#8261dd") +
   geom_smooth(method = "lm", color = "black") +
   labs(title = "Correlation between the number of de novo genes and TRGs",
-       x = "Number of TRGs",
-       y = "Number of de novo genes") +
+       x = "Number of de novo genes",
+       y = "Number of TRGs") +
   theme(plot.title = element_text(hjust = 0.5, vjust = -10))
 
 
 # Non parametric correlation
 #cor.test(data$n_trg, data$n_denovo, method = "pearson")
-spcor <- cor.test(data$n_trg, data$n_denovo, method = "spearman")
-kecor <- cor.test(data$n_trg, data$n_denovo, method = "kendall")
+spcor <- cor.test(data$n_denovo, data$n_trg, method = "spearman")
+kecor <- cor.test(data$n_denovo, data$n_trg, method = "kendall")
 # Write the results on the plot
-p <- p + annotate("text", x = 0.8 * max(data$n_trg), y = 0.9 * max(data$n_denovo),
+p <- p + annotate("text", x = 0.8 * max(data$n_denovo), y = 0.9 * max(data$n_trg),
                   label = paste0("Spearman's rho: ", round(spcor$estimate, 2), " (p = ", round(spcor$p.value, 3), ")\n",
                                  "Kendall's tau: ", round(kecor$estimate, 2), " (p = ", round(kecor$p.value, 3), ")"),
                   size = 4, color = "black") +
-    ylim(0, max(data$n_denovo) * 1.1)
+    ylim(0, max(data$n_trg) * 1.1)
 p
 ggsave(paste0(output_dir, "denovo_trg_correlation_116.png"))
