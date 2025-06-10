@@ -76,10 +76,9 @@ def extract_intergenic_gc(genome):
         for line in f:
             line_split = line.strip().split("\t")
             genome_file = line_split[0]
-            gc = line_split[0]
+            gc = line_split[1]
             if genome_file == genome:
                 return float(gc)
-
 
 
 def get_species_gc_content(genome):
