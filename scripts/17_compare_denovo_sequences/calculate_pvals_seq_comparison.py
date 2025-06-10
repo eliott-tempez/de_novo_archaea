@@ -14,6 +14,7 @@ INCLUDE = "all" # Descriptors to run the test on
 
 
 NB_GC_BINS = 1
+TWO_SIDED = False
 
 
 def get_species_gc_content(genome):
@@ -41,7 +42,15 @@ def get_median_diff(df1, df2):
     median_diff = {}
     for descriptor in df1.columns:
         if descriptor not in ["genome", "cds", "type"]:
-            median_diff[descriptor] = abs(df1[descriptor].median() - df2[descriptor].median())
+            # If two sided test, take the absolute value
+            if TWO_SIDED:
+                median_diff[descriptor] = abs(df1[descriptor].median() - df2[descriptor].median())
+            # Else, take the difference from the highest median
+            else:
+                if df1[descriptor].median() > df2[descriptor].median():
+                    median_diff[descriptor] = df1[descriptor].median() - df2[descriptor].median()
+                else:
+                    median_diff[descriptor] = df2[descriptor].median() - df1[descriptor].median()
     return median_diff
 
 
@@ -87,7 +96,8 @@ def calculate_pvalues(signif_results, descriptors):
     # Create a dataframe with the results
     results_df = pd.DataFrame(results, columns=["type1", "type2", "bin1", "bin2"] + descriptors)
     # Save the results
-    results_df.to_csv(f"pvalues_{NB_GC_BINS}_bins.csv", sep="\t", index=False)
+    out_filename = f"pvalues_{NB_GC_BINS}_bins.csv" if TWO_SIDED else f"pvalues_{NB_GC_BINS}_bins_one_sided.csv"
+    results_df.to_csv(out_filename, sep="\t", index=False)
     return results_df
 
 
