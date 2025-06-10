@@ -178,15 +178,15 @@ plot_data <- function(data_local,
     scale_fill_manual(values = c("#cc7f0a", "#ad4646", "#4d4c4c", "#693fb6")) +
     theme_minimal() +
     theme(legend.position = "none",
-            axis.text.x = element_text(size = 22, angle = 90),
-          axis.title.y = element_text(size = 22),
-          axis.text.y = element_text(size = 20)) +
+            axis.text.x = element_text(size = 24, angle = 90),
+          axis.title.y = element_text(size = 24),
+          axis.text.y = element_text(size = 22)) +
     scale_x_discrete(labels = c("cds", "trg",
                                 "denovo", "iorf")) +
     scale_y_continuous(breaks = y_scale)
 
   if (plot_pvals) {
-    p <- p + stat_pvalue_manual(pvals_local, label = "p.signif", inherit.aes = FALSE, hide.ns = TRUE, tip.length = 0, size = 8)
+    p <- p + stat_pvalue_manual(pvals_local, label = "p.signif", inherit.aes = FALSE, hide.ns = TRUE, tip.length = 0, size = 9)
   }
 
   if (print_pval_labels) {
