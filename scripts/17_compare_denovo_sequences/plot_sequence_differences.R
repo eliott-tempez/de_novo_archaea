@@ -16,7 +16,7 @@ ggsave <- function(..., bg = "white",
 
 
 home <- FALSE
-use_violins <- TRUE
+use_violins <- FALSE
 print_pval_labels <- FALSE
 
 
@@ -121,10 +121,12 @@ get_pvals <- function(desc, data, fact) {
 remove_outliers <- function(data) {
   # Remove outliers
   data <- data %>%
-  # remove nas
     filter(!is.na(value)) %>%
-    group_by(type, feature) %>%
+    group_by(type) %>%
     mutate(value = ifelse(value > quantile(value, 0.75) + IQR(value) * 1.5, NA, value)) %>%
+    filter(!is.na(value)) %>%
+    mutate(value = ifelse(value < quantile(value, 0.25) - IQR(value) * 1.5, NA, value)) %>%
+    filter(!is.na(value)) %>%
     ungroup()
   return(data)
 }
@@ -138,6 +140,7 @@ plot_data <- function(data_local,
                       pval_ypos = NA) {
 
   boxplot_width <- ifelse(use_violins, 0.2, 0.8)
+  boxplot_alpha <- ifelse(use_violins, 0.7, 1)
   pvals_local <- get_pvals(data_local$feature[1], data_local, factor)
   plot_pvals <- !all(is.na(pvals_local$y.position))
 
@@ -151,7 +154,7 @@ plot_data <- function(data_local,
     p <- p + geom_violin(data = data_sans_outliers, na.rm = TRUE, colour = "#2c2c2c", scale = "width", alpha = 0.7)
   }
 
-  p <- p + geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE, width = boxplot_width) +
+  p <- p + geom_boxplot(data = data_local, na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE, width = boxplot_width, alpha = boxplot_alpha) +
     labs(title = title,
          x = "Sequence type",
          y = y_axis) +
