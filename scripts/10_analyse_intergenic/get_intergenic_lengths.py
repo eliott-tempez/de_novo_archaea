@@ -2,10 +2,12 @@ import os
 import glob
 import re
 from Bio import SeqIO
+from Bio.SeqUtils import GC
 
 DATA_DIR = "/home/eliott.tempez/Documents/archaea_data/complete_122/"
 GENOMES_LIST = "/home/eliott.tempez/Documents/M2_Stage_I2BC/scripts/6_genera_archaea/genomes_list.txt"
 OUTPUT_FILE = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/10_analyse_intergenic/intergenic_lengths.tsv"
+OUTPUT_FILE_GC = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/10_analyse_intergenic/intergenic_gc.tsv"
 
 
 
@@ -63,18 +65,32 @@ def extract_intergenic(species):
 with open(GENOMES_LIST, "r") as f:
     genomes = f.readline().split()
 genomes = [re.sub('"', '', g) for g in genomes]
-# Extract the intergenic sequences for each genome
+
+
 mean_intergenic_lengths = {}
+intergenic_gc = {}
 for genome in genomes:
+    all_intergenic_seqs = ""
     intergenic_dict = extract_intergenic(genome)
     # Get the mean length of the intergenic sequences
     intergenic_lengths = [len(seq) for seq in intergenic_dict.values()]
     mean_intergenic_length = sum(intergenic_lengths) / len(intergenic_lengths)
     mean_intergenic_lengths[genome] = mean_intergenic_length
 
+    # Concatenate all intergenic seqs
+    for seq in intergenic_dict.values():
+        all_intergenic_seqs += str(seq)
+    # Calculate GC content
+    intergenic_gc[genome] = GC(all_intergenic_seqs)
+
 # Write the results to a file
 with open(OUTPUT_FILE, "w") as f:
     f.write("genome\tmean_intergenic_length\n")
     for genome, mean_intergenic_length in mean_intergenic_lengths.items():
         f.write(f"{genome}\t{mean_intergenic_length}\n")
+
+with open(OUTPUT_FILE_GC, "w") as f:
+    f.write("genome\tintergenic_gc\n")
+    for genome, gc_content in intergenic_gc.items():
+        f.write(f"{genome}\t{gc_content}\n")
     
