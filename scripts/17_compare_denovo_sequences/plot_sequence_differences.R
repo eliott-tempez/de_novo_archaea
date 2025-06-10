@@ -140,10 +140,15 @@ plot_data <- function(data_local,
   boxplot_width <- ifelse(use_violins, 0.2, 0.8)
   pvals_local <- get_pvals(data_local$feature[1], data_local, factor)
   plot_pvals <- !all(is.na(pvals_local$y.position))
+
+  # Remove outliers for violin plot
+  data_sans_outliers <- remove_outliers(data_local)
+
+  # Plot
   p <- ggplot(data_local, aes(x = type, y = value, fill = type))
 
   if (use_violins) {
-    p <- p + geom_violin(na.rm = TRUE, colour = "#2c2c2c", scale = "width", alpha = 0.7)
+    p <- p + geom_violin(data = data_sans_outliers, na.rm = TRUE, colour = "#2c2c2c", scale = "width", alpha = 0.7)
   }
 
   p <- p + geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE, width = boxplot_width) +
@@ -213,7 +218,6 @@ colnames(pvals) <- c("group1", "group2", "bin1", "bin2", "feature", "p")
 data_len <- data[data$feature == "length", ]
 data_len$value <- data_len$value / 3
 data_len$type <- factor(data_len$type, levels = c("cds", "trg", "denovo", "iorf"))
-data_len <- remove_outliers(data_len)
 
 p <- plot_data(data_len,
                title = "Sequence length distribution (aa)",
@@ -224,16 +228,15 @@ p <- plot_data(data_len,
 p
 
 if (!use_violins) {
-  ggsave(paste0(out_folder, "/gc_content.png"))
+  ggsave(paste0(out_folder, "/sequence_length.png"))
 } else {
-  ggsave(paste0(out_folder, "/gc_content_violin.png"))
+  ggsave(paste0(out_folder, "/sequence_length_violin.png"))
 }
 
 
 ##### GC rate #####
 data_gc <- data[data$feature == "gc_rate", ]
 data_gc$type <- factor(data_gc$type, levels = c("cds", "trg", "denovo", "iorf"))
-data_gc <- remove_outliers(data_gc)
 
 p <- plot_data(data_gc,
           title = "GC ratio distribution",
@@ -255,7 +258,6 @@ if (!use_violins) {
 ##### GC rate (intergenic) #####
 data_gc_inter <- data[data$feature == "inter_gc_rate", ]
 data_gc_inter$type <- factor(data_gc_inter$type, levels = c("cds", "trg", "denovo", "iorf"))
-data_gc_inter <- remove_outliers(data_gc_inter)
 
 p <- plot_data(data_gc_inter,
           title = "GC ratio distribution (intergenic)",
@@ -277,7 +279,6 @@ if (!use_violins) {
 ##### Aromaticity #####
 data_aro <- data[data$feature == "aromaticity", ]
 data_aro$type <- factor(data_aro$type, levels = c("cds", "trg", "denovo", "iorf"))
-data_aro <- remove_outliers(data_aro)
 
 p <- plot_data(data_aro,
           title = "Aromaticity distribution",
@@ -299,7 +300,6 @@ if (!use_violins) {
 ##### Instability index #####
 data_inst <- data[data$feature == "instability", ]
 data_inst$type <- factor(data_inst$type, levels = c("cds", "trg", "denovo", "iorf"))
-data_inst <- remove_outliers(data_inst)
 
 p <- plot_data(data_inst,
           title = "Instability index distribution",
@@ -321,7 +321,6 @@ if (!use_violins) {
 ##### Flexibility #####
 data_flex <- data[data$feature == "mean_flexibility", ]
 data_flex$type <- factor(data_flex$type, levels = c("cds", "trg", "denovo", "iorf"))
-data_flex <- remove_outliers(data_flex)
 
 p <- plot_data(data_flex,
           title = "Mean flexibility distribution",
@@ -343,7 +342,6 @@ if (!use_violins) {
 ##### Hydrophobicity #####
 data_hydro <- data[data$feature == "hydropathy", ]
 data_hydro$type <- factor(data_hydro$type, levels = c("cds", "trg", "denovo", "iorf"))
-data_hydro <- remove_outliers(data_hydro)
 
 p <- plot_data(data_hydro,
           title = "Mean hydrophobicity distribution",
@@ -365,7 +363,6 @@ if (!use_violins) {
 ##### HCA #####
 data_hca <- data[data$feature == "hca", ]
 data_hca$type <- factor(data_hca$type, levels = c("cds", "trg", "denovo", "iorf"))
-data_hca <- remove_outliers(data_hca)
 
 p <- plot_data(data_hca,
           title = "HCA distribution",
@@ -388,7 +385,6 @@ if (!use_violins) {
 ###### Intrinsic disorder (IUpred) ######
 data_disord <- data[data$feature == "disord", ]
 data_disord$type <- factor(data_disord$type, levels = c("cds", "trg", "denovo", "iorf"))
-data_disord <- remove_outliers(data_disord)
 
 p <- plot_data(data_disord,
           title = "Intrinsic disorder distribution (IUPred)",
@@ -411,7 +407,6 @@ if (!use_violins) {
 ###### Aggregation (tango) ######
 data_agg <- data[data$feature == "aggreg", ]
 data_agg$type <- factor(data_agg$type, levels = c("cds", "trg", "denovo", "iorf"))
-data_agg <- remove_outliers(data_agg)
 
 p <- plot_data(data_agg,
           title = "Aggregation distribution (Tango)",
@@ -435,7 +430,6 @@ if (!use_violins) {
 ### Polar ###
 data_polar <- data[data$feature == "polar_use", ]
 data_polar$type <- factor(data_polar$type, levels = c("cds", "trg", "denovo", "iorf"))
-data_polar <- remove_outliers(data_polar)
 
 p <- plot_data(data_polar,
           title = "Polar AA use distribution (S, T, N, Q)",
@@ -455,7 +449,6 @@ if (!use_violins) {
 ### hydrophobic ###
 data_hydro_use <- data[data$feature == "hydrophobic_use", ]
 data_hydro_use$type <- factor(data_hydro_use$type, levels = c("cds", "trg", "denovo", "iorf"))
-data_hydro_use <- remove_outliers(data_hydro_use)
 
 p <- plot_data(data_hydro_use,
   title = "Hydrophobic AA use distribution (M, Y, V, L, I, F, W)",
@@ -476,7 +469,6 @@ if (!use_violins) {
 ### positive ###
 data_pos <- data[data$feature == "positive_use", ]
 data_pos$type <- factor(data_pos$type, levels = c("cds", "trg", "denovo", "iorf"))
-data_pos <- remove_outliers(data_pos)
 
 p <- plot_data(data_pos,
   title = "Positive AA use distribution (K, R, H)",
@@ -497,7 +489,6 @@ if (!use_violins) {
 ### negative ###
 data_neg <- data[data$feature == "negative_use", ]
 data_neg$type <- factor(data_neg$type, levels = c("cds", "trg", "denovo", "iorf"))
-data_neg <- remove_outliers(data_neg)
 
 p <- plot_data(data_neg,
   title = "Negative AA use distribution (D, E)",
@@ -518,7 +509,6 @@ if (!use_violins) {
 ### Proline glycine ###
 data_pro_gly <- data[data$feature == "proline.glycine_use", ]
 data_pro_gly$type <- factor(data_pro_gly$type, levels = c("cds", "trg", "denovo", "iorf"))
-data_pro_gly <- remove_outliers(data_pro_gly)
 
 p <- plot_data(data_pro_gly,
   title = "Proline and glycine use distribution",
@@ -539,7 +529,6 @@ if (!use_violins) {
 ### Cysteine ###
 data_cys <- data[data$feature == "cysteine_use", ]
 data_cys$type <- factor(data_cys$type, levels = c("cds", "trg", "denovo", "iorf"))
-data_cys <- remove_outliers(data_cys)
 
 p <- plot_data(data_cys,
   title = "Cysteine use distribution",
@@ -560,7 +549,6 @@ if (!use_violins) {
 ### Alanine ###
 data_ala <- data[data$feature == "alanine_use", ]
 data_ala$type <- factor(data_ala$type, levels = c("cds", "trg", "denovo", "iorf"))
-data_ala <- remove_outliers(data_ala)
 
 p <- plot_data(data_ala,
   title = "Alanine use distribution",
