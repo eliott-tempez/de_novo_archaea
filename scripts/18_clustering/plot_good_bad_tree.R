@@ -154,7 +154,9 @@ p <- gheatmap(p, data[, "n_bad_candidates", drop = FALSE], offset = 1.5,
 
 # Add the title
 p <- p + ggtitle("Integrity of the denovo NC matches\nand location of the cluster LCAs") +
-  theme(plot.title = element_text(hjust = 0.5, vjust = -10))
+  theme(plot.title = element_text(hjust = 0.5, vjust = -10),
+        legend.text = element_text(size = 12),
+        legend.title = element_text(size = 14))
 
 # Add the points
 p <- p + new_scale_fill()
@@ -162,7 +164,8 @@ p <- p + geom_point(data = cluster_lcas_summary,
           aes(x = x, y = y, fill = uni_group),
           inherit.aes = FALSE, shape = 21,
           color = "black", stroke = 0.5) +
-  scale_fill_manual(values = "#c51515", name = "")
+  scale_fill_manual(values = "#c51515", name = "",
+                    guide = guide_legend(override.aes = list(size = 4)))
 p
 
 ggsave(paste0(output_dir, "denovo_good_bad.png"))
