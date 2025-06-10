@@ -85,8 +85,6 @@ species_GCA <- genomes[which(grepl("GCA", rownames(data)))]
 # Intergenic mean lengths
 intergenic <- read.table(intergenic_file, header = TRUE, sep = "\t", row.names = 1)
 
-
-
 ########### Tree plot ###########
 # Read the tree
 tree <- read.tree(tree_file)
@@ -96,28 +94,29 @@ p <- ggtree(tree, layout = "circular", branch.length = "none")
 ## De novo ##
 p <- p + new_scale_fill()
 p <- gheatmap(p, data[, "n_denovo", drop = FALSE],
-              width = .05, colnames = FALSE) +
+        width = .05, colnames = FALSE) +
   scale_fill_gradient(low = "white", high = "black", name = "De novo (#)",
-                      guide = guide_colorbar(order = 1))
+            guide = guide_colorbar(order = 1))
 ## TRGs ##
 p <- p + new_scale_fill()
 p <- gheatmap(p, data[, "n_trg", drop = FALSE], offset = 1,
-              width = .05, colnames = FALSE) +
+        width = .05, colnames = FALSE) +
   scale_fill_gradient(low = "white", high = "red", name = "TRGs (#)",
-                      guide = guide_colorbar(order = 2), limits = c(0, max(data$n_trg)))
+            guide = guide_colorbar(order = 2), limits = c(0, max(data$n_trg)))
 ## TRGs normalised ##
 p <- p + new_scale_fill()
 p <- gheatmap(p, data[, "gc_perc", drop = FALSE], offset = 2,
-              width = .05, colnames = FALSE) +
+        width = .05, colnames = FALSE) +
   scale_fill_gradient(low = "#009E73", high = "#6b00b2", name = "GC %",
-                      guide = guide_colorbar(order = 3))
+            guide = guide_colorbar(order = 3))
 
 # Add the title
 p <- p + ggtitle("Number of de novo genes,TRGs and GC rate for each genome") +
-  theme(plot.title = element_text(hjust = 0.5, vjust = -10))
+  theme(plot.title = element_text(hjust = 0.5, vjust = -10),
+    legend.text = element_text(size = 12),
+    legend.title = element_text(size = 14))
 p
-
-#ggsave(paste0(output_dir, "denovo_trg_116.png"))
+ggsave(paste0(output_dir, "denovo_trg_116.png"))
 
 
 
@@ -152,18 +151,18 @@ p <- ggplot(data, aes(x = n_denovo, y = n_trg)) +
   labs(title = "Correlation between the number of de novo genes and TRGs",
        x = "Number of de novo genes",
        y = "Number of TRGs") +
-  theme(plot.title = element_text(hjust = 0.5, vjust = -10))
-
+  theme(plot.title = element_text(size = 16),
+        axis.title = element_text(size = 16),
+        axis.text = element_text(size = 14))
 
 # Non parametric correlation
-#cor.test(data$n_trg, data$n_denovo, method = "pearson")
 spcor <- cor.test(data$n_denovo, data$n_trg, method = "spearman")
 kecor <- cor.test(data$n_denovo, data$n_trg, method = "kendall")
 # Write the results on the plot
-p <- p + annotate("text", x = 0.8 * max(data$n_denovo), y = 0.9 * max(data$n_trg),
+p <- p + annotate("text", x = 0.7 * max(data$n_denovo), y = 0.9 * max(data$n_trg),
                   label = paste0("Spearman's rho: ", round(spcor$estimate, 2), " (p = ", round(spcor$p.value, 3), ")\n",
                                  "Kendall's tau: ", round(kecor$estimate, 2), " (p = ", round(kecor$p.value, 3), ")"),
-                  size = 4, color = "black") +
+                  size = 5, color = "black") +
     ylim(0, max(data$n_trg) * 1.1)
 p
 ggsave(paste0(output_dir, "denovo_trg_correlation_116.png"))
