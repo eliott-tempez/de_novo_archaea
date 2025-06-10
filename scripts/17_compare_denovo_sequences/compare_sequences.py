@@ -280,9 +280,9 @@ def process_cds(cds):
     nuc_seq = all_cdss[cds]["sequence"]
     gc_seq = GC(nuc_seq)
     gc_species = all_cdss[cds]["gen_gc"]
-    inter_gc_species = all_cdss[cds]["intergenic_gc"]
+    iorfs_gc_species = all_cdss[cds]["iorfs_gc"]
     gc_rate = gc_seq / gc_species
-    inter_gc_rate = gc_seq / inter_gc_species
+    iorfs_gc_rate = gc_seq / iorfs_gc_species
     # Translate nucleotide to protein sequence and remove stop/unknowns
     prot_seq = re.sub(r"[\*X]", "", str(nuc_seq.translate(table=11)))
     # Analyse protein properties
@@ -300,7 +300,7 @@ def process_cds(cds):
     disord = get_iupred(cds, all_cdss)
     aggreg = get_tango(cds, all_cdss)
     # Collect the basic result values
-    result = [genome, cds, gc_rate, aromaticity, instability, mean_flexibility, hydropathy, length, hca, disord, aggreg, inter_gc_rate, gc_species, inter_gc_species]
+    result = [genome, cds, gc_rate, aromaticity, instability, mean_flexibility, hydropathy, length, hca, disord, aggreg, iorfs_gc_rate, gc_species, iorfs_gc_species]
     # Amino acid usage
     aa_use = analysis.amino_acids_percent
     sorted_aa_use = {key: value for key, value in sorted(aa_use.items())}
@@ -338,7 +338,7 @@ if __name__ == "__main__":
     for genome in genomes:
         # Get the species gc content
         genome_gc = get_species_gc_content(genome)
-        iorfs_dict, intergenic_gc = get_species_iorf_gc(genome)
+        iorfs_dict, iorfs_gc = get_species_iorf_gc(genome)
         # Extract de novo names
         if not GOOD_CANDIDATES_ONLY:
             denovo_names += extract_denovo_names(genome)
@@ -353,7 +353,7 @@ if __name__ == "__main__":
         for cds in all_cds_gen:
             all_cds_gen[cds]["genome"] = genome
             all_cds_gen[cds]["gen_gc"] = genome_gc
-            all_cds_gen[cds]["intergenic_gc"] = intergenic_gc
+            all_cds_gen[cds]["iorfs_gc"] = iorfs_gc
         all_cdss.update(all_cds_gen)
         cds_names += all_cds_gen.keys()
 
@@ -389,5 +389,5 @@ if __name__ == "__main__":
     print("\nDone!")
 
     # Save the results
-    df = pd.DataFrame(results, columns=["genome", "cds", "gc_rate", "aromaticity", "instability", "mean_flexibility", "hydropathy", "length", "hca", "disord", "aggreg", "inter_gc_rate", "gc_species", "inter_gc_species"] + [f"{a}_use" for a in SORTED_AA] + ["polar_use", "hydrophobic_use", "positive_use", "negative_use", "proline-glycine_use", "alanine_use", "cysteine_use"] + ["type"])
+    df = pd.DataFrame(results, columns=["genome", "cds", "gc_rate", "aromaticity", "instability", "mean_flexibility", "hydropathy", "length", "hca", "disord", "aggreg", "iorfs_gc_rate", "gc_species", "iorfs_gc_species"] + [f"{a}_use" for a in SORTED_AA] + ["polar_use", "hydrophobic_use", "positive_use", "negative_use", "proline-glycine_use", "alanine_use", "cysteine_use"] + ["type"])
     df.to_csv(os.path.join(OUT_DIR, "sequence_features_good_candidates_all.csv"), sep="\t", index=False)
