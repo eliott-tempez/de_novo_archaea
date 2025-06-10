@@ -70,6 +70,18 @@ def extract_denovo_names(focal_species, use_good_candidates=False):
     return denovo_names
 
 
+def extract_intergenic_gc(genome):
+    file = "intergenic_gc.tsv"
+    with open(file, "r") as f:
+        for line in f:
+            line_split = line.strip().split("\t")
+            genome_file = line_split[0]
+            gc = line_split[0]
+            if genome_file == genome:
+                return float(gc)
+
+
+
 def get_species_gc_content(genome):
     fa_file = os.path.join(FA_DIR, genome + ".fa")
     if not os.path.exists(fa_file):
@@ -81,6 +93,9 @@ def get_species_gc_content(genome):
 
 
 def get_species_iorf_gc(genome):
+    # Extract intergenic gc
+    inter_gc = extract_intergenic_gc(genome)
+
     iorfs_dict = {}
     concat_seq = ""
 
@@ -99,7 +114,7 @@ def get_species_iorf_gc(genome):
         # Add the iorfs to the dict
         iorfs_dict[f"{genome}_iorf_{i}"] = {"sequence": Seq(seq)}
     
-    return iorfs_dict, GC(concat_seq)
+    return iorfs_dict, GC(concat_seq), inter_gc
 
 
 def get_hcas(cds_names, all_cdss):
@@ -281,8 +296,10 @@ def process_cds(cds):
     gc_seq = GC(nuc_seq)
     gc_species = all_cdss[cds]["gen_gc"]
     iorfs_gc_species = all_cdss[cds]["iorfs_gc"]
+    inter_gc_species = all_cdss[cds]["inter_gc"]
     gc_rate = gc_seq / gc_species
     iorfs_gc_rate = gc_seq / iorfs_gc_species
+    inter_gc_rate = gc_seq / inter_gc_species
     # Translate nucleotide to protein sequence and remove stop/unknowns
     prot_seq = re.sub(r"[\*X]", "", str(nuc_seq.translate(table=11)))
     # Analyse protein properties
@@ -300,7 +317,7 @@ def process_cds(cds):
     disord = get_iupred(cds, all_cdss)
     aggreg = get_tango(cds, all_cdss)
     # Collect the basic result values
-    result = [genome, cds, gc_rate, aromaticity, instability, mean_flexibility, hydropathy, length, hca, disord, aggreg, iorfs_gc_rate, gc_species, iorfs_gc_species]
+    result = [genome, cds, gc_rate, aromaticity, instability, mean_flexibility, hydropathy, length, hca, disord, aggreg, iorfs_gc_rate, gc_species, iorfs_gc_species, gc_seq, inter_gc_species, inter_gc_rate]
     # Amino acid usage
     aa_use = analysis.amino_acids_percent
     sorted_aa_use = {key: value for key, value in sorted(aa_use.items())}
@@ -338,7 +355,7 @@ if __name__ == "__main__":
     for genome in genomes:
         # Get the species gc content
         genome_gc = get_species_gc_content(genome)
-        iorfs_dict, iorfs_gc = get_species_iorf_gc(genome)
+        iorfs_dict, iorfs_gc, inter_gc = get_species_iorf_gc(genome)
         # Extract de novo names
         if not GOOD_CANDIDATES_ONLY:
             denovo_names += extract_denovo_names(genome)
@@ -354,6 +371,7 @@ if __name__ == "__main__":
             all_cds_gen[cds]["genome"] = genome
             all_cds_gen[cds]["gen_gc"] = genome_gc
             all_cds_gen[cds]["iorfs_gc"] = iorfs_gc
+            all_cds_gen[cds]["inter_gc"] = inter_gc
         all_cdss.update(all_cds_gen)
         cds_names += all_cds_gen.keys()
 
@@ -389,5 +407,5 @@ if __name__ == "__main__":
     print("\nDone!")
 
     # Save the results
-    df = pd.DataFrame(results, columns=["genome", "cds", "gc_rate", "aromaticity", "instability", "mean_flexibility", "hydropathy", "length", "hca", "disord", "aggreg", "iorfs_gc_rate", "gc_species", "iorfs_gc_species"] + [f"{a}_use" for a in SORTED_AA] + ["polar_use", "hydrophobic_use", "positive_use", "negative_use", "proline-glycine_use", "alanine_use", "cysteine_use"] + ["type"])
+    df = pd.DataFrame(results, columns=["genome", "cds", "gc_rate", "aromaticity", "instability", "mean_flexibility", "hydropathy", "length", "hca", "disord", "aggreg", "iorfs_gc_rate", "gc_species", "iorfs_gc_species", "gc_seq", "inter_gc_species", "inter_gc_rate"] + [f"{a}_use" for a in SORTED_AA] + ["polar_use", "hydrophobic_use", "positive_use", "negative_use", "proline-glycine_use", "alanine_use", "cysteine_use"] + ["type"])
     df.to_csv(os.path.join(OUT_DIR, "sequence_features_good_candidates_all.csv"), sep="\t", index=False)

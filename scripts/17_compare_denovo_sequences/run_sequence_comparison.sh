@@ -12,6 +12,7 @@
 SCRIPTS=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/stage/M2_stage_I2BC/scripts
 GOOD_CANDIDATES=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/stage/M2_stage_I2BC/results/14_get_noncoding_match/good_candidates.txt
 IORF_FILE=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/stage/M2_stage_I2BC/results/17_compare_denovo_sequences/iorfs.txt
+INTERGENIC_GC=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/stage/M2_stage_I2BC/10_analyse_intergenic/intergenic_gc.tsv
 CONTAINER=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/programs/ORFmine/orfmine_latest.sif
 IUPRED_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/programs/iupred
 TANGO=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/programs/tango/tango_x86_64_release
@@ -37,6 +38,7 @@ cd $SCRATCH_DIR
 cp -r $SCRIPTS/* .
 cp $GOOD_CANDIDATES .
 cp $IORF_FILE .
+cp $INTERGENIC_GC .
 cp $CONTAINER .
 # Softwares
 cp -r $IUPRED_DIR/* .
