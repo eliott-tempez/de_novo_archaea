@@ -165,7 +165,7 @@ plot_data <- function(data_local,
     scale_y_continuous(breaks = y_scale)
 
   if (plot_pvals) {
-    p <- p + stat_pvalue_manual(pvals_local, label = "p.signif", inherit.aes = FALSE, hide.ns = TRUE, tip.length = tip_length)
+    p <- p + stat_pvalue_manual(pvals_local, label = "p.signif", inherit.aes = FALSE, hide.ns = TRUE, tip.length = tip_length, size = 5)
   }
 
   if (print_pval_labels) {
