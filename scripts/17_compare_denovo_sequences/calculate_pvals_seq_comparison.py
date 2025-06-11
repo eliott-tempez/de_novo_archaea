@@ -6,6 +6,7 @@ import pandas as pd
 from Bio import SeqIO
 from Bio.SeqUtils import GC
 from multiprocessing import Pool, cpu_count
+from itertools import combinations
 
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -27,6 +28,33 @@ def get_species_gc_content(genome):
     return GC(seq)
 
 
+def get_all_medians(descriptors_df, descriptors, indexes):
+    medians = {}
+    # Calculate all the medians
+    for type in indexes:
+        medians[type] = {}
+        for bin in indexes[type]:
+            medians[type][bin] = {}
+            for descriptor in descriptors:
+                subdf = descriptors_df.iloc[indexes[type][bin]]
+                median = subdf[descriptor].median()
+                medians[type][bin][descriptor] = median
+    return medians
+
+
+def get_which_way(medians, type1, type2, bin1, bin2, descriptors):
+    # Determine which way to compare based on the medians if one_sided
+    ways = {}
+    for descriptor in descriptors:
+        median_1 = medians[type1][bin1][descriptor]
+        median_2 = medians[type2][bin2][descriptor]
+        if median_1 >= median_2:
+            ways[descriptor] = "df1>df2"
+        else:
+            ways[descriptor] = "df1<df2"
+    return ways
+
+
 def get_bin_indexes(descriptors_df, gc_dict, bin_limits):
     binned_indexes = []
     for i in range(len(bin_limits) - 1):
@@ -37,7 +65,7 @@ def get_bin_indexes(descriptors_df, gc_dict, bin_limits):
     return binned_indexes
 
 
-def get_median_diff(df1, df2):
+def get_median_diff(df1, df2, ways):
     # Get the median differences for each descriptor
     median_diff = {}
     for descriptor in df1.columns:
@@ -47,9 +75,9 @@ def get_median_diff(df1, df2):
                 median_diff[descriptor] = abs(df1[descriptor].median() - df2[descriptor].median())
             # Else, take the difference from the highest median
             else:
-                if df1[descriptor].median() > df2[descriptor].median():
+                if ways[descriptor] == "df1>df2":
                     median_diff[descriptor] = df1[descriptor].median() - df2[descriptor].median()
-                else:
+                elif ways[descriptor] == "df1<df2":
                     median_diff[descriptor] = df2[descriptor].median() - df1[descriptor].median()
     return median_diff
 
@@ -102,7 +130,7 @@ def calculate_pvalues(signif_results, descriptors):
 
 
 def run_single_iteration(args):
-    i, n_to_sample, bin_indexes, descriptors_df, descriptors = args
+    i, n_to_sample, bin_indexes, descriptors_df, descriptors, medians = args
     from itertools import combinations
 
     samples = {}
@@ -120,9 +148,14 @@ def run_single_iteration(args):
         type1, bin1 = conf1
         type2, bin2 = conf2
 
+        # Get which way to do the test
+        ways = None
+        if not TWO_SIDED:
+            ways = get_which_way(medians, type1, type2, bin1, bin2, descriptors)
+
         df1 = descriptors_df.iloc[samples[conf1]]
         df2 = descriptors_df.iloc[samples[conf2]]
-        median_diff = get_median_diff(df1, df2)
+        median_diff = get_median_diff(df1, df2, ways)
         pool1, pool2 = pool_cdss(df1, df2)
         random_diff = get_median_diff(pool1, pool2)
         result = compare_medians(median_diff, random_diff, type1, type2, bin1, bin2)
@@ -200,10 +233,15 @@ if __name__ == "__main__":
     signif_columns = ["type1", "type2", "bin1", "bin2"] + descriptors
     signif_results = pd.DataFrame(columns=signif_columns)
 
+    # Calculate the global medians to know which way to compare
+    medians = None
+    if not TWO_SIDED:
+        medians = get_all_medians(descriptors_df, descriptors, bin_indexes)
+
 
     # Prepare args for each process
     iteration_args = [
-        (i, n_to_sample, bin_indexes, descriptors_df, descriptors)
+        (i, n_to_sample, bin_indexes, descriptors_df, descriptors, medians)
         for i in range(n)
     ]
 
