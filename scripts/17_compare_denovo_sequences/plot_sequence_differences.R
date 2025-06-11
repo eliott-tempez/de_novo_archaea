@@ -282,7 +282,7 @@ data_gc_inter$type <- factor(data_gc_inter$type, levels = c("cds", "trg", "denov
 
 p <- plot_data(data_gc_inter,
           title = "GC ratio distribution (intergenic)",
-          y_axis = "GC ratio: sequence GC % / intergenic ORFs GC %",
+          y_axis = "GC ratio: sequence GC % / intergenic GC %",
           y_scale = seq(0, 1.4, 0.2),
           factor = 0.05,
           tip_length = 0.005,
@@ -293,6 +293,27 @@ if (!use_violins) {
   ggsave(paste0(out_folder, "/gc_content_intergenic.png"))
 } else {
   ggsave(paste0(out_folder, "/gc_content_intergenic_violin.png"))
+}
+
+
+
+##### GC rate (iORFs) #####
+data_gc_iorf <- data[data$feature == "iorfs_gc_rate", ]
+data_gc_iorf$type <- factor(data_gc_iorf$type, levels = c("cds", "trg", "denovo", "iorf"))
+
+p <- plot_data(data_gc_iorf,
+          title = "GC ratio distribution (iORFs)",
+          y_axis = "GC ratio: sequence GC % / iORFs GC %",
+          y_scale = seq(0, 1.4, 0.2),
+          factor = 0.05,
+          tip_length = 0.005,
+          pval_ypos = 1.8)
+p
+
+if (!use_violins) {
+  ggsave(paste0(out_folder, "/gc_content_iorfs.png"))
+} else {
+  ggsave(paste0(out_folder, "/gc_content_iorfs_violin.png"))
 }
 
 
