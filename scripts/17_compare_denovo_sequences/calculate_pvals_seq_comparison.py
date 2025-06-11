@@ -30,15 +30,16 @@ def get_species_gc_content(genome):
 
 def get_all_medians(descriptors_df, descriptors, indexes):
     medians = {}
+    n_bins = len(indexes["denovo"])
     # Calculate all the medians
     for type in indexes:
         medians[type] = {}
-        for bin in indexes[type]:
-            medians[type][bin] = {}
+        for ibin in range(n_bins):
+            medians[type][ibin] = {}
             for descriptor in descriptors:
-                subdf = descriptors_df.iloc[indexes[type][bin]]
+                subdf = descriptors_df.iloc[indexes[type][ibin]]
                 median = subdf[descriptor].median()
-                medians[type][bin][descriptor] = median
+                medians[type][ibin][descriptor] = median
     return medians
 
 
