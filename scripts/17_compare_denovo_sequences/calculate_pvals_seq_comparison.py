@@ -158,7 +158,7 @@ def run_single_iteration(args):
         df2 = descriptors_df.iloc[samples[conf2]]
         median_diff = get_median_diff(df1, df2, ways)
         pool1, pool2 = pool_cdss(df1, df2)
-        random_diff = get_median_diff(pool1, pool2)
+        random_diff = get_median_diff(pool1, pool2, ways)
         result = compare_medians(median_diff, random_diff, type1, type2, bin1, bin2)
         iteration_results = pd.concat([iteration_results, result], ignore_index=True)
 
