@@ -1,4 +1,4 @@
-BEGIN {
+awk 'BEGIN {
         FS = OFS = "\t"
     }
     NR==FNR {
