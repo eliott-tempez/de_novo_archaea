@@ -10,14 +10,23 @@ library(ggpubr)
 
 
 save_plots <- TRUE
+home <- TRUE
 
 
 # Files
-input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/sequence_features_good_candidates_all.csv"
-good_candidates_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/good_candidates.txt"
-all_denovo_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/all_denovo.txt"
-pvals_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/good_bad/pvalues_good_bad.csv"
-out_folder <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/good_bad/"
+if (!home){
+  input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/sequence_features_good_candidates_all.csv"
+  good_candidates_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/good_candidates.txt"
+  all_denovo_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/all_denovo.txt"
+  pvals_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/good_bad/pvalues_good_bad.csv"
+  out_folder <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/good_bad/"
+} else {
+  input_files <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/17_compare_denovo_sequences/sequence_features_good_candidates_all.csv"
+  good_candidates_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/14_get_noncoding_match/good_candidates.txt"
+  all_denovo_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/14_get_noncoding_match/all_denovo.txt"
+  pvals_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/17_compare_denovo_sequences/good_bad/pvalues_good_bad.csv"
+  out_folder <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/17_compare_denovo_sequences/good_bad/"
+}
 
 
 # Read data
@@ -25,6 +34,8 @@ data <- read.table(input_file, header = TRUE, sep = "\t")
 pvals <- read.table(pvals_file, header = TRUE, sep = "\t")
 # Pivot to longer format
 descriptors <- setdiff(colnames(data), c("genome", "cds", "type"))
+not_present <- setdiff(descriptors, colnames(pvals))
+descriptors <- setdiff(descriptors, not_present)
 data <- pivot_longer(data, cols = all_of(descriptors), names_to = "feature", values_to = "value")
 pvals <- pivot_longer(pvals, cols = all_of(descriptors), names_to = "feature", values_to = "pval")
 pvals$p <- pvals$pval
@@ -95,25 +106,38 @@ get_pvals <- function(desc, data, fact, non_signif = FALSE) {
 }
 
 
+remove_outliers <- function(data) {
+  # Remove outliers
+  data <- data %>%
+    filter(!is.na(value)) %>%
+    group_by(type) %>%
+    mutate(value = ifelse(value > quantile(value, 0.75) + IQR(value) * 1.5, NA, value)) %>%
+    filter(!is.na(value)) %>%
+    mutate(value = ifelse(value < quantile(value, 0.25) - IQR(value) * 1.5, NA, value)) %>%
+    filter(!is.na(value)) %>%
+    ungroup()
+  return(data)
+}
+
+
 
 # Get the plot
 get_plot <- function(data, data_summary, feature, title, print_pval = c(NA), scale_y = c(NA), n_y_pos = NA) {
 
+  data_sans_outliers <- remove_outliers(data)
+
   p <- ggplot(data, aes(x = type, y = value, fill = type)) +
-    geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
+    geom_violin(data = data_sans_outliers, na.rm = TRUE, colour = "#2c2c2c", scale = "width", alpha = 0.8) +
+    geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE, width = 0.2, alpha = 0.8) +
     labs(title = "",
-         x = "Type of de novo gene",
+         x = "",
          y = title) +
     scale_fill_manual(values = c("#4f535a", "#179207")) +
     theme_minimal() +
     scale_x_discrete(labels = c("Integrity", "No integrity")) +
-    theme(axis.text.x = element_text(size = 20),
-          axis.title.x = element_text(size = 20),
-          axis.title.y = element_text(size = 20),
-          axis.text.y = element_text(size = 16),
-          plot.title = element_text(hjust = 0.5),
-          legend.text = element_text(size = 16),
-          legend.title = element_blank(),
+    theme(axis.text.x = element_text(size = 22),
+          axis.title.y = element_text(size = 24),
+          axis.text.y = element_text(size = 22),
           legend.position = "none")
 
 
@@ -129,7 +153,7 @@ get_plot <- function(data, data_summary, feature, title, print_pval = c(NA), sca
                     label = paste0("n = ", n),
                     group = type),
                 position = position_dodge(width = 0.75), 
-                vjust = -0.5, size = 4)
+                vjust = -0.5, size = 8)
   }
 
   if (!all(is.na(print_pval))) {
@@ -146,7 +170,7 @@ get_plot <- function(data, data_summary, feature, title, print_pval = c(NA), sca
                            inherit.aes = FALSE,
                            hide.ns = FALSE,
                            tip.length = 0.01,
-                           label.size = 5)
+                           label.size = 10)
     }
   }
   return(p)
@@ -222,7 +246,7 @@ if (save_plots) {
 
 
 ###### GC ratio (intergenic) ######
-data_gc_inter <- data[data$feature == "inter_gc_rate", ]
+data_gc_inter <- data[data$feature == "iorfs_gc_rate", ]
 data_gc_inter$type <- factor(data_gc_inter$type, levels = c("bad", "good"))
 
 # Pvals
@@ -442,62 +466,6 @@ if (save_plots) {
 }
 
 
-
-
-###### GC % ######
-data_gc_species <- data[data$feature == "gc_species", ]
-data_gc_species$value <- data_gc_species$value / 100
-data_gc_species$type <- factor(data_gc_species$type, levels = c("bad", "good"))
-
-# Pvals
-pval_pos <- 0.5
-only_ns <- FALSE
-y_annotation <- 0.55
-pval_vect <- c(pval_pos, only_ns, y_annotation)
-
-# Plot
-p <- get_plot(data_gc_species,
-              data_summary,
-              "gc_species",
-              "GC % in the species",
-              n_y_pos = 0.35,
-              print_pval = pval_vect,
-              scale_y = seq(0, 1, 0.05))
-p
-
-# Save the plot
-if (save_plots) {
-  ggsave(paste0(out_folder, "/gc_species.png"), plot = p)
-}
-
-
-
-
-###### iORF GC % ######
-data_gc_iORF <- data[data$feature == "inter_gc_species", ]
-data_gc_iORF$value <- data_gc_iORF$value / 100
-data_gc_iORF$type <- factor(data_gc_iORF$type, levels = c("bad", "good"))
-
-# Pvals
-pval_pos <- 0.5
-only_ns <- FALSE
-y_annotation <- 0.55
-pval_vect <- c(pval_pos, only_ns, y_annotation)
-
-# Plot
-p <- get_plot(data_gc_iORF,
-              data_summary,
-              "inter_gc_species",
-              "iORF GC % in the species",
-              n_y_pos = 0.35,
-              print_pval = pval_vect,
-              scale_y = seq(0,1, 0.05))
-p
-
-# Save the plot
-if (save_plots) {
-  ggsave(paste0(out_folder, "/gc_species_iorf.png"), plot = p)
-}
 
 
 
