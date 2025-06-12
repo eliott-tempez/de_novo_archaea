@@ -36,7 +36,7 @@ def get_nc_placement(genome, denovo, nc_genome):
     start_loci = tblastn_df_denov.iloc[0]["sstart"] - 1 if strand == "+" else tblastn_df_denov.iloc[0]["send"] - 1
     end_loci = tblastn_df_denov.iloc[0]["send"] if strand == "+" else tblastn_df_denov.iloc[0]["sstart"]
     # Get the position and the qcov
-    loci = [contig, int(start_loci), int(end_loci), strand]
+    loci = (contig, int(start_loci), int(end_loci), strand)
     qcov = tblastn_df_denov.iloc[0]["qcov"]
     return loci, qcov
 
@@ -107,18 +107,17 @@ def get_denovo_info(genome):
 
         denovo_dict[denovo]["nc_matches"] = nc_matches_dict
     return denovo_dict
+
+
+def get_sequence_from_loci(genome, contig, start, end, strand):
+    fa_file = os.path.join(FA_DIR, genome + ".fa")
+
+    for record in SeqIO.parse(fa_file, "fasta"):
+        if str(record.name) == str(contig):
+            seq = record.seq[start:end]
+    return seq if strand == "+" else seq.reverse_complement()
+
                 
-                
-        
-    
-
-
-
-
-
-
-
-
 
 
 
@@ -137,5 +136,51 @@ if __name__ == "__main__":
         if denovo_info_local == {}:
             continue
         denovo_info.update(denovo_info_local)
+    
+
+    qcov_dict = {}
+    # For each denovo
+    for denovo in denovo_info:
+        qcov_dict[denovo] = {}
+        # Get the denovo sequence
+        denovo_seq = denovo_info[denovo]["sequence"]
+        # For each species in each outgroup (last and ante-last)
+        for outgroup in denovo_info[denovo]["nc_matches"]:
+            qcov_dict[denovo][outgroup] = {}
+            for neighbor_sp in denovo_info[denovo]["nc_matches"][outgroup]:
+                # Get the nc match sequence
+                nc_loci = denovo_info[denovo]["nc_matches"][outgroup][neighbor_sp]["loci"]
+                nc_seq = str(get_sequence_from_loci(*nc_loci).translate(table=11))
+                # Get the location of the stop codons
+                stops = [pos for pos, char in enumerate(nc_seq) if char == "*"]
+                # Get the longest orf
+                match_stops = [0] + stops + [len(nc_seq) - 1]
+                longest_orf = 0
+                for i in range(len(match_stops) - 1):
+                    orf_len = match_stops[i + 1] - match_stops[i] - 1
+                    if orf_len > longest_orf:
+                        longest_orf = orf_len
+
+                # Get the coverages
+                qcov = denovo_info[denovo]["nc_matches"][outgroup][neighbor_sp]["qcov"]
+                qcov_orf = (longest_orf / len(denovo_seq)) * 100
+                qcov_dict[denovo][outgroup][neighbor_sp] = {
+                    "qcov": qcov,
+                    "qcov_orf": qcov_orf
+                }
+
+
+    # Save the qcov_dict to a file
+    qcov_file = os.path.join(OUT_FOLDER, "nc_coverage.tsv")
+    with open(qcov_file, "w") as f:
+        f.write("denovo\toutgroup\tneighbor_sp\tqcov\tqcov_orf\n")
+        for denovo in qcov_dict:
+            for outgroup in qcov_dict[denovo]:
+                for neighbor_sp in qcov_dict[denovo][outgroup]:
+                    qcov = qcov_dict[denovo][outgroup][neighbor_sp]["qcov"]
+                    qcov_orf = qcov_dict[denovo][outgroup][neighbor_sp]["qcov_orf"]
+                    f.write(f"{denovo}\t{outgroup}\t{neighbor_sp}\t{qcov}\t{qcov_orf}\n")
+                
+
 
     
