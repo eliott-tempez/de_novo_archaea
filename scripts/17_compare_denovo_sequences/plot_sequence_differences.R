@@ -15,7 +15,7 @@ ggsave <- function(..., bg = "white",
 }
 
 
-home <- FALSE
+home <- TRUE
 use_violins <- TRUE
 print_pval_labels <- FALSE
 ONE_SIDED <- TRUE
@@ -193,7 +193,7 @@ plot_data <- function(data_local,
     scale_y_continuous(breaks = y_scale)
 
   if (plot_pvals) {
-    p <- p + stat_pvalue_manual(pvals_local, label = "p.signif", inherit.aes = FALSE, hide.ns = TRUE, tip.length = 0, size = 9)
+    p <- p + stat_pvalue_manual(pvals_local, label = "p.signif", inherit.aes = FALSE, hide.ns = TRUE, tip.length = 0, size = 10)
   }
 
   if (print_pval_labels) {
@@ -248,11 +248,13 @@ p <- plot_data(data_len,
                y_scale = seq(0, 800, 200))
 p
 
-if (!use_violins) {
-  ggsave(paste0(out_folder, "/sequence_length.png"))
-} else {
-  ggsave(paste0(out_folder, "/sequence_length_violin.png"))
+file_name <- paste0(out_folder, "sequence_length")
+if (use_violins) {
+  file_name <- paste0(file_name, "_violin")
 }
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
 
 
 ##### GC rate #####
@@ -268,11 +270,13 @@ p <- plot_data(data_gc,
           pval_ypos = 1.8)
 p
 
-if (!use_violins) {
-  ggsave(paste0(out_folder, "/gc_content.png"))
-} else {
-  ggsave(paste0(out_folder, "/gc_content_violin.png"))
+file_name <- paste0(out_folder, "gc_content")
+if (use_violins) {
+  file_name <- paste0(file_name, "_violin")
 }
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
 
 
 
@@ -289,11 +293,14 @@ p <- plot_data(data_gc_inter,
           pval_ypos = 1.8)
 p
 
-if (!use_violins) {
-  ggsave(paste0(out_folder, "/gc_content_intergenic.png"))
-} else {
-  ggsave(paste0(out_folder, "/gc_content_intergenic_violin.png"))
+
+file_name <- paste0(out_folder, "gc_content_intergenic")
+if (use_violins) {
+  file_name <- paste0(file_name, "_violin")
 }
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
 
 
 
@@ -310,11 +317,13 @@ p <- plot_data(data_gc_iorf,
           pval_ypos = 1.8)
 p
 
-if (!use_violins) {
-  ggsave(paste0(out_folder, "/gc_content_iorfs.png"))
-} else {
-  ggsave(paste0(out_folder, "/gc_content_iorfs_violin.png"))
+file_name <- paste0(out_folder, "gc_content_iorfs")
+if (use_violins) {
+  file_name <- paste0(file_name, "_violin")
 }
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
 
 
 
@@ -331,11 +340,13 @@ p <- plot_data(data_aro,
           pval_ypos = 0.3)
 p
 
-if (!use_violins) {
-  ggsave(paste0(out_folder, "/aromaticity.png"))
-} else {
-  ggsave(paste0(out_folder, "/aromaticity_violin.png"))
+file_name <- paste0(out_folder, "aromaticity")
+if (use_violins) {
+  file_name <- paste0(file_name, "_violin")
 }
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
 
 
 
@@ -352,11 +363,13 @@ p <- plot_data(data_inst,
           pval_ypos = 180)
 p
 
-if (!use_violins) {
-  ggsave(paste0(out_folder, "/instability_index.png"))
-} else {
-  ggsave(paste0(out_folder, "/instability_index_violin.png"))
+file_name <- paste0(out_folder, "instability_index")
+if (use_violins) {
+  file_name <- paste0(file_name, "_violin")
 }
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
 
 
 
@@ -373,11 +386,13 @@ p <- plot_data(data_flex,
           pval_ypos = 1.05)
 p
 
-if (!use_violins) {
-  ggsave(paste0(out_folder, "/mean_flexibility.png"))
-} else {
-  ggsave(paste0(out_folder, "/mean_flexibility_violin.png"))
+file_name <- paste0(out_folder, "mean_flexibility")
+if (use_violins) {
+  file_name <- paste0(file_name, "_violin")
 }
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
 
 
 
@@ -394,11 +409,13 @@ p <- plot_data(data_hydro,
           pval_ypos = 2.2)
 p
 
-if (!use_violins) {
-  ggsave(paste0(out_folder, "/hydrophobicity.png"))
-} else {
-  ggsave(paste0(out_folder, "/hydrophobicity_violin.png"))
+file_name <- paste0(out_folder, "hydrophobicity")
+if (use_violins) {
+  file_name <- paste0(file_name, "_violin")
 }
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
 
 
 
@@ -415,11 +432,13 @@ p <- plot_data(data_hca,
           pval_ypos = 18)
 p
 
-if (!use_violins) {
-  ggsave(paste0(out_folder, "/hca.png"))
-} else {
-  ggsave(paste0(out_folder, "/hca_violin.png"))
+file_name <- paste0(out_folder, "hca")
+if (use_violins) {
+  file_name <- paste0(file_name, "_violin")
 }
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
 
 
 
@@ -437,11 +456,13 @@ p <- plot_data(data_disord,
           pval_ypos = 1.5)
 p
 
-if (!use_violins) {
-  ggsave(paste0(out_folder, "/intrinsic_disorder.png"))
-} else {
-  ggsave(paste0(out_folder, "/intrinsic_disorder_violin.png"))
+file_name <- paste0(out_folder, "intrinsic_disorder")
+if (use_violins) {
+  file_name <- paste0(file_name, "_violin")
 }
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
 
 
 
@@ -459,11 +480,14 @@ p <- plot_data(data_agg,
           pval_ypos = 1.1)
 p
 
-if (!use_violins) {
-  ggsave(paste0(out_folder, "/aggregation.png"))
-} else {
-  ggsave(paste0(out_folder, "/aggregation_violin.png"))
+file_name <- paste0(out_folder, "aggregation")
+if (use_violins) {
+  file_name <- paste0(file_name, "_violin")
 }
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
+
 
 
 
@@ -482,11 +506,14 @@ p <- plot_data(data_polar,
           pval_ypos = 0.68)
 p
 
-if (!use_violins) {
-  ggsave(paste0(out_folder, "/aa_polar_use.png"))
-} else {
-  ggsave(paste0(out_folder, "/aa_polar_use_violin.png"))
+file_name <- paste0(out_folder, "aa_polar_use")
+if (use_violins) {
+  file_name <- paste0(file_name, "_violin")
 }
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
+
 
 ### hydrophobic ###
 data_hydro_use <- data[data$feature == "hydrophobic_use", ]
@@ -502,11 +529,14 @@ p <- plot_data(data_hydro_use,
 )
 p
 
-if (!use_violins) {
-  ggsave(paste0(out_folder, "/aa_hydrophobic_use.png"))
-} else {
-  ggsave(paste0(out_folder, "/aa_hydrophobic_use_violin.png"))
+file_name <- paste0(out_folder, "aa_hydrophobic_use")
+if (use_violins) {
+  file_name <- paste0(file_name, "_violin")
 }
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
+
 
 ### positive ###
 data_pos <- data[data$feature == "positive_use", ]
@@ -522,11 +552,14 @@ p <- plot_data(data_pos,
 )
 p
 
-if (!use_violins) {
-  ggsave(paste0(out_folder, "/aa_positive_use.png"))
-} else {
-  ggsave(paste0(out_folder, "/aa_positive_use_violin.png"))
+file_name <- paste0(out_folder, "aa_positive_use")
+if (use_violins) {
+  file_name <- paste0(file_name, "_violin")
 }
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
+
 
 ### negative ###
 data_neg <- data[data$feature == "negative_use", ]
@@ -542,11 +575,14 @@ p <- plot_data(data_neg,
 )
 p
 
-if (!use_violins) {
-  ggsave(paste0(out_folder, "/aa_negative_use.png"))
-} else {
-  ggsave(paste0(out_folder, "/aa_negative_use_violin.png"))
+file_name <- paste0(out_folder, "aa_negative_use")
+if (use_violins) {
+  file_name <- paste0(file_name, "_violin")
 }
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
+
 
 ### Proline glycine ###
 data_pro_gly <- data[data$feature == "proline.glycine_use", ]
@@ -562,11 +598,14 @@ p <- plot_data(data_pro_gly,
 )
 p
 
-if (!use_violins) {
-  ggsave(paste0(out_folder, "/aa_proline_glycine_use.png"))
-} else {
-  ggsave(paste0(out_folder, "/aa_proline_glycine_use_violin.png"))
+file_name <- paste0(out_folder, "aa_proline_glycine_use")
+if (use_violins) {
+  file_name <- paste0(file_name, "_violin")
 }
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
+
 
 ### Cysteine ###
 data_cys <- data[data$feature == "cysteine_use", ]
@@ -582,11 +621,14 @@ p <- plot_data(data_cys,
 )
 p
 
-if (!use_violins) {
-  ggsave(paste0(out_folder, "/aa_cysteine_use.png"))
-} else {
-  ggsave(paste0(out_folder, "/aa_cysteine_use_violin.png"))
+file_name <- paste0(out_folder, "aa_cysteine_use")
+if (use_violins) {
+  file_name <- paste0(file_name, "_violin")
 }
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
+
 
 ### Alanine ###
 data_ala <- data[data$feature == "alanine_use", ]
@@ -602,11 +644,14 @@ p <- plot_data(data_ala,
 )
 p
 
-if (!use_violins) {
-  ggsave(paste0(out_folder, "/aa_alanine_use.png"))
-} else {
-  ggsave(paste0(out_folder, "/aa_alanine_use_violin.png"))
+file_name <- paste0(out_folder, "aa_alanine_use")
+if (use_violins) {
+  file_name <- paste0(file_name, "_violin")
 }
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
+
 
 
 
