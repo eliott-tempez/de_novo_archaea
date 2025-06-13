@@ -17,4 +17,15 @@ cluster_paths:
   cds_dir: "cds/"
   gbk_dir: "gbk/"
   tree_file: "whole_tree.nwk"
+
+home_paths:
+  genera_dir: "/home/eliott/Documents/UNI/M2/Stage/data/genera/"
+  genomes_list: "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/scripts/6_genera_archaea/genomes_list.txt"
+  dense_dir: "/home/eliott/Documents/UNI/M2/Stage/data/dense/"
+  gff_dir: "/home/eliott/Documents/UNI/M2/Stage/data/gff/"
+  fa_dir: "/home/eliott/Documents/UNI/M2/Stage/data/fa/"
+  cds_dir: "/home/eliott/Documents/UNI/M2/Stage/data/dense/GCA_000007305@Pyrococcus_furiosus_DSM_3638/CDS/"
+  gbk_dir: "/home/eliott/Documents/UNI/M2/Stage/data/gbk/"
+  tree_file: "/home/eliott/Documents/UNI/M2/Stage/data/whole_tree.nwk"
+
   
