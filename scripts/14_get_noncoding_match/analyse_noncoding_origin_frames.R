@@ -1,4 +1,5 @@
 library(dplyr)
+library(tidyr)
 library(ggVennDiagram)
 library(ggplot2)
 
@@ -13,9 +14,12 @@ ggsave <- function(..., bg = "white",
 }
 
 
-input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/denovo_noncoding_status.tsv"
-out_folder <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match"
-#input_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/14_get_noncoding_match/denovo_noncoding_status.tsv"
+#input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/denovo_noncoding_status.tsv"
+#out_folder <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match"
+#cluster_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/18_clustering/good_candidates_clustering.tsv"
+input_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/14_get_noncoding_match/denovo_noncoding_status.tsv"
+out_folder <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/14_get_noncoding_match"
+cluster_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/18_clustering/good_candidates_clustering.tsv"
 
 
 
@@ -23,7 +27,12 @@ out_folder <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncod
 data <- read.table(input_file, header = TRUE, sep = "\t")
 # Remove columns that have 3 codons or less
 data[, c("intergenic", "f0", "f1", "f2")] <- lapply(data[, c("intergenic", "f0", "f1", "f2")], function(x) ifelse(x < 10, 0, x))
-
+# Add the clusters
+cluster_df <- read.table(cluster_file, header = FALSE, sep = "\t")
+colnames(cluster_df) <- c("cluster", "gene_id")
+data <- data %>%
+  left_join(cluster_df, by = "gene_id") %>%
+  mutate(cluster = ifelse(is.na(cluster), "no_cluster", cluster))
 
 
 
@@ -58,20 +67,6 @@ outgroups_count <- data %>%
 outgroup_count <- outgroups_count[c("gene_id", as.character(seq(1, 15)))]
 #write.table(outgroup_count, file = file.path(out_folder, "outgroup_count.tsv"),
 #            sep = "\t", row.names = FALSE, quote = FALSE)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -142,14 +137,30 @@ furthest_outgroup_data <- data %>%
 
 # Origin of the furthest outgroup
 furthest_data_origin <- furthest_outgroup_data %>%
-  group_by(gene_id) %>%
+  group_by(gene_id, cluster) %>%
   summarise(
     intergenic = sum(intergenic > 0),
     f0 = sum(f0 > 0),
     f1 = sum(f1 > 0),
     f2 = sum(f2 > 0),
-    n = n()
+    n = n(),
+    .groups = "drop"
   )
+
+# Print the ones that are not 100% intergenic
+furthest_origin_not_intergenic <- furthest_data_origin %>%
+  filter(f0 > 0 | f1 > 0 | f2 > 0) %>%
+  arrange(cluster)
+print(furthest_origin_not_intergenic)
+print(furthest_outgroup_data[furthest_outgroup_data$gene_id %in% furthest_origin_not_intergenic$gene_id,])
+furthest_outgroup_data %>%
+  filter(gene_id %in% furthest_origin_not_intergenic$gene_id) %>%
+  select(gene_id, cluster, intergenic, f0, f1, f2) %>%
+  arrange(cluster) %>%
+  print(n = Inf)
+
+
+# Get the different/same origins
 furthest_different_origin <- furthest_data_origin %>%
   rowwise() %>%
   filter(
@@ -159,6 +170,34 @@ furthest_different_origin <- furthest_data_origin %>%
       !(f2 %in% c(0, n))
   ) %>%
   ungroup()
+print(paste("there are", nrow(furthest_different_origin), "genes with different origins for the furthest outgroup."))
+furthest_same_origin <- furthest_data_origin %>%
+  rowwise() %>%
+  filter(
+    intergenic %in% c(0, n) &
+      f0 %in% c(0, n) &
+      f1 %in% c(0, n) &
+      f2 %in% c(0, n)
+  ) %>%
+  ungroup()
+print(paste("there are", nrow(furthest_same_origin), "genes with the same origin for the furthest outgroup."))
+
+
+# Genes that both have the same origin, and are not 100% intergenic
+inner_join(furthest_origin_not_intergenic, furthest_same_origin, by = "gene_id") %>%
+  arrange(cluster.y)
+# Genes that both have different origins, and are not 100% intergenic
+inner_join(furthest_origin_not_intergenic, furthest_different_origin, by = "gene_id") %>%
+  arrange(cluster.y)
+
+
+
+
+
+
+
+
+
 
 
 
