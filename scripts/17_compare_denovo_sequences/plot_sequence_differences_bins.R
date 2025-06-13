@@ -11,25 +11,41 @@ library(grid)
 
 
 # User-defined parameters
+home <- TRUE
 n_bins <- 2
-plot_pvals <- FALSE
+plot_pvals <- TRUE
 save_plots <- TRUE
-only_denovo_genomes <- TRUE
+only_denovo_genomes <- FALSE
+use_violins <- TRUE
+ONE_SIDED <- FALSE
 
 
 # Files
-input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/sequence_features_good_candidates_all.csv"
-good_candidates_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/good_candidates.txt"
-out_folder <- paste0("/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/", n_bins, "_bins/")
-pval_file <- paste0(out_folder, "pvalues_", n_bins, "_bins.tsv")
-bins_file <- paste0(out_folder, "bin_indexes_", n_bins, ".csv")
-if (only_denovo_genomes) {
-  out_folder <- paste0(out_folder, "only_denovo_genomes/")
+ if (!home) {
+  input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/sequence_features_good_candidates_all.csv"
+  good_candidates_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/good_candidates.txt"
+  out_folder <- paste0("/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/", n_bins, "_bins/")
+  pval_file <- paste0(out_folder, "pvalues_", n_bins, "_bins.tsv")
+  if (ONE_SIDED) {
+    pval_file <- paste0(out_folder, "pvalues_", n_bins, "_bins_one_sided.tsv")
+  }
+  bins_file <- paste0(out_folder, "bin_indexes_", n_bins, ".csv")
+  if (only_denovo_genomes) {
+    out_folder <- paste0(out_folder, "only_denovo_genomes/")
+  }
+} else {
+  input_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/17_compare_denovo_sequences/sequence_features_good_candidates_all.csv"
+  good_candidates_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/14_get_noncoding_match/good_candidates.txt"
+  out_folder <- paste0("/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/17_compare_denovo_sequences/", n_bins, "_bins/")
+  pval_file <- paste0(out_folder, "pvalues_", n_bins, "_bins.tsv")
+  if (ONE_SIDED) {
+    pval_file <- paste0(out_folder, "pvalues_", n_bins, "_bins_one_sided.tsv")
+  }
+  bins_file <- paste0(out_folder, "bin_indexes_", n_bins, ".csv")
+  if (only_denovo_genomes) {
+    out_folder <- paste0(out_folder, "only_denovo_genomes/")
+  }
 }
-#input_file <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/17_compare_denovo_sequences/features_good_candidates_all.csv"
-#pval_file <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/17_compare_denovo_sequences/pvalues_2_bins.tsv"
-#bins_file <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/17_compare_denovo_sequences/sequences/2_bins/bin_indexes_2.csv"
-#out_folder <- "/home/eltem/Documents/Cours/M2/Stage/M2_stage_I2BC/results/17_compare_denovo_sequences/sequences/2_bins"
 
 
 # Read data
@@ -40,8 +56,30 @@ if (plot_pvals) {
 if (only_denovo_genomes) {
   data <- data[data$genome %in% unique(data[data$type == "denovo", "genome"]), ]
 }
+# Sample 5000 sequences for cds, trg and iorf
+n_cds <- nrow(data[data$type == "cds", ])
+n_trg <- nrow(data[data$type == "trg", ])
+n_denovo <- nrow(data[data$type == "denovo", ])
+n_iorf <- nrow(data[data$type == "iorf", ])
+if (n_cds > 5000) {
+  data <- data[data$type != "cds" |
+                 (data$type == "cds" &
+                    seq_len(nrow(data[data$type == "cds", ])) %in% sample(n_cds, 5000)), ]
+}
+if (n_trg > 5000) {
+  data <- data[data$type != "trg" |
+                 (data$type == "trg" &
+                    seq_len(nrow(data[data$type == "trg", ])) %in% sample(n_trg, 5000)), ]
+}
+if (n_iorf > 5000) {
+  data <- data[data$type != "iorf" |
+                 (data$type == "iorf" &
+                    seq_len(nrow(data[data$type == "iorf", ])) %in% sample(n_iorf, 5000)), ]
+}
 # Pivot to longer format
 descriptors <- setdiff(colnames(data), c("genome", "cds", "type"))
+not_present <- setdiff(descriptors, colnames(pvals))
+descriptors <- setdiff(descriptors, not_present)
 data <- pivot_longer(data, cols = all_of(descriptors), names_to = "feature", values_to = "value")
 if (plot_pvals) {
   pvals <- pivot_longer(pvals, cols = all_of(setdiff(descriptors, c("gc_species", "inter_gc_species"))), names_to = "feature", values_to = "pval")
@@ -52,7 +90,7 @@ if (plot_pvals) {
 bins <- read.table(bins_file, header = TRUE, sep = "")
 bins <- bins %>%
   left_join((data[c("cds", "genome")]), by = "cds")
-if (length(unique(bins$genome)) != 116 && !only_denovo_genomes) {
+if (length(unique(na.omit(bins$genome))) != 116 && !only_denovo_genomes) {
   stop("The bins file should contain all 116 genomes.")
 }
 # Get the bins per genome
@@ -294,13 +332,42 @@ get_x_labels <- function(data) {
 }
 
 
+# Remove the values that would be outliers from data
+remove_outliers <- function(data) {
+  # Remove outliers
+  data <- data %>%
+    filter(!is.na(value)) %>%
+    group_by(type) %>%
+    mutate(value = ifelse(value > quantile(value, 0.75) + IQR(value) * 1.5, NA, value)) %>%
+    filter(!is.na(value)) %>%
+    mutate(value = ifelse(value < quantile(value, 0.25) - IQR(value) * 1.5, NA, value)) %>%
+    filter(!is.na(value)) %>%
+    ungroup()
+  return(data)
+}
+
 
 # Get the plot
-get_plot <- function(data, data_len_summary, feature, title, print_pval = c(NA), scale_y = c(NA), n_y_pos = NA) {
-  labels_x_scale <- get_x_labels(data)
+get_plot <- function(data_local, data_len_summary, feature, title, print_pval = c(NA), scale_y = c(NA), n_y_pos = NA) {
+  labels_x_scale <- get_x_labels(data_local)
 
-  p <- ggplot(data, aes(x = group, y = value, fill = type)) +
-    geom_boxplot(na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE) +
+  factor <- 0.05
+  boxplot_width <- ifelse(use_violins, 0.2, 0.8)
+  boxplot_alpha <- ifelse(use_violins, 0.8, 1)
+  pvals_local <- get_pvals(data_local$feature[1], data_local, factor)
+  plot_pvals <- !all(is.na(pvals_local$y.position))
+
+  # Remove outliers for violin plot
+  data_sans_outliers <- add_dummy_rows(remove_outliers(data_local), feature, n_bins)
+
+  p <- ggplot(data_local, aes(x = group, y = value, fill = type))
+
+  if (use_violins) {
+    p <- p + geom_violin(data = data_sans_outliers, na.rm = TRUE, colour = "#2c2c2c", scale = "width", alpha = 0.8)
+  }
+
+
+  p <- p + geom_boxplot(data = data_local, na.rm = TRUE, colour = "#2c2c2c", outliers = FALSE, width = boxplot_width, alpha = boxplot_alpha) +
     labs(title = "",
          x = "% GC (whole genome)",
          y = title) +
@@ -308,28 +375,15 @@ get_plot <- function(data, data_len_summary, feature, title, print_pval = c(NA),
                       breaks = c("cds", "trg", "denovo", "iorf")) +
     theme_minimal() +
     scale_x_discrete(labels = labels_x_scale) +
-    theme(axis.text.x = element_text(size = 16),
-          axis.title.x = element_text(size = 14),
-          axis.title.y = element_text(size = 14),
-          axis.text.y = element_text(size = 12),
-          plot.title = element_text(hjust = 0.5),
-          legend.text = element_text(size = 12),
-          legend.title = element_blank())
+    theme(axis.text.x = element_text(size = 22),
+          axis.title.x = element_text(size = 24),
+          axis.title.y = element_text(size = 24),
+          axis.text.y = element_text(size = 22),
+          legend.text = element_text(size = 20),)
 
 
   if (!all(is.na(scale_y))) {
     p <- p + scale_y_continuous(breaks = scale_y)
-  }
-
-  if (!is.na(n_y_pos)) {
-    p <- p +
-      geom_text(data = data_len_summary,
-                aes(x = group,
-                    y = n_y_pos,
-                    label = paste0("n = ", n),
-                    group = type),
-                position = position_dodge(width = 0.75), 
-                vjust = -0.5, size = 4)
   }
 
   if (!all(is.na(print_pval))) {
@@ -337,7 +391,7 @@ get_plot <- function(data, data_len_summary, feature, title, print_pval = c(NA),
     only_ns <- print_pval[2]
     y_annotation <- print_pval[3]
 
-    pvals_local <- get_pvals(feature, data, pval_factor, only_ns)
+    pvals_local <- get_pvals(feature, data_local, pval_factor, only_ns)
 
     if (!all(is.na(pvals_local$y.position))) {
       p <- p +
@@ -345,15 +399,9 @@ get_plot <- function(data, data_len_summary, feature, title, print_pval = c(NA),
                            label = "p.signif",
                            inherit.aes = FALSE,
                            hide.ns = !only_ns,
-                           tip.length = 0.005)
+                           tip.length = 0,
+                           size = 10)
 
-
-      if (!only_ns) {
-        p <- p +
-          annotate("text", x = 5, y = y_annotation,
-                   label = signif_label, hjust = 1, vjust = 1,
-                   size = 3, color = "black")
-      }
     }
   }
   return(p)
@@ -376,7 +424,7 @@ data_len_summary <- get_ncds_conditions(data_len, n_bins)
 # Pvals
 if (plot_pvals) {
   pval_factor <- 0.08
-  only_ns <- TRUE
+  only_ns <- FALSE
   y_annotation <- 3000
   pval_vect <- c(pval_factor, only_ns, y_annotation)
 } else {
@@ -387,16 +435,18 @@ if (plot_pvals) {
 p <- get_plot(data_len,
               data_len_summary,
               "length",
-              "Sequence length distribution (aa)",
+              "Sequence length (aa)",
               n_y_pos = -50,
               print_pval = pval_vect,
-              scale_y = seq(0, 800, 100))
+              scale_y = seq(0, 800, 200))
 p
 
 # Save the plot
-if (save_plots) {
-  ggsave(paste0(out_folder, "/sequence_length.png"), plot = p)
-}
+file_name <- paste0(out_folder, "sequence_length")
+if (use_violins) file_name <- paste0(file_name, "_violin")
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
 
 
 
@@ -426,9 +476,11 @@ p <- get_plot(data_gc,
 p
 
 # Save the plot
-if (save_plots) {
-  ggsave(paste0(out_folder, "/gc_content.png"), plot = p)
-}
+file_name <- paste0(out_folder, "gc_content")
+if (use_violins) file_name <- paste0(file_name, "_violin")
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
 
 
 
@@ -451,16 +503,18 @@ if (plot_pvals) {
 p <- get_plot(data_gc_inter,
               data_gc_inter_summary,
               "inter_gc_rate",
-              "GC ratio: sequence GC % / iORF GC %",
+              "GC ratio: sequence GC % / intergenic GC %",
               n_y_pos = 0.45,
               print_pval = pval_vect,
               scale_y = seq(0, 1.4, 0.2))
 p
 
 # Save the plot
-if (save_plots) {
-  ggsave(paste0(out_folder, "/gc_content_intergenic.png"), plot = p)
-}
+file_name <- paste0(out_folder, "gc_content_intergenic")
+if (use_violins) file_name <- paste0(file_name, "_violin")
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
 
 
 
@@ -490,9 +544,11 @@ p <- get_plot(data_aro,
 p
 
 # Save the plot
-if (save_plots) {
-  ggsave(paste0(out_folder, "/aromaticity.png"), plot = p)
-}
+file_name <- paste0(out_folder, "aromaticity")
+if (use_violins) file_name <- paste0(file_name, "_violin")
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
 
 
 
@@ -523,9 +579,11 @@ p <- get_plot(data_inst,
 p
 
 # Save the plot
-if (save_plots) {
-  ggsave(paste0(out_folder, "/instability_index.png"), plot = p)
-}
+file_name <- paste0(out_folder, "instability_index")
+if (use_violins) file_name <- paste0(file_name, "_violin")
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
 
 
 
@@ -554,10 +612,11 @@ p <- get_plot(data_flex,
               scale_y = seq(0.96, 1.04, 0.02))
 p
 
-# Save the plot
-if (save_plots) {
-  ggsave(paste0(out_folder, "/mean_flexibility.png"), plot = p)
-}
+file_name <- paste0(out_folder, "mean_flexibility")
+if (use_violins) file_name <- paste0(file_name, "_violin")
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
 
 
 
@@ -586,10 +645,11 @@ p <- get_plot(data_hyd,
               scale_y = seq(-2, 2, 1))
 p
 
-# Save the plot
-if (save_plots) {
-  ggsave(paste0(out_folder, "/hydrophobicity.png"), plot = p)
-}
+file_name <- paste0(out_folder, "hydrophobicity")
+if (use_violins) file_name <- paste0(file_name, "_violin")
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
 
 
 
@@ -618,10 +678,11 @@ p <- get_plot(data_hca,
               scale_y = seq(-10, 10, 4))
 p
 
-# Save the plot
-if (save_plots) {
-  ggsave(paste0(out_folder, "/hca.png"), plot = p)
-}
+file_name <- paste0(out_folder, "hca")
+if (use_violins) file_name <- paste0(file_name, "_violin")
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
 
 
 
@@ -651,9 +712,11 @@ p <- get_plot(data_disord,
 p
 
 # Save the plot
-if (save_plots) {
-  ggsave(paste0(out_folder, "/intrinsic_disorder.png"), plot = p)
-}
+file_name <- paste0(out_folder, "intrinsic_disorder")
+if (use_violins) file_name <- paste0(file_name, "_violin")
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
 
 
 
@@ -683,9 +746,11 @@ p <- get_plot(data_agg,
 p
 
 # Save the plot
-if (save_plots) {
-  ggsave(paste0(out_folder, "/aggregation.png"), plot = p)
-}
+file_name <- paste0(out_folder, "aggregation")
+if (use_violins) file_name <- paste0(file_name, "_violin")
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
 
 
 ###### AA use ######
@@ -696,7 +761,7 @@ data_polar_summary <- get_ncds_conditions(data_polar, n_bins)
 # Pvals
 if (plot_pvals) {
   pval_factor <- 0.05
-  only_ns <- TRUE
+  only_ns <- FALSE
   y_annotation <- 0.4
   pval_vect <- c(pval_factor, only_ns, y_annotation)
 } else {
@@ -712,9 +777,11 @@ p <- get_plot(data_polar,
               scale_y = seq(0, 0.5, 0.1))
 p
 # Save the plot
-if (save_plots) {
-  ggsave(paste0(out_folder, "/aa_polar_use.png"), plot = p)
-}
+file_name <- paste0(out_folder, "aa_polar_use")
+if (use_violins) file_name <- paste0(file_name, "_violin")
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
 
 
 ### hydrophobic ###
@@ -740,9 +807,11 @@ p <- get_plot(data_hydrophobic,
               scale_y = seq(0, 0.8, 0.2))
 p
 # Save the plot
-if (save_plots) {
-  ggsave(paste0(out_folder, "/aa_hydrophobic_use.png"), plot = p)
-}
+file_name <- paste0(out_folder, "aa_hydrophobic_use")
+if (use_violins) file_name <- paste0(file_name, "_violin")
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
 
 
 ### positive ###
@@ -768,9 +837,11 @@ p <- get_plot(data_pos,
               scale_y = seq(0, 0.3, 0.1))
 p
 # Save the plot
-if (save_plots) {
-  ggsave(paste0(out_folder, "/aa_positive_use.png"), plot = p)
-}
+file_name <- paste0(out_folder, "aa_positive_use")
+if (use_violins) file_name <- paste0(file_name, "_violin")
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
 
 
 ### negative ###
@@ -796,9 +867,11 @@ p <- get_plot(data_neg,
               scale_y = seq(0, 0.3, 0.1))
 p
 # Save the plot
-if (save_plots) {
-  ggsave(paste0(out_folder, "/aa_negative_use.png"), plot = p)
-}
+file_name <- paste0(out_folder, "aa_negative_use")
+if (use_violins) file_name <- paste0(file_name, "_violin")
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
 
 
 ### proline glycine ### 
@@ -824,9 +897,11 @@ p <- get_plot(data_pro_gly,
               scale_y = seq(0, 0.3, 0.1))
 p
 # Save the plot
-if (save_plots) {
-  ggsave(paste0(out_folder, "/aa_proline-glycine_use.png"), plot = p)
-}
+file_name <- paste0(out_folder, "aa_proline_glycine_use")
+if (use_violins) file_name <- paste0(file_name, "_violin")
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
 
 
 ### cysteine ###
@@ -852,9 +927,11 @@ p <- get_plot(data_cys,
               scale_y = seq(0, 0.2, 0.05))
 p
 # Save the plot
-if (save_plots) {
-  ggsave(paste0(out_folder, "/aa_cysteine_use.png"), plot = p)
-}
+file_name <- paste0(out_folder, "aa_cysteine_use")
+if (use_violins) file_name <- paste0(file_name, "_violin")
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
 
 ### alanine ###
 data_ala <- add_dummy_rows(data, "alanine_use", n_bins)
@@ -879,9 +956,13 @@ p <- get_plot(data_ala,
               scale_y = seq(0, 0.15, 0.05))
 p
 # Save the plot
-if (save_plots) {
-  ggsave(paste0(out_folder, "/aa_alanine_use.png"), plot = p)
-}
+file_name <- paste0(out_folder, "aa_alanine_use")
+if (use_violins) file_name <- paste0(file_name, "_violin")
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
+
+
 
 
 ####### genome GC % (control) ######
