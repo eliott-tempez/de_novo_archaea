@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 
 
 from my_functions.paths import *
-OUT_FOLDER = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/"
+OUT_FOLDER = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/integrity_analysis/"
 
 
 
@@ -137,7 +137,6 @@ if __name__ == "__main__":
             continue
         denovo_info.update(denovo_info_local)
     
-
     qcov_dict = {}
     # For each denovo
     for denovo in denovo_info:
@@ -147,10 +146,10 @@ if __name__ == "__main__":
         # For each species in each outgroup (last and ante-last)
         for outgroup in denovo_info[denovo]["nc_matches"]:
             qcov_dict[denovo][outgroup] = {}
-            for neighbor_sp in denovo_info[denovo]["nc_matches"][outgroup]:
+            for neighbor_sp in denovo_info[denovo]["nc_matches"][outgroup]["values"]:
                 # Get the nc match sequence
-                nc_loci = denovo_info[denovo]["nc_matches"][outgroup][neighbor_sp]["loci"]
-                nc_seq = str(get_sequence_from_loci(*nc_loci).translate(table=11))
+                nc_loci = denovo_info[denovo]["nc_matches"][outgroup]["values"][neighbor_sp]["loci"]
+                nc_seq = str(get_sequence_from_loci(neighbor_sp, *nc_loci).translate())
                 # Get the location of the stop codons
                 stops = [pos for pos, char in enumerate(nc_seq) if char == "*"]
                 # Get the longest orf
@@ -162,7 +161,7 @@ if __name__ == "__main__":
                         longest_orf = orf_len
 
                 # Get the coverages
-                qcov = denovo_info[denovo]["nc_matches"][outgroup][neighbor_sp]["qcov"]
+                qcov = denovo_info[denovo]["nc_matches"][outgroup]["values"][neighbor_sp]["qcov"]
                 qcov_orf = (longest_orf / len(denovo_seq)) * 100
                 qcov_dict[denovo][outgroup][neighbor_sp] = {
                     "qcov": qcov,
