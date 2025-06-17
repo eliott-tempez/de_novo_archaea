@@ -45,7 +45,7 @@ with open(os.path.join(out_folder, "chosen_denovo.tsv"), "w") as f:
     f.write("denovo\tgenome\tcontig\tstart\tend\tstrand\n")
     for denovo in good_denovo:
         genome = all_denovo_dict[denovo]["genome"]
-        loci = all_denovo_dict[denovo]["loci"]
+        loci = all_denovo_dict[denovo]["denovo_loci"]
         contig = loci[0]
         start = loci[1]
         end = loci[2]
@@ -56,7 +56,7 @@ with open(os.path.join(out_folder, "discarded_denovo.tsv"), "w") as f:
     f.write("denovo\tgenome\tcontig\tstart\tend\tstrand\n")
     for denovo in bad_denovo:
         genome = all_denovo_dict[denovo]["genome"]
-        loci = all_denovo_dict[denovo]["loci"]
+        loci = all_denovo_dict[denovo]["denovo_loci"]
         contig = loci[0]
         start = loci[1]
         end = loci[2]
