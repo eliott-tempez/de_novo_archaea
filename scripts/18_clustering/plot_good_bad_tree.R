@@ -163,7 +163,7 @@ p <- p + new_scale_fill()
 p <- p + geom_point(data = cluster_lcas_summary,
           aes(x = x, y = y, fill = uni_group),
           inherit.aes = FALSE, shape = 21,
-          color = "black", stroke = 0.5) +
+          color = "black", stroke = 0.5, size = 2) +
   scale_fill_manual(values = "#c51515", name = "",
                     guide = guide_legend(override.aes = list(size = 4)))
 p
