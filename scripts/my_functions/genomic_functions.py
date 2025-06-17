@@ -151,7 +151,7 @@ def extract_denovo_info(genome, outgroup_num=1):
                 denovo_dict[denovo_gene]["sequence"] = record.seq
                 pass
     
-    """# Get the strand of the de novo gene
+    # Get the location info of the de novo gene
     gff_file = os.path.join(GFF_DIR, genome + ".gff3")
     if not os.path.exists(gff_file):
         raise FileNotFoundError(f"{gff_file} does not exist")
@@ -171,7 +171,12 @@ def extract_denovo_info(genome, outgroup_num=1):
             print(e)
             continue
         # Get the strand and contig
-        denovo_dict[denovo_gene]["strand"] = matches.iloc[0]["strand"]"""
+        denovo_strand = matches.iloc[0]["strand"]
+        denovo_contig = matches.iloc[0]["contig"]
+        denovo_start = matches.iloc[0]["start"]
+        denovo_end = matches.iloc[0]["end"]
+        denovo_dict[denovo_gene]["denovo_loci"] = [denovo_contig, int(denovo_start), int(denovo_end), denovo_strand]
+
 
     # Get the last NC hit in synteny
     ## Name of the ancestor
