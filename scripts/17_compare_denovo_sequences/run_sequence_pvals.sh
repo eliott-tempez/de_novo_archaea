@@ -1,13 +1,13 @@
 #! /bin/sh
 
 #SBATCH -p common
-#SBATCH -J pval_1_bin
+#SBATCH -J pval_2_bin
 #SBATCH --time=1000-00
 #SBATCH --cpus-per-task=16
 #SBATCH --ntasks=1
 #SBATCH --mem=32gb
-#SBATCH -o /home/eliott.tempez/pval_1_bin_out.log
-#SBATCH -e /home/eliott.tempez/pval_1_bin_err.log
+#SBATCH -o /home/eliott.tempez/pval_2_bin_out.log
+#SBATCH -e /home/eliott.tempez/pval_2_bin_err.log
 
 SCRIPTS=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/stage/M2_stage_I2BC/scripts
 GOOD_CANDIDATES=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/stage/M2_stage_I2BC/results/14_get_noncoding_match/good_candidates.txt
@@ -15,8 +15,8 @@ DESCRIPTORS=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/pvals_descript
 FA_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/complete_122/fasta_renamed
 DENSE_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/dense
 OUT_DIR=/store/EQUIPES/BIM/MEMBERS/eliott.tempez/archaea_data/pvals_descriptors
-OUTPUT_LOG=/home/eliott.tempez/pval_1_bin_out.log
-ERROR_LOG=/home/eliott.tempez/pval_1_bin_err.log
+OUTPUT_LOG=/home/eliott.tempez/pval_2_bin_out.log
+ERROR_LOG=/home/eliott.tempez/pval_2_bin_err.log
 
 
 # Set up a trap to clean up on exit or interruption
