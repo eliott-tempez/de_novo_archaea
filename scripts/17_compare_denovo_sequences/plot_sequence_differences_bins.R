@@ -517,6 +517,39 @@ file_name <- paste0(file_name, ".png")
 ggsave(file_name)
 
 
+###### GC ratio (iorfs) ######
+data_gc_iorfs <- add_dummy_rows(data, "iorfs_gc_rate", n_bins)
+data_gc_iorfs$type <- factor(data_gc_iorfs$type, levels = c("cds", "trg", "denovo", "iorf"))
+data_gc_iorfs_summary <- get_ncds_conditions(data_gc_iorfs, n_bins)
+
+# Pvals
+if (plot_pvals) {
+  pval_factor <- 0.06
+  only_ns <- FALSE
+  y_annotation <- 1.8
+  pval_vect <- c(pval_factor, only_ns, y_annotation)
+} else {
+  pval_vect <- c(NA, NA, NA)
+}
+
+# Plot
+p <- get_plot(data_gc_iorfs,
+              data_gc_iorfs_summary,
+              "iorfs_gc_rate",
+              "GC ratio: sequence GC % / iorfs GC %",
+              n_y_pos = 0.45,
+              print_pval = pval_vect,
+              scale_y = seq(0, 1.4, 0.2))
+p
+
+# Save the plot
+file_name <- paste0(out_folder, "gc_content_iorfs")
+if (use_violins) file_name <- paste0(file_name, "_violin")
+if (ONE_SIDED) file_name <- paste0(file_name, "_one_sided")
+file_name <- paste0(file_name, ".png")
+ggsave(file_name)
+
+
 
 ###### Aromaticity ######
 data_aro <- add_dummy_rows(data, "aromaticity", n_bins)
