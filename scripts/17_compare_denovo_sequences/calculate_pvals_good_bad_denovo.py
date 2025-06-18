@@ -9,7 +9,8 @@ from multiprocessing import Pool, cpu_count
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from my_functions.paths import DENSE_DIR, GENOMES_LIST
-INCLUDE = ["aggreg"] # Descriptors to run the test on
+INCLUDE = "all" # Descriptors to run the test on
+TWO_SIDED = False
 
 
 

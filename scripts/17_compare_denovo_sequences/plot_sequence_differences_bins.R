@@ -11,13 +11,13 @@ library(grid)
 
 
 # User-defined parameters
-home <- TRUE
+home <- FALSE
 n_bins <- 2
 plot_pvals <- TRUE
 save_plots <- TRUE
 only_denovo_genomes <- FALSE
 use_violins <- TRUE
-ONE_SIDED <- FALSE
+ONE_SIDED <- TRUE
 
 
 # Files
@@ -27,7 +27,7 @@ ONE_SIDED <- FALSE
   out_folder <- paste0("/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/", n_bins, "_bins/")
   pval_file <- paste0(out_folder, "pvalues_", n_bins, "_bins.tsv")
   if (ONE_SIDED) {
-    pval_file <- paste0(out_folder, "pvalues_", n_bins, "_bins_one_sided.tsv")
+    pval_file <- paste0(out_folder, "pvalues_", n_bins, "_bins_one_sided.csv")
   }
   bins_file <- paste0(out_folder, "bin_indexes_", n_bins, ".csv")
   if (only_denovo_genomes) {
@@ -39,7 +39,7 @@ ONE_SIDED <- FALSE
   out_folder <- paste0("/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/17_compare_denovo_sequences/", n_bins, "_bins/")
   pval_file <- paste0(out_folder, "pvalues_", n_bins, "_bins.tsv")
   if (ONE_SIDED) {
-    pval_file <- paste0(out_folder, "pvalues_", n_bins, "_bins_one_sided.tsv")
+    pval_file <- paste0(out_folder, "pvalues_", n_bins, "_bins_one_sided.csv")
   }
   bins_file <- paste0(out_folder, "bin_indexes_", n_bins, ".csv")
   if (only_denovo_genomes) {
