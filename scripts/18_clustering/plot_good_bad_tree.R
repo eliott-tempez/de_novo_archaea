@@ -140,7 +140,7 @@ p <- p + new_scale_fill()
 p <- gheatmap(p, data[, "n_good_candidates", drop = FALSE], offset = 0.5,
               width = .05, colnames = FALSE) +
   scale_fill_gradient(low = "white", high = "#179207",
-                      name = paste0("No integrity\npreservation\n(n = ", n_good, ")"),
+                      name = paste0("Disrupted\nintegrity\n(n = ", n_good, ")"),
                       guide = guide_colorbar(order = 1))
 
 ## Bad denovo ##
@@ -148,15 +148,9 @@ p <- p + new_scale_fill()
 p <- gheatmap(p, data[, "n_bad_candidates", drop = FALSE], offset = 1.5,
               width = .05, colnames = FALSE) +
   scale_fill_gradient(low = "white", high = "#4f535a",
-                      name = paste0("Integrity\npreserved\n(n =", n_bad, ")"),
+                      name = paste0("Preserved\nintegrity\n(n =", n_bad, ")"),
                       guide = guide_colorbar(order = 2),
                       limits = c(0, max(data$n_bad_candidates)))
-
-# Add the title
-p <- p + ggtitle("Integrity of the denovo NC matches\nand location of the cluster LCAs") +
-  theme(plot.title = element_text(hjust = 0.5, vjust = -10),
-        legend.text = element_text(size = 12),
-        legend.title = element_text(size = 14))
 
 # Add the points
 p <- p + new_scale_fill()
@@ -206,3 +200,66 @@ ggplot(species_in_cluster_nb, aes(x = n_species_denovo, y = coverage)) +
   )
 
 ggsave(paste0(output_dir, "denovo_coverage.png"))
+
+
+
+## Clusters non orfan
+# Get the clusters with more than one denovo
+clusters_non_orphan <- cluster_df %>%
+  group_by(cluster) %>%
+  summarise(n_denovo = n(), .groups = "drop") %>%
+  filter(n_denovo > 1)
+# Filter the data to keep only the non-orphan clusters
+clusters_non_orphan_df <- cluster_df %>%
+  filter(cluster %in% clusters_non_orphan$cluster) %>%
+  select(cluster, denovo, genome)
+clusters_non_orphan_lcas <- cluster_lcas %>%
+  filter(cluster %in% clusters_non_orphan$cluster) %>%
+  select(cluster, lca_node)
+clusters_non_orphan_lcas_coords <- cluster_lcas_coords %>%
+  filter(cluster %in% clusters_non_orphan$cluster) %>%
+  select(lca_node, x, y)
+
+# For each cluster, plot the tree
+for (i in seq_len(nrow(clusters_non_orphan))) {
+  cluster <- clusters_non_orphan[i, "cluster"][[1]]
+  print(cluster)
+  # Get the denovo and genomes
+  denovo <- clusters_non_orphan_df %>%
+    filter(cluster == !!cluster) %>%
+    pull(denovo) %>%
+    na.omit()
+  print(denovo)
+  genomes <- clusters_non_orphan_df %>%
+    filter(cluster == !!cluster) %>%
+    pull(genome) %>%
+    na.omit()
+  print(genomes)
+  # Get the lca node
+  lca_node <- clusters_non_orphan_lcas %>%
+    filter(cluster == !!cluster) %>%
+    pull(lca_node) %>%
+    na.omit()
+  print(lca_node)
+  # Get the coordinates
+  coords <- clusters_non_orphan_lcas_coords %>%
+    filter(lca_node == !!lca_node)
+  print(coords)
+  print(" ")
+
+  # Plot the tree
+  p <- ggtree(tree, layout = "circular", branch.length = "none") +
+    geom_point(data = coords, aes(x = x, y = y), color = "#000000", 
+               size = 5, shape = 21, stroke = 0.5, fill = "#c51515") +
+    geom_point(aes(x = x, y = y),
+               data = tree_data[tree_data$node %in% Descendants(tree, lca_node, type = "tips")[[1]], ],
+               color = "#000000", size = 4, shape = 21,
+               stroke = 0.5, fill = "#b5b6b9") +
+    geom_point(aes(x = x, y = y),
+               data = tree_data[tree_data$label %in% genomes, ],
+               color = "#000000", size = 4, shape = 21,
+               stroke = 0.5, fill = "#179207")
+
+  ggsave(paste0(output_dir, "clusters/tree_", i, ".png"), plot = p)
+
+}
