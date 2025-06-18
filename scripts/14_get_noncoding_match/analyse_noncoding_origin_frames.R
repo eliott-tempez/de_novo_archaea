@@ -14,12 +14,12 @@ ggsave <- function(..., bg = "white",
 }
 
 
-#input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/denovo_noncoding_status.tsv"
-#out_folder <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match"
-#cluster_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/18_clustering/good_candidates_clustering.tsv"
-input_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/14_get_noncoding_match/denovo_noncoding_status.tsv"
-out_folder <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/14_get_noncoding_match"
-cluster_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/18_clustering/good_candidates_clustering.tsv"
+input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/denovo_noncoding_status.tsv"
+out_folder <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match"
+cluster_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/18_clustering/good_candidates_clustering.tsv"
+#input_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/14_get_noncoding_match/denovo_noncoding_status.tsv"
+#out_folder <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/14_get_noncoding_match"
+#cluster_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/18_clustering/good_candidates_clustering.tsv"
 
 
 
@@ -146,6 +146,12 @@ furthest_data_origin <- furthest_outgroup_data %>%
     n = n(),
     .groups = "drop"
   )
+
+# Print the ones that are 100% intergenic
+furthest_origin_intergenic <- furthest_data_origin %>%
+  filter(f0 == 0 & f1 == 0 & f2 == 0) %>%
+  arrange(cluster)
+print(paste("there are", nrow(furthest_origin_intergenic), "genes that are 100% intergenic for the furthest outgroup."))
 
 # Print the ones that are not 100% intergenic
 furthest_origin_not_intergenic <- furthest_data_origin %>%
