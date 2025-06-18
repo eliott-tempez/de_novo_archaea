@@ -211,8 +211,10 @@ write.table(different_origin_not_intergenic,
 
 # For the rest of the analysis, keep only the first row for each unique gene
 # that both have the same origin, and are not 100% intergenic
+# and keep only first row for each unique cluster
 straddling_data <- same_origin_not_intergenic %>%
-  distinct(gene_id, .keep_all = TRUE)
+  distinct(gene_id, .keep_all = TRUE) %>%
+  distinct(cluster, .keep_all = TRUE)
 write.table(straddling_data,
             file = file.path(out_folder, "straddling_genes_concordant.csv"),
             row.names = FALSE, quote = FALSE, sep = "\t")
