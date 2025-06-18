@@ -3,10 +3,13 @@ This script facilitates the re-do of tblastns.
 """
 
 import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from my_functions.paths import CDS_DIR, GFF_DIR, FA_DIR
 
-FASTA_FOLDER = "/home/eliott.tempez/Documents/archaea_data/complete_122/fasta_renamed/"
-GFF_folder = "/home/eliott.tempez/Documents/archaea_data/complete_122/reannotated_gff_75/"
-CDS_folder = "/home/eliott.tempez/Documents/archaea_data/dense/GCA_000007305@Pyrococcus_furiosus_DSM_3638/CDS/"
+FASTA_FOLDER = FA_DIR
+GFF_folder = GFF_DIR
+CDS_folder = CDS_DIR
 EXTENDED_TRG_folder = "/home/eliott.tempez/Documents/archaea_data/complete_122/multielongated_TRGS/"
 TMP_DIR = os.path.join(os.getcwd(), "tmp/")
 
