@@ -12,6 +12,32 @@ from my_functions.paths import DENSE_DIR, GENOMES_LIST
 INCLUDE = "all" # Descriptors to run the test on
 TWO_SIDED = False
 
+def get_all_medians(descriptors_df, good_indexes, bad_indexes,descriptors):
+    medians = {}
+    # Calculate all the medians
+    for descriptor in descriptors:
+        good_df = descriptors_df.iloc[good_indexes]
+        bad_df = descriptors_df.iloc[bad_indexes]
+        median_good = good_df[descriptor].median()
+        median_bad = bad_df[descriptor].median()
+        medians[descriptor] = {
+            "good": median_good,
+            "bad": median_bad
+        }
+    return medians
+
+
+def get_which_way(medians):
+    # Determine which way to compare based on the medians if one_sided
+    ways = {}
+    for descriptor in medians:
+        median_good = medians[descriptor]["good"]
+        median_bad = medians[descriptor]["bad"]
+        if median_good >= median_bad:
+            ways[descriptor] = "good>bad"
+        else:
+            ways[descriptor] = "good<bad"
+    return ways
 
 
 def extract_denovo_names(focal_species, use_good_candidates=False):
@@ -34,12 +60,20 @@ def extract_denovo_names(focal_species, use_good_candidates=False):
     return denovo_names
 
 
-def get_median_diff(df1, df2):
+def get_median_diff(good_df, bad_df, ways):
     # Get the median differences for each descriptor
     median_diff = {}
-    for descriptor in df1.columns:
-        if descriptor not in ["genome", "cds", "type"]:
-            median_diff[descriptor] = abs(df1[descriptor].median() - df2[descriptor].median())
+    if TWO_SIDED:
+        for descriptor in good_df.columns:
+            if descriptor not in ["genome", "cds", "type"]:
+                median_diff[descriptor] = abs(good_df[descriptor].median() - bad_df[descriptor].median())
+    else:
+        for descriptor in good_df.columns:
+            way = ways[descriptor]
+            if way == "good>bad":
+                median_diff[descriptor] = good_df[descriptor].median() - bad_df[descriptor].median()
+            elif way == "good<bad":
+                median_diff[descriptor] = bad_df[descriptor].median() - good_df[descriptor].median()
     return median_diff
 
 
@@ -80,24 +114,32 @@ def calculate_pvalues(signif_results, descriptors):
     # Create a dataframe with the results
     results_df = pd.DataFrame(results, columns=descriptors)
     # Save the results
-    results_df.to_csv("pvalues_good_bad.csv", sep="\t", index=False)
+    file_name = "pvalues_good_bad_denovo.csv"
+    if not TWO_SIDED:
+        file_name = "pvalues_good_bad_denovo_one_sided.csv"
+    results_df.to_csv(file_name, sep="\t", index=False)
     return results_df
 
 
-def process_iteration(good_indexes, bad_indexes, descriptors_df, descriptors):
+def process_iteration(good_indexes, bad_indexes, descriptors_df, descriptors, medians):
     # Sample the data
     n_to_sample = min([len(good_indexes), len(bad_indexes)])
     good_sample = random.sample(good_indexes, n_to_sample)
     bad_sample = random.sample(bad_indexes, n_to_sample)
     good_df = descriptors_df.iloc[good_sample]
     bad_df = descriptors_df.iloc[bad_sample]
+
+    # Get which way to do the test
+    ways = None
+    if not TWO_SIDED:
+        ways = get_which_way(medians)
     
     # Get the median difference
-    median_diff = get_median_diff(good_df, bad_df)
+    median_diff = get_median_diff(good_df, bad_df, ways)
 
     # Pool the data and get the median diff
     pool1, pool2 = pool_cdss(good_df, bad_df)
-    random_diff = get_median_diff(pool1, pool2)
+    random_diff = get_median_diff(pool1, pool2, ways)
 
     # Compare the medians
     result = compare_medians(median_diff, random_diff)
@@ -157,11 +199,16 @@ if __name__ == "__main__":
     n_to_sample = min([len(good_indexes), len(bad_indexes)])
     signif_results = pd.DataFrame(columns=descriptors)
 
+    # Calculate the global medians to know which way to compare
+    medians = None
+    if not TWO_SIDED:
+        medians = get_all_medians(descriptors_df, good_indexes, bad_indexes, descriptors)
+
     # Use ProcessPoolExecutor for parallel processing
     print("Starting parallel processing...")
     with ProcessPoolExecutor() as executor:
         # Submit tasks to the executor
-        futures = [executor.submit(process_iteration, good_indexes, bad_indexes, descriptors_df, descriptors) for _ in range(n)]
+        futures = [executor.submit(process_iteration, good_indexes, bad_indexes, descriptors_df, descriptors, medians) for _ in range(n)]
 
         # Track progress
         completed = 0
