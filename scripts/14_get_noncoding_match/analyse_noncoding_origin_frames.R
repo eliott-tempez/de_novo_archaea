@@ -14,12 +14,12 @@ ggsave <- function(..., bg = "white",
 }
 
 
-input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/denovo_noncoding_status.tsv"
-out_folder <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match"
-cluster_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/18_clustering/good_candidates_clustering.tsv"
-#input_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/14_get_noncoding_match/denovo_noncoding_status.tsv"
-#out_folder <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/14_get_noncoding_match"
-#cluster_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/18_clustering/good_candidates_clustering.tsv"
+#input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/denovo_noncoding_status.tsv"
+#out_folder <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match"
+#cluster_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/18_clustering/good_candidates_clustering.tsv"
+input_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/14_get_noncoding_match/denovo_noncoding_status.tsv"
+out_folder <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/14_get_noncoding_match"
+cluster_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/18_clustering/good_candidates_clustering.tsv"
 
 
 
@@ -190,21 +190,19 @@ print(paste("there are", nrow(furthest_same_origin), "genes with the same origin
 
 
 # Genes that both have the same origin, and are not 100% intergenic
-inner_join(furthest_origin_not_intergenic, furthest_same_origin, by = "gene_id") %>%
-  arrange(cluster.y)
+same_origin_not_intergenic <- inner_join(furthest_origin_not_intergenic, furthest_same_origin, by = "gene_id") %>%
+  select(gene_id) %>%
+  left_join(furthest_outgroup_data, by = "gene_id") %>%
+  arrange(cluster)
 # Genes that both have different origins, and are not 100% intergenic
-inner_join(furthest_origin_not_intergenic, furthest_different_origin, by = "gene_id") %>%
-  arrange(cluster.y)
-
-
-
-
-
-
-
-
-
-
+different_origin_not_intergenic <- inner_join(furthest_origin_not_intergenic, furthest_different_origin, by = "gene_id") %>%
+  select(gene_id) %>%
+  left_join(furthest_outgroup_data, by = "gene_id") %>%
+  arrange(cluster)
+# Write to file
+write.table(different_origin_not_intergenic,
+            file = file.path(out_folder, "straddling_genes_discordant.csv"),
+            row.names = FALSE, quote = FALSE, sep = "\t")
 
 
 
@@ -212,40 +210,11 @@ inner_join(furthest_origin_not_intergenic, furthest_different_origin, by = "gene
 
 
 # For the rest of the analysis, keep only the first row for each unique gene
-furthest_outgroup_data <- furthest_outgroup_data %>%
+# that both have the same origin, and are not 100% intergenic
+straddling_data <- same_origin_not_intergenic %>%
   distinct(gene_id, .keep_all = TRUE)
-## Venn diagram
-intergenic_genes <- furthest_outgroup_data %>%
-  filter(intergenic > 0) %>%
-  pull(gene_id)
-f0_genes <- furthest_outgroup_data %>%
-  filter(f0 > 0) %>%
-  pull(gene_id)
-f1_genes <- furthest_outgroup_data %>%
-  filter(f1 > 0) %>%
-  pull(gene_id)
-f2_genes <- furthest_outgroup_data %>%
-  filter(f2 > 0) %>%
-  pull(gene_id)
-venn_list = list(
-  intergenic = intergenic_genes,
-  f0 = f0_genes,
-  f1 = f1_genes,
-  f2 = f2_genes
-)
-# Plot
-ggVennDiagram(venn_list, label_alpha = 0) +
-  labs(title = "Origin of the furthest outgroup for de novo genes in NC match") +
-  theme(legend.position = "none") +
-    scale_fill_gradientn(
-    colors = c("white", "#ffbec8", "#ff7070"),
-    values = scales::rescale(c(0, 7, 54)))
-#ggsave(file.path(out_folder, "furthest_outgroup_venn_diagram.png"))
-
-
-
-## Get the genes with the NC match straddling a gene
-straddling_genes <- furthest_outgroup_data %>%
-  filter(f0 > 0 | f1 > 0 | f2 > 0)
-write.table(straddling_genes, file = file.path(out_folder, "straddling_genes.csv"),
+write.table(straddling_data,
+            file = file.path(out_folder, "straddling_genes_concordant.csv"),
             row.names = FALSE, quote = FALSE, sep = "\t")
+
+

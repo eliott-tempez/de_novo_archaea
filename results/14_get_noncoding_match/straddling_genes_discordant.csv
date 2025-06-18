@@ -1,0 +1,6 @@
+gene_id	focal_genome	nc_genome	nc_match_contig	nc_match_strand	nc_match_start	nc_match_end	n_overlapping_genes	overlapping_genes	f0	f1	f2	intergenic	outgroup_nb	cluster	furthest_outgroup
+HPMEPLIM_01176_gene_mRNA	GCA_902813195@Thermococcus_sp_2319x1_Essen	Thermococcus_IRI15c	11152	+	1823175	1823304	1	LFPLOHAD_02020	108	0	0	21	8	HPMEPLIM_01176_gene_mRNA	8
+HPMEPLIM_01176_gene_mRNA	GCA_902813195@Thermococcus_sp_2319x1_Essen	Thermococcus_sp_IRI14c	11810	-	703725	703854	1	FCCLJDJA_00763	108	0	0	21	8	HPMEPLIM_01176_gene_mRNA	8
+HPMEPLIM_01176_gene_mRNA	GCA_902813195@Thermococcus_sp_2319x1_Essen	Thermococcus_sp_IRI25c	11809	-	704330	704459	1	AAAKJNHH_00769	108	0	0	21	8	HPMEPLIM_01176_gene_mRNA	8
+HPMEPLIM_01176_gene_mRNA	GCA_902813195@Thermococcus_sp_2319x1_Essen	GCA_904067545@Thermococcus_camini_IRI35c	NZ_LR881183	+	1819419	1819548	1	BFHCEGCA_02003	108	0	0	21	8	HPMEPLIM_01176_gene_mRNA	8
+HPMEPLIM_01176_gene_mRNA	GCA_902813195@Thermococcus_sp_2319x1_Essen	GCA_008152015@Thermococcus_aciditolerans_SY113	NZ_CP041932	-	1755485	1755614	1	AJGPKGBP_01948	0	0	10	119	8	HPMEPLIM_01176_gene_mRNA	8
