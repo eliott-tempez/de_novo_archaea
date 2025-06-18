@@ -14,7 +14,7 @@ from my_functions.paths import GENOMES_LIST, FA_DIR
 INCLUDE = "all" # Descriptors to run the test on
 
 
-NB_GC_BINS = 2
+NB_GC_BINS = 1
 TWO_SIDED = False
 
 
