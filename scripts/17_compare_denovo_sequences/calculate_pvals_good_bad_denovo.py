@@ -69,11 +69,12 @@ def get_median_diff(good_df, bad_df, ways):
                 median_diff[descriptor] = abs(good_df[descriptor].median() - bad_df[descriptor].median())
     else:
         for descriptor in good_df.columns:
-            way = ways[descriptor]
-            if way == "good>bad":
-                median_diff[descriptor] = good_df[descriptor].median() - bad_df[descriptor].median()
-            elif way == "good<bad":
-                median_diff[descriptor] = bad_df[descriptor].median() - good_df[descriptor].median()
+            if descriptor not in ["genome", "cds", "type"]:
+                way = ways[descriptor]
+                if way == "good>bad":
+                    median_diff[descriptor] = good_df[descriptor].median() - bad_df[descriptor].median()
+                elif way == "good<bad":
+                    median_diff[descriptor] = bad_df[descriptor].median() - good_df[descriptor].median()
     return median_diff
 
 
