@@ -205,7 +205,7 @@ pval_vect <- c(pval_pos, only_ns, y_annotation)
 p <- get_plot(data_len,
               data_summary,
               "length",
-              "Sequence length distribution (aa)",
+              "Sequence length (residues)",
               n_y_pos = 5,
               print_pval = pval_vect,
               scale_y = seq(0, 300, 50))
