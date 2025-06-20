@@ -306,7 +306,7 @@ data_instab$type <- factor(data_instab$type, levels = c("bad", "good"))
 
 # Pvals
 pval_pos <- 95
-only_ns <- TRUE
+only_ns <- FALSE
 y_annotation <- 0.55
 pval_vect <- c(pval_pos, only_ns, y_annotation)
 
@@ -418,7 +418,7 @@ data_iupred$type <- factor(data_iupred$type, levels = c("bad", "good"))
 
 # Pvals
 pval_pos <- 0.9
-only_ns <- TRUE
+only_ns <- FALSE
 y_annotation <- 0.1
 pval_vect <- c(pval_pos, only_ns, y_annotation)
 
