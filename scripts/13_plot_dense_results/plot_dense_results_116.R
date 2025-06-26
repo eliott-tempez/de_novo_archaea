@@ -4,6 +4,7 @@ library(ape)
 library(ggnewscale)
 library(yaml)
 library(ggpubr)
+library(viridis)
 ggsave <- function(..., bg = "white",
                    width = 1000, height = 1000,
                    units = "px", dpi = 100) {
@@ -28,6 +29,7 @@ cds_dir <- paths$cds_dir
 genomes_list <- paths$genomes_list
 fa_dir <- paths$fa_dir
 output_dir <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/"
+species_file <- paste0(output_dir, "species.tsv")
 intergenic_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/10_analyse_intergenic/intergenic_lengths.tsv"
 good_candidates <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/good_candidates.txt"
 
@@ -76,8 +78,11 @@ for (g in genomes) {
   data[g, "n_good_candidates"] <- n_good_candidates
 }
 data$n_bad_candidates <- data$n_denovo - data$n_good_candidates
-# Normalised de novo & trg number
-#data$n_trg_norm <- data$n_trg / data$n_cds * 100
+# Distinct species
+species_data <- read.table(species_file, header = TRUE, sep = "\t")
+colnames(species_data) <- c("genome", "genre", "species.ani", "mash", "aai",
+"rename")
+data$species <- species_data[match(rownames(data), species_data$genome), "species.ani"]
 
 # Get the species with the GCA identifier
 species_GCA <- genomes[which(grepl("GCA", rownames(data)))]
@@ -94,29 +99,34 @@ p <- ggtree(tree, layout = "circular", branch.length = "none")
 ## De novo ##
 p <- p + new_scale_fill()
 p <- gheatmap(p, data[, "n_denovo", drop = FALSE],
-        width = .05, colnames = FALSE) +
+              width = .05, colnames = FALSE) +
   scale_fill_gradient(low = "white", high = "black", name = "De novo (#)",
-            guide = guide_colorbar(order = 1))
+                      guide = guide_colorbar(order = 1))
 ## TRGs ##
 p <- p + new_scale_fill()
 p <- gheatmap(p, data[, "n_trg", drop = FALSE], offset = 1,
-        width = .05, colnames = FALSE) +
+              width = .05, colnames = FALSE) +
   scale_fill_gradient(low = "white", high = "red", name = "TRGs (#)",
-            guide = guide_colorbar(order = 2), limits = c(0, max(data$n_trg)))
-## TRGs normalised ##
+                      guide = guide_colorbar(order = 2), limits = c(0, max(data$n_trg)))
+## GC% ##
 p <- p + new_scale_fill()
 p <- gheatmap(p, data[, "gc_perc", drop = FALSE], offset = 2,
-        width = .05, colnames = FALSE) +
+              width = .05, colnames = FALSE) +
   scale_fill_gradient(low = "#009E73", high = "#6b00b2", name = "GC %",
-            guide = guide_colorbar(order = 3))
+                      guide = guide_colorbar(order = 3))
 
-# Add the title
-p <- p + ggtitle("Number of de novo genes,TRGs and GC rate for each genome") +
-  theme(plot.title = element_text(hjust = 0.5, vjust = -10),
-    legend.text = element_text(size = 12),
-    legend.title = element_text(size = 14))
-p
+print(p)
 ggsave(paste0(output_dir, "denovo_trg_116.png"))
+## Species ##
+p <- p + new_scale_fill()
+p <- gheatmap(p, data[, "species", drop = FALSE], offset = 4,
+              width = .1, colnames = FALSE, legend_title = NULL) +
+  scale_fill_manual(guide = "none",
+                    values = viridis::viridis(length(unique(data$species)), option = "turbo"))
+print(p)
+ggsave(paste0(output_dir, "denovo_trg_116_with_species.png"))
+
+
 
 
 
