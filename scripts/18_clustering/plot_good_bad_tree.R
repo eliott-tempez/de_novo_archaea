@@ -5,6 +5,7 @@ library(ggnewscale)
 library(yaml)
 library(dplyr)
 library(phangorn)
+library(viridis)
 ggsave <- function(..., bg = "white",
                    width = 1000, height = 1000,
                    units = "px", dpi = 100) {
@@ -45,6 +46,7 @@ fa_dir <- paths$fa_dir
 output_dir <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/18_clustering/"
 good_candidates <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/good_candidates.txt"
 cluster_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/18_clustering/good_candidates_clustering.tsv"
+species_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/13_plot_dense_results/species.tsv"
 
 
 
@@ -92,6 +94,11 @@ for (g in genomes) {
 data$n_bad_candidates <- data$n_denovo - data$n_good_candidates
 n_good <- sum(data$n_good_candidates)
 n_bad <- sum(data$n_bad_candidates)
+# Distinct species
+species_data <- read.table(species_file, header = TRUE, sep = "\t")
+colnames(species_data) <- c("genome", "genre", "species.ani", "mash", "aai", "rename")
+data$species <- species_data[match(rownames(data), species_data$genome), "species.ani"]
+
 
 
 # Read the tree
@@ -162,7 +169,7 @@ p <- p + geom_point(data = cluster_lcas_summary,
                     guide = guide_legend(override.aes = list(size = 4)))
 p
 
-ggsave(paste0(output_dir, "denovo_good_bad.png"))
+#ggsave(paste0(output_dir, "denovo_good_bad.png"))
 
 
 
@@ -199,7 +206,7 @@ ggplot(species_in_cluster_nb, aes(x = n_species_denovo, y = coverage)) +
     axis.text = element_text(size = 14)
   )
 
-ggsave(paste0(output_dir, "denovo_coverage.png"))
+#ggsave(paste0(output_dir, "denovo_coverage.png"))
 
 
 
@@ -223,29 +230,30 @@ clusters_non_orphan_lcas_coords <- cluster_lcas_coords %>%
 # For each cluster, plot the tree
 for (i in seq_len(nrow(clusters_non_orphan))) {
   cluster <- clusters_non_orphan[i, "cluster"][[1]]
-  print(cluster)
   # Get the denovo and genomes
   denovo <- clusters_non_orphan_df %>%
     filter(cluster == !!cluster) %>%
     pull(denovo) %>%
     na.omit()
-  print(denovo)
   genomes <- clusters_non_orphan_df %>%
     filter(cluster == !!cluster) %>%
     pull(genome) %>%
     na.omit()
-  print(genomes)
   # Get the lca node
   lca_node <- clusters_non_orphan_lcas %>%
     filter(cluster == !!cluster) %>%
     pull(lca_node) %>%
     na.omit()
-  print(lca_node)
   # Get the coordinates
   coords <- clusters_non_orphan_lcas_coords %>%
     filter(lca_node == !!lca_node)
-  print(coords)
-  print(" ")
+  # Get the species
+  tips_under_lcas <- as.vector(tree_data[tree_data$node %in% Descendants(tree, lca_node, type = "tips")[[1]], "label"])$label
+  species <- data.frame(
+    species = data[tips_under_lcas, "species"],
+    row.names = tips_under_lcas
+  )
+
 
   # Plot the tree
   p <- ggtree(tree, layout = "circular", branch.length = "none") +
@@ -259,6 +267,15 @@ for (i in seq_len(nrow(clusters_non_orphan))) {
                data = tree_data[tree_data$label %in% genomes, ],
                color = "#000000", size = 4, shape = 21,
                stroke = 0.5, fill = "#179207")
+
+  p <- p + new_scale_fill()
+  p <- gheatmap(p, species[, "species", drop = FALSE], offset = 2,
+              width = .1, colnames = FALSE, legend_title = NULL) +
+  scale_fill_manual(
+    guide = "none",
+    values = c(viridis::viridis(length(unique(na.omit(species$species))), option = "turbo"), "white"),
+    na.value = "white"
+  )
 
   ggsave(paste0(output_dir, "clusters/tree_", i, ".png"), plot = p)
 
