@@ -1,4 +1,15 @@
 library(yaml)
+library(ggplot2)
+
+ggsave <- function(..., bg = "white",
+                   width = 1000, height = 1000,
+                   units = "px", dpi = 100) {
+  ggplot2::ggsave(..., bg = bg,
+                  width = width,
+                  height = height,
+                  units = units,
+                  dpi = dpi)
+}
 
 config <- yaml.load_file("/home/eliott.tempez/Documents/M2_Stage_I2BC/scripts/my_functions/filepaths.yaml")
 paths <- config$local_paths
@@ -50,9 +61,14 @@ if (extract_qcovs) {
 } else {
   # If qcovs are already extracted, read them from the file
   qcovs_file <- paste0(output_dir, "qcovs_orthologs.txt")
-  qcovs <- scan(qcovs_file, what = "", sep = " ")
+  qcovs <- read.table(qcovs_file, header = FALSE)
 }
 
 
+ggplot(qcovs, aes(x = V1)) +
+  geom_histogram(fill = "#8d8dd8", color = "black") +
+  labs(title = "Distribution of qcovs for orthologs (n = 10000)",
+       x = "qcov", y = "Count") +
+  theme_minimal()
+ggsave(paste0(output_dir, "qcovs_orthologs_histogram.png"))
 
-hist(qcovs)
