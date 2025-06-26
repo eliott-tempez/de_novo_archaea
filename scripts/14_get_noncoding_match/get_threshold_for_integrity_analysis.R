@@ -39,9 +39,14 @@ if (extract_qcovs) {
       qcovs <- c(qcovs, qcovs_data)
     }
   }
-  # Print all qcovs to a file (space separated)
+  # Sample 10k qcovs
+  print(paste0("Number of qcovs extracted: 10000/", length(qcovs)))
+  if (length(qcovs) > 10000) {
+    qcovs <- sample(qcovs, 10000)
+  }
+  # Print qcovs to a file (space separated)
   qcovs_file <- paste0(output_dir, "qcovs_orthologs.txt")
-  write.table(qcovs, file = qcovs_file, row.names = FALSE, col.names = FALSE, quote = FALSE, sep = " ")
+  write(qcovs, file = qcovs_file)
 } else {
   # If qcovs are already extracted, read them from the file
   qcovs_file <- paste0(output_dir, "qcovs_orthologs.txt")
@@ -49,5 +54,5 @@ if (extract_qcovs) {
 }
 
 
-print(paste0("Number of qcovs: ", length(qcovs)))
-hist(as.numeric(qcovs))
+
+hist(qcovs)
