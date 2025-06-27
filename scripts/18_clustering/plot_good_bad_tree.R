@@ -169,7 +169,7 @@ p <- p + geom_point(data = cluster_lcas_summary,
           guide = guide_legend(override.aes = list(size = 4)))
 
 # Adjust the legend position to be below the figure
-p <- p + theme(legend.position = "bottom")
+p <- p + theme(legend.position = "top")
 
 p
 
