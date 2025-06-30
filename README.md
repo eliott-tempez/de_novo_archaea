@@ -4,6 +4,8 @@
 
 This internship was carried out from January 2025 to July 2025 at the Institute for Integrative Biology of the Cell (I2BC) under the supervision of **Anne Lopes**.
 
+![Rocking Archaea](doc/rocking_archaea.png)
+
 ### Folders
 `--- scripts` list of scripts created during the internship
 
