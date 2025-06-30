@@ -159,6 +159,14 @@ p <- gheatmap(p, data[, "n_bad_candidates", drop = FALSE], offset = 1.5,
             guide = guide_colorbar(order = 2,
                        limits = c(0, max(data$n_bad_candidates))))
 
+## GC content ##
+p <- p + new_scale_fill()
+p <- gheatmap(p, data[, "gc_perc", drop = FALSE], offset = 2.5,
+              width = .05, colnames = FALSE) +
+  scale_fill_gradient(low = "#009E73", high = "#6b00b2",
+                      name = "GC %",
+                      guide = guide_colorbar(order = 3))
+
 # Add the points
 p <- p + new_scale_fill()
 p <- p + geom_point(data = cluster_lcas_summary,
