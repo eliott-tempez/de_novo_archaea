@@ -13,7 +13,7 @@ This internship was carried out from January 2025 to July 2025 at the Institute 
 
 
 ### Internship Steps (subfolders):  
-- Global functions (`my_-_functions`)  
+- Global functions (`my_functions`)  
 - Generation of supplementary figures for the report (`supp_figures`)  
 
 **Program Execution:**  
