@@ -5,8 +5,6 @@
 This internship was carried out from January 2025 to July 2025 at the Institute for Integrative Biology of the Cell (I2BC) under the supervision of **Anne Lopes**.
 
 ### Folders
-`--- notions` personal notes on in-depth topics
-
 `--- scripts` list of scripts created during the internship
 
 `--- logs` logs collected after script execution
@@ -39,4 +37,4 @@ This internship was carried out from January 2025 to July 2025 at the Institute 
 - Search for frameshifts within de novo genes (`16_look_for_frameshifts`)  
 - Comparison of de novo gene sequences to other CDS using several descriptors (`17_compare_denovo_sequences`)  
 - Clustering of genes lacking integrity (`18_clustering`) 
-- Case study of an interesting organism (`19_case_study`)
+- Case study of an interesting organism (discarded for the report) (`19_case_study`)
