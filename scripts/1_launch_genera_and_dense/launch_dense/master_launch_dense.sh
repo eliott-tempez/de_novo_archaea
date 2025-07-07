@@ -5,7 +5,7 @@ declare -a archaeas=("GCA_000007305@Pyrococcus_furiosus_DSM_3638" "GCA_000009965
 
 
 # Submit the jobs
-for ((i = 45; i < 90; i++)); do
+for ((i = 0; i < 116; i++)); do
     species=${archaeas[$i]}
     sbatch \
         --export=SPECIES=$species \

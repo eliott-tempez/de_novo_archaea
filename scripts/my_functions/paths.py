@@ -1,7 +1,7 @@
 """
 This script will import all hardcoded paths from the yaml file
 """
-CLUSTER = True
+CLUSTER = False
 HOME = False
 
 
