@@ -14,3 +14,10 @@ All scripts for de novo emergence analysis are comprised in the `/scripts` folde
 The corresponding results are in the `/results` folder.
 
 In `results/`, you can also find the subfolder `my_functions` that contains useful functions that are used several times across scripts. The script `blast_CDS.py` is also useful to blast any sequence in a fasta file against any other fasta file locally.
+
+
+## All that has been done since writing the report (`report.pdf`)
+
+
+
+## Ideas for the future
