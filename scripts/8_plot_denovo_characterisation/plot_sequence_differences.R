@@ -15,27 +15,17 @@ ggsave <- function(..., bg = "white",
 }
 
 
-home <- FALSE
 use_violins <- TRUE
 print_pval_labels <- FALSE
 ONE_SIDED <- TRUE
 
 
-if (home) {
-  input_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/17_compare_denovo_sequences/sequence_features_good_candidates_all.csv"
-  pval_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/17_compare_denovo_sequences/1_bins/pvalues_1_bins.csv"
-  if (ONE_SIDED) {
-    pval_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/17_compare_denovo_sequences/1_bins/pvalues_1_bins_one_sided.csv"
-  }
-  out_folder <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/17_compare_denovo_sequences/1_bins/"
-} else {
-  input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/sequence_features_good_candidates_all.csv"
-  pval_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/1_bins/pvalues_1_bins.csv"
-  if (ONE_SIDED) {
-    pval_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/1_bins/pvalues_1_bins_one_sided.csv"
-  }
-  out_folder <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/1_bins/"
+input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/7_characterise_denovo/sequence_features_good_candidates_all.csv"
+pval_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/7_characterise_denovo/1_bins/pvalues_1_bins.csv"
+if (ONE_SIDED) {
+  pval_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/7_characterise_denovo/1_bins/pvalues_1_bins_one_sided.csv"
 }
+out_folder <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/8_plot_denovo_characterisation/1_bins/"
 
 
 

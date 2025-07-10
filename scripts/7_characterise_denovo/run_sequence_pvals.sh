@@ -39,7 +39,7 @@ cp $GOOD_CANDIDATES .
 echo "Environment created" >> $OUTPUT_LOG
 
 # Run script
-python 17_compare_denovo_sequences/calculate_pvals_good_bad_denovo.py >> $OUTPUT_LOG
+python 17_compare_denovo_sequences/calculate_pvals_seq_comparison.py >> $OUTPUT_LOG
 
 # Get output
 cp pvalues*.csv $OUT_DIR

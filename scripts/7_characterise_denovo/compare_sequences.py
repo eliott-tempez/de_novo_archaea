@@ -19,8 +19,8 @@ SORTED_AA = ["A", "C", "D", "E", "F", "G", "H", "I", "K", "L", "M", "N", "P", "Q
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 OUT_DIR = "out/"
 from my_functions.paths import DENSE_DIR, GENERA_DIR, GENOMES_LIST, CDS_DIR, FA_DIR
-TRG_RANK = 7.0
-GOOD_CANDIDATES_ONLY = True
+TRG_RANK = 7.0 # Thermococcacaea
+GOOD_CANDIDATES_ONLY = True # Only use the 64 de novo
 
 
 def extract_cds_sequences(genome):

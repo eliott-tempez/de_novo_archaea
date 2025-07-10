@@ -11,7 +11,6 @@ library(grid)
 
 
 # User-defined parameters
-home <- FALSE
 n_bins <- 2
 plot_pvals <- TRUE
 save_plots <- TRUE
@@ -21,31 +20,16 @@ ONE_SIDED <- TRUE
 
 
 # Files
- if (!home) {
-  input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/sequence_features_good_candidates_all.csv"
-  good_candidates_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/good_candidates.txt"
-  out_folder <- paste0("/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/", n_bins, "_bins/")
-  pval_file <- paste0(out_folder, "pvalues_", n_bins, "_bins.tsv")
-  if (ONE_SIDED) {
-    pval_file <- paste0(out_folder, "pvalues_", n_bins, "_bins_one_sided.csv")
-  }
-  bins_file <- paste0(out_folder, "bin_indexes_", n_bins, ".csv")
-  if (only_denovo_genomes) {
-    out_folder <- paste0(out_folder, "only_denovo_genomes/")
-  }
-} else {
-  input_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/17_compare_denovo_sequences/sequence_features_good_candidates_all.csv"
-  good_candidates_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/14_get_noncoding_match/good_candidates.txt"
-  out_folder <- paste0("/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/17_compare_denovo_sequences/", n_bins, "_bins/")
-  pval_file <- paste0(out_folder, "pvalues_", n_bins, "_bins.tsv")
-  if (ONE_SIDED) {
-    pval_file <- paste0(out_folder, "pvalues_", n_bins, "_bins_one_sided.csv")
-  }
-  bins_file <- paste0(out_folder, "bin_indexes_", n_bins, ".csv")
-  if (only_denovo_genomes) {
-    out_folder <- paste0(out_folder, "only_denovo_genomes/")
-  }
+
+input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/7_characterise_denovo/sequence_features_good_candidates_all.csv"
+good_candidates_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/4_integrity_analysis/good_candidates.txt"
+out_folder <- paste0("/home/eliott.tempez/Documents/M2_Stage_I2BC/results/8_plot_denovo_characterisation/", n_bins, "_bins/")
+pval_file <- paste0(out_folder, "pvalues_", n_bins, "_bins.tsv")
+if (ONE_SIDED) {
+  pval_file <- paste0(out_folder, "pvalues_", n_bins, "_bins_one_sided.csv")
 }
+bins_file <- paste0(out_folder, "bin_indexes_", n_bins, ".csv")
+
 
 
 # Read data

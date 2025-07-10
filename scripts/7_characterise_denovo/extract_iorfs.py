@@ -1,3 +1,9 @@
+"""
+This script extracts all intergenic open reading frames (iorfs) from a list of
+genomes using the orftrack and orfget tools. It saves the iorfs in a text file
+iorfs.txt.
+"""
+
 import re
 import os
 import subprocess

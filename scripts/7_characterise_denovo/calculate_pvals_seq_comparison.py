@@ -14,8 +14,8 @@ from my_functions.paths import GENOMES_LIST, FA_DIR
 INCLUDE = "all" # Descriptors to run the test on
 
 
-NB_GC_BINS = 1
-TWO_SIDED = False
+NB_GC_BINS = 1 # Number of GC bins to use
+TWO_SIDED = False # If True, use two-sided test, else one-sided test
 
 
 def get_species_gc_content(genome):
