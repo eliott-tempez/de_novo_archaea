@@ -1,4 +1,5 @@
 #!/bin/bash
+# /!\ The paths are probably not correct, you will have to change them
 # This script extracts the fasta file of all CDSs from the gff files and the genome fasta file
 
 ########## Parameters ##########

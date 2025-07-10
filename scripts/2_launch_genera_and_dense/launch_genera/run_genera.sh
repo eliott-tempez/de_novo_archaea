@@ -1,4 +1,5 @@
 #!/bin/sh
+# /!\ The paths are probably not correct, you will have to change them
 
 ########## Parameters ##########
 

@@ -1,4 +1,5 @@
 #! /bin/sh
+# /!\ The paths are probably not correct, you will have to change them
 
 #SBATCH -p common
 #SBATCH -J run_descriptors
