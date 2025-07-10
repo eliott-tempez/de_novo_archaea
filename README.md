@@ -21,3 +21,4 @@ In `results/`, you can also find the subfolder `my_functions` that contains usef
 
 
 ## Ideas for the future
+- In order to control whether the de novo genes are genes and not annotation errors, we can look at gene experssion data, ie. RNAseq data
