@@ -1,5 +1,5 @@
 """
-This script facilitates the re-do of tblastns.
+This script facilitates the re-do of tblastns or blastps.
 """
 
 import os

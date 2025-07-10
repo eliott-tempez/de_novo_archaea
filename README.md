@@ -8,6 +8,7 @@ All scripts for de novo emergence analysis are comprised in the `/scripts` folde
 7. De novo characterisation, using sequence and structure descriptors
 8. De novo characterisation visualisation
 9. Non-coding origin identification
+10. Result generalisation, where we compare the 64 de novo to the 109 discarded candidates.
 
 
 The corresponding results are in the `/results` folder.

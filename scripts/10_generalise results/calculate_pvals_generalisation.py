@@ -10,7 +10,7 @@ from multiprocessing import Pool, cpu_count
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from my_functions.paths import DENSE_DIR, GENOMES_LIST
 INCLUDE = "all" # Descriptors to run the test on
-TWO_SIDED = False
+TWO_SIDED = False # If True, the test is two-sided, otherwise one-sided
 
 def get_all_medians(descriptors_df, good_indexes, bad_indexes,descriptors):
     medians = {}

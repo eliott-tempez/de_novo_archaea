@@ -14,19 +14,12 @@ home <- TRUE
 
 
 # Files
-if (!home){
-  input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/sequence_features_good_candidates_all.csv"
-  good_candidates_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/good_candidates.txt"
-  all_denovo_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/all_denovo.txt"
-  pvals_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/good_bad/pvalues_good_bad_denovo_one_sided.csv"
-  out_folder <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/17_compare_denovo_sequences/good_bad/"
-} else {
-  input_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/17_compare_denovo_sequences/sequence_features_good_candidates_all.csv"
-  good_candidates_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/14_get_noncoding_match/good_candidates.txt"
-  all_denovo_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/14_get_noncoding_match/all_denovo.txt"
-  pvals_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/17_compare_denovo_sequences/good_bad/pvalues_good_bad_denovo_one_sided.csv"
-  out_folder <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/17_compare_denovo_sequences/good_bad/"
-}
+input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/7_characterise_denovo/sequence_features_good_candidates_all.csv"
+good_candidates_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/4_integrity_analysis/good_candidates.txt"
+all_denovo_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/data/all_denovo.txt"
+pvals_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/10_generalise_results/pvalues_good_bad_denovo_one_sided.csv"
+out_folder <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/10_generalise_results/"
+
 
 
 # Read data
