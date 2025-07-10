@@ -17,7 +17,7 @@ In `results/`, you can also find the subfolder `my_functions` that contains usef
 
 
 ## All that has been done since writing the report (`report.pdf`)
-
+- We added the species (based on the ANI) to some plots (`3_plot_dense_results/denovo_trg_116_with_species.png` and plots in `6_plot_integrity_results/clusters`)
 
 
 ## Ideas for the future
