@@ -1,3 +1,7 @@
+# This script analyses the denovo_noncoding_status.tsv file
+# created by get_all_origin_frames_denovo.py.
+
+
 library(dplyr)
 library(tidyr)
 library(ggVennDiagram)
@@ -14,12 +18,9 @@ ggsave <- function(..., bg = "white",
 }
 
 
-#input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/denovo_noncoding_status.tsv"
-#out_folder <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match"
-#cluster_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/18_clustering/good_candidates_clustering.tsv"
-input_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/14_get_noncoding_match/denovo_noncoding_status.tsv"
-out_folder <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/14_get_noncoding_match"
-cluster_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/18_clustering/good_candidates_clustering.tsv"
+input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/9_get_noncoding_origin/denovo_noncoding_status.tsv"
+out_folder <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/9_get_noncoding_origin"
+cluster_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/5_de_novo_clustering/good_candidates_clustering.tsv"
 
 
 
@@ -102,14 +103,6 @@ same_origin <- data_origin %>%
   ) %>%
   ungroup()
 print(paste("there are", nrow(same_origin), "genes with the same origin across all neighbours."))
-
-
-
-
-
-
-
-
 
 
 

@@ -1,6 +1,8 @@
 """
-This script extracts all origins for all the denovo 
-good candidates, and all NC matches in synteny.
+This script, for each de novo gene and non-coding syteny hit couple,
+runs the get_noncoding_match_status.py script to get the number of nucleotides
+in the nc match that are in an intergenic segment/+0/+1/+2 frame of
+an existing gene. It saves the results in denovo_noncoding_status.tsv.
 """
 
 
@@ -12,9 +14,9 @@ from io import StringIO
 import pandas as pd
 
 # Files
-GOOD_CANDIDATES_FILE = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/good_candidates.txt"
+GOOD_CANDIDATES_FILE = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/4_integrity_analysis/good_candidates.txt"
 from my_functions.paths import GENOMES_LIST, DENSE_DIR
-OUT_DIR = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/14_get_noncoding_match/"
+OUT_DIR = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/9_get_noncoding_origin/"
 
 
 
