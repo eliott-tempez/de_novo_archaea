@@ -22,5 +22,7 @@ In `scripts/`, you can also find the subfolder `my_functions` that contains usef
 
 
 ## Ideas for the future
-- In order to control whether the de novo genes are genes and not annotation errors, we can look at gene experession data, ie. RNAseq data
+- Structure prediction
+- In order to control whether the de novo genes are genes and not annotation errors, we can look at gene expression data, ie. RNAseq data
 - In the same spirit, we can calculate the DNDS for de novo genes for which we have a multiple alignment (see `results/11_conservation_analysis/homologs/`)
+- Re-evaluate whether 70% is a good coverage threshold for the integrity analysis (probably using the results of the conservation analysis `11_conservation_analysis`)
