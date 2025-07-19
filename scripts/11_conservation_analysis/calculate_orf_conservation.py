@@ -239,7 +239,7 @@ if __name__ == "__main__":
     with open(GENOMES_LIST, "r") as f:
         genomes = f.readline().split()
     genomes = [re.sub('"', '', g) for g in genomes]
-
+    
     random_orfs = {}
     conservations = {}
 
