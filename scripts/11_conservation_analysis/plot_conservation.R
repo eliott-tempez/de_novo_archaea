@@ -14,18 +14,12 @@ ggsave <- function(..., bg = "white",
 }
 
 
-#config <- yaml.load_file("/home/eliott.tempez/Documents/M2_Stage_I2BC/scripts/my_functions/filepaths.yaml")
-config <- yaml.load_file("/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/scripts/my_functions/filepaths.yaml")
-#paths <- config$local_paths
-paths <- config$home_paths
+config <- yaml.load_file("/home/eliott.tempez/Documents/M2_Stage_I2BC/scripts/my_functions/filepaths.yaml")
+paths <- config$local_paths
 tree_file <- paths$tree_file
-#input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/20_de_novo_conservation/de_novo_conservation.tsv"
-#input_file_orf <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/20_de_novo_conservation/orf_conservation.tsv"
-#output_folder <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/20_de_novo_conservation/figures"
-input_file <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/20_de_novo_conservation/de_novo_conservation.tsv"
-input_file_orf <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/20_de_novo_conservation/orf_conservation.tsv"
-output_folder <- "/home/eliott/Documents/UNI/M2/Stage/M2_stage_I2BC/results/20_de_novo_conservation/figures"
-
+input_file <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/11_conservation_analysis/de_novo_conservation.tsv"
+input_file_orf <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/11_conservation_analysis/orf_conservation.tsv"
+output_folder <- "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/11_conservation_analysis/figures"
 
 # Read the de novo file
 conservation_data <- read.table(input_file, header = TRUE, sep = "\t")

@@ -15,7 +15,7 @@ import pandas as pd
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from my_functions.genomic_functions import get_sequence_from_loci
 from my_functions.paths import GENOMES_LIST, CDS_DIR, FA_DIR, GFF_DIR
-OUT_FOLDER = "../results/20_de_novo_conservation/"
+OUT_FOLDER = "../results/11_conservation_analysis/"
 
 
 def extract_100_orfs(genome):

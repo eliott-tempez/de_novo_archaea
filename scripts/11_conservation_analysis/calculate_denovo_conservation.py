@@ -14,8 +14,8 @@ from my_functions.genomic_functions import extract_denovo_info, get_sequence_fro
 
 
 from my_functions.paths import GENOMES_LIST, CDS_DIR, FA_DIR
-GOOD_CANDIDATES_FILE = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/18_clustering/good_candidates_clustering.tsv"
-OUT_FOLDER = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/20_de_novo_conservation/"
+GOOD_CANDIDATES_FILE = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/5_de_novo_clustering/good_candidates_clustering.tsv"
+OUT_FOLDER = "/home/eliott.tempez/Documents/M2_Stage_I2BC/results/11_conservation_analysis/"
 
 
 
